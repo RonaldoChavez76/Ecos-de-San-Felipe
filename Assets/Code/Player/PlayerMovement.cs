@@ -82,6 +82,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
+            rb.linearDamping = 15f;
+            rb.angularDamping = 15f;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
 
         // Sincronizar vida con el SaveStateManager (100 base + 25 por cada eco recuperado)
@@ -140,16 +144,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentHealth <= 0f) return;
+        if (rb == null) return;
+
+        if (currentHealth <= 0f)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            return;
+        }
 
         if (currentState == CombatState.Idle)
         {
-            float velocidadActual = isAssaultActive ? moveSpeed * 1.30f : moveSpeed;
-            rb.MovePosition(rb.position + movement.normalized * velocidadActual * Time.fixedDeltaTime);
+            if (movement.sqrMagnitude > 0.001f)
+            {
+                float velocidadActual = isAssaultActive ? moveSpeed * 1.30f : moveSpeed;
+                rb.MovePosition(rb.position + movement.normalized * velocidadActual * Time.fixedDeltaTime);
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
         }
         else if (currentState == CombatState.Dodge)
         {
             rb.MovePosition(rb.position + lookDirection * dodgeSpeed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            // En Attack, Block y Counter Ronan debe mantenerse firme sin deslizarse hacia atrás ni en diagonal
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
     }
 
@@ -218,11 +243,15 @@ public class PlayerMovement : MonoBehaviour
     {
         SetState(CombatState.Attack);
         movement = Vector2.zero;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
         if (anim != null) anim.SetFloat("Speed", 0f);
         if (visualEffectObj != null) visualEffectObj.SetActive(false);
 
-        // Impulso hacia adelante
-        rb.MovePosition(rb.position + lookDirection * 0.15f);
+        AudioManager.Instance?.PlaySlashSound();
 
         float danioActual = isAssaultActive ? baseAttack * 1.60f : baseAttack;
         Vector2 puntoAtaque = (Vector2)transform.position + lookDirection * (attackRange * 0.65f);
@@ -253,6 +282,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         yield return new WaitForSeconds(attackDuration);
+        if (rb != null) rb.linearVelocity = Vector2.zero;
         SetState(CombatState.Idle);
     }
 
@@ -260,6 +290,11 @@ public class PlayerMovement : MonoBehaviour
     {
         SetState(CombatState.Block);
         movement = Vector2.zero;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
         if (anim != null) anim.SetFloat("Speed", 0f);
 
         blockStartTime = Time.time;

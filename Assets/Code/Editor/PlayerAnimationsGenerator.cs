@@ -72,10 +72,10 @@ public class PlayerAnimationsGenerator
         // =====================================================================
         // 2. ANIMACIONES DE CAMINATA / WALK (4 FRAMES, 8-10 FPS, LOOP)
         // =====================================================================
-        Sprite[] walkDown = { GetSprite(0, 1), GetSprite(0, 2), GetSprite(0, 3), GetSprite(0, 4) };
-        Sprite[] walkUp = { GetSprite(4, 1), GetSprite(4, 2), GetSprite(4, 3), GetSprite(4, 4) };
-        Sprite[] walkRight = { GetSprite(2, 1), GetSprite(2, 2), GetSprite(2, 3), GetSprite(2, 4) };
-        Sprite[] walkLeft = { GetSprite(6, 1), GetSprite(6, 2), GetSprite(6, 3), GetSprite(6, 4) };
+        Sprite[] walkDown = { GetSprite(0, 1), GetSprite(0, 2), GetSprite(0, 3), GetSprite(0, 2) };
+        Sprite[] walkUp = { GetSprite(4, 1), GetSprite(4, 2), GetSprite(4, 3), GetSprite(4, 2) };
+        Sprite[] walkRight = { GetSprite(2, 1), GetSprite(2, 2), GetSprite(2, 3), GetSprite(2, 2) };
+        Sprite[] walkLeft = { GetSprite(6, 1), GetSprite(6, 2), GetSprite(6, 3), GetSprite(6, 2) };
 
         CrearClipSprite("Assets/Animations/Player_WalkDown.anim", walkDown, 10f, true);
         CrearClipSprite("Assets/Animations/Player_WalkUp.anim", walkUp, 10f, true);
@@ -89,12 +89,12 @@ public class PlayerAnimationsGenerator
         CrearClipSprite("Assets/Animations/WalkLeft.anim", walkLeft, 10f, true);
 
         // =====================================================================
-        // 3. ANIMACIONES DE ATAQUE CON ESPADA (4 FRAMES, 16 FPS)
+        // 3. ANIMACIONES DE ATAQUE CON ESPADA (4 FRAMES: COLUMNAS 4, 5, 6, 7)
         // =====================================================================
-        Sprite[] attackDown = { GetSprite(0, 5), GetSprite(0, 6), GetSprite(0, 7), GetSprite(0, 8) };
-        Sprite[] attackUp = { GetSprite(4, 5), GetSprite(4, 6), GetSprite(4, 7), GetSprite(4, 8) };
-        Sprite[] attackRight = { GetSprite(2, 5), GetSprite(2, 6), GetSprite(2, 7), GetSprite(2, 8) };
-        Sprite[] attackLeft = { GetSprite(6, 5), GetSprite(6, 7), GetSprite(6, 7), GetSprite(6, 8) };
+        Sprite[] attackDown = { GetSprite(0, 4), GetSprite(0, 5), GetSprite(0, 6), GetSprite(0, 7) };
+        Sprite[] attackUp = { GetSprite(4, 4), GetSprite(4, 5), GetSprite(4, 6), GetSprite(4, 7) };
+        Sprite[] attackRight = { GetSprite(2, 4), GetSprite(2, 5), GetSprite(2, 6), GetSprite(2, 7) };
+        Sprite[] attackLeft = { GetSprite(6, 4), GetSprite(6, 5), GetSprite(6, 6), GetSprite(6, 7) };
 
         CrearClipSprite("Assets/Animations/Player_AttackDown.anim", attackDown, 16f, false);
         CrearClipSprite("Assets/Animations/Player_AttackUp.anim", attackUp, 16f, false);
@@ -104,7 +104,7 @@ public class PlayerAnimationsGenerator
         // =====================================================================
         // 4. BLOQUEO / GUARDIA CON ESPADA
         // =====================================================================
-        Sprite[] blockSprites = { GetSprite(0, 5) };
+        Sprite[] blockSprites = { GetSprite(0, 4) };
         CrearClipSprite("Assets/Animations/Player_Block.anim", blockSprites, 1f, true);
 
         // =====================================================================

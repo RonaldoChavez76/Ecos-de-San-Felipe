@@ -81,13 +81,17 @@ public class PunyCharacterAnimator : MonoBehaviour
             estadoAnterior = player.currentState;
         }
 
-        // 1. Leer hacia dónde se está moviendo el jugador
+        // 1. Leer hacia dónde se está moviendo o mirando el jugador
         float hx = Input.GetAxisRaw("Horizontal");
         float vy = Input.GetAxisRaw("Vertical");
         Vector2 inputDir = new Vector2(hx, vy);
 
-        // Si se está moviendo en estado Idle, actualizamos la fila de dirección (0 a 7)
-        if (player.currentState == PlayerMovement.CombatState.Idle && inputDir.sqrMagnitude > 0.01f)
+        // Sincronizar siempre la fila de dirección con hacia dónde mira Ronan (player.LookDirection)
+        if (player.LookDirection.sqrMagnitude > 0.01f)
+        {
+            currentDirectionRow = ObtenerFilaDeDireccion(player.LookDirection);
+        }
+        else if (player.currentState == PlayerMovement.CombatState.Idle && inputDir.sqrMagnitude > 0.01f)
         {
             currentDirectionRow = ObtenerFilaDeDireccion(inputDir.normalized);
         }
@@ -109,15 +113,15 @@ public class PunyCharacterAnimator : MonoBehaviour
 
             if (player.currentState == PlayerMovement.CombatState.Attack)
             {
-                // Sincroniza exactamente los 4 cuadros de espada (columnas 5, 6, 7 y 8) con la duración del ataque
+                // Sincroniza exactamente los 4 cuadros de espada (columnas 4, 5, 6 y 7) con la duración del ataque
                 animTimer += Time.deltaTime;
                 float progreso = Mathf.Clamp01(animTimer / Mathf.Max(0.01f, player.attackDuration));
                 int frameAtaque = Mathf.Clamp(Mathf.FloorToInt(progreso * 4f), 0, 3);
-                columnaElegida = 5 + frameAtaque;
+                columnaElegida = 4 + frameAtaque;
             }
             else if (player.currentState == PlayerMovement.CombatState.Block || player.currentState == PlayerMovement.CombatState.Counter)
             {
-                columnaElegida = 5; // Guardia con espada en alto
+                columnaElegida = 4; // Guardia firme con espada en alto (Columna 4)
             }
             else if (player.currentState == PlayerMovement.CombatState.Dodge)
             {
@@ -128,8 +132,9 @@ public class PunyCharacterAnimator : MonoBehaviour
                 if (inputDir.sqrMagnitude > 0.01f)
                 {
                     animTimer += Time.deltaTime * walkFPS;
+                    int[] walkCycleCols = { 1, 2, 3, 2 };
                     int frameCaminata = Mathf.FloorToInt(animTimer) % 4;
-                    columnaElegida = 1 + frameCaminata;
+                    columnaElegida = walkCycleCols[frameCaminata];
                 }
                 else
                 {
