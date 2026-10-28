@@ -22,7 +22,7 @@ public class SanFelipeSceneAutoSetup
             SanFelipeDemoBuilder builder = Object.FindFirstObjectByType<SanFelipeDemoBuilder>();
             if (builder == null) return;
 
-            if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null || GameObject.Find("Parroquia_Exterior_Elementos") == null)
+            if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null || GameObject.Find("Zona_Parroquia_Exterior_Interactivos") == null)
             {
                 builder.GenerarTodoEnEditor();
                 EditorSceneManager.MarkSceneDirty(activeScene);

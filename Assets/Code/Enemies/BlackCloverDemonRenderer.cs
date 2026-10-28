@@ -48,15 +48,185 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
         if (p != null) playerTarget = p.transform;
 
+        InicializarSpritesDemonio();
+
+        if (shadowTransform == null) CrearSombraDeSuelo();
+        if (darkAuraParticles == null) CrearParticulasDeMateriaOscura();
+        if (attackVfxObj == null) CrearEfectosDeCargaYZarpazo();
+    }
+
+    /// <summary>
+    /// Carga y recorta automáticamente los 8 fotogramas de la hoja de sprites correspondiente
+    /// (SombraErrante_SpriteSheet, SombraLanzadora_SpriteSheet o SombraGuardiana_SpriteSheet),
+    /// o genera los fotogramas desde customDemonImage / respaldo procedural para que jamás sea invisible.
+    /// </summary>
+    public void InicializarSpritesDemonio()
+    {
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        if (animator == null) animator = GetComponent<Animator>();
+
         bool hasAnimatorController = animator != null && animator.runtimeAnimatorController != null;
-        if (customDemonImage != null && !hasAnimatorController)
+        if (hasAnimatorController) return;
+
+        if (animatedFrames != null && animatedFrames.Length > 0 && animatedFrames[0] != null)
         {
-            GenerarSpritesAnimadosDesdeImagen(customDemonImage);
+            if (sr != null && sr.sprite == null) sr.sprite = animatedFrames[0];
+            return;
         }
 
-        CrearSombraDeSuelo();
-        CrearParticulasDeMateriaOscura();
-        CrearEfectosDeCargaYZarpazo();
+        // 1. Intentar cargar la hoja pre-generada de 8 columnas en Assets/Sprites/
+        string sheetName = tipoDemonio == DemonType.SombraGuardianaJefe
+            ? "SombraGuardiana_SpriteSheet"
+            : (tipoDemonio == DemonType.SombraErrante
+                ? "SombraErrante_SpriteSheet"
+                : "SombraLanzadora_SpriteSheet");
+
+        Texture2D tex = ZoneWaveSpawner.LoadSpriteTexture(sheetName);
+
+        // Si no se encontró por nombre directo, revisar las referencias serializadas en SanFelipeDemoBuilder
+        if (tex == null)
+        {
+            SanFelipeDemoBuilder builder = FindAnyObjectByType<SanFelipeDemoBuilder>();
+            if (builder != null)
+            {
+                if (tipoDemonio == DemonType.SombraErrante) tex = builder.imagenSombraErrante;
+                else if (tipoDemonio == DemonType.SombraLanzadora) tex = builder.imagenSombraLanzadora;
+                else if (tipoDemonio == DemonType.SombraGuardianaJefe) tex = builder.imagenSombraGuardiana;
+            }
+        }
+
+        if (tex == null) tex = customDemonImage;
+
+        if (tex != null)
+        {
+            if (tex.width >= tex.height * 4)
+            {
+                CargarFotogramasDesdeHoja8Columnas(tex);
+            }
+            else
+            {
+                GenerarSpritesAnimadosDesdeImagen(tex);
+            }
+        }
+
+        // 2. Respaldo procedural garantizado si por cualquier razón no hubiera textura cargada
+        if (animatedFrames == null || animatedFrames.Length == 0 || animatedFrames[0] == null)
+        {
+            GenerarSpritesProceduralesDeRespaldo();
+        }
+
+        if (sr != null && animatedFrames != null && animatedFrames.Length > 0)
+        {
+            sr.sprite = animatedFrames[0];
+        }
+    }
+
+    private void CargarFotogramasDesdeHoja8Columnas(Texture2D sheetTex)
+    {
+        Texture2D readable = sheetTex;
+        if (!sheetTex.isReadable)
+        {
+            RenderTexture rt = RenderTexture.GetTemporary(sheetTex.width, sheetTex.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+            Graphics.Blit(sheetTex, rt);
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            readable = new Texture2D(sheetTex.width, sheetTex.height, TextureFormat.RGBA32, false);
+            readable.ReadPixels(new Rect(0, 0, sheetTex.width, sheetTex.height), 0, 0);
+            readable.Apply();
+            RenderTexture.active = prev;
+            RenderTexture.ReleaseTemporary(rt);
+        }
+
+        int totalCols = 8;
+        int frameW = readable.width / totalCols;
+        int frameH = readable.height;
+        float ppu = 64f;
+
+        animatedFrames = new Sprite[6];
+        for (int i = 0; i < 6; i++)
+        {
+            animatedFrames[i] = ExtraerFrameDeHoja(readable, i * frameW, 0, frameW, frameH, ppu, $"{sheetTex.name}_Idle_{i}");
+        }
+
+        attackFrames = new Sprite[2];
+        attackFrames[0] = ExtraerFrameDeHoja(readable, 6 * frameW, 0, frameW, frameH, ppu, $"{sheetTex.name}_Charge");
+        attackFrames[1] = ExtraerFrameDeHoja(readable, 7 * frameW, 0, frameW, frameH, ppu, $"{sheetTex.name}_Strike");
+    }
+
+    private Sprite ExtraerFrameDeHoja(Texture2D readable, int px, int py, int w, int h, float ppu, string frameName)
+    {
+        Color[] pixels = readable.GetPixels(px, py, w, h);
+        Texture2D sub = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        sub.name = frameName;
+        sub.filterMode = FilterMode.Point;
+        sub.wrapMode = TextureWrapMode.Clamp;
+        sub.SetPixels(pixels);
+        sub.Apply();
+        Sprite sp = Sprite.Create(sub, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), ppu);
+        sp.name = frameName;
+        return sp;
+    }
+
+    private void GenerarSpritesProceduralesDeRespaldo()
+    {
+        int size = 64;
+        float ppu = 32f;
+        Color bodyColor = tipoDemonio == DemonType.SombraLanzadora
+            ? new Color(0.88f, 0.12f, 0.38f, 0.95f)
+            : (tipoDemonio == DemonType.SombraGuardianaJefe
+                ? new Color(0.68f, 0.18f, 0.95f, 0.95f)
+                : new Color(0.18f, 0.32f, 0.55f, 0.95f));
+        Color coreColor = tipoDemonio == DemonType.SombraLanzadora
+            ? new Color(1f, 0.55f, 0.75f, 1f)
+            : new Color(0.25f, 0.95f, 1f, 1f);
+
+        animatedFrames = new Sprite[6];
+        for (int f = 0; f < 6; f++)
+        {
+            float wingOffset = Mathf.Sin((f / 6f) * Mathf.PI * 2f) * 5f;
+            animatedFrames[f] = CrearSiluetaDemonioProcedural(size, ppu, bodyColor, coreColor, wingOffset);
+        }
+        attackFrames = new Sprite[2];
+        attackFrames[0] = CrearSiluetaDemonioProcedural(size, ppu, bodyColor, Color.white, 7f);
+        attackFrames[1] = CrearSiluetaDemonioProcedural(size, ppu, coreColor, Color.white, -7f);
+    }
+
+    private Sprite CrearSiluetaDemonioProcedural(int size, float ppu, Color bodyCol, Color coreCol, float wingYOffset)
+    {
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+        Vector2 center = new Vector2(size * 0.5f, size * 0.52f);
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dx = x - center.x;
+                float dy = y - center.y;
+                float absDx = Mathf.Abs(dx);
+                Color c = Color.clear;
+
+                // Torso y cabeza con cuernos
+                if (absDx < 8f && dy > -16f && dy < 14f) c = bodyCol;
+                // Cuernos superiores
+                if (dy >= 12f && dy < 22f && Mathf.Abs(absDx - (6f + (dy - 12f) * 0.4f)) < 2.2f) c = bodyCol;
+                // Alas de murciélago laterales
+                if (absDx >= 8f && absDx < 27f)
+                {
+                    float wingTop = 12f + wingYOffset * ((absDx - 8f) / 19f);
+                    float wingBottom = -8f + Mathf.Sin(absDx * 0.6f) * 3f;
+                    if (dy >= wingBottom && dy <= wingTop) c = bodyCol;
+                }
+                // Núcleo brillante en el pecho y ojos
+                if (Vector2.Distance(new Vector2(dx, dy), new Vector2(0f, 2f)) < 3.5f) c = coreCol;
+                if (Mathf.Abs(dy - 9f) < 1.5f && Mathf.Abs(absDx - 3f) < 1.5f) c = coreCol;
+
+                tex.SetPixel(x, y, c);
+            }
+        }
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), ppu);
     }
 
     public void ActivarPoseDeAtaque(float duracion = 0.55f)
@@ -189,7 +359,7 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         while (t < tRecup)
         {
             t += Time.deltaTime;
-            float p = Mathf.Clamp01(t / tRecup);
+            float p = t / tRecup;
             transform.position = Vector3.Lerp(posFinGolpe, posOriginal, p);
             transform.localScale = Vector3.Lerp(transform.localScale, baseLocalScale, p);
             yield return null;
@@ -204,9 +374,14 @@ public class BlackCloverDemonRenderer : MonoBehaviour
     {
         bool hasAnimatorController = animator != null && animator.enabled && animator.runtimeAnimatorController != null;
 
-        // 1. Si no hay Animator activo, usar el motor de deformación procedimental de fotogramas
+        // 1. Si no hay Animator activo, usar el motor de fotogramas de hoja de sprites / procedural
         if (!hasAnimatorController)
         {
+            if (animatedFrames == null || animatedFrames.Length == 0 || animatedFrames[0] == null)
+            {
+                InicializarSpritesDemonio();
+            }
+
             animTimer += Time.deltaTime * framesPerSecond;
 
             if (attackTimer > 0f)
@@ -233,7 +408,7 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         float ondaFlote = Mathf.Sin(Time.time * levitationSpeed);
         if (shadowTransform != null)
         {
-            shadowTransform.localPosition = new Vector3(0f, -1.25f - ondaFlote * 0.08f, 0f);
+            shadowTransform.localPosition = new Vector3(0f, -0.95f - ondaFlote * 0.08f, 0f);
             float s = 0.9f - ondaFlote * 0.12f;
             shadowTransform.localScale = new Vector3(s, s * 0.35f, 1f);
         }
@@ -533,7 +708,7 @@ public class BlackCloverDemonRenderer : MonoBehaviour
     {
         GameObject sombraFloor = new GameObject("SombraPiso");
         sombraFloor.transform.SetParent(transform);
-        sombraFloor.transform.localPosition = new Vector3(0f, -1.25f, 0f);
+        sombraFloor.transform.localPosition = new Vector3(0f, -0.95f, 0f);
         shadowTransform = sombraFloor.transform;
 
         SpriteRenderer srShadow = sombraFloor.AddComponent<SpriteRenderer>();

@@ -187,6 +187,8 @@ public class ZoneWaveSpawner : MonoBehaviour
             if (kind == EnemyKind.SombraLanzadora)
             {
                 rend.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraLanzadora;
+                rend.customDemonImage = LoadSpriteTexture("SombraLanzadora_SpriteSheet");
+                rend.InicializarSpritesDemonio();
                 SombraLanzadoraAI ai = go.AddComponent<SombraLanzadoraAI>();
                 ai.objetivo = playerTransform;
                 ai.builderRef = builder;
@@ -194,6 +196,8 @@ public class ZoneWaveSpawner : MonoBehaviour
             else
             {
                 rend.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraErrante;
+                rend.customDemonImage = LoadSpriteTexture("SombraErrante_SpriteSheet");
+                rend.InicializarSpritesDemonio();
                 SombraErranteAI ai = go.AddComponent<SombraErranteAI>();
                 ai.objetivo = playerTransform;
                 ai.builderRef = builder;
@@ -299,7 +303,7 @@ public class ZoneWaveSpawner : MonoBehaviour
             };
             statusStyle.normal.textColor = new Color(0.45f, 0.95f, 1.0f);
 
-            float sw = 420f;
+            float sw = 500f;
             float sh = 28f;
             string txt = $"{zoneTitle} — Oleada {currentWaveIndex + 1}/{waves.Count} (Enemigos restantes: {activeEnemies.Count})";
             GUI.Box(new Rect((Screen.width - sw) * 0.5f, 92f, sw, sh), txt, statusStyle);
