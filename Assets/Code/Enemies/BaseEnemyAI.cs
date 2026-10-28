@@ -3,7 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// Máquina de estados base para todos los enemigos de Ecos de San Felipe.
-/// Gestiona patrullaje, persecución, anticipación/carga de ataque, ejecución, daño, retroceso y muerte.
+/// Gestiona patrullaje, persecución, anticipación/carga de ataque, ejecución, daño,
+/// animación de muerte, caída de corazones curativos y limpieza del mapa.
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class BaseEnemyAI : MonoBehaviour
@@ -33,20 +34,30 @@ public abstract class BaseEnemyAI : MonoBehaviour
     public float attackCooldown = 1.4f;
     public float patrolRadius = 2.0f;
 
+    [Header("Recompensa de Curación")]
+    [Range(0f, 1f)] public float heartDropChance = 0.75f;
+    public float heartHealAmount = 25f;
+
     protected Transform playerTarget;
     protected PlayerMovement playerMovement;
     protected SpriteRenderer sr;
     protected HealthComponent healthComp;
+    protected EnemySpriteSheetAnimator sheetAnimator;
     protected Vector3 spawnOrigin;
     protected Vector3 currentPatrolPoint;
     protected float cooldownTimer = 0f;
     protected float stateTimer = 0f;
     protected Color baseColor = Color.white;
+    private bool deathSequenceStarted = false;
+
+    public Transform PlayerTarget => playerTarget;
+    public float StateTimer => stateTimer;
 
     protected virtual void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         if (sr != null) baseColor = sr.color;
+        sheetAnimator = GetComponent<EnemySpriteSheetAnimator>();
 
         healthComp = GetComponent<HealthComponent>();
         if (healthComp == null)
@@ -80,18 +91,18 @@ public abstract class BaseEnemyAI : MonoBehaviour
     {
         if (playerMovement == null)
         {
-            playerMovement = FindFirstObjectByType<PlayerMovement>();
+            playerMovement = FindAnyObjectByType<PlayerMovement>();
             if (playerMovement != null) playerTarget = playerMovement.transform;
         }
     }
 
     protected virtual void Update()
     {
-        if (currentState == AIState.Dead) return;
-        if (playerTarget == null) LocatePlayer();
-
-        if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
         stateTimer += Time.deltaTime;
+        if (currentState == AIState.Dead) return;
+
+        if (playerTarget == null) LocatePlayer();
+        if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
 
         // Orden de renderizado dinámico Top-Down según eje Y
         if (sr != null)
@@ -144,7 +155,7 @@ public abstract class BaseEnemyAI : MonoBehaviour
                 break;
 
             case AIState.Hurt:
-                if (stateTimer >= 0.22f)
+                if (stateTimer >= 0.24f)
                 {
                     ChangeState(AIState.Chase);
                 }
@@ -180,6 +191,15 @@ public abstract class BaseEnemyAI : MonoBehaviour
     protected virtual void OrientTowards(Vector3 targetPos)
     {
         if (sr == null) return;
+        if (sheetAnimator == null) sheetAnimator = GetComponent<EnemySpriteSheetAnimator>();
+
+        // Las hojas Puny 24x8 ya incluyen las 8 direcciones dibujadas en sus 8 filas; no deben voltearse con flipX
+        if (sheetAnimator != null && sheetAnimator.isPuny24x8Format)
+        {
+            sr.flipX = false;
+            return;
+        }
+
         float dx = targetPos.x - transform.position.x;
         if (Mathf.Abs(dx) > 0.15f)
         {
@@ -203,12 +223,12 @@ public abstract class BaseEnemyAI : MonoBehaviour
             {
                 sr.color = Color.Lerp(baseColor, new Color(1f, 0.45f, 0.25f, 1f), Mathf.PingPong(p * 4f, 1f));
             }
-            transform.localScale = new Vector3(startScale.x * (1f + 0.15f * p), startScale.y * (1f + 0.15f * p), startScale.z);
+            transform.localScale = new Vector3(startScale.x * (1f + 0.12f * p), startScale.y * (1f + 0.12f * p), startScale.z);
             yield return null;
         }
 
         transform.localScale = startScale;
-        if (sr != null) sr.color = baseColor;
+        if (sr != null && currentState != AIState.Dead) sr.color = baseColor;
 
         if (currentState != AIState.ChargeAttack) yield break;
 
@@ -251,7 +271,56 @@ public abstract class BaseEnemyAI : MonoBehaviour
 
     protected virtual void HandleDeath()
     {
+        if (deathSequenceStarted) return;
+        deathSequenceStarted = true;
         ChangeState(AIState.Dead);
+        StopAllCoroutines();
+        StartCoroutine(DeathAnimationAndCleanupRoutine());
+    }
+
+    private IEnumerator DeathAnimationAndCleanupRoutine()
+    {
+        // Desactivar colisionadores inmediatamente para que el cadáver no estorbe a Ronan
+        Collider2D[] cols = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D c in cols)
+        {
+            if (c != null) c.enabled = false;
+        }
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+        }
+
+        // Soltar corazón curativo con probabilidad configurada
+        if (Random.value <= heartDropChance)
+        {
+            HeartPickup.SpawnHeart(transform.position, heartHealAmount);
+        }
+
+        if (sr != null) sr.color = baseColor;
+
+        // Permitir que EnemySpriteSheetAnimator reproduzca la animación completa de muerte (caída / desintegración)
+        yield return new WaitForSeconds(0.65f);
+
+        // Desvanecimiento suave antes de eliminar del mapa
+        float fadeDuration = 0.35f;
+        float elapsed = 0f;
+        Color startCol = sr != null ? sr.color : Color.white;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            if (sr != null)
+            {
+                float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+                sr.color = new Color(startCol.r, startCol.g, startCol.b, alpha);
+            }
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
     protected void ChangeState(AIState next)
@@ -292,6 +361,7 @@ public abstract class BaseEnemyAI : MonoBehaviour
     {
         Texture2D tex = new Texture2D(16, 16, TextureFormat.RGBA32, false);
         tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
         for (int y = 0; y < 16; y++)
         {
             for (int x = 0; x < 16; x++)
@@ -302,5 +372,90 @@ public abstract class BaseEnemyAI : MonoBehaviour
         }
         tex.Apply();
         return Sprite.Create(tex, new Rect(0, 0, 16, 16), new Vector2(0.5f, 0.5f), 16f);
+    }
+}
+
+/// <summary>
+/// Corazón curativo recolectable que usa el sprite real Assets/Sprites/Heart.png (celda 0,0 de 16x16)
+/// para restaurar la salud de Ronan durante la exploración y los combates por oleadas.
+/// </summary>
+public class HeartPickup : MonoBehaviour
+{
+    public float healAmount = 25f;
+    private Vector3 basePos;
+    private float spawnTime;
+    private static Sprite cachedHeartSprite;
+
+    public static GameObject SpawnHeart(Vector3 position, float heal = 25f, Transform parent = null)
+    {
+        GameObject go = new GameObject("Corazon_Curativo");
+        if (parent != null) go.transform.SetParent(parent);
+        go.transform.position = position;
+
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = GetHeartSprite();
+        sr.sortingOrder = Mathf.RoundToInt(-position.y * 10f) + 2;
+        go.transform.localScale = new Vector3(1.25f, 1.25f, 1f);
+
+        CircleCollider2D col = go.AddComponent<CircleCollider2D>();
+        col.isTrigger = true;
+        col.radius = 0.48f;
+
+        HeartPickup hp = go.AddComponent<HeartPickup>();
+        hp.healAmount = heal;
+        return go;
+    }
+
+    public static Sprite GetHeartSprite()
+    {
+        if (cachedHeartSprite != null) return cachedHeartSprite;
+
+        Texture2D tex = ZoneWaveSpawner.LoadSpriteTexture("Heart");
+        if (tex != null && tex.width >= 16 && tex.height >= 16)
+        {
+            // Heart.png es de 80x16 (5 cuadros de 16x16: col=4 en x=64 es el corazón lleno rojo brillante)
+            int w = 16;
+            int h = 16;
+            Texture2D sub = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            sub.filterMode = FilterMode.Point;
+            sub.wrapMode = TextureWrapMode.Clamp;
+            if (tex.isReadable)
+            {
+                sub.SetPixels(tex.GetPixels(64, 0, w, h));
+                sub.Apply();
+                cachedHeartSprite = Sprite.Create(sub, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 16f);
+                return cachedHeartSprite;
+            }
+        }
+
+        cachedHeartSprite = BaseEnemyAI.CreateCircleSprite(new Color(0.95f, 0.18f, 0.25f, 1f));
+        return cachedHeartSprite;
+    }
+
+    private void Start()
+    {
+        basePos = transform.position;
+        spawnTime = Time.time;
+    }
+
+    private void Update()
+    {
+        float bob = Mathf.Sin((Time.time - spawnTime) * 4.2f) * 0.10f;
+        float pulse = 1.20f + Mathf.Sin((Time.time - spawnTime) * 5.5f) * 0.10f;
+        transform.position = basePos + new Vector3(0f, bob, 0f);
+        transform.localScale = new Vector3(pulse, pulse, 1f);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        PlayerMovement pm = other.GetComponent<PlayerMovement>();
+        if (pm == null) return;
+
+        // Si Ronan ya tiene la vida al máximo, aún puede recogerlo si le falta aunque sea 1 HP
+        if (pm.currentHealth >= pm.maxHealth) return;
+
+        pm.CurarSalud(healAmount);
+        AudioManager.Instance?.PlayEchoSound();
+        Destroy(gameObject);
     }
 }

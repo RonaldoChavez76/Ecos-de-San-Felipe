@@ -386,6 +386,26 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(ParpadeoDanio());
     }
 
+    public void CurarSalud(float cantidad)
+    {
+        if (currentHealth <= 0f) return;
+        currentHealth = Mathf.Clamp(currentHealth + cantidad, 0f, maxHealth);
+        if (healthComp != null) healthComp.currentHealth = currentHealth;
+        if (SaveStateManager.Instance != null) SaveStateManager.Instance.currentHealth = currentHealth;
+
+        StartCoroutine(ParpadeoCuracion());
+    }
+
+    private IEnumerator ParpadeoCuracion()
+    {
+        if (sr != null)
+        {
+            sr.color = new Color(0.35f, 1f, 0.45f, 1f);
+            yield return new WaitForSeconds(0.18f);
+            sr.color = isAssaultActive ? new Color(0.4f, 0.85f, 1f, 1f) : Color.white;
+        }
+    }
+
     private IEnumerator ParpadeoDanio()
     {
         if (sr != null)
@@ -449,15 +469,124 @@ public class PlayerMovement : MonoBehaviour
         if (effectSr != null) effectSr.color = color;
     }
 
+    private static Texture2D whiteBarTex;
+
     private void OnGUI()
     {
-        // HUD rápido de depuración cuando no hay canvas activo
-        if (FindAnyObjectByType<Canvas>() == null)
+        if (Time.timeScale == 0f) return;
+
+        // Sincronizar con HealthComponent por si recibió daño directo desde HealthComponent.TakeDamage
+        if (healthComp != null && Mathf.Abs(healthComp.currentHealth - currentHealth) > 0.01f)
         {
-            GUI.Box(new Rect(15, 15, 260, 95), "ECOS DE SAN FELIPE - RONAN");
-            GUI.Label(new Rect(25, 40, 240, 20), $"Vida: {currentHealth:0} / {maxHealth:0}");
-            GUI.Label(new Rect(25, 60, 240, 20), $"Modo Asalto: {assaultCharge:0}% {(isAssaultActive ? "[¡ACTIVO!]" : "")}");
-            GUI.Label(new Rect(25, 80, 240, 20), $"Estado: {currentState} | [J] [K] [Espacio] [L]");
+            currentHealth = Mathf.Clamp(healthComp.currentHealth, 0f, maxHealth);
         }
+
+        if (whiteBarTex == null)
+        {
+            whiteBarTex = new Texture2D(1, 1);
+            whiteBarTex.SetPixel(0, 0, Color.white);
+            whiteBarTex.Apply();
+        }
+
+        float panelX = 16f;
+        float panelY = 16f;
+        float panelW = 315f;
+        float panelH = 142f;
+
+        Color prevColor = GUI.color;
+
+        // Fondo oscuro semitransparente del HUD de Ronan
+        GUI.color = new Color(0.08f, 0.07f, 0.11f, 0.88f);
+        GUI.DrawTexture(new Rect(panelX, panelY, panelW, panelH), whiteBarTex);
+
+        // Borde dorado colonial
+        GUI.color = new Color(0.85f, 0.68f, 0.28f, 0.95f);
+        GUI.DrawTexture(new Rect(panelX, panelY, panelW, 2f), whiteBarTex);
+        GUI.DrawTexture(new Rect(panelX, panelY + panelH - 2f, panelW, 2f), whiteBarTex);
+        GUI.DrawTexture(new Rect(panelX, panelY, 2f, panelH), whiteBarTex);
+        GUI.DrawTexture(new Rect(panelX + panelW - 2f, panelY, 2f, panelH), whiteBarTex);
+
+        GUIStyle titleStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft
+        };
+        titleStyle.normal.textColor = new Color(1f, 0.90f, 0.55f);
+
+        GUIStyle textStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 12,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft
+        };
+        textStyle.normal.textColor = new Color(0.95f, 0.95f, 0.95f);
+
+        GUI.color = Color.white;
+        float hpPct = Mathf.Clamp01(currentHealth / Mathf.Max(1f, maxHealth));
+        bool lowHp = hpPct <= 0.30f;
+        string headerAlert = lowHp ? "  <color=#FF4444>[¡PELIGRO: VIDA BAJA!]</color>" : "";
+        GUI.Label(new Rect(panelX + 12f, panelY + 6f, panelW - 20f, 20f), $"⚔ RONAN — GUARDIÁN DE SAN FELIPE{headerAlert}", titleStyle);
+
+        // 1. Barra de Vida (HP)
+        float barX = panelX + 12f;
+        float hpBarY = panelY + 30f;
+        float barW = panelW - 24f;
+        float barH = 20f;
+
+        GUI.color = new Color(0.22f, 0.08f, 0.08f, 0.95f);
+        GUI.DrawTexture(new Rect(barX, hpBarY, barW, barH), whiteBarTex);
+
+        Color hpColor = hpPct > 0.5f
+            ? new Color(0.22f, 0.82f, 0.35f, 0.95f)
+            : (hpPct > 0.3f ? new Color(0.95f, 0.72f, 0.15f, 0.95f) : new Color(0.95f, 0.18f, 0.18f, 0.75f + Mathf.PingPong(Time.time * 2.5f, 0.25f)));
+        GUI.color = hpColor;
+        GUI.DrawTexture(new Rect(barX + 2f, hpBarY + 2f, (barW - 4f) * hpPct, barH - 4f), whiteBarTex);
+
+        GUI.color = Color.white;
+        GUI.Label(new Rect(barX + 8f, hpBarY, barW - 12f, barH), $"♥ VIDA: {Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth)} HP", textStyle);
+
+        // 2. Barra de Modo Asalto (Tecla L)
+        float assaultBarY = panelY + 56f;
+        float assaultPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
+
+        GUI.color = new Color(0.08f, 0.14f, 0.24f, 0.95f);
+        GUI.DrawTexture(new Rect(barX, assaultBarY, barW, 18f), whiteBarTex);
+
+        GUI.color = isAssaultActive
+            ? new Color(0.20f, 0.95f, 1f, 0.8f + Mathf.PingPong(Time.time * 3f, 0.2f))
+            : (assaultPct >= 1f ? new Color(0.15f, 0.85f, 1f, 0.95f) : new Color(0.18f, 0.52f, 0.88f, 0.95f));
+        GUI.DrawTexture(new Rect(barX + 2f, assaultBarY + 2f, (barW - 4f) * assaultPct, 14f), whiteBarTex);
+
+        GUI.color = Color.white;
+        string estadoAsalto = isAssaultActive
+            ? "¡MODO ASALTO ACTIVO! (+60% ATQ / +30% VEL)"
+            : (assaultPct >= 1f ? $"⚡ ASALTO: 100% — ¡PRESIONA [L]!" : $"⚡ MODO ASALTO [L]: {assaultCharge:0}%");
+        GUI.Label(new Rect(barX + 8f, assaultBarY - 1f, barW - 12f, 18f), estadoAsalto, textStyle);
+
+        // 3. Estadísticas de Ronan (Ataque, Velocidad, Ventana Parry y Controles)
+        float atkActual = isAssaultActive ? baseAttack * 1.60f : baseAttack;
+        float spdActual = isAssaultActive ? moveSpeed * 1.30f : moveSpeed;
+
+        GUIStyle statStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 11,
+            alignment = TextAnchor.MiddleLeft
+        };
+        statStyle.normal.textColor = new Color(0.88f, 0.90f, 0.96f);
+
+        GUI.Label(new Rect(barX, panelY + 80f, barW, 18f),
+            $"<b>ATQ:</b> {atkActual:0.#}   |   <b>VEL:</b> {spdActual:0.#} u/s   |   <b>PARRY:</b> {counterWindow:0.00}s   |   <b>ESTADO:</b> {currentState}",
+            statStyle);
+
+        GUI.Label(new Rect(barX, panelY + 100f, barW, 18f),
+            "<b>[J / Clic Izq]</b> Atacar   <b>[K / Clic Der]</b> Bloquear/Reflejar   <b>[Espacio]</b> Esquivar",
+            statStyle);
+
+        GUI.Label(new Rect(barX, panelY + 118f, barW, 18f),
+            "<color=#7CFC90>♥ Recoge Corazones de enemigos o altares para recuperar +25 HP</color>",
+            statStyle);
+
+        GUI.color = prevColor;
     }
 }

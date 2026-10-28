@@ -60,8 +60,8 @@ public class SanFelipeDemoBuilder : MonoBehaviour
             mainCam.orthographicSize = 6.2f;
         }
 
-        // 3. Asegurar que exista el Gran Mapa V3 (81x65 unidades) sin costuras y sin enemigos sueltos
-        if (GameObject.Find("Marca_GranMapa_SanFelipe_V3") == null)
+        // 3. Asegurar que exista el Gran Mapa V4 (81x65 unidades) sin costuras y sin enemigos sueltos
+        if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null)
         {
             LimpiarMapaEnEditor();
             LimpiarEnemigosEnEditor();
@@ -281,8 +281,8 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         Texture2D texAbandoned   = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/TilesetVillageAbandoned.png");
 
         GameObject root = new GameObject("Mapa_SanFelipe_NinjaAdventure");
-        GameObject marcaV3 = new GameObject("Marca_GranMapa_SanFelipe_V3");
-        marcaV3.transform.SetParent(root.transform);
+        GameObject marcaV4 = new GameObject("Marca_GranMapa_SanFelipe_V4");
+        marcaV4.transform.SetParent(root.transform);
 
         GameObject capaSuelo = new GameObject("Capa_Suelo_81x65");
         capaSuelo.transform.SetParent(root.transform);
@@ -302,23 +302,23 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         bordesBosque.transform.SetParent(root.transform);
 
         // ---------------------------------------------------------------------
-        // 1. TILES DE SUELO VERIFICADOS EN PYTHON (SIN COSTURAS)
+        // 1. TILES DE SUELO VERIFICADOS EN PYTHON (SIN COSTURAS NI CUADROS DE TIERRA)
         // ---------------------------------------------------------------------
-        Sprite spPastoBase     = RecortarSpriteDeHoja(tilesetFloor, 1, 12, 1, 1);
-        Sprite spPastoClaro    = RecortarSpriteDeHoja(tilesetFloor, 12, 8, 1, 1);
+        Sprite spPastoBase     = RecortarSpriteDeHoja(tilesetFloor, 0, 12, 1, 1);
+        Sprite spPastoClaro    = RecortarSpriteDeHoja(tilesetFloor, 1, 12, 1, 1);
         Sprite spPlazaArena    = RecortarSpriteDeHoja(tilesetFloor, 1, 1, 1, 1);
         Sprite spCaminoPiedra  = RecortarSpriteDeHoja(tilesetFloor, 12, 15, 1, 1);
-        Sprite spAdoquinAtrio  = RecortarSpriteDeHoja(tilesetFloor, 1, 19, 1, 1);
-        Sprite spSueloRuinas   = RecortarSpriteDeHoja(tilesetFloor, 12, 1, 1, 1);
+        Sprite spAdoquinAtrio  = RecortarSpriteDeHoja(tilesetFloor, 12, 1, 1, 1);
+        Sprite spSueloRuinas   = RecortarSpriteDeHoja(tilesetFloor, 16, 1, 1, 1);
         Sprite spAguaRio       = RecortarSpriteDeHoja(texWater, 1, 1, 1, 1);
-        Sprite spDetallePasto  = RecortarSpriteDeHoja(texFloorDetail, 0, 0, 1, 1);
+        Sprite spDetallePasto  = RecortarSpriteDeHoja(tilesetNature, 2, 11, 1, 1);
         Sprite spDetallePiedra = RecortarSpriteDeHoja(texFloorDetail, 2, 1, 1, 1);
 
         for (int x = -40; x <= 40; x++)
         {
             for (int y = -26; y <= 38; y++)
             {
-                Sprite tileElegido = ((x + y) % 5 == 0 && spPastoClaro != null) ? spPastoClaro : spPastoBase;
+                Sprite tileElegido = ((x * 7 + y * 13) % 4 == 0 && spPastoClaro != null) ? spPastoClaro : spPastoBase;
 
                 bool esRioSur = (y >= -20 && y <= -18);
                 bool esPuenteCentral = (Mathf.Abs(x) <= 2 && y >= -21 && y <= -17);
@@ -358,13 +358,12 @@ public class SanFelipeDemoBuilder : MonoBehaviour
 
                 ColocarTileSuelo(tileElegido, new Vector2(x, y), new Color(0.45f, 0.65f, 0.35f), -500, capaSuelo.transform);
 
-                // Detalles orgánicos de suelo (piedrecitas y briznas) sin colisión
-                if (!esRioSur && ((x * 17 + y * 31) % 23 == 0))
+                // Tréboles naturales discretos sobre el césped (sin troncos cortados)
+                if (!esRioSur && !esGranPlazaCentral && !esAtrioParroquia && !esPlazoletaPoniente && !esVillaOriente && !esCalzadaNorteSur && !esAvenidaOesteEste && ((x * 19 + y * 37) % 41 == 0))
                 {
-                    Sprite det = (esGranPlazaCentral || esAtrioParroquia) ? spDetallePiedra : spDetallePasto;
-                    if (det != null)
+                    if (spDetallePasto != null)
                     {
-                        ColocarTileSuelo(det, new Vector2(x, y), Color.white, -495, capaSuelo.transform);
+                        ColocarTileSuelo(spDetallePasto, new Vector2(x, y), Color.white, -495, capaSuelo.transform);
                     }
                 }
             }
@@ -381,12 +380,12 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         Sprite spBancaMadera  = RecortarSpriteDeHoja(texCamp, 0, 7, 3, 1);
         Sprite spFarolMadera  = RecortarSpriteDeHoja(texCamp, 6, 5, 1, 2);
 
-        // Estructuras de Desierto / Parroquia / Plazas (TilesetDesert)
+        // Estructuras de Desierto / Parroquia / Plazas (TilesetDesert y TilesetTowers)
         Sprite spCupulaParroquia   = RecortarSpriteDeHoja(tilesetDesert, 0, 0, 3, 3);
         Sprite spTorreParroquia    = RecortarSpriteDeHoja(tilesetDesert, 3, 0, 3, 5);
         Sprite spCastilloParroquia = RecortarSpriteDeHoja(tilesetDesert, 14, 4, 3, 5);
         Sprite spMuroAlmenas       = RecortarSpriteDeHoja(tilesetDesert, 17, 4, 3, 3);
-        Sprite spTorreCupulaVerde  = RecortarSpriteDeHoja(tilesetDesert, 12, 2, 2, 2);
+        Sprite spTorreCupulaVerde  = RecortarSpriteDeHoja(texTowers, 12, 2, 2, 2);
         Sprite spEdificio2Pisos    = RecortarSpriteDeHoja(tilesetDesert, 6, 3, 4, 4);
         Sprite spCasaBlancaAncha   = RecortarSpriteDeHoja(tilesetDesert, 11, 0, 3, 3);
         Sprite spPozoCentral       = RecortarSpriteDeHoja(tilesetDesert, 0, 3, 2, 2);
@@ -396,8 +395,8 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         Sprite spPuestoRojo        = RecortarSpriteDeHoja(tilesetDesert, 2, 10, 2, 2);
         Sprite spPuestoAmarillo    = RecortarSpriteDeHoja(tilesetDesert, 4, 10, 2, 2);
         Sprite spToldoAzul         = RecortarSpriteDeHoja(tilesetDesert, 6, 7, 2, 2);
-        Sprite spToldoRojo         = RecortarSpriteDeHoja(tilesetDesert, 6, 9, 2, 2);
-        Sprite spPalmera           = RecortarSpriteDeHoja(tilesetDesert, 0, 12, 3, 3);
+        Sprite spToldoRojo         = RecortarSpriteDeHoja(tilesetDesert, 2, 10, 2, 2);
+        Sprite spPalmera           = RecortarSpriteDeHoja(tilesetDesert, 10, 4, 3, 3);
 
         // Estructuras Coloniales y Casas (TilesetHouse)
         Sprite spCasaTejaRoja      = RecortarSpriteDeHoja(tilesetHouse, 0, 0, 4, 3);
@@ -415,11 +414,11 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         Sprite spChimeneaAlta      = RecortarSpriteDeHoja(tilesetHouse, 31, 12, 2, 3);
         Sprite spRejaParque        = RecortarSpriteDeHoja(tilesetHouse, 9, 10, 5, 3);
         Sprite spEstatuaDorada     = RecortarSpriteDeHoja(tilesetHouse, 3, 15, 2, 2);
-        Sprite spEstatuaGuerrero   = RecortarSpriteDeHoja(tilesetHouse, 5, 15, 2, 2);
-        Sprite spEscaleraAncha     = RecortarSpriteDeHoja(tilesetHouse, 9, 19, 4, 3);
+        Sprite spEstatuaGuerrero   = RecortarSpriteDeHoja(tilesetHouse, 5, 17, 2, 2);
+        Sprite spEscaleraAncha     = RecortarSpriteDeHoja(tilesetHouse, 10, 19, 3, 3);
         Sprite spArcoPiedra        = RecortarSpriteDeHoja(tilesetHouse, 29, 20, 4, 3);
-        Sprite spEstandarteRojo    = RecortarSpriteDeHoja(tilesetHouse, 28, 20, 1, 2);
-        Sprite spEstandarteAzul    = RecortarSpriteDeHoja(tilesetHouse, 22, 20, 1, 2);
+        Sprite spEstandarteRojo    = RecortarSpriteDeHoja(tilesetHouse, 23, 20, 1, 2);
+        Sprite spEstandarteAzul    = RecortarSpriteDeHoja(tilesetHouse, 24, 20, 1, 2);
 
         // Estructuras de Ruinas Antiguas (TilesetVillageAbandoned)
         Sprite spCasonaAntigua     = RecortarSpriteDeHoja(texAbandoned, 12, 6, 4, 5);
@@ -436,7 +435,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         Sprite spArbolVerde        = RecortarSpriteDeHoja(tilesetNature, 3, 18, 3, 3);
         Sprite spArbolSagrado      = RecortarSpriteDeHoja(tilesetNature, 6, 18, 3, 3);
         Sprite spArbolDorado       = RecortarSpriteDeHoja(tilesetNature, 9, 18, 3, 3);
-        Sprite spPinoGrande        = RecortarSpriteDeHoja(tilesetNature, 12, 0, 4, 4);
+        Sprite spPinoGrande        = RecortarSpriteDeHoja(tilesetNature, 0, 2, 4, 3);
         Sprite spArbusto           = RecortarSpriteDeHoja(tilesetNature, 10, 9, 1, 1);
         Sprite spGirasol           = RecortarSpriteDeHoja(tilesetNature, 1, 10, 1, 1);
         Sprite spFloresRojas       = RecortarSpriteDeHoja(tilesetNature, 0, 11, 2, 2);
@@ -827,10 +826,20 @@ public class SombraLanzadoraAI : MonoBehaviour
     private float temporizadorDisparo = 1.8f;
     private bool ejecutandoAtaque = false;
 
+    private bool muerto = false;
+
     void Start()
     {
         CircleCollider2D col = GetComponent<CircleCollider2D>();
         if (col != null && col.radius > 0.55f) col.radius = 0.48f;
+
+        HealthComponent hc = GetComponent<HealthComponent>();
+        if (hc == null) hc = gameObject.AddComponent<HealthComponent>();
+        hc.isPlayer = false;
+        hc.maxHealth = vida;
+        hc.currentHealth = vida;
+        if (hc.onDeath == null) hc.onDeath = new UnityEngine.Events.UnityEvent();
+        hc.onDeath.AddListener(() => RecibirDanio(999f));
     }
 
     void Update()
@@ -900,13 +909,37 @@ public class SombraLanzadoraAI : MonoBehaviour
 
     public void RecibirDanio(float cantidad)
     {
+        if (muerto) return;
         vida -= cantidad;
+        HealthComponent hc = GetComponent<HealthComponent>();
+        if (hc != null) hc.currentHealth = Mathf.Max(0f, vida);
         AudioManager.Instance?.PlayHitSound();
         if (vida <= 0f)
         {
+            muerto = true;
+            ejecutandoAtaque = true;
             SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
-            Destroy(gameObject);
+            HeartPickup.SpawnHeart(transform.position, 25f);
+            StartCoroutine(RutinaMuerteSombra());
         }
+    }
+
+    private IEnumerator RutinaMuerteSombra()
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Vector3 startScale = transform.localScale;
+        float t = 0f;
+        while (t < 0.45f)
+        {
+            t += Time.deltaTime;
+            float p = t / 0.45f;
+            transform.localScale = Vector3.Lerp(startScale, startScale * 0.15f, p);
+            if (sr != null) sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1f - p);
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 }
 
@@ -918,16 +951,25 @@ public class SombraErranteAI : MonoBehaviour
     public float velocidadPersecucion = 3.1f;
     public float rangoDeteccion = 9.5f;
     public float rangoAtaqueMelee = 1.35f;
-    public float danioMelee = 14f;
+    public float danioMelee = 12f;
     private Vector3 puntoOrigen;
     private float temporizadorAtaque = 0f;
     private bool ejecutandoAtaque = false;
+    private bool muerto = false;
 
     void Start()
     {
         puntoOrigen = transform.position;
         CircleCollider2D col = GetComponent<CircleCollider2D>();
         if (col != null && col.radius > 0.55f) col.radius = 0.48f;
+
+        HealthComponent hc = GetComponent<HealthComponent>();
+        if (hc == null) hc = gameObject.AddComponent<HealthComponent>();
+        hc.isPlayer = false;
+        hc.maxHealth = vida;
+        hc.currentHealth = vida;
+        if (hc.onDeath == null) hc.onDeath = new UnityEngine.Events.UnityEvent();
+        hc.onDeath.AddListener(() => RecibirDanio(999f));
     }
 
     void Update()
@@ -986,13 +1028,37 @@ public class SombraErranteAI : MonoBehaviour
 
     public void RecibirDanio(float cantidad)
     {
+        if (muerto) return;
         vida -= cantidad;
+        HealthComponent hc = GetComponent<HealthComponent>();
+        if (hc != null) hc.currentHealth = Mathf.Max(0f, vida);
         AudioManager.Instance?.PlayHitSound();
         if (vida <= 0f)
         {
+            muerto = true;
+            ejecutandoAtaque = true;
             SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
-            Destroy(gameObject);
+            HeartPickup.SpawnHeart(transform.position, 25f);
+            StartCoroutine(RutinaMuerteSombraErrante());
         }
+    }
+
+    private IEnumerator RutinaMuerteSombraErrante()
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Vector3 startScale = transform.localScale;
+        float t = 0f;
+        while (t < 0.45f)
+        {
+            t += Time.deltaTime;
+            float p = t / 0.45f;
+            transform.localScale = Vector3.Lerp(startScale, startScale * 0.15f, p);
+            if (sr != null) sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 1f - p);
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 }
 

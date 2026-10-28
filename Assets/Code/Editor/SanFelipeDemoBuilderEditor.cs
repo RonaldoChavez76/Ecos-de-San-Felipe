@@ -22,20 +22,20 @@ public class SanFelipeSceneAutoSetup
             SanFelipeDemoBuilder builder = Object.FindFirstObjectByType<SanFelipeDemoBuilder>();
             if (builder == null) return;
 
-            if (GameObject.Find("Marca_GranMapa_SanFelipe_V3") == null || GameObject.Find("Parroquia_Exterior_Elementos") == null)
+            if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null || GameObject.Find("Parroquia_Exterior_Elementos") == null)
             {
                 builder.GenerarTodoEnEditor();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Gran Mapa 81x65, Estructuras Reales, Puerta a Escena ParroquiaInterior y Sistema de Hordas por Zona actualizados en la Hierarchy.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Gran Mapa V4 81x65, Estructuras Corregidas, Puerta a Escena ParroquiaInterior y Sistema de Hordas actualizados en la Hierarchy.</color>");
             }
         }
         else if (activeScene.name == "ParroquiaInterior")
         {
-            if (GameObject.Find("Parroquia_Interior_Zona") == null)
+            if (GameObject.Find("Marca_Parroquia_Interior_V4") == null)
             {
                 ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Parroquia Interior]</b> Nave de Cruz Latina (33x43), Bancas, Altar, Acertijo de 3 Campanas y Horda Interior generados en la Hierarchy.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Parroquia Interior V4]</b> Nave de Cruz Latina (33x43), Bancas, Altar, Acertijo de 3 Campanas y Horda Interior generados en la Hierarchy.</color>");
             }
         }
     }
