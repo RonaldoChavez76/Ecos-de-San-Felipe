@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -45,7 +45,7 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         baseLocalScale = transform.localScale;
         sr.sortingOrder = 4;
 
-        PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
+        PlayerMovement p = FindAnyObjectByType<PlayerMovement>();
         if (p != null) playerTarget = p.transform;
 
         InicializarSpritesDemonio();
@@ -253,7 +253,7 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         Vector3 posOriginal = transform.position;
         if (playerTarget == null)
         {
-            PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
+            PlayerMovement p = FindAnyObjectByType<PlayerMovement>();
             if (p != null) playerTarget = p.transform;
         }
 

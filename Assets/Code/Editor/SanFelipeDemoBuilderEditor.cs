@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -17,27 +17,73 @@ public class SanFelipeSceneAutoSetup
         if (Application.isPlaying) return;
         Scene activeScene = SceneManager.GetActiveScene();
 
+        int missingRemoved = LimpiarScriptsFaltantesEnEscena(activeScene);
+        bool tieneCorazonSinScript = ExisteObjetoSinComponente<HeartPickup>("Corazon_Curativo");
+
         if (activeScene.name == "SampleScene")
         {
-            SanFelipeDemoBuilder builder = Object.FindFirstObjectByType<SanFelipeDemoBuilder>();
+            SanFelipeDemoBuilder builder = Object.FindAnyObjectByType<SanFelipeDemoBuilder>();
             if (builder == null) return;
 
-            if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null || GameObject.Find("Zona_Parroquia_Exterior_Interactivos") == null)
+            if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null ||
+                GameObject.Find("Zona_Parroquia_Exterior_Interactivos") == null ||
+                missingRemoved > 0 ||
+                tieneCorazonSinScript)
             {
-                builder.GenerarTodoEnEditor();
+                if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null)
+                {
+                    builder.GenerarTodoEnEditor();
+                }
+                else
+                {
+                    ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
+                }
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Gran Mapa V4 81x65, Estructuras Corregidas, Puerta a Escena ParroquiaInterior y Sistema de Hordas actualizados en la Hierarchy.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Escena verificada, scripts de corazones/pedestales enlazados y referencias faltantes limpiadas.</color>");
             }
         }
         else if (activeScene.name == "ParroquiaInterior")
         {
-            if (GameObject.Find("Marca_Parroquia_Interior_V4") == null)
+            bool tienePedestalSinScript = ExisteObjetoSinComponente<BellPedestalNode>("Pedestal_Campana_1");
+            if (GameObject.Find("Marca_Parroquia_Interior_V4") == null ||
+                missingRemoved > 0 ||
+                tieneCorazonSinScript ||
+                tienePedestalSinScript)
             {
                 ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Parroquia Interior V4]</b> Nave de Cruz Latina (33x43), Bancas, Altar, Acertijo de 3 Campanas y Horda Interior generados en la Hierarchy.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Parroquia Interior V4]</b> Nave de Cruz Latina (33x43), Pedestales, Corazones y Horda Interior actualizados sin scripts faltantes.</color>");
             }
         }
+    }
+
+    private static bool ExisteObjetoSinComponente<T>(string nombreObjeto) where T : Component
+    {
+        GameObject go = GameObject.Find(nombreObjeto);
+        return go != null && go.GetComponent<T>() == null;
+    }
+
+    public static int LimpiarScriptsFaltantesEnEscena(Scene scene)
+    {
+        if (!scene.IsValid() || !scene.isLoaded) return 0;
+        int totalRemoved = 0;
+        GameObject[] roots = scene.GetRootGameObjects();
+        foreach (GameObject root in roots)
+        {
+            Transform[] allTransforms = root.GetComponentsInChildren<Transform>(true);
+            foreach (Transform t in allTransforms)
+            {
+                if (t != null && t.gameObject != null)
+                {
+                    int count = GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject);
+                    if (count > 0)
+                    {
+                        totalRemoved += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(t.gameObject);
+                    }
+                }
+            }
+        }
+        return totalRemoved;
     }
 }
 
@@ -57,6 +103,7 @@ public class SanFelipeDemoBuilderEditor : Editor
         if (GUILayout.Button("🌟 Generar TODO Nivel 1 (Gran Mapa 81x65 + Hordas + Puerta)", GUILayout.Height(36)))
         {
             Undo.RecordObject(builder.gameObject, "Generar Todo Nivel 1");
+            SanFelipeSceneAutoSetup.LimpiarScriptsFaltantesEnEscena(builder.gameObject.scene);
             builder.GenerarTodoEnEditor();
             EditorSceneManager.MarkSceneDirty(builder.gameObject.scene);
         }
@@ -73,6 +120,7 @@ public class SanFelipeDemoBuilderEditor : Editor
         if (GUILayout.Button("👹 Regenerar Zonas de Hordas y NPCs en Hierarchy", GUILayout.Height(32)))
         {
             Undo.RecordObject(builder.gameObject, "Generar Hordas");
+            SanFelipeSceneAutoSetup.LimpiarScriptsFaltantesEnEscena(builder.gameObject.scene);
             builder.GenerarEnemigosEnEditor();
             EditorSceneManager.MarkSceneDirty(builder.gameObject.scene);
         }
@@ -105,11 +153,14 @@ public class SanFelipeDemoBuilderEditor : Editor
     [MenuItem("San Felipe/🌟 Regenerar Nivel 1 Completo en Hierarchy")]
     public static void MenuGenerarTodo()
     {
-        SanFelipeDemoBuilder builder = Object.FindFirstObjectByType<SanFelipeDemoBuilder>();
+        Scene activeScene = SceneManager.GetActiveScene();
+        SanFelipeSceneAutoSetup.LimpiarScriptsFaltantesEnEscena(activeScene);
+
+        SanFelipeDemoBuilder builder = Object.FindAnyObjectByType<SanFelipeDemoBuilder>();
         if (builder != null)
         {
             builder.GenerarTodoEnEditor();
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            EditorSceneManager.MarkSceneDirty(activeScene);
         }
         else
         {
@@ -117,7 +168,7 @@ public class SanFelipeDemoBuilderEditor : Editor
             if (interior != null)
             {
                 ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                EditorSceneManager.MarkSceneDirty(activeScene);
             }
             else
             {
