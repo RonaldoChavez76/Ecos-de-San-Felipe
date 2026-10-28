@@ -82,6 +82,14 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         MercadoBuilder.ConstruirZonaMercado();
         CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
 
+        // 4.8. Asegurar Sistemas Globales y HUD de Juego Completo
+        DialogueManager.EnsureInstance();
+        InventoryManager.EnsureInstance();
+        PuzzleManager.EnsureInstance();
+        InventoryHUD.EnsureInstance();
+        BossHealthBarUI.EnsureInstance();
+        PauseAndVictoryUI.EnsureInstance();
+
         // 5. Inicializar Audio
         InicializarSistemaDeAudio();
     }
