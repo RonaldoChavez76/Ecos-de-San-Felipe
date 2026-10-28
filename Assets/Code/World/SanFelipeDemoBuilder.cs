@@ -80,6 +80,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
         ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
         MercadoBuilder.ConstruirZonaMercado();
+        CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
 
         // 5. Inicializar Audio
         InicializarSistemaDeAudio();
@@ -222,6 +223,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
         ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
         MercadoBuilder.ConstruirZonaMercado();
+        CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
     }
 
     // =========================================================================

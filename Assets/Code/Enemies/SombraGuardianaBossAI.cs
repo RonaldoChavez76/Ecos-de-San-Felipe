@@ -13,7 +13,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     [Header("Configuración del Jefe Final")]
     public BossPhase currentPhase = BossPhase.Phase1_Awakened;
     public bool isShieldedBySeals = false;
-    public int echoIndexOnDefeat = 2; // Eco de la Memoria (3er Eco principal)
+    public int echoIndexOnDefeat = 3; // Eco de la Memoria (3er Eco principal)
 
     public event Action<float, float, BossPhase> OnBossHealthChanged;
     public event Action OnBossDefeated;
@@ -185,6 +185,9 @@ public class SombraGuardianaBossAI : BaseEnemyAI
         // Liberar el Eco de la Memoria al derrotar a la Sombra Guardiana
         GameObject ecoObj = new GameObject("Eco_De_La_Memoria_Final");
         ecoObj.transform.position = transform.position;
+        CircleCollider2D colEco = ecoObj.AddComponent<CircleCollider2D>();
+        colEco.isTrigger = true;
+        colEco.radius = 0.75f;
         EchoCollectible echo = ecoObj.AddComponent<EchoCollectible>();
         echo.indiceEco = echoIndexOnDefeat;
         echo.nombreEco = "Eco de la Memoria";
