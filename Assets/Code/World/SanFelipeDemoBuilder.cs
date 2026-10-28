@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -224,32 +225,19 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         GameObject capaSuelo = new GameObject("Capa_Suelo");
         capaSuelo.transform.SetParent(root.transform);
 
-        // =====================================================================
-        // 1. TILES DE SUELO 100% LIMPIOS Y CONTINUOS (Sin rayas ni patrones partidos)
-        // =====================================================================
-        // En TilesetFloor.png (352x417):
-        // Pasto verde continuo sin bordes: col 1, fila 12
         Sprite spPastoBase = RecortarSpriteDeHoja(tilesetFloor, 1, 12, 1, 1);
-        // Explanada de arena cálida uniforme: col 1, fila 1
         Sprite spPlazaArena = RecortarSpriteDeHoja(tilesetFloor, 1, 1, 1, 1);
-        // Camino de piedra adoquinado continuo (sin bordes oscuros): col 12, fila 15
         Sprite spCaminoPiedra = RecortarSpriteDeHoja(tilesetFloor, 12, 15, 1, 1);
 
-        // Pintar un lienzo amplio y ordenado (-18 a 18 en X, -10 a 18 en Y)
         for (int x = -18; x <= 18; x++)
         {
             for (int y = -10; y <= 18; y++)
             {
                 Sprite tileElegido = spPastoBase;
 
-                // Avenida principal Vertical (de Sur a La Parroquia en el Norte) y Horizontal (hacia El Mercado)
                 bool esAvenidaVertical = (Mathf.Abs(x) <= 2 && y >= -8 && y <= 14);
                 bool esAvenidaHorizontal = (Mathf.Abs(y) <= 1 && x >= -14 && x <= 12);
-
-                // Explanada cuadrada de la Plaza Principal (Centro: -6 a 6 en X, -5 a 5 en Y)
                 bool esExplanadaPlaza = (Mathf.Abs(x) <= 6 && Mathf.Abs(y) <= 5);
-
-                // Explanada de El Mercado (Oeste: -15 a -9 en X, -4 a 4 en Y)
                 bool esExplanadaMercado = (x >= -15 && x <= -9 && Mathf.Abs(y) <= 4);
 
                 if (esAvenidaVertical || esAvenidaHorizontal)
@@ -261,57 +249,31 @@ public class SanFelipeDemoBuilder : MonoBehaviour
                     tileElegido = spPlazaArena;
                 }
 
-                // El suelo se renderiza a -500 para que ningún objeto ni personaje quede jamás por debajo de él
                 ColocarTileSuelo(tileElegido, new Vector2(x, y), new Color(0.45f, 0.65f, 0.35f), -500, capaSuelo.transform);
             }
         }
 
-        // =====================================================================
-        // 2. RECORTES EXACTOS VERIFICADOS EN LA CUADRÍCULA 16x16 (CERO BASURA / CERO CORTES)
-        // =====================================================================
-        // En TilesetDesert.png (20x12 celdas):
-        // - Pozo de cantera completo con arco de madera y cubeta: col 0, fila 3, ancho 2, alto 2 (32x32)
         Sprite spPozoCentral = RecortarSpriteDeHoja(tilesetDesert, 0, 3, 2, 2);
-        // - Puesto de mercado rojo/azul: col 2, fila 10, ancho 2, alto 2 (32x32)
         Sprite spPuestoRojo = RecortarSpriteDeHoja(tilesetDesert, 2, 10, 2, 2);
-        // - Puesto de mercado amarillo: col 4, fila 10, ancho 2, alto 2 (32x32)
         Sprite spPuestoAmarillo = RecortarSpriteDeHoja(tilesetDesert, 4, 10, 2, 2);
-        // - Cúpula / Capilla central de La Parroquia: col 0, fila 0, ancho 3, alto 3 (48x48)
         Sprite spCupulaParroquia = RecortarSpriteDeHoja(tilesetDesert, 0, 0, 3, 3);
-        // - Torre campanario alta de La Parroquia: col 3, fila 0, ancho 3, alto 5 (48x80) (Sin la hoja de palmera inferior)
         Sprite spTorreParroquia = RecortarSpriteDeHoja(tilesetDesert, 3, 0, 3, 5);
 
-        // En TilesetNature.png (24x21 celdas):
-        // - Árbol completo frondoso con tronco y raíces: col 3, fila 18, ancho 3, alto 3 (48x48)
         Sprite spArbolLimpio = RecortarSpriteDeHoja(tilesetNature, 3, 18, 3, 3);
-        // - Arbusto decorativo verde redondo: col 10, fila 9, ancho 1, alto 1 (16x16)
         Sprite spArbusto = RecortarSpriteDeHoja(tilesetNature, 10, 9, 1, 1);
-        // - Girasol limpio: col 1, fila 10, ancho 1, alto 1 (16x16)
         Sprite spGirasol = RecortarSpriteDeHoja(tilesetNature, 1, 10, 1, 1);
 
-        // En TilesetHouse.png (33x23 celdas):
-        // - Casa de teja tradicional: col 0, fila 0, ancho 4, alto 3 (64x48)
         Sprite spCasaTeja = RecortarSpriteDeHoja(tilesetHouse, 0, 0, 4, 3);
-        // - Casa de adobe/cantera plana: col 4, fila 0, ancho 4, alto 3 (64x48)
         Sprite spCasaAdobe = RecortarSpriteDeHoja(tilesetHouse, 4, 0, 4, 3);
-        // - Casa de techo rojo: col 12, fila 0, ancho 4, alto 3 (64x48)
         Sprite spCasaRoja = RecortarSpriteDeHoja(tilesetHouse, 12, 0, 4, 3);
-        // - Estatua guardiana con orbe azul: col 3, fila 15, ancho 2, alto 2 (32x32) (Sin la cabeza de rana de la fila 17)
         Sprite spEstatua = RecortarSpriteDeHoja(tilesetHouse, 3, 15, 2, 2);
 
-        // En TilesetElement.png (16x15 celdas):
-        // - Letrero de madera limpio: col 0, fila 2, ancho 1, alto 1 (16x16)
         Sprite spLetrero = RecortarSpriteDeHoja(tilesetElement, 0, 2, 1, 1);
 
-        // =====================================================================
-        // 3. ACOMODO ARQUITECTÓNICO SIMÉTRICO Y PROFUNDIDAD TOP-DOWN
-        // =====================================================================
-
-        // A) PLAZA PRINCIPAL (Centro despejado para caminar y combatir)
+        // A) PLAZA PRINCIPAL
         ColocarObjetoDecorativo("Pozo_Central_Plaza", spPozoCentral, new Vector2(0f, -2.5f), new Vector2(1.8f, 1.4f), true, root.transform, Color.gray);
         ColocarObjetoDecorativo("Letrero_Tutorial", spLetrero, new Vector2(-2.5f, 1.5f), new Vector2(0.9f, 0.9f), true, root.transform, Color.yellow);
 
-        // Los 4 árboles en las esquinas de la Plaza Principal (Espaciados para no obstruir)
         Vector2[] esquinasPlaza = {
             new Vector2(-6.0f, 4.0f), new Vector2(6.0f, 4.0f),
             new Vector2(-6.0f, -4.5f), new Vector2(6.0f, -4.5f)
@@ -323,14 +285,14 @@ public class SanFelipeDemoBuilder : MonoBehaviour
             ColocarObjetoDecorativo("Arbusto", spArbusto, posArbol + new Vector2(1.5f, -1.2f), Vector2.one, false, root.transform, Color.green);
         }
 
-        // B) ZONA OESTE: EL MERCADO DE SAN FELIPE (Alineado en 2 filas limpias a la izquierda)
+        // B) ZONA OESTE: EL MERCADO DE SAN FELIPE
         ColocarObjetoDecorativo("Puesto_Rojo_1", spPuestoRojo, new Vector2(-11.0f, 3.2f), new Vector2(1.8f, 1.4f), true, root.transform, Color.red);
         ColocarObjetoDecorativo("Puesto_Amarillo_1", spPuestoAmarillo, new Vector2(-13.8f, 3.2f), new Vector2(1.8f, 1.4f), true, root.transform, Color.yellow);
         ColocarObjetoDecorativo("Puesto_Amarillo_2", spPuestoAmarillo, new Vector2(-11.0f, -2.8f), new Vector2(1.8f, 1.4f), true, root.transform, Color.yellow);
         ColocarObjetoDecorativo("Puesto_Rojo_2", spPuestoRojo, new Vector2(-13.8f, -2.8f), new Vector2(1.8f, 1.4f), true, root.transform, Color.red);
         ColocarObjetoDecorativo("Letrero_Mercado", spLetrero, new Vector2(-8.5f, 1.8f), new Vector2(0.9f, 0.9f), true, root.transform, Color.yellow);
 
-        // C) CALLEJONES DEL CENTRO (Casas separadas a 4.5 unidades para evitar solapes de tejados)
+        // C) CALLEJONES DEL CENTRO
         ColocarObjetoDecorativo("Estatua_Entrada_Izq", spEstatua, new Vector2(-3.5f, 5.5f), new Vector2(1.5f, 1.2f), true, root.transform, Color.gray);
         ColocarObjetoDecorativo("Estatua_Entrada_Der", spEstatua, new Vector2(3.5f, 5.5f), new Vector2(1.5f, 1.2f), true, root.transform, Color.gray);
 
@@ -339,14 +301,12 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         ColocarObjetoDecorativo("Casa_Callejon_Izq2", spCasaRoja, new Vector2(-6.2f, 12.5f), new Vector2(3.6f, 1.8f), true, root.transform, Color.brown);
         ColocarObjetoDecorativo("Casa_Callejon_Der2", spCasaTeja, new Vector2(6.2f, 12.5f), new Vector2(3.6f, 1.8f), true, root.transform, Color.brown);
 
-        // D) FONDO NORTE: LA PARROQUIA DE SAN FELIPE APÓSTOL (Encaje perfecto de cúpula y torres)
-        // Cúpula central: 3x3 celdas (alto 3), centro en y=15.5 -> base en y=14.0
-        // Torres laterales: 3x5 celdas (alto 5), centro en y=16.5 -> base en y=14.0 (Alineación exacta de la base)
+        // D) FONDO NORTE: LA PARROQUIA DE SAN FELIPE APÓSTOL
         ColocarObjetoDecorativo("Parroquia_Centro", spCupulaParroquia, new Vector2(0f, 15.5f), new Vector2(2.8f, 2.0f), true, root.transform, Color.white);
         ColocarObjetoDecorativo("Parroquia_Torre_Izq", spTorreParroquia, new Vector2(-3.0f, 16.5f), new Vector2(2.8f, 3.0f), true, root.transform, Color.white);
         ColocarObjetoDecorativo("Parroquia_Torre_Der", spTorreParroquia, new Vector2(3.0f, 16.5f), new Vector2(2.8f, 3.0f), true, root.transform, Color.white);
 
-        // E) BORDES PERIMETRALES DE ÁRBOLES (Enmarcan el mapa limpiamente)
+        // E) BORDES PERIMETRALES DE ÁRBOLES
         for (int x = -16; x <= 16; x += 3)
         {
             ColocarObjetoDecorativo("Bosque_Sur_" + x, spArbolLimpio, new Vector2(x, -8.5f), new Vector2(1.8f, 1.8f), true, root.transform, Color.green);
@@ -384,7 +344,6 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         obj.transform.position = pos;
 
         SpriteRenderer sr = obj.AddComponent<SpriteRenderer>();
-        // Orden dinámico por Y: los objetos más al norte quedan detrás de los que están más al sur
         sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10);
 
         if (sprite != null)
@@ -403,7 +362,6 @@ public class SanFelipeDemoBuilder : MonoBehaviour
             if (sprite != null)
             {
                 col.size = sizeColision;
-                // El colisionador se ajusta a la base/suelo del objeto para permitir caminar ligeramente detrás del tejado/copa
                 col.offset = new Vector2(0f, -sizeColision.y * 0.2f);
             }
         }
@@ -496,7 +454,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         }
 
         CircleCollider2D colLanz = sombraLanz.AddComponent<CircleCollider2D>();
-        colLanz.radius = 0.85f;
+        colLanz.radius = 0.48f;
 
         BlackCloverDemonRenderer rendLanz = sombraLanz.AddComponent<BlackCloverDemonRenderer>();
         rendLanz.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraLanzadora;
@@ -522,7 +480,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         }
 
         CircleCollider2D colErr1 = sombraErr1.AddComponent<CircleCollider2D>();
-        colErr1.radius = 0.85f;
+        colErr1.radius = 0.48f;
 
         BlackCloverDemonRenderer rendErr1 = sombraErr1.AddComponent<BlackCloverDemonRenderer>();
         rendErr1.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraErrante;
@@ -548,7 +506,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         }
 
         CircleCollider2D colErr2 = sombraErr2.AddComponent<CircleCollider2D>();
-        colErr2.radius = 0.85f;
+        colErr2.radius = 0.48f;
 
         BlackCloverDemonRenderer rendErr2 = sombraErr2.AddComponent<BlackCloverDemonRenderer>();
         rendErr2.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraErrante;
@@ -700,10 +658,17 @@ public class SombraLanzadoraAI : MonoBehaviour
     public float distanciaIdealDisparo = 4.2f;
     public float rangoDeteccion = 11f;
     private float temporizadorDisparo = 1.8f;
+    private bool ejecutandoAtaque = false;
+
+    void Start()
+    {
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+        if (col != null && col.radius > 0.55f) col.radius = 0.48f;
+    }
 
     void Update()
     {
-        if (objetivo == null) return;
+        if (objetivo == null || ejecutandoAtaque) return;
         float distancia = Vector2.Distance(transform.position, objetivo.position);
         Vector2 direccion = (objetivo.position - transform.position).normalized;
 
@@ -717,44 +682,60 @@ public class SombraLanzadoraAI : MonoBehaviour
             temporizadorDisparo -= Time.deltaTime;
             if (temporizadorDisparo <= 0f)
             {
-                DispararProyectil();
-                temporizadorDisparo = 2.4f;
+                StartCoroutine(RutinaDisparoConCarga());
+                temporizadorDisparo = 2.6f;
             }
         }
     }
 
-    private void DispararProyectil()
+    private IEnumerator RutinaDisparoConCarga()
     {
+        ejecutandoAtaque = true;
         BlackCloverDemonRenderer demon = GetComponent<BlackCloverDemonRenderer>();
-        if (demon != null) demon.ActivarPoseDeAtaque(0.45f);
+        if (demon != null) demon.ActivarPoseDeAtaque(0.60f);
 
-        GameObject proj = new GameObject("Proyectil_Sombra");
-        proj.transform.position = transform.position;
+        // Esperar a que termine la fase de carga (Frame 6) antes de escupir el proyectil en Frame 7
+        yield return new WaitForSeconds(0.24f);
 
-        SpriteRenderer sr = proj.AddComponent<SpriteRenderer>();
-        sr.sprite = builderRef.CrearSpriteCircular(new Color(0.1f, 0.02f, 0.08f));
-        sr.sortingOrder = 5;
-        proj.transform.localScale = new Vector3(0.55f, 0.55f, 1f);
+        if (objetivo != null)
+        {
+            GameObject proj = new GameObject("Proyectil_Sombra");
+            proj.transform.position = transform.position;
 
-        GameObject nucleo = new GameObject("NucleoCarmesi");
-        nucleo.transform.SetParent(proj.transform);
-        nucleo.transform.localPosition = Vector3.zero;
-        nucleo.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-        SpriteRenderer srNucleo = nucleo.AddComponent<SpriteRenderer>();
-        srNucleo.sprite = builderRef.CrearSpriteCircular(new Color(1f, 0.1f, 0.25f));
-        srNucleo.sortingOrder = 6;
+            Sprite fallback = builderRef != null ? builderRef.CrearSpriteCircular(new Color(0.1f, 0.02f, 0.08f)) : null;
+            SpriteRenderer sr = proj.AddComponent<SpriteRenderer>();
+            if (fallback != null) sr.sprite = fallback;
+            sr.sortingOrder = 5;
+            proj.transform.localScale = new Vector3(0.55f, 0.55f, 1f);
 
-        CircleCollider2D col = proj.AddComponent<CircleCollider2D>();
-        col.isTrigger = true;
+            GameObject nucleo = new GameObject("NucleoCarmesi");
+            nucleo.transform.SetParent(proj.transform);
+            nucleo.transform.localPosition = Vector3.zero;
+            nucleo.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            SpriteRenderer srNucleo = nucleo.AddComponent<SpriteRenderer>();
+            if (builderRef != null) srNucleo.sprite = builderRef.CrearSpriteCircular(new Color(1f, 0.1f, 0.25f));
+            srNucleo.sortingOrder = 6;
 
-        ProjectileBehaviour pb = proj.AddComponent<ProjectileBehaviour>();
-        pb.Inicializar((objetivo.position - transform.position).normalized, this, builderRef);
+            CircleCollider2D col = proj.AddComponent<CircleCollider2D>();
+            col.isTrigger = true;
+
+            ProjectileBehaviour pb = proj.AddComponent<ProjectileBehaviour>();
+            pb.Inicializar((objetivo.position - transform.position).normalized, this, builderRef);
+        }
+
+        yield return new WaitForSeconds(0.36f);
+        ejecutandoAtaque = false;
     }
 
     public void RecibirDanio(float cantidad)
     {
         vida -= cantidad;
-        if (vida <= 0f) Destroy(gameObject);
+        AudioManager.Instance?.PlayHitSound();
+        if (vida <= 0f)
+        {
+            SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
+            Destroy(gameObject);
+        }
     }
 }
 
@@ -765,17 +746,24 @@ public class SombraErranteAI : MonoBehaviour
     public float vida = 40f;
     public float velocidadPersecucion = 3.1f;
     public float rangoDeteccion = 9.5f;
-    public float rangoAtaqueMelee = 1.15f;
+    public float rangoAtaqueMelee = 1.35f;
     public float danioMelee = 14f;
     private Vector3 puntoOrigen;
     private float temporizadorAtaque = 0f;
+    private bool ejecutandoAtaque = false;
 
-    void Start() => puntoOrigen = transform.position;
+    void Start()
+    {
+        puntoOrigen = transform.position;
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+        if (col != null && col.radius > 0.55f) col.radius = 0.48f;
+    }
 
     void Update()
     {
         if (objetivo == null) return;
         if (temporizadorAtaque > 0f) temporizadorAtaque -= Time.deltaTime;
+        if (ejecutandoAtaque) return;
 
         float distancia = Vector2.Distance(transform.position, objetivo.position);
         if (distancia <= rangoDeteccion)
@@ -787,8 +775,8 @@ public class SombraErranteAI : MonoBehaviour
             }
             else if (temporizadorAtaque <= 0f)
             {
-                AtacarCuerpoACuerpo();
-                temporizadorAtaque = 1.2f;
+                StartCoroutine(RutinaZarpazoCuerpoACuerpo());
+                temporizadorAtaque = 1.35f;
             }
         }
         else
@@ -798,25 +786,45 @@ public class SombraErranteAI : MonoBehaviour
         }
     }
 
-    private void AtacarCuerpoACuerpo()
+    private IEnumerator RutinaZarpazoCuerpoACuerpo()
     {
+        ejecutandoAtaque = true;
         BlackCloverDemonRenderer demon = GetComponent<BlackCloverDemonRenderer>();
-        if (demon != null) demon.ActivarPoseDeAtaque(0.4f);
+        if (demon != null) demon.ActivarPoseDeAtaque(0.60f);
 
-        PlayerMovement player = objetivo.GetComponent<PlayerMovement>();
-        if (player != null) player.RecibirDanio(danioMelee);
+        // Esperar el tiempo de anticipación / carga (Frame 6) antes de conectar el zarpazo (Frame 7)
+        yield return new WaitForSeconds(0.24f);
+
+        if (objetivo != null)
+        {
+            float distActual = Vector2.Distance(transform.position, objetivo.position);
+            if (distActual <= rangoAtaqueMelee + 0.55f)
+            {
+                PlayerMovement player = objetivo.GetComponent<PlayerMovement>();
+                if (player != null) player.RecibirDanio(danioMelee);
+            }
+        }
+
+        yield return new WaitForSeconds(0.36f);
+        ejecutandoAtaque = false;
     }
 
     public void RecibirDanio(float cantidad)
     {
         vida -= cantidad;
-        if (vida <= 0f) Destroy(gameObject);
+        AudioManager.Instance?.PlayHitSound();
+        if (vida <= 0f)
+        {
+            SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
+            Destroy(gameObject);
+        }
     }
 }
 
 public class EcoLuminosoItem : MonoBehaviour
 {
     public SanFelipeDemoBuilder builderRef;
+    public int echoIndex = 0;
 
     void Update()
     {
@@ -831,7 +839,9 @@ public class EcoLuminosoItem : MonoBehaviour
         {
             player.maxHealth += 25f;
             player.currentHealth = player.maxHealth;
+            SaveStateManager.Instance?.RecuperarEco(echoIndex);
             if (builderRef != null) builderRef.ReproducirSonidoEco();
+            AudioManager.Instance?.PlayEchoSound();
             Destroy(gameObject);
         }
     }
