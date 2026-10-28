@@ -12,11 +12,20 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
 
     public static GameObject ConstruirElementosExteriorParroquia(Transform parentRoot = null)
     {
-        GameObject existente = GameObject.Find("Zona_Parroquia_Exterior_Interactivos");
-        if (existente != null)
+        string[] nombresPrevios = { "Zona_Parroquia_Exterior_Interactivos", "Parroquia_Exterior_Elementos" };
+        foreach (string nombrePrevio in nombresPrevios)
         {
-            if (Application.isPlaying) Destroy(existente);
-            else DestroyImmediate(existente);
+            int guard = 0;
+            GameObject existente = GameObject.Find(nombrePrevio);
+            while (existente != null && guard < 10)
+            {
+                guard++;
+                existente.name = "_Destroyed_" + nombrePrevio;
+                existente.SetActive(false);
+                if (Application.isPlaying) Destroy(existente);
+                else DestroyImmediate(existente);
+                existente = GameObject.Find(nombrePrevio);
+            }
         }
 
         GameObject root = new GameObject("Zona_Parroquia_Exterior_Interactivos");

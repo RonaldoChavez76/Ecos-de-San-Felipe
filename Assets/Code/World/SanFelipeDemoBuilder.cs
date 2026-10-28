@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -72,6 +72,8 @@ public class SanFelipeDemoBuilder : MonoBehaviour
             // Limpiar cualquier enemigo suelto antiguo que haya quedado en la escena
             LimpiarEnemigosEnEditor();
         }
+
+        AsegurarTexturasCargadas();
 
         // 4. Construir elementos interactivos, NPCs, Puerta de Escena e Hordas por Zona del Nivel 1 (La Parroquia)
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
@@ -182,6 +184,9 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         if (tilesetHouse == null) tilesetHouse = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/TilesetHouse.png");
         if (tilesetNature == null) tilesetNature = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/TilesetNature.png");
         if (tilesetElement == null) tilesetElement = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/TilesetElement.png");
+        if (imagenSombraErrante == null) imagenSombraErrante = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/SombraErrante_SpriteSheet.png");
+        if (imagenSombraLanzadora == null) imagenSombraLanzadora = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/SombraLanzadora_SpriteSheet.png");
+        if (imagenSombraGuardiana == null) imagenSombraGuardiana = ParroquiaExteriorBuilder.CargarTextura("Assets/Sprites/SombraGuardiana_SpriteSheet.png");
     }
 
     // =========================================================================
