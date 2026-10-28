@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: ca7a736c63f97ed4f9d771ac543c6e98
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - customDemonImage: {fileID: 2800000, guid: 2e901fe461425a842afb84a6f671202e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
