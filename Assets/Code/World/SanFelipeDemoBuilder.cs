@@ -814,64 +814,6 @@ public class SombraErranteAI : MonoBehaviour
     }
 }
 
-public class ProjectileBehaviour : MonoBehaviour
-{
-    private Vector2 direccion;
-    private float velocidad = 5.5f;
-    private float danio = 15f;
-    private bool fueContraatacado = false;
-    private SombraLanzadoraAI emisor;
-    private SanFelipeDemoBuilder builderRef;
-
-    public void Inicializar(Vector2 dir, SombraLanzadoraAI origen, SanFelipeDemoBuilder builder)
-    {
-        direccion = dir;
-        emisor = origen;
-        builderRef = builder;
-        Destroy(gameObject, 5f);
-    }
-
-    void Update() => transform.position += (Vector3)(direccion * velocidad * Time.deltaTime);
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        PlayerMovement player = other.GetComponent<PlayerMovement>();
-        if (player != null && !fueContraatacado)
-        {
-            if (player.IntentarContraataqueProyectil())
-            {
-                fueContraatacado = true;
-                velocidad = 9f;
-                danio *= 1.5f;
-                GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 1f);
-                if (builderRef != null) builderRef.ReproducirSonidoContraataque();
-
-                direccion = emisor != null
-                    ? ((Vector2)(emisor.transform.position - transform.position)).normalized
-                    : -direccion;
-            }
-            else
-            {
-                player.RecibirDanio(danio);
-                Destroy(gameObject);
-            }
-        }
-        else if (fueContraatacado)
-        {
-            if (other.GetComponent<SombraLanzadoraAI>() != null)
-            {
-                other.GetComponent<SombraLanzadoraAI>().RecibirDanio(danio);
-                Destroy(gameObject);
-            }
-            else if (other.GetComponent<SombraErranteAI>() != null)
-            {
-                other.GetComponent<SombraErranteAI>().RecibirDanio(danio);
-                Destroy(gameObject);
-            }
-        }
-    }
-}
-
 public class EcoLuminosoItem : MonoBehaviour
 {
     public SanFelipeDemoBuilder builderRef;
