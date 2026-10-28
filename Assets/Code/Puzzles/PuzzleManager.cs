@@ -65,3 +65,4 @@ public class PuzzleManager : MonoBehaviour
         Debug.Log($"<color=#FFD700>[PuzzleManager] ¡Acertijo del Nivel {nivelIndex} resuelto!</color>");
     }
 }
+

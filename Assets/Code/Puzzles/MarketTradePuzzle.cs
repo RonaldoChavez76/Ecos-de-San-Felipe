@@ -248,3 +248,4 @@ public class MarketStallTradeNode : MonoBehaviour
         GUI.Box(r, labelPrompt, style);
     }
 }
+

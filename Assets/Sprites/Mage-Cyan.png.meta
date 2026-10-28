@@ -597,7 +597,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -610,7 +610,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -624,7 +624,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -650,7 +650,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -663,46 +663,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -717,19 +678,19 @@ TextureImporter:
       name: Mage-Cyan_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 232
-        width: 16
-        height: 19
+        x: 0
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d853f829929a5a5c0800000000000000
+      spriteID: 1224e2279c1690648dfb8d28c2e1d030
       internalID: -4204768681062877811
       vertices: []
       indices: 
@@ -739,19 +700,19 @@ TextureImporter:
       name: Mage-Cyan_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 232
-        width: 16
-        height: 20
+        x: 32
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f798e338bf5294970800000000000000
+      spriteID: b3e05813b7be5e6fb3441dfa0d682048
       internalID: 8739558314058090879
       vertices: []
       indices: 
@@ -761,19 +722,19 @@ TextureImporter:
       name: Mage-Cyan_2
       rect:
         serializedVersion: 2
-        x: 72
-        y: 231
-        width: 16
-        height: 20
+        x: 64
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78d0041593b49bec0800000000000000
+      spriteID: c7188a5c06fc4928e3c13b8f9a02dac1
       internalID: -3550724121656554105
       vertices: []
       indices: 
@@ -783,19 +744,19 @@ TextureImporter:
       name: Mage-Cyan_3
       rect:
         serializedVersion: 2
-        x: 104
-        y: 231
-        width: 16
-        height: 20
+        x: 96
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e85bc22a2059ebbf0800000000000000
+      spriteID: ac7af369737c0d17bd7341464790e8cf
       internalID: -306643886071302770
       vertices: []
       indices: 
@@ -805,19 +766,19 @@ TextureImporter:
       name: Mage-Cyan_4
       rect:
         serializedVersion: 2
-        x: 135
-        y: 232
-        width: 17
-        height: 20
+        x: 128
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3292eceec29e79f40800000000000000
+      spriteID: 518c6877f9769dd55d3304232fe6c68b
       internalID: 5735309029673937187
       vertices: []
       indices: 
@@ -827,19 +788,19 @@ TextureImporter:
       name: Mage-Cyan_5
       rect:
         serializedVersion: 2
-        x: 167
-        y: 232
-        width: 17
-        height: 20
+        x: 160
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 737ea0307c6920f60800000000000000
+      spriteID: f671af120f799d068c40b00f87b853ce
       internalID: 7999121669657126711
       vertices: []
       indices: 
@@ -849,19 +810,19 @@ TextureImporter:
       name: Mage-Cyan_6
       rect:
         serializedVersion: 2
-        x: 200
-        y: 231
-        width: 16
-        height: 20
+        x: 192
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f63d4dfa45a3a690800000000000000
+      spriteID: f7abf22cbd221b0998c777cf8f60ca9b
       internalID: -7592042805320665359
       vertices: []
       indices: 
@@ -871,19 +832,19 @@ TextureImporter:
       name: Mage-Cyan_7
       rect:
         serializedVersion: 2
-        x: 232
-        y: 232
-        width: 16
-        height: 19
+        x: 224
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb85b53a7653b8440800000000000000
+      spriteID: a794574e810815199173ac79ec739331
       internalID: 4939100135580457150
       vertices: []
       indices: 
@@ -893,19 +854,19 @@ TextureImporter:
       name: Mage-Cyan_8
       rect:
         serializedVersion: 2
-        x: 264
-        y: 231
-        width: 16
-        height: 21
+        x: 256
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78f96d2f9594e5ed0800000000000000
+      spriteID: 4310f452f40db3d53126951c947c3c9e
       internalID: -2423418898803679353
       vertices: []
       indices: 
@@ -915,19 +876,19 @@ TextureImporter:
       name: Mage-Cyan_9
       rect:
         serializedVersion: 2
-        x: 296
-        y: 231
-        width: 16
-        height: 20
+        x: 288
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1858c8b4665f0a010800000000000000
+      spriteID: ece21c1e90eaa049e6f55d0c0b8259c6
       internalID: 1198227320583521665
       vertices: []
       indices: 
@@ -937,19 +898,19 @@ TextureImporter:
       name: Mage-Cyan_10
       rect:
         serializedVersion: 2
-        x: 328
-        y: 231
-        width: 16
-        height: 20
+        x: 320
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 29ee0dbefa1688d60800000000000000
+      spriteID: 43fce78fc9cdd5ef2f38e13eb9074367
       internalID: 7892665755170303634
       vertices: []
       indices: 
@@ -959,19 +920,19 @@ TextureImporter:
       name: Mage-Cyan_11
       rect:
         serializedVersion: 2
-        x: 360
-        y: 232
-        width: 16
-        height: 20
+        x: 352
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1e91e1bca2197f980800000000000000
+      spriteID: 67c375e05de6a14bb3e3ad29cb1256d9
       internalID: -8505169758283490847
       vertices: []
       indices: 
@@ -981,19 +942,19 @@ TextureImporter:
       name: Mage-Cyan_12
       rect:
         serializedVersion: 2
-        x: 391
-        y: 232
-        width: 17
-        height: 20
+        x: 384
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 908b859a1f4128c90800000000000000
+      spriteID: b42f5269479475939e88fc8ac5cd0543
       internalID: -7169144628659570679
       vertices: []
       indices: 
@@ -1003,19 +964,19 @@ TextureImporter:
       name: Mage-Cyan_13
       rect:
         serializedVersion: 2
-        x: 423
-        y: 232
-        width: 17
-        height: 20
+        x: 416
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e8d3eca112fe3140800000000000000
+      spriteID: 4d7444d9dd16a100650379d28bf48316
       internalID: 4701461218750355682
       vertices: []
       indices: 
@@ -1025,19 +986,19 @@ TextureImporter:
       name: Mage-Cyan_14
       rect:
         serializedVersion: 2
-        x: 456
-        y: 228
-        width: 16
-        height: 23
+        x: 448
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25c5afba065766610800000000000000
+      spriteID: e8874b27f8dd42794280d7551893dc40
       internalID: 1614106574521523282
       vertices: []
       indices: 
@@ -1047,19 +1008,19 @@ TextureImporter:
       name: Mage-Cyan_15
       rect:
         serializedVersion: 2
-        x: 488
-        y: 232
-        width: 16
-        height: 20
+        x: 480
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf4b03d2cabdbbb40800000000000000
+      spriteID: b6db9e25b04e81f83ae5a421268568a8
       internalID: 5457196906028512508
       vertices: []
       indices: 
@@ -1069,19 +1030,19 @@ TextureImporter:
       name: Mage-Cyan_16
       rect:
         serializedVersion: 2
-        x: 520
-        y: 232
-        width: 16
-        height: 20
+        x: 512
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 036d89f5a5c226b00800000000000000
+      spriteID: 46223625f14a326dcd022567f80d32cc
       internalID: 820266848797382192
       vertices: []
       indices: 
@@ -1091,19 +1052,19 @@ TextureImporter:
       name: Mage-Cyan_17
       rect:
         serializedVersion: 2
-        x: 552
-        y: 232
-        width: 16
-        height: 19
+        x: 544
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3b0e24f99e1e2360800000000000000
+      spriteID: 67e5e1c6e2c72779a41ea2ae459ba4ee
       internalID: 7146683305259043645
       vertices: []
       indices: 
@@ -1113,19 +1074,19 @@ TextureImporter:
       name: Mage-Cyan_18
       rect:
         serializedVersion: 2
-        x: 584
-        y: 232
-        width: 16
-        height: 20
+        x: 576
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a2c5bfbf4741a6b0800000000000000
+      spriteID: c7ca84c97b082ecc49222d316fbf34b1
       internalID: -5286866079711903071
       vertices: []
       indices: 
@@ -1135,19 +1096,19 @@ TextureImporter:
       name: Mage-Cyan_19
       rect:
         serializedVersion: 2
-        x: 615
-        y: 233
-        width: 18
-        height: 21
+        x: 608
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c426535047cc22560800000000000000
+      spriteID: 833d0011436b42c9e40bb0a0d991ebd3
       internalID: 7287611945714541132
       vertices: []
       indices: 
@@ -1157,19 +1118,19 @@ TextureImporter:
       name: Mage-Cyan_20
       rect:
         serializedVersion: 2
-        x: 647
-        y: 232
-        width: 18
-        height: 21
+        x: 640
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a22f1820f209108b0800000000000000
+      spriteID: 50e7faf6047b56a803c17b1608b46a90
       internalID: -5187706764174167510
       vertices: []
       indices: 
@@ -1179,19 +1140,19 @@ TextureImporter:
       name: Mage-Cyan_21
       rect:
         serializedVersion: 2
-        x: 680
-        y: 232
-        width: 16
-        height: 20
+        x: 672
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03fed2a7b12a44080800000000000000
+      spriteID: e793d3375da68c07d05604ae6992bbba
       internalID: -9204053499540803792
       vertices: []
       indices: 
@@ -1201,19 +1162,19 @@ TextureImporter:
       name: Mage-Cyan_22
       rect:
         serializedVersion: 2
-        x: 712
-        y: 232
-        width: 16
-        height: 18
+        x: 704
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 90b01577c7a74d3f0800000000000000
+      spriteID: 5509491b3620c8d668eb8565142ebe53
       internalID: -876941352434070775
       vertices: []
       indices: 
@@ -1223,19 +1184,19 @@ TextureImporter:
       name: Mage-Cyan_23
       rect:
         serializedVersion: 2
-        x: 744
-        y: 232
-        width: 16
-        height: 20
+        x: 736
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 841df8af28d4b6f00800000000000000
+      spriteID: 9910e2a339b35a4a19061c0094ad1127
       internalID: 1111066958021775688
       vertices: []
       indices: 
@@ -1245,19 +1206,19 @@ TextureImporter:
       name: Mage-Cyan_24
       rect:
         serializedVersion: 2
-        x: 8
-        y: 200
-        width: 16
-        height: 19
+        x: 0
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e6d7ab996b48a0b0800000000000000
+      spriteID: 71d12862a5f9f183c94734413f1cf2d8
       internalID: -5717236809991727392
       vertices: []
       indices: 
@@ -1267,19 +1228,19 @@ TextureImporter:
       name: Mage-Cyan_25
       rect:
         serializedVersion: 2
-        x: 40
-        y: 200
-        width: 16
-        height: 20
+        x: 32
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 994472ada73121070800000000000000
+      spriteID: 015fc59b1029f26a5c4053206e627d57
       internalID: 8075538500195665049
       vertices: []
       indices: 
@@ -1289,19 +1250,19 @@ TextureImporter:
       name: Mage-Cyan_26
       rect:
         serializedVersion: 2
-        x: 72
-        y: 199
-        width: 16
-        height: 20
+        x: 64
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 420ec048773464ae0800000000000000
+      spriteID: e0572c8790e24677d518926857b8b7d4
       internalID: -1565489639869063132
       vertices: []
       indices: 
@@ -1311,19 +1272,19 @@ TextureImporter:
       name: Mage-Cyan_27
       rect:
         serializedVersion: 2
-        x: 104
-        y: 199
-        width: 16
-        height: 20
+        x: 96
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 765da0865dd4267c0800000000000000
+      spriteID: 8eb1ed49331e4ffbe8a1ef421b9936c0
       internalID: -4079612733475334809
       vertices: []
       indices: 
@@ -1333,19 +1294,19 @@ TextureImporter:
       name: Mage-Cyan_28
       rect:
         serializedVersion: 2
-        x: 135
-        y: 200
-        width: 17
-        height: 20
+        x: 128
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 30b4da66d894a28f0800000000000000
+      spriteID: 0a6ad963d50a44c1f452c18e355fbb7e
       internalID: -564557931619726589
       vertices: []
       indices: 
@@ -1355,19 +1316,19 @@ TextureImporter:
       name: Mage-Cyan_29
       rect:
         serializedVersion: 2
-        x: 167
-        y: 200
-        width: 17
-        height: 20
+        x: 160
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 24bb1cd325f3538e0800000000000000
+      spriteID: e1ec9c0d1312ddf470077ad74668148a
       internalID: -1714394460688630974
       vertices: []
       indices: 
@@ -1377,19 +1338,19 @@ TextureImporter:
       name: Mage-Cyan_30
       rect:
         serializedVersion: 2
-        x: 200
-        y: 200
-        width: 17
-        height: 19
+        x: 192
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0602aa7e5edccf170800000000000000
+      spriteID: f5ac8651ffe6c4772e94ecc723adb556
       internalID: 8213666207734833248
       vertices: []
       indices: 
@@ -1399,19 +1360,19 @@ TextureImporter:
       name: Mage-Cyan_31
       rect:
         serializedVersion: 2
-        x: 232
-        y: 200
-        width: 16
-        height: 19
+        x: 224
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1e02dd881c24d6b20800000000000000
+      spriteID: 3b8fe1df9189656c210e557bc0d3a4bf
       internalID: 3129230715084677345
       vertices: []
       indices: 
@@ -1421,19 +1382,19 @@ TextureImporter:
       name: Mage-Cyan_32
       rect:
         serializedVersion: 2
-        x: 264
-        y: 200
-        width: 16
-        height: 20
+        x: 256
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9442905ac41745a70800000000000000
+      spriteID: 749e08bfdc6aec694943a6362504caa1
       internalID: 8814794944671196233
       vertices: []
       indices: 
@@ -1443,19 +1404,19 @@ TextureImporter:
       name: Mage-Cyan_33
       rect:
         serializedVersion: 2
-        x: 296
-        y: 199
-        width: 17
-        height: 20
+        x: 288
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a8f32fcabfde2630800000000000000
+      spriteID: 52a62fea409fc42ab4daee802ec5fa0b
       internalID: 3904303920408950944
       vertices: []
       indices: 
@@ -1465,19 +1426,19 @@ TextureImporter:
       name: Mage-Cyan_34
       rect:
         serializedVersion: 2
-        x: 328
-        y: 199
-        width: 17
-        height: 20
+        x: 320
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9d35300826d9365b0800000000000000
+      spriteID: 730db8f2847018441a4a2f772da325d7
       internalID: -5376280483770182695
       vertices: []
       indices: 
@@ -1487,19 +1448,19 @@ TextureImporter:
       name: Mage-Cyan_35
       rect:
         serializedVersion: 2
-        x: 360
-        y: 200
-        width: 16
-        height: 20
+        x: 352
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a12b81aadb1b47960800000000000000
+      spriteID: 4e76b461128039c1e86beee884e1b35f
       internalID: 7598893899441549850
       vertices: []
       indices: 
@@ -1509,19 +1470,19 @@ TextureImporter:
       name: Mage-Cyan_36
       rect:
         serializedVersion: 2
-        x: 391
-        y: 200
-        width: 17
-        height: 20
+        x: 384
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 645abcc34959146e0800000000000000
+      spriteID: a68adbff1590ada18f49886057a922e8
       internalID: -1855037107592256186
       vertices: []
       indices: 
@@ -1531,19 +1492,19 @@ TextureImporter:
       name: Mage-Cyan_37
       rect:
         serializedVersion: 2
-        x: 423
-        y: 200
-        width: 17
-        height: 20
+        x: 416
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3f15a52e34ff5040800000000000000
+      spriteID: 482fc31f28b1f3db5da46d20761e17c7
       internalID: 4638694688971628351
       vertices: []
       indices: 
@@ -1553,19 +1514,19 @@ TextureImporter:
       name: Mage-Cyan_38
       rect:
         serializedVersion: 2
-        x: 456
-        y: 200
-        width: 18
-        height: 19
+        x: 448
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fbc2f6c53e9305e80800000000000000
+      spriteID: 4c712b6fe0ec29c6bee22c692b38c8c6
       internalID: -8191984073515782977
       vertices: []
       indices: 
@@ -1575,19 +1536,19 @@ TextureImporter:
       name: Mage-Cyan_39
       rect:
         serializedVersion: 2
-        x: 488
-        y: 200
-        width: 16
-        height: 20
+        x: 480
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b66f7eec51a41c70800000000000000
+      spriteID: 55451a6dab7990230224e3106c3de4f1
       internalID: 8940948580747667121
       vertices: []
       indices: 
@@ -1597,19 +1558,19 @@ TextureImporter:
       name: Mage-Cyan_40
       rect:
         serializedVersion: 2
-        x: 520
-        y: 200
-        width: 16
-        height: 20
+        x: 512
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 35c6111417dfe7840800000000000000
+      spriteID: 6ee4ab11d081a617b740f11630079c63
       internalID: 5223891280661146707
       vertices: []
       indices: 
@@ -1619,19 +1580,19 @@ TextureImporter:
       name: Mage-Cyan_41
       rect:
         serializedVersion: 2
-        x: 552
-        y: 200
-        width: 16
-        height: 19
+        x: 544
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d7ccc0e5f006f4890800000000000000
+      spriteID: b91eb8b8137edba172f64acf56e9edaf
       internalID: -7471647637665690499
       vertices: []
       indices: 
@@ -1641,19 +1602,19 @@ TextureImporter:
       name: Mage-Cyan_42
       rect:
         serializedVersion: 2
-        x: 584
-        y: 200
-        width: 16
-        height: 20
+        x: 576
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7942a9d5b8facfe40800000000000000
+      spriteID: 46a87788fdd766b72d92551bf4a45ae4
       internalID: 5691617042195162263
       vertices: []
       indices: 
@@ -1663,19 +1624,19 @@ TextureImporter:
       name: Mage-Cyan_43
       rect:
         serializedVersion: 2
-        x: 614
-        y: 201
-        width: 16
-        height: 21
+        x: 608
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac69fb544ad92e590800000000000000
+      spriteID: f0fc5b5b9add44e8c3da8e25732f6be3
       internalID: -7646375888451299638
       vertices: []
       indices: 
@@ -1685,19 +1646,19 @@ TextureImporter:
       name: Mage-Cyan_44
       rect:
         serializedVersion: 2
-        x: 648
-        y: 200
-        width: 16
-        height: 21
+        x: 640
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56694e3b9311396b0800000000000000
+      spriteID: 15582919834da661b1d4dea3d6b16ce5
       internalID: -5290866197701290395
       vertices: []
       indices: 
@@ -1707,19 +1668,19 @@ TextureImporter:
       name: Mage-Cyan_45
       rect:
         serializedVersion: 2
-        x: 680
-        y: 200
-        width: 16
-        height: 20
+        x: 672
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef28f24e461f61810800000000000000
+      spriteID: 75955cd35a82a035a75144856ca9c81e
       internalID: 1735840122025247486
       vertices: []
       indices: 
@@ -1729,19 +1690,19 @@ TextureImporter:
       name: Mage-Cyan_46
       rect:
         serializedVersion: 2
-        x: 710
-        y: 200
-        width: 17
-        height: 18
+        x: 704
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc8d9186153528c60800000000000000
+      spriteID: 6b8d2889e6c9a8a127174e26f54e41a3
       internalID: 7818903512172583116
       vertices: []
       indices: 
@@ -1751,19 +1712,19 @@ TextureImporter:
       name: Mage-Cyan_47
       rect:
         serializedVersion: 2
-        x: 742
-        y: 200
-        width: 17
-        height: 19
+        x: 736
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4f42917f346b23580800000000000000
+      spriteID: 65a54a8fb7fbd6a241361ed4cfff8f37
       internalID: -8848809914804919052
       vertices: []
       indices: 
@@ -1773,19 +1734,19 @@ TextureImporter:
       name: Mage-Cyan_48
       rect:
         serializedVersion: 2
-        x: 8
-        y: 168
-        width: 16
-        height: 19
+        x: 0
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5cb610f8db504e630800000000000000
+      spriteID: f3e01ac3656f7582d2f624ad80644c5b
       internalID: 3955292684444330949
       vertices: []
       indices: 
@@ -1795,19 +1756,19 @@ TextureImporter:
       name: Mage-Cyan_49
       rect:
         serializedVersion: 2
-        x: 40
-        y: 168
-        width: 16
-        height: 20
+        x: 32
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f85dd36420be52380800000000000000
+      spriteID: c9fe9c94e1d350b67af26d78d94551d0
       internalID: -8996526285601778289
       vertices: []
       indices: 
@@ -1817,19 +1778,19 @@ TextureImporter:
       name: Mage-Cyan_50
       rect:
         serializedVersion: 2
-        x: 72
-        y: 167
-        width: 16
-        height: 20
+        x: 64
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 060c6eb2c3b085a40800000000000000
+      spriteID: 7d9f511d83a3c7b3bc33449be70b2c47
       internalID: 5357044109819691104
       vertices: []
       indices: 
@@ -1839,19 +1800,19 @@ TextureImporter:
       name: Mage-Cyan_51
       rect:
         serializedVersion: 2
-        x: 104
-        y: 167
-        width: 16
-        height: 20
+        x: 96
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8399914a6ad5a8620800000000000000
+      spriteID: 352389e7260bf58c33d873223982d6df
       internalID: 2777135090526427448
       vertices: []
       indices: 
@@ -1861,19 +1822,19 @@ TextureImporter:
       name: Mage-Cyan_52
       rect:
         serializedVersion: 2
-        x: 136
-        y: 168
-        width: 16
-        height: 20
+        x: 128
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7535cc9c5c589dee0800000000000000
+      spriteID: 4ba0ca442e4faef805018e1dc5a107e1
       internalID: -1235809538195827881
       vertices: []
       indices: 
@@ -1883,19 +1844,19 @@ TextureImporter:
       name: Mage-Cyan_53
       rect:
         serializedVersion: 2
-        x: 168
-        y: 168
-        width: 16
-        height: 20
+        x: 160
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c028bbd014296c2c0800000000000000
+      spriteID: 3737736938ea24d86a4dd1d3c6f4f2c3
       internalID: -4411677976861900276
       vertices: []
       indices: 
@@ -1905,19 +1866,19 @@ TextureImporter:
       name: Mage-Cyan_54
       rect:
         serializedVersion: 2
-        x: 200
-        y: 168
-        width: 17
-        height: 19
+        x: 192
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7acfe9db8e77dee40800000000000000
+      spriteID: dbf1dd42b9dd309bead3307172cbe945
       internalID: 5687333745936235687
       vertices: []
       indices: 
@@ -1927,19 +1888,19 @@ TextureImporter:
       name: Mage-Cyan_55
       rect:
         serializedVersion: 2
-        x: 232
-        y: 168
-        width: 17
-        height: 19
+        x: 224
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ed233b3ee7d0db9f0800000000000000
+      spriteID: 071afd054ab6961041ba6526ca32645f
       internalID: -451189549029969186
       vertices: []
       indices: 
@@ -1949,19 +1910,19 @@ TextureImporter:
       name: Mage-Cyan_56
       rect:
         serializedVersion: 2
-        x: 264
-        y: 168
-        width: 18
-        height: 20
+        x: 256
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ff2c8e5b057384b10800000000000000
+      spriteID: c4774e5e54ecf482902243c4dee81b56
       internalID: 1965882057136063231
       vertices: []
       indices: 
@@ -1971,19 +1932,19 @@ TextureImporter:
       name: Mage-Cyan_57
       rect:
         serializedVersion: 2
-        x: 296
-        y: 168
-        width: 17
-        height: 19
+        x: 288
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e702ec60a8346dab0800000000000000
+      spriteID: a762b1105cf9d2e5963c15c6f5cb6b47
       internalID: -4983721677540155266
       vertices: []
       indices: 
@@ -1993,19 +1954,19 @@ TextureImporter:
       name: Mage-Cyan_58
       rect:
         serializedVersion: 2
-        x: 328
-        y: 168
-        width: 16
-        height: 19
+        x: 320
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc1062e4306722c10800000000000000
+      spriteID: 2151a2139226714106e108df4dc0c321
       internalID: 2027312538838237643
       vertices: []
       indices: 
@@ -2015,19 +1976,19 @@ TextureImporter:
       name: Mage-Cyan_59
       rect:
         serializedVersion: 2
-        x: 360
-        y: 168
-        width: 17
-        height: 20
+        x: 352
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 199fe71494a991c40800000000000000
+      spriteID: 0c459c314bb0990b1ff62adf260aa8ab
       internalID: 5483583660722420113
       vertices: []
       indices: 
@@ -2037,19 +1998,19 @@ TextureImporter:
       name: Mage-Cyan_60
       rect:
         serializedVersion: 2
-        x: 392
-        y: 168
-        width: 16
-        height: 20
+        x: 384
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6946d85b7b6f0e10800000000000000
+      spriteID: c79747fd0b5b2639f2771c4bedaa67aa
       internalID: 2166068123304085871
       vertices: []
       indices: 
@@ -2059,19 +2020,19 @@ TextureImporter:
       name: Mage-Cyan_61
       rect:
         serializedVersion: 2
-        x: 424
-        y: 168
-        width: 16
-        height: 20
+        x: 416
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e350eb4b53876af0800000000000000
+      spriteID: 94ca57baba60f27305a7a9f17635e1c2
       internalID: -403209213488114711
       vertices: []
       indices: 
@@ -2081,19 +2042,19 @@ TextureImporter:
       name: Mage-Cyan_62
       rect:
         serializedVersion: 2
-        x: 456
-        y: 168
-        width: 19
-        height: 19
+        x: 448
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 64178ff619fe267e0800000000000000
+      spriteID: 10e293adfcfb194843f85031647f910d
       internalID: -1773591895302704826
       vertices: []
       indices: 
@@ -2103,19 +2064,19 @@ TextureImporter:
       name: Mage-Cyan_63
       rect:
         serializedVersion: 2
-        x: 488
-        y: 168
-        width: 16
-        height: 20
+        x: 480
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6f3adec9e74489090800000000000000
+      spriteID: 6f17753251896ad50c3736db318cf413
       internalID: -8027591025198521354
       vertices: []
       indices: 
@@ -2125,19 +2086,19 @@ TextureImporter:
       name: Mage-Cyan_64
       rect:
         serializedVersion: 2
-        x: 520
-        y: 168
-        width: 16
-        height: 20
+        x: 512
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 90e1dac87ff0ece30800000000000000
+      spriteID: 804d77d0ddb5f7261aa3f76504d42ba7
       internalID: 4525572231445421577
       vertices: []
       indices: 
@@ -2147,19 +2108,19 @@ TextureImporter:
       name: Mage-Cyan_65
       rect:
         serializedVersion: 2
-        x: 552
-        y: 168
-        width: 16
-        height: 19
+        x: 544
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 36171f90c33907e70800000000000000
+      spriteID: 239ca56f8e661a9880d118d87c5a0f97
       internalID: 9110943932244652387
       vertices: []
       indices: 
@@ -2169,19 +2130,19 @@ TextureImporter:
       name: Mage-Cyan_66
       rect:
         serializedVersion: 2
-        x: 584
-        y: 168
-        width: 16
-        height: 20
+        x: 576
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96f5dd64f875699b0800000000000000
+      spriteID: 8594e4cb87324425ba9ec10cc10196b8
       internalID: -5073771657305432215
       vertices: []
       indices: 
@@ -2191,19 +2152,19 @@ TextureImporter:
       name: Mage-Cyan_67
       rect:
         serializedVersion: 2
-        x: 614
-        y: 168
-        width: 16
-        height: 22
+        x: 608
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca950a68cb75f3740800000000000000
+      spriteID: 2e1cfee3f04b82b35dc4be0977952cbe
       internalID: 5133918567449778604
       vertices: []
       indices: 
@@ -2213,19 +2174,19 @@ TextureImporter:
       name: Mage-Cyan_68
       rect:
         serializedVersion: 2
-        x: 648
-        y: 168
-        width: 16
-        height: 21
+        x: 640
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a18830e581ef21970800000000000000
+      spriteID: 27972fa78e2452cc51059a4ce79a60ad
       internalID: 8724314808780032026
       vertices: []
       indices: 
@@ -2235,19 +2196,19 @@ TextureImporter:
       name: Mage-Cyan_69
       rect:
         serializedVersion: 2
-        x: 680
-        y: 168
-        width: 16
-        height: 20
+        x: 672
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 375a1b146925dead0800000000000000
+      spriteID: 03aaf9e2f26db425d47763a14e4ad126
       internalID: -2671388198660102797
       vertices: []
       indices: 
@@ -2257,19 +2218,19 @@ TextureImporter:
       name: Mage-Cyan_70
       rect:
         serializedVersion: 2
-        x: 706
-        y: 166
-        width: 23
-        height: 16
+        x: 704
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03efa6fe85793d3d0800000000000000
+      spriteID: 0a97c1dafc3e97953e7b6cbed123ed28
       internalID: -3183034103391125968
       vertices: []
       indices: 
@@ -2279,19 +2240,19 @@ TextureImporter:
       name: Mage-Cyan_71
       rect:
         serializedVersion: 2
-        x: 738
-        y: 167
-        width: 23
-        height: 16
+        x: 736
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d1be5b95ec0b6b3e0800000000000000
+      spriteID: fe64a8b7a13bdef2593077a32e522189
       internalID: -2038247381023724771
       vertices: []
       indices: 
@@ -2301,19 +2262,19 @@ TextureImporter:
       name: Mage-Cyan_72
       rect:
         serializedVersion: 2
-        x: 8
-        y: 136
-        width: 16
-        height: 19
+        x: 0
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 806db32d5770611d0800000000000000
+      spriteID: 974c4c4a2f458bc8f8d4ce9ba8ed0845
       internalID: -3380506267675273720
       vertices: []
       indices: 
@@ -2323,19 +2284,19 @@ TextureImporter:
       name: Mage-Cyan_73
       rect:
         serializedVersion: 2
-        x: 40
-        y: 136
-        width: 16
-        height: 20
+        x: 32
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5562c3d102386dcc0800000000000000
+      spriteID: d5b745eb767ba108db6ebf9eeffff741
       internalID: -3686615071003498923
       vertices: []
       indices: 
@@ -2345,19 +2306,19 @@ TextureImporter:
       name: Mage-Cyan_74
       rect:
         serializedVersion: 2
-        x: 72
-        y: 135
-        width: 16
-        height: 20
+        x: 64
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: db6e06fb0a6d188e0800000000000000
+      spriteID: e9231e37b0622bfe8bf376bf76439966
       internalID: -1692835999020685635
       vertices: []
       indices: 
@@ -2367,19 +2328,19 @@ TextureImporter:
       name: Mage-Cyan_75
       rect:
         serializedVersion: 2
-        x: 104
-        y: 135
-        width: 16
-        height: 20
+        x: 96
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 025832341bf28ec40800000000000000
+      spriteID: 23a4c24a288f933f6c0637dc658c12ca
       internalID: 5541731779861513504
       vertices: []
       indices: 
@@ -2389,19 +2350,19 @@ TextureImporter:
       name: Mage-Cyan_76
       rect:
         serializedVersion: 2
-        x: 136
-        y: 136
-        width: 16
-        height: 20
+        x: 128
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a672aa2ef004a3e0800000000000000
+      spriteID: 16528911870e290fe1834e1bbd4e8e4b
       internalID: -2043507239282379101
       vertices: []
       indices: 
@@ -2411,19 +2372,19 @@ TextureImporter:
       name: Mage-Cyan_77
       rect:
         serializedVersion: 2
-        x: 168
-        y: 136
-        width: 16
-        height: 20
+        x: 160
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fea4d6b1d76785360800000000000000
+      spriteID: 5243bd8521b1c793f8a05290ecc5cb8b
       internalID: 7158601887408540399
       vertices: []
       indices: 
@@ -2433,19 +2394,19 @@ TextureImporter:
       name: Mage-Cyan_78
       rect:
         serializedVersion: 2
-        x: 200
-        y: 136
-        width: 17
-        height: 19
+        x: 192
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8abfe3cd2a1593a50800000000000000
+      spriteID: 0052677c60ea474fa0e713608fe02f90
       internalID: 6501317297007688616
       vertices: []
       indices: 
@@ -2455,19 +2416,19 @@ TextureImporter:
       name: Mage-Cyan_79
       rect:
         serializedVersion: 2
-        x: 232
-        y: 136
-        width: 16
-        height: 19
+        x: 224
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e4767f1a0c73bb150800000000000000
+      spriteID: 9d949463e28fbaadcf7cb6693e3e7a4b
       internalID: 5889362238207649614
       vertices: []
       indices: 
@@ -2477,19 +2438,19 @@ TextureImporter:
       name: Mage-Cyan_80
       rect:
         serializedVersion: 2
-        x: 264
-        y: 136
-        width: 17
-        height: 20
+        x: 256
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 517f519510220ec40800000000000000
+      spriteID: d87e365b02121b5b239a9cb81125a93e
       internalID: 5539464930850633493
       vertices: []
       indices: 
@@ -2499,19 +2460,19 @@ TextureImporter:
       name: Mage-Cyan_81
       rect:
         serializedVersion: 2
-        x: 296
-        y: 136
-        width: 17
-        height: 19
+        x: 288
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ffe2ab794cf9c620800000000000000
+      spriteID: 14f75849585d93b68488b10bede3de1e
       internalID: 2795042436297191409
       vertices: []
       indices: 
@@ -2521,19 +2482,19 @@ TextureImporter:
       name: Mage-Cyan_82
       rect:
         serializedVersion: 2
-        x: 328
-        y: 136
-        width: 17
-        height: 19
+        x: 320
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1974ad6162ab297d0800000000000000
+      spriteID: 1d173916e9997593dc5c33de266adb7a
       internalID: -2913061336200362095
       vertices: []
       indices: 
@@ -2543,19 +2504,19 @@ TextureImporter:
       name: Mage-Cyan_83
       rect:
         serializedVersion: 2
-        x: 360
-        y: 136
-        width: 17
-        height: 20
+        x: 352
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b03135d5397279a30800000000000000
+      spriteID: 01c82cad4e2b352b00ab11104277e67c
       internalID: 4221886689562530571
       vertices: []
       indices: 
@@ -2565,19 +2526,19 @@ TextureImporter:
       name: Mage-Cyan_84
       rect:
         serializedVersion: 2
-        x: 392
-        y: 136
-        width: 16
-        height: 20
+        x: 384
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d5b15aa27ac1deb0800000000000000
+      spriteID: 6ccc754b3ef24fe9bcfcf46e2eff75ba
       internalID: -4696750342538152491
       vertices: []
       indices: 
@@ -2587,19 +2548,19 @@ TextureImporter:
       name: Mage-Cyan_85
       rect:
         serializedVersion: 2
-        x: 424
-        y: 136
-        width: 16
-        height: 20
+        x: 416
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 611adc81a395c2bd0800000000000000
+      spriteID: 5f5c47459e548a9b4b7aed50c4732394
       internalID: -2653647974368960234
       vertices: []
       indices: 
@@ -2609,19 +2570,19 @@ TextureImporter:
       name: Mage-Cyan_86
       rect:
         serializedVersion: 2
-        x: 456
-        y: 136
-        width: 19
-        height: 19
+        x: 448
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c27b28c01ace52a0800000000000000
+      spriteID: abbdfcbb9a214d76d9ec9dc408dc340c
       internalID: -6746733018327846208
       vertices: []
       indices: 
@@ -2631,19 +2592,19 @@ TextureImporter:
       name: Mage-Cyan_87
       rect:
         serializedVersion: 2
-        x: 488
-        y: 136
-        width: 16
-        height: 20
+        x: 480
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e30b8b44ac3a31e0800000000000000
+      spriteID: 0531e80a9fff138d662a649f9a171848
       internalID: -2217393190186843163
       vertices: []
       indices: 
@@ -2653,19 +2614,19 @@ TextureImporter:
       name: Mage-Cyan_88
       rect:
         serializedVersion: 2
-        x: 520
-        y: 136
-        width: 16
-        height: 20
+        x: 512
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d44ee2168c9aca90800000000000000
+      spriteID: a8e419e747a22c9b45d0ecd0664641d9
       internalID: -7292844546915941162
       vertices: []
       indices: 
@@ -2675,19 +2636,19 @@ TextureImporter:
       name: Mage-Cyan_89
       rect:
         serializedVersion: 2
-        x: 552
-        y: 136
-        width: 16
-        height: 19
+        x: 544
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d806ac4f200ade0c0800000000000000
+      spriteID: 98a39e223f39478d2a9273b6f08c8aa9
       internalID: -4544800514389679987
       vertices: []
       indices: 
@@ -2697,19 +2658,19 @@ TextureImporter:
       name: Mage-Cyan_90
       rect:
         serializedVersion: 2
-        x: 584
-        y: 136
-        width: 16
-        height: 20
+        x: 576
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 235d0872f4880df60800000000000000
+      spriteID: 09d2b84c772fb4519862f9c4dc182e28
       internalID: 8057089606912365874
       vertices: []
       indices: 
@@ -2719,19 +2680,19 @@ TextureImporter:
       name: Mage-Cyan_91
       rect:
         serializedVersion: 2
-        x: 615
-        y: 135
-        width: 16
-        height: 23
+        x: 608
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 24a3df3ec65a9f010800000000000000
+      spriteID: 63f8bf92e13f68a5b818596415c4f0a2
       internalID: 1223190660907874882
       vertices: []
       indices: 
@@ -2741,19 +2702,19 @@ TextureImporter:
       name: Mage-Cyan_92
       rect:
         serializedVersion: 2
-        x: 648
-        y: 136
-        width: 16
-        height: 21
+        x: 640
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5fbab7b377253770800000000000000
+      spriteID: ce5e143d0f5a409531bd26e6793630cf
       internalID: 8589815242236280668
       vertices: []
       indices: 
@@ -2763,19 +2724,19 @@ TextureImporter:
       name: Mage-Cyan_93
       rect:
         serializedVersion: 2
-        x: 680
-        y: 136
-        width: 16
-        height: 20
+        x: 672
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b0a75a22c8937de60800000000000000
+      spriteID: f5b443d4d0fe7bac4c1446d02ebe92f1
       internalID: 7986915738204338699
       vertices: []
       indices: 
@@ -2785,19 +2746,19 @@ TextureImporter:
       name: Mage-Cyan_94
       rect:
         serializedVersion: 2
-        x: 710
-        y: 131
-        width: 17
-        height: 20
+        x: 704
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56b5257a7e264b520800000000000000
+      spriteID: dbecdd197dc0946d00d1d4efe78b7e74
       internalID: 2716905222295411557
       vertices: []
       indices: 
@@ -2807,19 +2768,19 @@ TextureImporter:
       name: Mage-Cyan_95
       rect:
         serializedVersion: 2
-        x: 742
-        y: 132
-        width: 17
-        height: 19
+        x: 736
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b320b0cf6872b460800000000000000
+      spriteID: cb7ebd8e9b478cfc91a9bb3d4478b9a9
       internalID: 7255994371016762294
       vertices: []
       indices: 
@@ -2829,19 +2790,19 @@ TextureImporter:
       name: Mage-Cyan_96
       rect:
         serializedVersion: 2
-        x: 8
-        y: 104
-        width: 16
-        height: 19
+        x: 0
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d76d94f22f2a4a9c0800000000000000
+      spriteID: d0afedcadae2df54ba167abeae7dad22
       internalID: -3916826614846335363
       vertices: []
       indices: 
@@ -2851,19 +2812,19 @@ TextureImporter:
       name: Mage-Cyan_97
       rect:
         serializedVersion: 2
-        x: 40
-        y: 104
-        width: 16
-        height: 20
+        x: 32
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a04640b3d9389010800000000000000
+      spriteID: 4abb0da7743d4eb3abba7b19a4abb319
       internalID: 1195769282425143457
       vertices: []
       indices: 
@@ -2873,19 +2834,19 @@ TextureImporter:
       name: Mage-Cyan_98
       rect:
         serializedVersion: 2
-        x: 72
-        y: 103
-        width: 16
-        height: 20
+        x: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84abb9c0314d018d0800000000000000
+      spriteID: 3b4871069f9ce4c428fa8a232adbf386
       internalID: -2877566983608747448
       vertices: []
       indices: 
@@ -2895,19 +2856,19 @@ TextureImporter:
       name: Mage-Cyan_99
       rect:
         serializedVersion: 2
-        x: 104
-        y: 103
-        width: 16
-        height: 20
+        x: 96
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2160c6893380fc40800000000000000
+      spriteID: 8643bd5be2d579ce852043297d044394
       internalID: 5544075424390209838
       vertices: []
       indices: 
@@ -2917,19 +2878,19 @@ TextureImporter:
       name: Mage-Cyan_100
       rect:
         serializedVersion: 2
-        x: 136
-        y: 104
-        width: 17
-        height: 20
+        x: 128
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 16b8d0dc269f0afa0800000000000000
+      spriteID: 3d7c0067e526e72c56297a591be3eea3
       internalID: -5791354918056129695
       vertices: []
       indices: 
@@ -2939,19 +2900,19 @@ TextureImporter:
       name: Mage-Cyan_101
       rect:
         serializedVersion: 2
-        x: 168
-        y: 104
-        width: 17
-        height: 20
+        x: 160
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ac73909bb7578350800000000000000
+      spriteID: d1bfd61870c69fb2a177039e29bd7a94
       internalID: 6018875890100042920
       vertices: []
       indices: 
@@ -2961,19 +2922,19 @@ TextureImporter:
       name: Mage-Cyan_102
       rect:
         serializedVersion: 2
-        x: 200
-        y: 104
-        width: 16
-        height: 19
+        x: 192
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 305d87914f7676c70800000000000000
+      spriteID: a663c6b44a1648241d23a6d5932e73b1
       internalID: 8964247881401292035
       vertices: []
       indices: 
@@ -2983,19 +2944,19 @@ TextureImporter:
       name: Mage-Cyan_103
       rect:
         serializedVersion: 2
-        x: 232
-        y: 104
-        width: 16
-        height: 19
+        x: 224
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e8c34d6f7bafffe0800000000000000
+      spriteID: 15151536fb4ce8c304ce55e7f0e95ddd
       internalID: -1153014415801202455
       vertices: []
       indices: 
@@ -3005,19 +2966,19 @@ TextureImporter:
       name: Mage-Cyan_104
       rect:
         serializedVersion: 2
-        x: 264
-        y: 104
-        width: 16
-        height: 20
+        x: 256
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0fe95a8b57cf017e0800000000000000
+      spriteID: 5592aa489b1e06247dc32e6247398611
       internalID: -1796658668781592848
       vertices: []
       indices: 
@@ -3027,19 +2988,19 @@ TextureImporter:
       name: Mage-Cyan_105
       rect:
         serializedVersion: 2
-        x: 296
-        y: 104
-        width: 16
-        height: 19
+        x: 288
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 813e8708d36f89de0800000000000000
+      spriteID: cc16eaee770f2ca1ea86296dc3e48b68
       internalID: -1326039346251767016
       vertices: []
       indices: 
@@ -3049,19 +3010,19 @@ TextureImporter:
       name: Mage-Cyan_106
       rect:
         serializedVersion: 2
-        x: 328
-        y: 104
-        width: 16
-        height: 19
+        x: 320
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bcc4ced3c8b39b330800000000000000
+      spriteID: c56975a18ff1ab2838710e279c9a98f0
       internalID: 3727075640146152651
       vertices: []
       indices: 
@@ -3071,19 +3032,19 @@ TextureImporter:
       name: Mage-Cyan_107
       rect:
         serializedVersion: 2
-        x: 360
-        y: 104
-        width: 16
-        height: 20
+        x: 352
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fad925667de19ee0800000000000000
+      spriteID: b91f644aa769d6eb92b24d2466ff281d
       internalID: -1255961728300492047
       vertices: []
       indices: 
@@ -3093,19 +3054,19 @@ TextureImporter:
       name: Mage-Cyan_108
       rect:
         serializedVersion: 2
-        x: 392
-        y: 104
-        width: 17
-        height: 20
+        x: 384
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d96cfe8ac28bcdb0800000000000000
+      spriteID: f777a9c182b4358d336376c587dbfeb7
       internalID: -4770575573774997039
       vertices: []
       indices: 
@@ -3115,19 +3076,19 @@ TextureImporter:
       name: Mage-Cyan_109
       rect:
         serializedVersion: 2
-        x: 424
-        y: 104
-        width: 17
-        height: 20
+        x: 416
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d78ddf506f3834f0800000000000000
+      spriteID: 8959bfa3486b54d05ecc6355a819ce0e
       internalID: -848858846601574441
       vertices: []
       indices: 
@@ -3137,19 +3098,19 @@ TextureImporter:
       name: Mage-Cyan_110
       rect:
         serializedVersion: 2
-        x: 456
-        y: 104
-        width: 16
-        height: 19
+        x: 448
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf6d9453b978eb7a0800000000000000
+      spriteID: 6208890905e046919389b4f7c9d26194
       internalID: -6359496523116849413
       vertices: []
       indices: 
@@ -3159,19 +3120,19 @@ TextureImporter:
       name: Mage-Cyan_111
       rect:
         serializedVersion: 2
-        x: 488
-        y: 104
-        width: 16
-        height: 20
+        x: 480
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 271a66c51047aea10800000000000000
+      spriteID: 762d13d1c7885905d1971d8bba9b68d1
       internalID: 1939490138730439026
       vertices: []
       indices: 
@@ -3181,19 +3142,19 @@ TextureImporter:
       name: Mage-Cyan_112
       rect:
         serializedVersion: 2
-        x: 520
-        y: 104
-        width: 16
-        height: 20
+        x: 512
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e3efed3595d604690800000000000000
+      spriteID: 24a9a649b8b0c01ed94ffbea68bfd181
       internalID: -7619970339084239298
       vertices: []
       indices: 
@@ -3203,19 +3164,19 @@ TextureImporter:
       name: Mage-Cyan_113
       rect:
         serializedVersion: 2
-        x: 552
-        y: 104
-        width: 16
-        height: 19
+        x: 544
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7b2347e697e3a2bb0800000000000000
+      spriteID: 26cf103c182b1a254f34aca7388083a8
       internalID: -4960083348330106185
       vertices: []
       indices: 
@@ -3225,19 +3186,19 @@ TextureImporter:
       name: Mage-Cyan_114
       rect:
         serializedVersion: 2
-        x: 584
-        y: 104
-        width: 16
-        height: 20
+        x: 576
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c382a184635284240800000000000000
+      spriteID: 2127d2e4888e98cd4e996ea37dad5b0d
       internalID: 4776108319894546492
       vertices: []
       indices: 
@@ -3247,19 +3208,19 @@ TextureImporter:
       name: Mage-Cyan_115
       rect:
         serializedVersion: 2
-        x: 615
-        y: 103
-        width: 18
-        height: 22
+        x: 608
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f11a44a606c2b490800000000000000
+      spriteID: 2fdbfddd8caf8dee5044eb8cbcaf0c7d
       internalID: -7731899878413299213
       vertices: []
       indices: 
@@ -3269,19 +3230,19 @@ TextureImporter:
       name: Mage-Cyan_116
       rect:
         serializedVersion: 2
-        x: 647
-        y: 104
-        width: 18
-        height: 21
+        x: 640
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b64d6688cfef826f0800000000000000
+      spriteID: 9e5313cebd36fdd76dc9460e962ab7fa
       internalID: -709036580737198997
       vertices: []
       indices: 
@@ -3291,19 +3252,19 @@ TextureImporter:
       name: Mage-Cyan_117
       rect:
         serializedVersion: 2
-        x: 680
-        y: 104
-        width: 16
-        height: 20
+        x: 672
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9762b79317af81490800000000000000
+      spriteID: 573d3c638c46961502dedf1ac229fe0e
       internalID: -7775189392452540807
       vertices: []
       indices: 
@@ -3313,19 +3274,19 @@ TextureImporter:
       name: Mage-Cyan_118
       rect:
         serializedVersion: 2
-        x: 712
-        y: 98
-        width: 16
-        height: 19
+        x: 704
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8dcb546891cff6840800000000000000
+      spriteID: af6cc51604fa2af884d9ae5f90b3f4ab
       internalID: 5219667679702793432
       vertices: []
       indices: 
@@ -3335,19 +3296,19 @@ TextureImporter:
       name: Mage-Cyan_119
       rect:
         serializedVersion: 2
-        x: 744
-        y: 99
-        width: 16
-        height: 18
+        x: 736
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: da38282cb38e292f0800000000000000
+      spriteID: 6be53676191e73af857e43f83dc1600b
       internalID: -967455626567187539
       vertices: []
       indices: 
@@ -3357,19 +3318,19 @@ TextureImporter:
       name: Mage-Cyan_120
       rect:
         serializedVersion: 2
-        x: 8
-        y: 72
-        width: 16
-        height: 19
+        x: 0
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0370deaede1a1b4e0800000000000000
+      spriteID: 142acd900738fbfc225c793aab6d39f8
       internalID: -1967613518963472592
       vertices: []
       indices: 
@@ -3379,19 +3340,19 @@ TextureImporter:
       name: Mage-Cyan_121
       rect:
         serializedVersion: 2
-        x: 40
-        y: 72
-        width: 16
-        height: 20
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4c01d3523be5b94f0800000000000000
+      spriteID: a8e4e24dceb999cc4bcbddc59609e9c0
       internalID: -820958383548067644
       vertices: []
       indices: 
@@ -3401,19 +3362,19 @@ TextureImporter:
       name: Mage-Cyan_122
       rect:
         serializedVersion: 2
-        x: 72
-        y: 71
-        width: 16
-        height: 20
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a3bb467d796ca2380800000000000000
+      spriteID: 99458691c920cd9278743f4000e1ebf5
       internalID: -8995158950263080134
       vertices: []
       indices: 
@@ -3423,19 +3384,19 @@ TextureImporter:
       name: Mage-Cyan_123
       rect:
         serializedVersion: 2
-        x: 104
-        y: 71
-        width: 16
-        height: 20
+        x: 96
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9c04c490b8a9a8970800000000000000
+      spriteID: 9c3badae46c905328c28f1ef4d78c71e
       internalID: 8757982347322474697
       vertices: []
       indices: 
@@ -3445,19 +3406,19 @@ TextureImporter:
       name: Mage-Cyan_124
       rect:
         serializedVersion: 2
-        x: 136
-        y: 72
-        width: 16
-        height: 20
+        x: 128
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8184711a31241c10800000000000000
+      spriteID: 8da9485a25d0f6caf00466cc8f1147c6
       internalID: 2023278665880863116
       vertices: []
       indices: 
@@ -3467,19 +3428,19 @@ TextureImporter:
       name: Mage-Cyan_125
       rect:
         serializedVersion: 2
-        x: 168
-        y: 72
-        width: 16
-        height: 20
+        x: 160
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f7b15f3e78c6b4260800000000000000
+      spriteID: dd7a970cbf20ebc2af628db394b1da51
       internalID: 7082874169871113087
       vertices: []
       indices: 
@@ -3489,19 +3450,19 @@ TextureImporter:
       name: Mage-Cyan_126
       rect:
         serializedVersion: 2
-        x: 199
-        y: 72
-        width: 17
-        height: 19
+        x: 192
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c179b89405a3b6e20800000000000000
+      spriteID: aeadbbae602cb9ca7d44022bb31d5117
       internalID: 3344831264758404892
       vertices: []
       indices: 
@@ -3511,19 +3472,19 @@ TextureImporter:
       name: Mage-Cyan_127
       rect:
         serializedVersion: 2
-        x: 232
-        y: 72
-        width: 16
-        height: 19
+        x: 224
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d4bcf98a7776b530800000000000000
+      spriteID: 28c76d39446cafe63fbea6cf1901c007
       internalID: 3870412297956275413
       vertices: []
       indices: 
@@ -3533,19 +3494,19 @@ TextureImporter:
       name: Mage-Cyan_128
       rect:
         serializedVersion: 2
-        x: 263
-        y: 72
-        width: 17
-        height: 20
+        x: 256
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1364e8faedbce12b0800000000000000
+      spriteID: 599ca3dfacea4947a0fbd31c217ace45
       internalID: -5611823928368544207
       vertices: []
       indices: 
@@ -3555,19 +3516,19 @@ TextureImporter:
       name: Mage-Cyan_129
       rect:
         serializedVersion: 2
-        x: 295
-        y: 72
-        width: 17
-        height: 19
+        x: 288
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2160b7408f4593c40800000000000000
+      spriteID: a27b72c8d3af392a93ba2ba6e4d43bbc
       internalID: 5492514644758824466
       vertices: []
       indices: 
@@ -3577,19 +3538,19 @@ TextureImporter:
       name: Mage-Cyan_130
       rect:
         serializedVersion: 2
-        x: 327
-        y: 72
-        width: 17
-        height: 19
+        x: 320
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf04a0fe8c32c6570800000000000000
+      spriteID: c6be83094c3e391bbb01818cdea9d25e
       internalID: 8461177145833177340
       vertices: []
       indices: 
@@ -3599,19 +3560,19 @@ TextureImporter:
       name: Mage-Cyan_131
       rect:
         serializedVersion: 2
-        x: 359
-        y: 72
-        width: 17
-        height: 20
+        x: 352
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f69460bca66b0ced0800000000000000
+      spriteID: 920cb0e9db3dd4e3dcdb9e923ebb6b9c
       internalID: -2395714431972128401
       vertices: []
       indices: 
@@ -3621,19 +3582,19 @@ TextureImporter:
       name: Mage-Cyan_132
       rect:
         serializedVersion: 2
-        x: 392
-        y: 72
-        width: 16
-        height: 20
+        x: 384
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b072ea17a9a0cab0800000000000000
+      spriteID: 41e2560cfd79e0d4aed71975adf57bce
       internalID: -4989801851950829386
       vertices: []
       indices: 
@@ -3643,19 +3604,19 @@ TextureImporter:
       name: Mage-Cyan_133
       rect:
         serializedVersion: 2
-        x: 424
-        y: 72
-        width: 16
-        height: 20
+        x: 416
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c59af56f82454c850800000000000000
+      spriteID: 2d731de564a54a48c99e6337ed40d60e
       internalID: 6396329905681836380
       vertices: []
       indices: 
@@ -3665,19 +3626,19 @@ TextureImporter:
       name: Mage-Cyan_134
       rect:
         serializedVersion: 2
-        x: 453
-        y: 72
-        width: 19
-        height: 19
+        x: 448
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 05a1369012e8602d0800000000000000
+      spriteID: 80ea9e34bef7cc98ca40cb3c9fe96e19
       internalID: -3312804203341866416
       vertices: []
       indices: 
@@ -3687,19 +3648,19 @@ TextureImporter:
       name: Mage-Cyan_135
       rect:
         serializedVersion: 2
-        x: 488
-        y: 72
-        width: 16
-        height: 20
+        x: 480
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f12f78a5828d2c3a0800000000000000
+      spriteID: 6164d27e7ab4f0c34d51379ceb39fda9
       internalID: -6646512432216280545
       vertices: []
       indices: 
@@ -3709,19 +3670,19 @@ TextureImporter:
       name: Mage-Cyan_136
       rect:
         serializedVersion: 2
-        x: 520
-        y: 72
-        width: 16
-        height: 20
+        x: 512
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c24e873450360fbb0800000000000000
+      spriteID: 62662e1196f0e507bec3d0c6b8e79f8f
       internalID: -4904311119948487636
       vertices: []
       indices: 
@@ -3731,19 +3692,19 @@ TextureImporter:
       name: Mage-Cyan_137
       rect:
         serializedVersion: 2
-        x: 552
-        y: 72
-        width: 16
-        height: 19
+        x: 544
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d86441b06414dd2d0800000000000000
+      spriteID: 0a3f383886c60a9dd536c37cdd3f2ac7
       internalID: -3252371586802235763
       vertices: []
       indices: 
@@ -3753,19 +3714,19 @@ TextureImporter:
       name: Mage-Cyan_138
       rect:
         serializedVersion: 2
-        x: 584
-        y: 72
-        width: 16
-        height: 20
+        x: 576
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 885578caacef7b650800000000000000
+      spriteID: 042f4ee73252e3019d5bda681dfb1b0b
       internalID: 6248743154431251848
       vertices: []
       indices: 
@@ -3775,19 +3736,19 @@ TextureImporter:
       name: Mage-Cyan_139
       rect:
         serializedVersion: 2
-        x: 617
-        y: 71
-        width: 16
-        height: 23
+        x: 608
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e7a03a9dffb22800800000000000000
+      spriteID: a232f8047a9c037510276eef6451d236
       internalID: 586241997446096866
       vertices: []
       indices: 
@@ -3797,19 +3758,19 @@ TextureImporter:
       name: Mage-Cyan_140
       rect:
         serializedVersion: 2
-        x: 648
-        y: 72
-        width: 16
-        height: 21
+        x: 640
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b8c4313b3f976560800000000000000
+      spriteID: 02d66963764a311ab47da686af3b7c8f
       internalID: 7306983997009348788
       vertices: []
       indices: 
@@ -3819,19 +3780,19 @@ TextureImporter:
       name: Mage-Cyan_141
       rect:
         serializedVersion: 2
-        x: 680
-        y: 72
-        width: 16
-        height: 20
+        x: 672
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b576e0e0a178503d0800000000000000
+      spriteID: 369c0afdf966c12088b05f821d1a806c
       internalID: -3241035810848479397
       vertices: []
       indices: 
@@ -3841,19 +3802,19 @@ TextureImporter:
       name: Mage-Cyan_142
       rect:
         serializedVersion: 2
-        x: 713
-        y: 65
-        width: 17
-        height: 20
+        x: 704
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 79b24296a191074d0800000000000000
+      spriteID: 2aa526e6da6f57700f8b53142025aea9
       internalID: -3138981339053413481
       vertices: []
       indices: 
@@ -3863,19 +3824,19 @@ TextureImporter:
       name: Mage-Cyan_143
       rect:
         serializedVersion: 2
-        x: 745
-        y: 66
-        width: 17
-        height: 19
+        x: 736
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b25eb06e3cd6ddd70800000000000000
+      spriteID: e8152f1e7e82957dbc3f2e54006ba0d7
       internalID: 9069525912739636523
       vertices: []
       indices: 
@@ -3885,19 +3846,19 @@ TextureImporter:
       name: Mage-Cyan_144
       rect:
         serializedVersion: 2
-        x: 8
-        y: 40
-        width: 16
-        height: 19
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d098ddef37077d7a0800000000000000
+      spriteID: ed4fc918576f088fa4ff42811d048fc8
       internalID: -6352485105883313907
       vertices: []
       indices: 
@@ -3907,19 +3868,19 @@ TextureImporter:
       name: Mage-Cyan_145
       rect:
         serializedVersion: 2
-        x: 40
-        y: 40
-        width: 16
-        height: 20
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2737c6fff669f08f0800000000000000
+      spriteID: efb99c2643d42178225669c353999bae
       internalID: -572073219881929870
       vertices: []
       indices: 
@@ -3929,19 +3890,19 @@ TextureImporter:
       name: Mage-Cyan_146
       rect:
         serializedVersion: 2
-        x: 72
-        y: 39
-        width: 16
-        height: 20
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: caffeb18efe41c920800000000000000
+      spriteID: 1b85a1896102e9ec5e8c76d6603d9f27
       internalID: 3008772881065639852
       vertices: []
       indices: 
@@ -3951,19 +3912,19 @@ TextureImporter:
       name: Mage-Cyan_147
       rect:
         serializedVersion: 2
-        x: 104
-        y: 39
-        width: 16
-        height: 20
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: df4ed2eb3a1a2c380800000000000000
+      spriteID: b0d906006c54bb0d8150707f7ce1d917
       internalID: -8952415384616704771
       vertices: []
       indices: 
@@ -3973,19 +3934,19 @@ TextureImporter:
       name: Mage-Cyan_148
       rect:
         serializedVersion: 2
-        x: 136
-        y: 40
-        width: 16
-        height: 20
+        x: 128
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f318eb6bd632487a0800000000000000
+      spriteID: fa7387ca223ffbdc81090a42794652f2
       internalID: -6375932218325434049
       vertices: []
       indices: 
@@ -3995,19 +3956,19 @@ TextureImporter:
       name: Mage-Cyan_149
       rect:
         serializedVersion: 2
-        x: 168
-        y: 40
-        width: 16
-        height: 20
+        x: 160
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d8394189d28900c0800000000000000
+      spriteID: 130114b867e893bf5331fd818f4ce175
       internalID: -4609008872948418349
       vertices: []
       indices: 
@@ -4017,19 +3978,19 @@ TextureImporter:
       name: Mage-Cyan_150
       rect:
         serializedVersion: 2
-        x: 199
-        y: 40
-        width: 17
-        height: 19
+        x: 192
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 65f6e335e4eebffb0800000000000000
+      spriteID: 3eeb43297397a5c3b849e42fa51531ab
       internalID: -4612831373139480746
       vertices: []
       indices: 
@@ -4039,19 +4000,19 @@ TextureImporter:
       name: Mage-Cyan_151
       rect:
         serializedVersion: 2
-        x: 231
-        y: 40
-        width: 17
-        height: 19
+        x: 224
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b4620c50bd99c4a10800000000000000
+      spriteID: aecec008438c0c5bf65959d9eb195724
       internalID: 1895058709189502539
       vertices: []
       indices: 
@@ -4061,19 +4022,19 @@ TextureImporter:
       name: Mage-Cyan_152
       rect:
         serializedVersion: 2
-        x: 262
-        y: 40
-        width: 18
-        height: 20
+        x: 256
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3bbd1a526d729f2b0800000000000000
+      spriteID: c2ea2bcb593362c11c1ee86a0000e8dc
       internalID: -5550361265049576525
       vertices: []
       indices: 
@@ -4083,19 +4044,19 @@ TextureImporter:
       name: Mage-Cyan_153
       rect:
         serializedVersion: 2
-        x: 296
-        y: 40
-        width: 16
-        height: 19
+        x: 288
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b0e8cad8f534d3d40800000000000000
+      spriteID: 252878d45186541e48587129958116d2
       internalID: 5565678792177651211
       vertices: []
       indices: 
@@ -4105,19 +4066,19 @@ TextureImporter:
       name: Mage-Cyan_154
       rect:
         serializedVersion: 2
-        x: 327
-        y: 40
-        width: 17
-        height: 19
+        x: 320
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 29ced24acdf2c7160800000000000000
+      spriteID: d2628108d893ea02ca19fae22bf56d5b
       internalID: 7024542143484914834
       vertices: []
       indices: 
@@ -4127,19 +4088,19 @@ TextureImporter:
       name: Mage-Cyan_155
       rect:
         serializedVersion: 2
-        x: 359
-        y: 40
-        width: 17
-        height: 20
+        x: 352
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6aab52b3230d8b9a0800000000000000
+      spriteID: ce8e3f1033cb1cf9c4cd47c090078842
       internalID: -6216990371425699162
       vertices: []
       indices: 
@@ -4149,19 +4110,19 @@ TextureImporter:
       name: Mage-Cyan_156
       rect:
         serializedVersion: 2
-        x: 392
-        y: 40
-        width: 16
-        height: 20
+        x: 384
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68e627aff3d590060800000000000000
+      spriteID: c4ae7c471c6d4e3c93c89f6b7967e03f
       internalID: 6920164831797603974
       vertices: []
       indices: 
@@ -4171,19 +4132,19 @@ TextureImporter:
       name: Mage-Cyan_157
       rect:
         serializedVersion: 2
-        x: 424
-        y: 40
-        width: 16
-        height: 20
+        x: 416
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01c35a737f8717570800000000000000
+      spriteID: 2c3e547c26b3cc82fe3f03f5699a4505
       internalID: 8462678177991703568
       vertices: []
       indices: 
@@ -4193,19 +4154,19 @@ TextureImporter:
       name: Mage-Cyan_158
       rect:
         serializedVersion: 2
-        x: 453
-        y: 40
-        width: 19
-        height: 19
+        x: 448
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 396e004829442d170800000000000000
+      spriteID: 0c0d06ebe43f94e6700b5bde513d0b77
       internalID: 8201693267465660051
       vertices: []
       indices: 
@@ -4215,19 +4176,19 @@ TextureImporter:
       name: Mage-Cyan_159
       rect:
         serializedVersion: 2
-        x: 488
-        y: 40
-        width: 16
-        height: 20
+        x: 480
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 022bccc54863a7b00800000000000000
+      spriteID: 10dc13731a46689ea03d459729a600a9
       internalID: 827033423696409120
       vertices: []
       indices: 
@@ -4237,19 +4198,19 @@ TextureImporter:
       name: Mage-Cyan_160
       rect:
         serializedVersion: 2
-        x: 520
-        y: 40
-        width: 16
-        height: 20
+        x: 512
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5be799092148cf880800000000000000
+      spriteID: df44b82ade04759a26d5fc2787c2cf33
       internalID: -8575834375150010699
       vertices: []
       indices: 
@@ -4259,19 +4220,19 @@ TextureImporter:
       name: Mage-Cyan_161
       rect:
         serializedVersion: 2
-        x: 552
-        y: 40
-        width: 16
-        height: 19
+        x: 544
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c226e7fa55f8cbc0800000000000000
+      spriteID: 338f68a1dbffe655818dae94b09cdc1c
       internalID: -3762487717613133115
       vertices: []
       indices: 
@@ -4281,19 +4242,19 @@ TextureImporter:
       name: Mage-Cyan_162
       rect:
         serializedVersion: 2
-        x: 584
-        y: 40
-        width: 16
-        height: 20
+        x: 576
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f8ba9e70da35d620800000000000000
+      spriteID: bba9d7e8d103ef333a02999845930318
       internalID: 2798207410632308978
       vertices: []
       indices: 
@@ -4303,19 +4264,19 @@ TextureImporter:
       name: Mage-Cyan_163
       rect:
         serializedVersion: 2
-        x: 618
-        y: 40
-        width: 16
-        height: 22
+        x: 608
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 22b4c3b3613b01940800000000000000
+      spriteID: ebec50119e1de8000f924a9a5f8dfb24
       internalID: 5264904872460569378
       vertices: []
       indices: 
@@ -4325,19 +4286,19 @@ TextureImporter:
       name: Mage-Cyan_164
       rect:
         serializedVersion: 2
-        x: 648
-        y: 40
-        width: 16
-        height: 21
+        x: 640
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f59a2f7504b58600800000000000000
+      spriteID: 1fdb421a3ff7dc0677ceb866f7ef538c
       internalID: 469979671831418360
       vertices: []
       indices: 
@@ -4347,19 +4308,19 @@ TextureImporter:
       name: Mage-Cyan_165
       rect:
         serializedVersion: 2
-        x: 680
-        y: 40
-        width: 16
-        height: 20
+        x: 672
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dfe22ef9decaabd0800000000000000
+      spriteID: 72dad641fedc4b9ca856b8b87565d859
       internalID: -2618052797695594537
       vertices: []
       indices: 
@@ -4369,19 +4330,19 @@ TextureImporter:
       name: Mage-Cyan_166
       rect:
         serializedVersion: 2
-        x: 711
-        y: 38
-        width: 23
-        height: 16
+        x: 704
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ebbbadb807436b080800000000000000
+      spriteID: b86315cd0809c823b7cb16445935ed97
       internalID: -9172085933106086978
       vertices: []
       indices: 
@@ -4391,19 +4352,19 @@ TextureImporter:
       name: Mage-Cyan_167
       rect:
         serializedVersion: 2
-        x: 743
-        y: 39
-        width: 23
-        height: 16
+        x: 736
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 056e51d874f9c24b0800000000000000
+      spriteID: 5cd87711e36f150e8c3e050f02e56b33
       internalID: -5463817118248737200
       vertices: []
       indices: 
@@ -4413,19 +4374,19 @@ TextureImporter:
       name: Mage-Cyan_168
       rect:
         serializedVersion: 2
-        x: 8
-        y: 8
-        width: 16
-        height: 19
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8e0e5a96f4389b4c0800000000000000
+      spriteID: 9e23ac086961d8f0081faad66a2a37e4
       internalID: -4271238394486071064
       vertices: []
       indices: 
@@ -4435,19 +4396,19 @@ TextureImporter:
       name: Mage-Cyan_169
       rect:
         serializedVersion: 2
-        x: 40
-        y: 8
-        width: 16
-        height: 20
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0bfc9c8e9c6ff5de0800000000000000
+      spriteID: daa605199f877209ef7d381764500c7e
       internalID: -1342082816878719056
       vertices: []
       indices: 
@@ -4457,19 +4418,19 @@ TextureImporter:
       name: Mage-Cyan_170
       rect:
         serializedVersion: 2
-        x: 72
-        y: 7
-        width: 16
-        height: 20
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 852c2951e62d5c930800000000000000
+      spriteID: e011540fc17c6aedf987a2cb858d65f4
       internalID: 4162964800824066648
       vertices: []
       indices: 
@@ -4479,19 +4440,19 @@ TextureImporter:
       name: Mage-Cyan_171
       rect:
         serializedVersion: 2
-        x: 104
-        y: 7
-        width: 16
-        height: 20
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b7f3e47f4afd9350800000000000000
+      spriteID: 441091adfdd9a0fb86cb94834e723101
       internalID: 6025247095662049208
       vertices: []
       indices: 
@@ -4501,19 +4462,19 @@ TextureImporter:
       name: Mage-Cyan_172
       rect:
         serializedVersion: 2
-        x: 136
-        y: 8
-        width: 16
-        height: 20
+        x: 128
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8fb20ac316721b660800000000000000
+      spriteID: aea399dc63e77705ffa9f64b759ca9f6
       internalID: 7399738961328876536
       vertices: []
       indices: 
@@ -4523,19 +4484,19 @@ TextureImporter:
       name: Mage-Cyan_173
       rect:
         serializedVersion: 2
-        x: 168
-        y: 8
-        width: 16
-        height: 20
+        x: 160
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 773c46b715a838630800000000000000
+      spriteID: da09bbaf92b76a5f789768b89111965c
       internalID: 3928135382564389751
       vertices: []
       indices: 
@@ -4545,19 +4506,19 @@ TextureImporter:
       name: Mage-Cyan_174
       rect:
         serializedVersion: 2
-        x: 199
-        y: 8
-        width: 17
-        height: 19
+        x: 192
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4c1c42ded2272d20800000000000000
+      spriteID: bbf5decda05457686e4b7bf4870ae695
       internalID: 3253607596204760141
       vertices: []
       indices: 
@@ -4567,19 +4528,19 @@ TextureImporter:
       name: Mage-Cyan_175
       rect:
         serializedVersion: 2
-        x: 232
-        y: 8
-        width: 16
-        height: 19
+        x: 224
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2b70ed901caa7db0800000000000000
+      spriteID: 5879cea775d67e437ed17fcf4144bdf7
       internalID: -4793329666014282964
       vertices: []
       indices: 
@@ -4589,19 +4550,19 @@ TextureImporter:
       name: Mage-Cyan_176
       rect:
         serializedVersion: 2
-        x: 264
-        y: 8
-        width: 16
-        height: 20
+        x: 256
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b0dd3266bf3aeff00800000000000000
+      spriteID: 610f941613dee42b9d72ec9cb1744bfd
       internalID: 1152538854799170827
       vertices: []
       indices: 
@@ -4611,19 +4572,19 @@ TextureImporter:
       name: Mage-Cyan_177
       rect:
         serializedVersion: 2
-        x: 295
-        y: 7
-        width: 17
-        height: 20
+        x: 288
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b72e91a0d7d325650800000000000000
+      spriteID: a3576cb8122b53443387fc75b58533e1
       internalID: 6220101642601751163
       vertices: []
       indices: 
@@ -4633,19 +4594,19 @@ TextureImporter:
       name: Mage-Cyan_178
       rect:
         serializedVersion: 2
-        x: 327
-        y: 7
-        width: 17
-        height: 20
+        x: 320
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 203a9f6f1d7cc5e70800000000000000
+      spriteID: ef9036a11aa7fc46675e1eaa8a5e0044
       internalID: 9105372251241947906
       vertices: []
       indices: 
@@ -4655,19 +4616,19 @@ TextureImporter:
       name: Mage-Cyan_179
       rect:
         serializedVersion: 2
-        x: 359
-        y: 7
-        width: 17
-        height: 21
+        x: 352
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a388d3167df0848e0800000000000000
+      spriteID: b54e03029c4f977eb2f3b0e61f7f259a
       internalID: -1709098640863295430
       vertices: []
       indices: 
@@ -4677,19 +4638,19 @@ TextureImporter:
       name: Mage-Cyan_180
       rect:
         serializedVersion: 2
-        x: 392
-        y: 8
-        width: 16
-        height: 20
+        x: 384
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b6e74773b3be07860800000000000000
+      spriteID: 43cc6a7fc5334ee45908be41f7536e8d
       internalID: 7525773616902078059
       vertices: []
       indices: 
@@ -4699,19 +4660,19 @@ TextureImporter:
       name: Mage-Cyan_181
       rect:
         serializedVersion: 2
-        x: 424
-        y: 8
-        width: 16
-        height: 20
+        x: 416
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 72e974c59dd56e860800000000000000
+      spriteID: b252c68d20a29cb432ccefa23fd548fc
       internalID: 7558832212725440039
       vertices: []
       indices: 
@@ -4721,19 +4682,19 @@ TextureImporter:
       name: Mage-Cyan_182
       rect:
         serializedVersion: 2
-        x: 454
-        y: 7
-        width: 18
-        height: 20
+        x: 448
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e000d5c3fb468b160800000000000000
+      spriteID: 323bde52b1869fedc2a74caa156df7c5
       internalID: 7041488789908029454
       vertices: []
       indices: 
@@ -4743,19 +4704,19 @@ TextureImporter:
       name: Mage-Cyan_183
       rect:
         serializedVersion: 2
-        x: 488
-        y: 8
-        width: 16
-        height: 20
+        x: 480
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8dec8099a75f96540800000000000000
+      spriteID: fe9428a493c933e73a2d450c81631356
       internalID: 5001798768073952984
       vertices: []
       indices: 
@@ -4765,19 +4726,19 @@ TextureImporter:
       name: Mage-Cyan_184
       rect:
         serializedVersion: 2
-        x: 520
-        y: 8
-        width: 16
-        height: 20
+        x: 512
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 76de458b14168b760800000000000000
+      spriteID: f0283fbd917270ce3bc50be072f18e81
       internalID: 7473830516514680167
       vertices: []
       indices: 
@@ -4787,19 +4748,19 @@ TextureImporter:
       name: Mage-Cyan_185
       rect:
         serializedVersion: 2
-        x: 552
-        y: 8
-        width: 16
-        height: 19
+        x: 544
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4fc66b95c80767d50800000000000000
+      spriteID: 4ff408ecd68f66755e2913a99ad5312f
       internalID: 6734694040882015476
       vertices: []
       indices: 
@@ -4809,19 +4770,19 @@ TextureImporter:
       name: Mage-Cyan_186
       rect:
         serializedVersion: 2
-        x: 584
-        y: 8
-        width: 16
-        height: 20
+        x: 576
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8e5c66f7f3b24e200800000000000000
+      spriteID: 8af26d31848beb970bc90caddeda21f8
       internalID: 208339034486261224
       vertices: []
       indices: 
@@ -4831,19 +4792,19 @@ TextureImporter:
       name: Mage-Cyan_187
       rect:
         serializedVersion: 2
-        x: 618
-        y: 9
-        width: 16
-        height: 21
+        x: 608
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5acb3679f782a8f0800000000000000
+      spriteID: 7da9e54b52c25153673c0b26ff5201aa
       internalID: -530712300576060834
       vertices: []
       indices: 
@@ -4853,19 +4814,19 @@ TextureImporter:
       name: Mage-Cyan_188
       rect:
         serializedVersion: 2
-        x: 648
-        y: 8
-        width: 16
-        height: 21
+        x: 640
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1652b6feef0133180800000000000000
+      spriteID: 7d68c504e262e59fc430fcbe094a4ee1
       internalID: -9136940531880090271
       vertices: []
       indices: 
@@ -4875,19 +4836,19 @@ TextureImporter:
       name: Mage-Cyan_189
       rect:
         serializedVersion: 2
-        x: 680
-        y: 8
-        width: 16
-        height: 20
+        x: 672
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b7879d152a66d6850800000000000000
+      spriteID: ff9d8b527f21f9b39a5d9041885d8904
       internalID: 6371861895143061627
       vertices: []
       indices: 
@@ -4897,19 +4858,19 @@ TextureImporter:
       name: Mage-Cyan_190
       rect:
         serializedVersion: 2
-        x: 713
-        y: 8
-        width: 17
-        height: 18
+        x: 704
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b770e23c18ad25f60800000000000000
+      spriteID: 0e4eb587d40cd660a8551ea06cbc9ead
       internalID: 8021714137160484731
       vertices: []
       indices: 
@@ -4919,19 +4880,19 @@ TextureImporter:
       name: Mage-Cyan_191
       rect:
         serializedVersion: 2
-        x: 745
-        y: 8
-        width: 17
-        height: 19
+        x: 736
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38fb561d5af7227b0800000000000000
+      spriteID: 2c60e82ade06897392afb5babb8bad05
       internalID: -5250493865401139325
       vertices: []
       indices: 
@@ -4953,109 +4914,24 @@ TextureImporter:
     nameFileIdTable:
       Mage-Cyan_0: -4204768681062877811
       Mage-Cyan_1: 8739558314058090879
-      Mage-Cyan_10: 7892665755170303634
-      Mage-Cyan_100: -5791354918056129695
-      Mage-Cyan_101: 6018875890100042920
-      Mage-Cyan_102: 8964247881401292035
-      Mage-Cyan_103: -1153014415801202455
-      Mage-Cyan_104: -1796658668781592848
-      Mage-Cyan_105: -1326039346251767016
-      Mage-Cyan_106: 3727075640146152651
-      Mage-Cyan_107: -1255961728300492047
-      Mage-Cyan_108: -4770575573774997039
-      Mage-Cyan_109: -848858846601574441
-      Mage-Cyan_11: -8505169758283490847
-      Mage-Cyan_110: -6359496523116849413
-      Mage-Cyan_111: 1939490138730439026
-      Mage-Cyan_112: -7619970339084239298
-      Mage-Cyan_113: -4960083348330106185
-      Mage-Cyan_114: 4776108319894546492
-      Mage-Cyan_115: -7731899878413299213
-      Mage-Cyan_116: -709036580737198997
-      Mage-Cyan_117: -7775189392452540807
-      Mage-Cyan_118: 5219667679702793432
-      Mage-Cyan_119: -967455626567187539
-      Mage-Cyan_12: -7169144628659570679
-      Mage-Cyan_120: -1967613518963472592
-      Mage-Cyan_121: -820958383548067644
-      Mage-Cyan_122: -8995158950263080134
-      Mage-Cyan_123: 8757982347322474697
-      Mage-Cyan_124: 2023278665880863116
-      Mage-Cyan_125: 7082874169871113087
-      Mage-Cyan_126: 3344831264758404892
-      Mage-Cyan_127: 3870412297956275413
-      Mage-Cyan_128: -5611823928368544207
-      Mage-Cyan_129: 5492514644758824466
-      Mage-Cyan_13: 4701461218750355682
-      Mage-Cyan_130: 8461177145833177340
-      Mage-Cyan_131: -2395714431972128401
-      Mage-Cyan_132: -4989801851950829386
-      Mage-Cyan_133: 6396329905681836380
-      Mage-Cyan_134: -3312804203341866416
-      Mage-Cyan_135: -6646512432216280545
-      Mage-Cyan_136: -4904311119948487636
-      Mage-Cyan_137: -3252371586802235763
-      Mage-Cyan_138: 6248743154431251848
-      Mage-Cyan_139: 586241997446096866
-      Mage-Cyan_14: 1614106574521523282
-      Mage-Cyan_140: 7306983997009348788
-      Mage-Cyan_141: -3241035810848479397
-      Mage-Cyan_142: -3138981339053413481
-      Mage-Cyan_143: 9069525912739636523
-      Mage-Cyan_144: -6352485105883313907
-      Mage-Cyan_145: -572073219881929870
-      Mage-Cyan_146: 3008772881065639852
-      Mage-Cyan_147: -8952415384616704771
-      Mage-Cyan_148: -6375932218325434049
-      Mage-Cyan_149: -4609008872948418349
-      Mage-Cyan_15: 5457196906028512508
-      Mage-Cyan_150: -4612831373139480746
-      Mage-Cyan_151: 1895058709189502539
-      Mage-Cyan_152: -5550361265049576525
-      Mage-Cyan_153: 5565678792177651211
-      Mage-Cyan_154: 7024542143484914834
-      Mage-Cyan_155: -6216990371425699162
-      Mage-Cyan_156: 6920164831797603974
-      Mage-Cyan_157: 8462678177991703568
-      Mage-Cyan_158: 8201693267465660051
-      Mage-Cyan_159: 827033423696409120
-      Mage-Cyan_16: 820266848797382192
-      Mage-Cyan_160: -8575834375150010699
-      Mage-Cyan_161: -3762487717613133115
-      Mage-Cyan_162: 2798207410632308978
-      Mage-Cyan_163: 5264904872460569378
-      Mage-Cyan_164: 469979671831418360
-      Mage-Cyan_165: -2618052797695594537
-      Mage-Cyan_166: -9172085933106086978
-      Mage-Cyan_167: -5463817118248737200
-      Mage-Cyan_168: -4271238394486071064
-      Mage-Cyan_169: -1342082816878719056
-      Mage-Cyan_17: 7146683305259043645
-      Mage-Cyan_170: 4162964800824066648
-      Mage-Cyan_171: 6025247095662049208
-      Mage-Cyan_172: 7399738961328876536
-      Mage-Cyan_173: 3928135382564389751
-      Mage-Cyan_174: 3253607596204760141
-      Mage-Cyan_175: -4793329666014282964
-      Mage-Cyan_176: 1152538854799170827
-      Mage-Cyan_177: 6220101642601751163
-      Mage-Cyan_178: 9105372251241947906
-      Mage-Cyan_179: -1709098640863295430
-      Mage-Cyan_18: -5286866079711903071
-      Mage-Cyan_180: 7525773616902078059
-      Mage-Cyan_181: 7558832212725440039
-      Mage-Cyan_182: 7041488789908029454
-      Mage-Cyan_183: 5001798768073952984
-      Mage-Cyan_184: 7473830516514680167
-      Mage-Cyan_185: 6734694040882015476
-      Mage-Cyan_186: 208339034486261224
-      Mage-Cyan_187: -530712300576060834
-      Mage-Cyan_188: -9136940531880090271
-      Mage-Cyan_189: 6371861895143061627
-      Mage-Cyan_19: 7287611945714541132
-      Mage-Cyan_190: 8021714137160484731
-      Mage-Cyan_191: -5250493865401139325
       Mage-Cyan_2: -3550724121656554105
+      Mage-Cyan_3: -306643886071302770
+      Mage-Cyan_4: 5735309029673937187
+      Mage-Cyan_5: 7999121669657126711
+      Mage-Cyan_6: -7592042805320665359
+      Mage-Cyan_7: 4939100135580457150
+      Mage-Cyan_8: -2423418898803679353
+      Mage-Cyan_9: 1198227320583521665
+      Mage-Cyan_10: 7892665755170303634
+      Mage-Cyan_11: -8505169758283490847
+      Mage-Cyan_12: -7169144628659570679
+      Mage-Cyan_13: 4701461218750355682
+      Mage-Cyan_14: 1614106574521523282
+      Mage-Cyan_15: 5457196906028512508
+      Mage-Cyan_16: 820266848797382192
+      Mage-Cyan_17: 7146683305259043645
+      Mage-Cyan_18: -5286866079711903071
+      Mage-Cyan_19: 7287611945714541132
       Mage-Cyan_20: -5187706764174167510
       Mage-Cyan_21: -9204053499540803792
       Mage-Cyan_22: -876941352434070775
@@ -5066,7 +4942,6 @@ TextureImporter:
       Mage-Cyan_27: -4079612733475334809
       Mage-Cyan_28: -564557931619726589
       Mage-Cyan_29: -1714394460688630974
-      Mage-Cyan_3: -306643886071302770
       Mage-Cyan_30: 8213666207734833248
       Mage-Cyan_31: 3129230715084677345
       Mage-Cyan_32: 8814794944671196233
@@ -5077,7 +4952,6 @@ TextureImporter:
       Mage-Cyan_37: 4638694688971628351
       Mage-Cyan_38: -8191984073515782977
       Mage-Cyan_39: 8940948580747667121
-      Mage-Cyan_4: 5735309029673937187
       Mage-Cyan_40: 5223891280661146707
       Mage-Cyan_41: -7471647637665690499
       Mage-Cyan_42: 5691617042195162263
@@ -5088,7 +4962,6 @@ TextureImporter:
       Mage-Cyan_47: -8848809914804919052
       Mage-Cyan_48: 3955292684444330949
       Mage-Cyan_49: -8996526285601778289
-      Mage-Cyan_5: 7999121669657126711
       Mage-Cyan_50: 5357044109819691104
       Mage-Cyan_51: 2777135090526427448
       Mage-Cyan_52: -1235809538195827881
@@ -5099,7 +4972,6 @@ TextureImporter:
       Mage-Cyan_57: -4983721677540155266
       Mage-Cyan_58: 2027312538838237643
       Mage-Cyan_59: 5483583660722420113
-      Mage-Cyan_6: -7592042805320665359
       Mage-Cyan_60: 2166068123304085871
       Mage-Cyan_61: -403209213488114711
       Mage-Cyan_62: -1773591895302704826
@@ -5110,7 +4982,6 @@ TextureImporter:
       Mage-Cyan_67: 5133918567449778604
       Mage-Cyan_68: 8724314808780032026
       Mage-Cyan_69: -2671388198660102797
-      Mage-Cyan_7: 4939100135580457150
       Mage-Cyan_70: -3183034103391125968
       Mage-Cyan_71: -2038247381023724771
       Mage-Cyan_72: -3380506267675273720
@@ -5121,7 +4992,6 @@ TextureImporter:
       Mage-Cyan_77: 7158601887408540399
       Mage-Cyan_78: 6501317297007688616
       Mage-Cyan_79: 5889362238207649614
-      Mage-Cyan_8: -2423418898803679353
       Mage-Cyan_80: 5539464930850633493
       Mage-Cyan_81: 2795042436297191409
       Mage-Cyan_82: -2913061336200362095
@@ -5132,7 +5002,6 @@ TextureImporter:
       Mage-Cyan_87: -2217393190186843163
       Mage-Cyan_88: -7292844546915941162
       Mage-Cyan_89: -4544800514389679987
-      Mage-Cyan_9: 1198227320583521665
       Mage-Cyan_90: 8057089606912365874
       Mage-Cyan_91: 1223190660907874882
       Mage-Cyan_92: 8589815242236280668
@@ -5143,6 +5012,98 @@ TextureImporter:
       Mage-Cyan_97: 1195769282425143457
       Mage-Cyan_98: -2877566983608747448
       Mage-Cyan_99: 5544075424390209838
+      Mage-Cyan_100: -5791354918056129695
+      Mage-Cyan_101: 6018875890100042920
+      Mage-Cyan_102: 8964247881401292035
+      Mage-Cyan_103: -1153014415801202455
+      Mage-Cyan_104: -1796658668781592848
+      Mage-Cyan_105: -1326039346251767016
+      Mage-Cyan_106: 3727075640146152651
+      Mage-Cyan_107: -1255961728300492047
+      Mage-Cyan_108: -4770575573774997039
+      Mage-Cyan_109: -848858846601574441
+      Mage-Cyan_110: -6359496523116849413
+      Mage-Cyan_111: 1939490138730439026
+      Mage-Cyan_112: -7619970339084239298
+      Mage-Cyan_113: -4960083348330106185
+      Mage-Cyan_114: 4776108319894546492
+      Mage-Cyan_115: -7731899878413299213
+      Mage-Cyan_116: -709036580737198997
+      Mage-Cyan_117: -7775189392452540807
+      Mage-Cyan_118: 5219667679702793432
+      Mage-Cyan_119: -967455626567187539
+      Mage-Cyan_120: -1967613518963472592
+      Mage-Cyan_121: -820958383548067644
+      Mage-Cyan_122: -8995158950263080134
+      Mage-Cyan_123: 8757982347322474697
+      Mage-Cyan_124: 2023278665880863116
+      Mage-Cyan_125: 7082874169871113087
+      Mage-Cyan_126: 3344831264758404892
+      Mage-Cyan_127: 3870412297956275413
+      Mage-Cyan_128: -5611823928368544207
+      Mage-Cyan_129: 5492514644758824466
+      Mage-Cyan_130: 8461177145833177340
+      Mage-Cyan_131: -2395714431972128401
+      Mage-Cyan_132: -4989801851950829386
+      Mage-Cyan_133: 6396329905681836380
+      Mage-Cyan_134: -3312804203341866416
+      Mage-Cyan_135: -6646512432216280545
+      Mage-Cyan_136: -4904311119948487636
+      Mage-Cyan_137: -3252371586802235763
+      Mage-Cyan_138: 6248743154431251848
+      Mage-Cyan_139: 586241997446096866
+      Mage-Cyan_140: 7306983997009348788
+      Mage-Cyan_141: -3241035810848479397
+      Mage-Cyan_142: -3138981339053413481
+      Mage-Cyan_143: 9069525912739636523
+      Mage-Cyan_144: -6352485105883313907
+      Mage-Cyan_145: -572073219881929870
+      Mage-Cyan_146: 3008772881065639852
+      Mage-Cyan_147: -8952415384616704771
+      Mage-Cyan_148: -6375932218325434049
+      Mage-Cyan_149: -4609008872948418349
+      Mage-Cyan_150: -4612831373139480746
+      Mage-Cyan_151: 1895058709189502539
+      Mage-Cyan_152: -5550361265049576525
+      Mage-Cyan_153: 5565678792177651211
+      Mage-Cyan_154: 7024542143484914834
+      Mage-Cyan_155: -6216990371425699162
+      Mage-Cyan_156: 6920164831797603974
+      Mage-Cyan_157: 8462678177991703568
+      Mage-Cyan_158: 8201693267465660051
+      Mage-Cyan_159: 827033423696409120
+      Mage-Cyan_160: -8575834375150010699
+      Mage-Cyan_161: -3762487717613133115
+      Mage-Cyan_162: 2798207410632308978
+      Mage-Cyan_163: 5264904872460569378
+      Mage-Cyan_164: 469979671831418360
+      Mage-Cyan_165: -2618052797695594537
+      Mage-Cyan_166: -9172085933106086978
+      Mage-Cyan_167: -5463817118248737200
+      Mage-Cyan_168: -4271238394486071064
+      Mage-Cyan_169: -1342082816878719056
+      Mage-Cyan_170: 4162964800824066648
+      Mage-Cyan_171: 6025247095662049208
+      Mage-Cyan_172: 7399738961328876536
+      Mage-Cyan_173: 3928135382564389751
+      Mage-Cyan_174: 3253607596204760141
+      Mage-Cyan_175: -4793329666014282964
+      Mage-Cyan_176: 1152538854799170827
+      Mage-Cyan_177: 6220101642601751163
+      Mage-Cyan_178: 9105372251241947906
+      Mage-Cyan_179: -1709098640863295430
+      Mage-Cyan_180: 7525773616902078059
+      Mage-Cyan_181: 7558832212725440039
+      Mage-Cyan_182: 7041488789908029454
+      Mage-Cyan_183: 5001798768073952984
+      Mage-Cyan_184: 7473830516514680167
+      Mage-Cyan_185: 6734694040882015476
+      Mage-Cyan_186: 208339034486261224
+      Mage-Cyan_187: -530712300576060834
+      Mage-Cyan_188: -9136940531880090271
+      Mage-Cyan_189: 6371861895143061627
+      Mage-Cyan_190: 8021714137160484731
+      Mage-Cyan_191: -5250493865401139325
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

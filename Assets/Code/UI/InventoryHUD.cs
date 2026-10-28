@@ -95,3 +95,4 @@ public class InventoryHUD : MonoBehaviour
         GUI.Box(rect, textoHUD, boxStyle);
     }
 }
+

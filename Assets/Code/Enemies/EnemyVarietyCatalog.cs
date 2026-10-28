@@ -28,9 +28,56 @@ public class EnemySpriteSheetAnimator : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         enemyAI = GetComponent<BaseEnemyAI>();
-        if (spriteSheet != null)
+        if (spriteSheet != null && !loaded)
         {
-            InitializeFromTexture(spriteSheet, columns, rows, pixelsPerUnit, isPuny24x8Format);
+            AutoDetectAndInitialize(spriteSheet);
+        }
+    }
+
+    public void AutoDetectAndInitialize(Texture2D sheet)
+    {
+        if (sheet == null) return;
+        int w = sheet.width;
+        int h = sheet.height;
+
+        if (w == 768 && h == 256)
+        {
+            // Puny Characters (24 cols x 8 rows de 32x32, PPU = 20)
+            InitializeFromTexture(sheet, 24, 8, 20f, true);
+        }
+        else if (w == 96 && h == 80)
+        {
+            // goblin_spritesheet.png (6 cols x 5 rows de 16x16, PPU = 16)
+            InitializeFromTexture(sheet, 6, 5, 16f, false);
+        }
+        else if (w == 96 && h == 64)
+        {
+            // goblin_bomber_spritesheet.png (6 cols x 4 rows de 16x16, PPU = 16)
+            InitializeFromTexture(sheet, 6, 4, 16f, false);
+        }
+        else if (w == 128 && h == 64)
+        {
+            // mushroom_spritesheet.png (8 cols x 4 rows de 16x16, PPU = 16)
+            InitializeFromTexture(sheet, 8, 4, 16f, false);
+        }
+        else if (w == 240 && h == 80)
+        {
+            // slime_spritesheet.png (15 cols x 5 rows de 16x16, PPU = 16)
+            InitializeFromTexture(sheet, 15, 5, 16f, false);
+        }
+        else if (w == 96 && h == 24)
+        {
+            // worm_spritesheet.png (6 cols x 3 rows de 16x8, PPU = 16)
+            InitializeFromTexture(sheet, 6, 3, 16f, false);
+        }
+        else if (w == 480 && h == 32)
+        {
+            // Slime.png (15 cols x 1 row de 32x32, PPU = 16)
+            InitializeFromTexture(sheet, 15, 1, 16f, false);
+        }
+        else
+        {
+            InitializeFromTexture(sheet, columns, rows, pixelsPerUnit, isPuny24x8Format);
         }
     }
 
@@ -57,7 +104,13 @@ public class EnemySpriteSheetAnimator : MonoBehaviour
             for (int c = 0; c < columns; c++)
             {
                 int texX = c * cellW;
-                grid[r, c] = Sprite.Create(readable, new Rect(texX, texY, cellW, cellH), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+                // Crear sub-textura aislada con Clamp + Point para evitar sangrado de frames vecinos
+                Texture2D cellTex = new Texture2D(cellW, cellH, TextureFormat.RGBA32, false);
+                cellTex.filterMode = FilterMode.Point;
+                cellTex.wrapMode = TextureWrapMode.Clamp;
+                cellTex.SetPixels(readable.GetPixels(texX, texY, cellW, cellH));
+                cellTex.Apply();
+                grid[r, c] = Sprite.Create(cellTex, new Rect(0, 0, cellW, cellH), new Vector2(0.5f, 0.5f), pixelsPerUnit);
             }
         }
 
@@ -99,8 +152,21 @@ public class EnemySpriteSheetAnimator : MonoBehaviour
 
         if (isPuny24x8Format && columns >= 24 && rows >= 8)
         {
+            // Determinar fila direccional (0=Sur, 2=Oeste, 4=Norte, 6=Este)
+            row = 0;
             if (enemyAI != null)
             {
+                PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
+                if (pm != null)
+                {
+                    Vector2 dir = (pm.transform.position - transform.position).normalized;
+                    if (Mathf.Abs(dir.y) >= Mathf.Abs(dir.x))
+                        row = dir.y > 0f ? 4 : 0;
+                    else
+                        row = dir.x > 0f ? 6 : 2;
+                    if (sr != null) sr.flipX = false;
+                }
+
                 if (enemyAI.currentState == BaseEnemyAI.AIState.ChargeAttack)
                 {
                     col = 4;
@@ -120,35 +186,54 @@ public class EnemySpriteSheetAnimator : MonoBehaviour
                 }
             }
         }
+        else if (columns == 6 && rows == 5)
+        {
+            // goblin_spritesheet.png (96x80): RowTop 0=Walk(6), RowTop 3=Idle(4)
+            bool moving = enemyAI != null && (enemyAI.currentState == BaseEnemyAI.AIState.Chase || enemyAI.currentState == BaseEnemyAI.AIState.Patrol || enemyAI.currentState == BaseEnemyAI.AIState.ExecuteAttack);
+            row = moving ? 0 : 3;
+            int maxC = moving ? 6 : 4;
+            col = Mathf.FloorToInt(timer) % maxC;
+        }
+        else if (columns == 6 && rows == 4)
+        {
+            // goblin_bomber_spritesheet.png (96x64): RowTop 0=Throw(6), RowTop 2=Idle/Walk(4)
+            bool attacking = enemyAI != null && (enemyAI.currentState == BaseEnemyAI.AIState.ChargeAttack || enemyAI.currentState == BaseEnemyAI.AIState.ExecuteAttack);
+            row = attacking ? 0 : 2;
+            int maxC = attacking ? 6 : 4;
+            col = Mathf.FloorToInt(timer) % maxC;
+        }
+        else if (columns == 8 && rows == 4)
+        {
+            // mushroom_spritesheet.png (128x64): RowTop 0=Walk(8), RowTop 1=Attack(6)
+            bool attacking = enemyAI != null && (enemyAI.currentState == BaseEnemyAI.AIState.ChargeAttack || enemyAI.currentState == BaseEnemyAI.AIState.ExecuteAttack);
+            row = attacking ? 1 : 0;
+            int maxC = attacking ? 6 : 8;
+            col = Mathf.FloorToInt(timer) % maxC;
+        }
+        else if (columns == 15 && rows == 5)
+        {
+            // slime_spritesheet.png (240x80): RowTop 1=Walk(0..5), RowTop 3=Idle(0..4)
+            bool moving = enemyAI != null && (enemyAI.currentState == BaseEnemyAI.AIState.Chase || enemyAI.currentState == BaseEnemyAI.AIState.Patrol || enemyAI.currentState == BaseEnemyAI.AIState.ExecuteAttack);
+            row = moving ? 1 : 3;
+            int maxC = moving ? 6 : 5;
+            col = Mathf.FloorToInt(timer) % maxC;
+        }
+        else if (columns == 6 && rows == 3)
+        {
+            // worm_spritesheet.png (96x24, 16x8): RowTop 0=Walk(0..5)
+            row = 0;
+            col = Mathf.FloorToInt(timer) % 6;
+        }
+        else if (columns == 15 && rows == 1)
+        {
+            // Slime.png (480x32, 32x32): RowTop 0, cols 0..5
+            row = 0;
+            col = Mathf.FloorToInt(timer) % 6;
+        }
         else
         {
-            if (enemyAI != null)
-            {
-                if (enemyAI.currentState == BaseEnemyAI.AIState.ChargeAttack)
-                {
-                    row = Mathf.Min(rows - 1, 2);
-                    col = 0;
-                }
-                else if (enemyAI.currentState == BaseEnemyAI.AIState.ExecuteAttack)
-                {
-                    row = Mathf.Min(rows - 1, 2);
-                    col = Mathf.Clamp(1 + (Mathf.FloorToInt(timer * 1.4f) % Mathf.Max(1, columns - 1)), 0, columns - 1);
-                }
-                else if (enemyAI.currentState == BaseEnemyAI.AIState.Chase)
-                {
-                    row = Mathf.Min(rows - 1, 1);
-                    col = Mathf.FloorToInt(timer) % columns;
-                }
-                else
-                {
-                    row = 0;
-                    col = Mathf.FloorToInt(timer * 0.7f) % columns;
-                }
-            }
-            else
-            {
-                col = Mathf.FloorToInt(timer) % columns;
-            }
+            row = 0;
+            col = Mathf.FloorToInt(timer) % Mathf.Max(1, columns);
         }
 
         sr.sprite = grid[Mathf.Clamp(row, 0, rows - 1), Mathf.Clamp(col, 0, columns - 1)];
@@ -462,3 +547,4 @@ public class CorruptedGuardAI : BaseEnemyAI
         yield return new WaitForSeconds(0.20f);
     }
 }
+
