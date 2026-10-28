@@ -104,3 +104,4 @@ public class BlueCrossSealNode : MonoBehaviour
         GUI.Box(r, $"[E / J] Purificar {nombreSello}", style);
     }
 }
+
