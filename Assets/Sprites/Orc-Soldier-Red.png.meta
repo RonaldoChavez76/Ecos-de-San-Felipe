@@ -597,7 +597,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -610,7 +610,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -624,7 +624,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -650,7 +650,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -663,46 +663,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -717,19 +678,19 @@ TextureImporter:
       name: Orc-Soldier-Red_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 232
-        width: 16
-        height: 21
+        x: 0
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a46a6e1a30fe1f80800000000000000
+      spriteID: f37c4ca91ec64f784628bfca50c4b340
       internalID: -8133799744575478624
       vertices: []
       indices: 
@@ -739,19 +700,19 @@ TextureImporter:
       name: Orc-Soldier-Red_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 232
-        width: 16
-        height: 22
+        x: 32
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 47a3913bb7ec43a90800000000000000
+      spriteID: e02e4a63c94066f2fb06db85643d7c7f
       internalID: -7335010862398621068
       vertices: []
       indices: 
@@ -761,19 +722,19 @@ TextureImporter:
       name: Orc-Soldier-Red_2
       rect:
         serializedVersion: 2
-        x: 73
-        y: 231
-        width: 14
-        height: 22
+        x: 64
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73ad5d092d95e3ec0800000000000000
+      spriteID: 8b7887241ab6351a81878ff65e9dd57d
       internalID: -3585329492432397769
       vertices: []
       indices: 
@@ -783,19 +744,19 @@ TextureImporter:
       name: Orc-Soldier-Red_3
       rect:
         serializedVersion: 2
-        x: 104
-        y: 232
-        width: 16
-        height: 22
+        x: 96
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 281c84f21ba946f10800000000000000
+      spriteID: 2d7cb542db955ba4a4361787c1c42063
       internalID: 2262102998640017794
       vertices: []
       indices: 
@@ -805,19 +766,19 @@ TextureImporter:
       name: Orc-Soldier-Red_4
       rect:
         serializedVersion: 2
-        x: 137
-        y: 231
-        width: 14
-        height: 22
+        x: 128
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5444d26bc4b1a4be0800000000000000
+      spriteID: e128e9aa588b20ba60c6d2884c5b9874
       internalID: -1492350310232013755
       vertices: []
       indices: 
@@ -827,19 +788,19 @@ TextureImporter:
       name: Orc-Soldier-Red_5
       rect:
         serializedVersion: 2
-        x: 167
-        y: 232
-        width: 16
-        height: 22
+        x: 160
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7fd761cfdff7f8030800000000000000
+      spriteID: c7abd6afc79171acca8d2f693c81beb2
       internalID: 3499156164322950647
       vertices: []
       indices: 
@@ -849,19 +810,19 @@ TextureImporter:
       name: Orc-Soldier-Red_6
       rect:
         serializedVersion: 2
-        x: 199
-        y: 232
-        width: 16
-        height: 22
+        x: 192
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7c6a4325060b2a380800000000000000
+      spriteID: e764588efbf3e094b2cdfd9584e33f71
       internalID: -8961406380771334457
       vertices: []
       indices: 
@@ -871,19 +832,19 @@ TextureImporter:
       name: Orc-Soldier-Red_7
       rect:
         serializedVersion: 2
-        x: 232
-        y: 231
-        width: 16
-        height: 22
+        x: 224
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7a961850064d64ea0800000000000000
+      spriteID: 5ebe87c31630085b74daa944f0d0b7d0
       internalID: -5888785953866028633
       vertices: []
       indices: 
@@ -893,19 +854,19 @@ TextureImporter:
       name: Orc-Soldier-Red_8
       rect:
         serializedVersion: 2
-        x: 265
-        y: 232
-        width: 15
-        height: 21
+        x: 256
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eff05a7f590dff2b0800000000000000
+      spriteID: 0d0f88c8aa59921aba89c1c8cdb53529
       internalID: -5548486873373667330
       vertices: []
       indices: 
@@ -915,19 +876,19 @@ TextureImporter:
       name: Orc-Soldier-Red_9
       rect:
         serializedVersion: 2
-        x: 297
-        y: 231
-        width: 14
-        height: 23
+        x: 288
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 956f97f43b3ae0970800000000000000
+      spriteID: f1b86cd0531d6034aae9a9b24ff0aace
       internalID: 8723089518791095897
       vertices: []
       indices: 
@@ -937,19 +898,19 @@ TextureImporter:
       name: Orc-Soldier-Red_10
       rect:
         serializedVersion: 2
-        x: 328
-        y: 231
-        width: 15
-        height: 22
+        x: 320
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f18f68ab43ce9720800000000000000
+      spriteID: 75d55edda9062ff5e0e301fd5b8040f7
       internalID: 2854933943515316727
       vertices: []
       indices: 
@@ -959,19 +920,19 @@ TextureImporter:
       name: Orc-Soldier-Red_11
       rect:
         serializedVersion: 2
-        x: 360
-        y: 231
-        width: 15
-        height: 22
+        x: 352
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d6ea940a4d42a6f0800000000000000
+      spriteID: 087902112a8d66d0e48e4144b52436bb
       internalID: -674892013851973931
       vertices: []
       indices: 
@@ -981,19 +942,19 @@ TextureImporter:
       name: Orc-Soldier-Red_12
       rect:
         serializedVersion: 2
-        x: 393
-        y: 232
-        width: 14
-        height: 22
+        x: 384
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4f1554de6ddfdea30800000000000000
+      spriteID: 6297fd7e18ec41a1d2c285185dacaf90
       internalID: 4246329123225817588
       vertices: []
       indices: 
@@ -1003,19 +964,19 @@ TextureImporter:
       name: Orc-Soldier-Red_13
       rect:
         serializedVersion: 2
-        x: 423
-        y: 232
-        width: 16
-        height: 22
+        x: 416
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ae6af9ae3f121270800000000000000
+      spriteID: 3b7b2af868be15470e6567e4c5da9d7b
       internalID: 8219666623904771752
       vertices: []
       indices: 
@@ -1025,19 +986,19 @@ TextureImporter:
       name: Orc-Soldier-Red_14
       rect:
         serializedVersion: 2
-        x: 455
-        y: 232
-        width: 16
-        height: 22
+        x: 448
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffa980c09431d5ce0800000000000000
+      spriteID: 15c8741c0d6b549dfdd7332f6aeba3e3
       internalID: -1414953503469036801
       vertices: []
       indices: 
@@ -1047,19 +1008,19 @@ TextureImporter:
       name: Orc-Soldier-Red_15
       rect:
         serializedVersion: 2
-        x: 489
-        y: 228
-        width: 15
-        height: 25
+        x: 480
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c61925e5a54f54720800000000000000
+      spriteID: fbf9c7d32e693bd177b08463ee9cd145
       internalID: 2829936609838928236
       vertices: []
       indices: 
@@ -1069,19 +1030,19 @@ TextureImporter:
       name: Orc-Soldier-Red_16
       rect:
         serializedVersion: 2
-        x: 520
-        y: 232
-        width: 15
-        height: 22
+        x: 512
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bee4b04d2d62268e0800000000000000
+      spriteID: 76262cb433376fcffe752b40f6ed16c6
       internalID: -1701755022250127637
       vertices: []
       indices: 
@@ -1091,19 +1052,19 @@ TextureImporter:
       name: Orc-Soldier-Red_17
       rect:
         serializedVersion: 2
-        x: 552
-        y: 232
-        width: 15
-        height: 22
+        x: 544
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffd0b7e5420b73d30800000000000000
+      spriteID: 46b706638466d5105cc5fdadf8aabe16
       internalID: 4411188030283124223
       vertices: []
       indices: 
@@ -1113,19 +1074,19 @@ TextureImporter:
       name: Orc-Soldier-Red_18
       rect:
         serializedVersion: 2
-        x: 585
-        y: 232
-        width: 15
-        height: 21
+        x: 576
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c8bcd1dd2a7c71e0800000000000000
+      spriteID: 101dbcc983628c4c3412999a9e4ca30e
       internalID: -2198748180850624318
       vertices: []
       indices: 
@@ -1135,19 +1096,19 @@ TextureImporter:
       name: Orc-Soldier-Red_19
       rect:
         serializedVersion: 2
-        x: 616
-        y: 232
-        width: 16
-        height: 22
+        x: 608
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 179e18ed5b1bd5530800000000000000
+      spriteID: 402842a296d47a9e2799bb7722ca0ac4
       internalID: 3845425051524524401
       vertices: []
       indices: 
@@ -1157,19 +1118,19 @@ TextureImporter:
       name: Orc-Soldier-Red_20
       rect:
         serializedVersion: 2
-        x: 647
-        y: 233
-        width: 18
-        height: 22
+        x: 640
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6b39ccff953f3d90800000000000000
+      spriteID: 35b2ee18624688cefef617714d6ad5f7
       internalID: -7115909924964975761
       vertices: []
       indices: 
@@ -1179,19 +1140,19 @@ TextureImporter:
       name: Orc-Soldier-Red_21
       rect:
         serializedVersion: 2
-        x: 679
-        y: 232
-        width: 18
-        height: 23
+        x: 672
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e4816869dbe0db40800000000000000
+      spriteID: 7f0d9b401d689850f0698a2f2f818b48
       internalID: 5463125666992063717
       vertices: []
       indices: 
@@ -1201,19 +1162,19 @@ TextureImporter:
       name: Orc-Soldier-Red_22
       rect:
         serializedVersion: 2
-        x: 712
-        y: 232
-        width: 16
-        height: 22
+        x: 704
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d8690b1dbafea03a0800000000000000
+      spriteID: 963e92133b0d11cb9084b05ba17b0930
       internalID: -6698277974523734387
       vertices: []
       indices: 
@@ -1223,19 +1184,19 @@ TextureImporter:
       name: Orc-Soldier-Red_23
       rect:
         serializedVersion: 2
-        x: 744
-        y: 232
-        width: 16
-        height: 19
+        x: 736
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e1273854503ea67c0800000000000000
+      spriteID: 4f6b194e2e5afbce4e0297af14a3f804
       internalID: -4077196900849978850
       vertices: []
       indices: 
@@ -1245,19 +1206,19 @@ TextureImporter:
       name: Orc-Soldier-Red_24
       rect:
         serializedVersion: 2
-        x: 9
-        y: 200
-        width: 14
-        height: 21
+        x: 0
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d1f3738eef436080800000000000000
+      spriteID: abad2a4885568f96acdbb1d642ba8f57
       internalID: -9195418128334196267
       vertices: []
       indices: 
@@ -1267,19 +1228,19 @@ TextureImporter:
       name: Orc-Soldier-Red_25
       rect:
         serializedVersion: 2
-        x: 41
-        y: 200
-        width: 14
-        height: 22
+        x: 32
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66f36db72c3fa3d30800000000000000
+      spriteID: df7a7aeb45d784682e91f80b6a9ecb79
       internalID: 4412106801589665638
       vertices: []
       indices: 
@@ -1289,19 +1250,19 @@ TextureImporter:
       name: Orc-Soldier-Red_26
       rect:
         serializedVersion: 2
-        x: 73
-        y: 199
-        width: 15
-        height: 22
+        x: 64
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d900d46779be97f0800000000000000
+      spriteID: feb6c77806573123c783bc8fd6acf601
       internalID: -603841377577465385
       vertices: []
       indices: 
@@ -1311,19 +1272,19 @@ TextureImporter:
       name: Orc-Soldier-Red_27
       rect:
         serializedVersion: 2
-        x: 105
-        y: 200
-        width: 14
-        height: 22
+        x: 96
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6bd5d82c00df521e0800000000000000
+      spriteID: ffb75fc2087040caf0403a54d57aea54
       internalID: -2223092661331599946
       vertices: []
       indices: 
@@ -1333,19 +1294,19 @@ TextureImporter:
       name: Orc-Soldier-Red_28
       rect:
         serializedVersion: 2
-        x: 137
-        y: 199
-        width: 14
-        height: 22
+        x: 128
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 875710d2b22d022a0800000000000000
+      spriteID: 0b7fa4adc5cce9c28a77d30a7888b201
       internalID: -6764175557429987976
       vertices: []
       indices: 
@@ -1355,19 +1316,19 @@ TextureImporter:
       name: Orc-Soldier-Red_29
       rect:
         serializedVersion: 2
-        x: 167
-        y: 200
-        width: 17
-        height: 22
+        x: 160
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: be22baae05443c490800000000000000
+      spriteID: 786201c3726f02249d7c005301e716d6
       internalID: -7727257421312482581
       vertices: []
       indices: 
@@ -1377,19 +1338,19 @@ TextureImporter:
       name: Orc-Soldier-Red_30
       rect:
         serializedVersion: 2
-        x: 199
-        y: 200
-        width: 17
-        height: 22
+        x: 192
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c796cc320ba559770800000000000000
+      spriteID: 88ec47eb4980dc7c9d07e1c93d6ada46
       internalID: 8616893174604654972
       vertices: []
       indices: 
@@ -1399,19 +1360,19 @@ TextureImporter:
       name: Orc-Soldier-Red_31
       rect:
         serializedVersion: 2
-        x: 233
-        y: 200
-        width: 16
-        height: 21
+        x: 224
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 234bf32f12f9d3b80800000000000000
+      spriteID: e869ad2f33b02b32d9f212ec152b1e51
       internalID: -8413393560711220174
       vertices: []
       indices: 
@@ -1421,19 +1382,19 @@ TextureImporter:
       name: Orc-Soldier-Red_32
       rect:
         serializedVersion: 2
-        x: 265
-        y: 200
-        width: 15
-        height: 21
+        x: 256
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fb30382b9b2681250800000000000000
+      spriteID: 9eac8eb3837271b97b6aa186ecb8f4ea
       internalID: 5915586660254548927
       vertices: []
       indices: 
@@ -1443,19 +1404,19 @@ TextureImporter:
       name: Orc-Soldier-Red_33
       rect:
         serializedVersion: 2
-        x: 297
-        y: 200
-        width: 15
-        height: 22
+        x: 288
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54a532a1fa6da1890800000000000000
+      spriteID: 8c5329800b54c99387e747f270bb95e5
       internalID: -7486435383003882939
       vertices: []
       indices: 
@@ -1465,19 +1426,19 @@ TextureImporter:
       name: Orc-Soldier-Red_34
       rect:
         serializedVersion: 2
-        x: 328
-        y: 199
-        width: 17
-        height: 22
+        x: 320
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6c5276b7d5e3ac8e0800000000000000
+      spriteID: 0d3daf43edb3e2735260d93bd64818ae
       internalID: -1672455740391479866
       vertices: []
       indices: 
@@ -1487,19 +1448,19 @@ TextureImporter:
       name: Orc-Soldier-Red_35
       rect:
         serializedVersion: 2
-        x: 360
-        y: 199
-        width: 17
-        height: 22
+        x: 352
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1dab1828a113bb100800000000000000
+      spriteID: 1fd6a14f68000f248baadc2634ac7105
       internalID: 124747404611271377
       vertices: []
       indices: 
@@ -1509,19 +1470,19 @@ TextureImporter:
       name: Orc-Soldier-Red_36
       rect:
         serializedVersion: 2
-        x: 393
-        y: 200
-        width: 15
-        height: 22
+        x: 384
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3749392f7c163df0800000000000000
+      spriteID: c5d674636d777c7ac2326b86fc604e1d
       internalID: -200941800893364419
       vertices: []
       indices: 
@@ -1531,19 +1492,19 @@ TextureImporter:
       name: Orc-Soldier-Red_37
       rect:
         serializedVersion: 2
-        x: 423
-        y: 200
-        width: 17
-        height: 22
+        x: 416
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b05f8fbd8086ad1c0800000000000000
+      spriteID: 77d1119ed82970b24aa861738d69b731
       internalID: -4478152492206983925
       vertices: []
       indices: 
@@ -1553,19 +1514,19 @@ TextureImporter:
       name: Orc-Soldier-Red_38
       rect:
         serializedVersion: 2
-        x: 455
-        y: 200
-        width: 17
-        height: 22
+        x: 448
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 060eaeafccceef780800000000000000
+      spriteID: 6ff83723a4d504ecd04f0d5bf53d7a16
       internalID: -8647213869377593248
       vertices: []
       indices: 
@@ -1575,19 +1536,19 @@ TextureImporter:
       name: Orc-Soldier-Red_39
       rect:
         serializedVersion: 2
-        x: 489
-        y: 200
-        width: 17
-        height: 21
+        x: 480
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef3a513166133340800000000000000
+      spriteID: ddb066cc0f4a372d19fa67efaaafa0bb
       internalID: 4842238631049052134
       vertices: []
       indices: 
@@ -1597,19 +1558,19 @@ TextureImporter:
       name: Orc-Soldier-Red_40
       rect:
         serializedVersion: 2
-        x: 520
-        y: 200
-        width: 16
-        height: 22
+        x: 512
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9705a43df283a0a20800000000000000
+      spriteID: ee9ae38e0010696dc3dc096451268f1c
       internalID: 3029295477419561081
       vertices: []
       indices: 
@@ -1619,19 +1580,19 @@ TextureImporter:
       name: Orc-Soldier-Red_41
       rect:
         serializedVersion: 2
-        x: 552
-        y: 200
-        width: 16
-        height: 22
+        x: 544
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 14c430e844ba406d0800000000000000
+      spriteID: 0247b40bb9e51dd4a7cbcb12bb76371e
       internalID: -3025104738757424063
       vertices: []
       indices: 
@@ -1641,19 +1602,19 @@ TextureImporter:
       name: Orc-Soldier-Red_42
       rect:
         serializedVersion: 2
-        x: 585
-        y: 200
-        width: 14
-        height: 21
+        x: 576
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0d0f058bc327e660800000000000000
+      spriteID: 9fdab7b4d5241b28f2ce08d674be35e2
       internalID: 7414934668506500367
       vertices: []
       indices: 
@@ -1663,19 +1624,19 @@ TextureImporter:
       name: Orc-Soldier-Red_43
       rect:
         serializedVersion: 2
-        x: 616
-        y: 200
-        width: 15
-        height: 22
+        x: 608
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fbc8b6effe70d83a0800000000000000
+      spriteID: 670ad9eabb6b5d1285eeca06fca7699e
       internalID: -6661659546464056129
       vertices: []
       indices: 
@@ -1685,19 +1646,19 @@ TextureImporter:
       name: Orc-Soldier-Red_44
       rect:
         serializedVersion: 2
-        x: 647
-        y: 201
-        width: 15
-        height: 22
+        x: 640
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 934b4e87eecff2860800000000000000
+      spriteID: db9492151f96961d546fdc4b3cbebed6
       internalID: 7507497205010576441
       vertices: []
       indices: 
@@ -1707,19 +1668,19 @@ TextureImporter:
       name: Orc-Soldier-Red_45
       rect:
         serializedVersion: 2
-        x: 680
-        y: 200
-        width: 15
-        height: 23
+        x: 672
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 934cd2087355584a0800000000000000
+      spriteID: 8a0a63a8b6e876c59822bff522237c58
       internalID: -6591768782724807623
       vertices: []
       indices: 
@@ -1729,19 +1690,19 @@ TextureImporter:
       name: Orc-Soldier-Red_46
       rect:
         serializedVersion: 2
-        x: 713
-        y: 200
-        width: 14
-        height: 22
+        x: 704
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4a743f36dab39b5d0800000000000000
+      spriteID: 4ea4514e0368dd548eaf3a4b38e09146
       internalID: -3046338057047160924
       vertices: []
       indices: 
@@ -1751,19 +1712,19 @@ TextureImporter:
       name: Orc-Soldier-Red_47
       rect:
         serializedVersion: 2
-        x: 744
-        y: 199
-        width: 16
-        height: 19
+        x: 736
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e6f111565174a52c0800000000000000
+      spriteID: f891989a847b4c09bc873301fee7e469
       internalID: -4442159925232066706
       vertices: []
       indices: 
@@ -1773,19 +1734,19 @@ TextureImporter:
       name: Orc-Soldier-Red_48
       rect:
         serializedVersion: 2
-        x: 9
-        y: 168
-        width: 14
-        height: 21
+        x: 0
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3ddb542389f06dff0800000000000000
+      spriteID: 9aa576142babd0bddd80235babb20954
       internalID: -11804802668970541
       vertices: []
       indices: 
@@ -1795,19 +1756,19 @@ TextureImporter:
       name: Orc-Soldier-Red_49
       rect:
         serializedVersion: 2
-        x: 41
-        y: 168
-        width: 14
-        height: 22
+        x: 32
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73fd106cb37371060800000000000000
+      spriteID: f45b45fae6c3526c2aea6fa6c3615e73
       internalID: 6924063681970036535
       vertices: []
       indices: 
@@ -1817,19 +1778,19 @@ TextureImporter:
       name: Orc-Soldier-Red_50
       rect:
         serializedVersion: 2
-        x: 73
-        y: 167
-        width: 14
-        height: 22
+        x: 64
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1f2aa558dd69c36a0800000000000000
+      spriteID: 0fbcc5f8ad900c19d102138e773b2fba
       internalID: -6468129086641626383
       vertices: []
       indices: 
@@ -1839,19 +1800,19 @@ TextureImporter:
       name: Orc-Soldier-Red_51
       rect:
         serializedVersion: 2
-        x: 105
-        y: 168
-        width: 14
-        height: 22
+        x: 96
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6a0d82c93e5605e00800000000000000
+      spriteID: 42b2b55b269e238ec584af5c814712fe
       internalID: 1031436342919745702
       vertices: []
       indices: 
@@ -1861,19 +1822,19 @@ TextureImporter:
       name: Orc-Soldier-Red_52
       rect:
         serializedVersion: 2
-        x: 137
-        y: 167
-        width: 14
-        height: 22
+        x: 128
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c41a166b1f6bdb3f0800000000000000
+      spriteID: 0fe334ea18b3fb1e6a1c54c0d9b96f6e
       internalID: -883348802631524020
       vertices: []
       indices: 
@@ -1883,19 +1844,19 @@ TextureImporter:
       name: Orc-Soldier-Red_53
       rect:
         serializedVersion: 2
-        x: 169
-        y: 168
-        width: 14
-        height: 22
+        x: 160
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74a8f7b48c4799880800000000000000
+      spriteID: 368f73f8c925426f1d567df7d07776bd
       internalID: -8603717209505691065
       vertices: []
       indices: 
@@ -1905,19 +1866,19 @@ TextureImporter:
       name: Orc-Soldier-Red_54
       rect:
         serializedVersion: 2
-        x: 201
-        y: 168
-        width: 14
-        height: 22
+        x: 192
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c1ee646b5d60e400800000000000000
+      spriteID: 3388f4c1459b88f06e79bef39f999c74
       internalID: 351401010229338560
       vertices: []
       indices: 
@@ -1927,19 +1888,19 @@ TextureImporter:
       name: Orc-Soldier-Red_55
       rect:
         serializedVersion: 2
-        x: 233
-        y: 168
-        width: 16
-        height: 21
+        x: 224
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98fb2842e9f419140800000000000000
+      spriteID: 029cfefc8e8596070ea47efc6b80b95d
       internalID: 4724645024724336521
       vertices: []
       indices: 
@@ -1949,19 +1910,19 @@ TextureImporter:
       name: Orc-Soldier-Red_56
       rect:
         serializedVersion: 2
-        x: 265
-        y: 168
-        width: 16
-        height: 21
+        x: 256
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a7133aecd0c95f40800000000000000
+      spriteID: d1d85a9225ced9370adfa66b447f0004
       internalID: 5717813256978110373
       vertices: []
       indices: 
@@ -1971,19 +1932,19 @@ TextureImporter:
       name: Orc-Soldier-Red_57
       rect:
         serializedVersion: 2
-        x: 297
-        y: 168
-        width: 17
-        height: 22
+        x: 288
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c16771b023ab5c460800000000000000
+      spriteID: e6b2cd8afa29a94174f4f60b281bcad3
       internalID: 7261414698302010908
       vertices: []
       indices: 
@@ -1993,19 +1954,19 @@ TextureImporter:
       name: Orc-Soldier-Red_58
       rect:
         serializedVersion: 2
-        x: 329
-        y: 168
-        width: 16
-        height: 21
+        x: 320
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 691ae7a0dfa624ba0800000000000000
+      spriteID: 58e07fcbb61bf928e48c950381e8b0a4
       internalID: -6106200509725630058
       vertices: []
       indices: 
@@ -2015,19 +1976,19 @@ TextureImporter:
       name: Orc-Soldier-Red_59
       rect:
         serializedVersion: 2
-        x: 361
-        y: 168
-        width: 15
-        height: 21
+        x: 352
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9d3767ed74fa19730800000000000000
+      spriteID: d755f827b359fc38ded291c36f1e1b34
       internalID: 4004174266918925273
       vertices: []
       indices: 
@@ -2037,19 +1998,19 @@ TextureImporter:
       name: Orc-Soldier-Red_60
       rect:
         serializedVersion: 2
-        x: 393
-        y: 168
-        width: 16
-        height: 22
+        x: 384
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc6b1ef969475e0a0800000000000000
+      spriteID: c7458ce870b9f729d7f202f666c445a3
       internalID: -6852943067698055477
       vertices: []
       indices: 
@@ -2059,19 +2020,19 @@ TextureImporter:
       name: Orc-Soldier-Red_61
       rect:
         serializedVersion: 2
-        x: 425
-        y: 168
-        width: 14
-        height: 22
+        x: 416
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9cefdc9dd5d309100800000000000000
+      spriteID: d0ca2b38f904303ea93477c6c956734b
       internalID: 112657463979671241
       vertices: []
       indices: 
@@ -2081,19 +2042,19 @@ TextureImporter:
       name: Orc-Soldier-Red_62
       rect:
         serializedVersion: 2
-        x: 457
-        y: 168
-        width: 14
-        height: 22
+        x: 448
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70af79b9fcc64bb80800000000000000
+      spriteID: bf56144132bfcced30953f13446c26d4
       internalID: -8379953367705191929
       vertices: []
       indices: 
@@ -2103,19 +2064,19 @@ TextureImporter:
       name: Orc-Soldier-Red_63
       rect:
         serializedVersion: 2
-        x: 489
-        y: 168
-        width: 18
-        height: 21
+        x: 480
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee7e160dea8d12b90800000000000000
+      spriteID: a6f3f2af375884221ea3ad8c870aa9c2
       internalID: -7268290078267283474
       vertices: []
       indices: 
@@ -2125,19 +2086,19 @@ TextureImporter:
       name: Orc-Soldier-Red_64
       rect:
         serializedVersion: 2
-        x: 521
-        y: 168
-        width: 14
-        height: 22
+        x: 512
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8a1ee58a8ddad0420800000000000000
+      spriteID: b20bfa7ea8d46c4d61fa349012969b8a
       internalID: 2597923706111975848
       vertices: []
       indices: 
@@ -2147,19 +2108,19 @@ TextureImporter:
       name: Orc-Soldier-Red_65
       rect:
         serializedVersion: 2
-        x: 553
-        y: 168
-        width: 14
-        height: 22
+        x: 544
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e851f81ac8016c5d0800000000000000
+      spriteID: 5dd93d4f1a61ffebbc26bd35d9f580e1
       internalID: -3042726302050216562
       vertices: []
       indices: 
@@ -2169,19 +2130,19 @@ TextureImporter:
       name: Orc-Soldier-Red_66
       rect:
         serializedVersion: 2
-        x: 585
-        y: 168
-        width: 14
-        height: 21
+        x: 576
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2095ba910e3bbf8c0800000000000000
+      spriteID: c74b3461e8f193d8f1affcb744dd558e
       internalID: -3964377271884883710
       vertices: []
       indices: 
@@ -2191,19 +2152,19 @@ TextureImporter:
       name: Orc-Soldier-Red_67
       rect:
         serializedVersion: 2
-        x: 617
-        y: 168
-        width: 14
-        height: 22
+        x: 608
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 851d1a32a67c3c080800000000000000
+      spriteID: ba604168bd19a1702ae7b3181c5f8910
       internalID: -9168265157717929640
       vertices: []
       indices: 
@@ -2213,19 +2174,19 @@ TextureImporter:
       name: Orc-Soldier-Red_68
       rect:
         serializedVersion: 2
-        x: 647
-        y: 168
-        width: 14
-        height: 23
+        x: 640
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70cc3fa32c25724b0800000000000000
+      spriteID: 1646c14cd7c840f4b0a548a31441afe7
       internalID: -5465308628624618489
       vertices: []
       indices: 
@@ -2235,19 +2196,19 @@ TextureImporter:
       name: Orc-Soldier-Red_69
       rect:
         serializedVersion: 2
-        x: 681
-        y: 168
-        width: 14
-        height: 23
+        x: 672
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d6c7df64b690873f0800000000000000
+      spriteID: 6a2656085abdb4bb33f16a20a7a4569f
       internalID: -902961368930616211
       vertices: []
       indices: 
@@ -2257,19 +2218,19 @@ TextureImporter:
       name: Orc-Soldier-Red_70
       rect:
         serializedVersion: 2
-        x: 713
-        y: 168
-        width: 14
-        height: 22
+        x: 704
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 554d1715c1f5c0050800000000000000
+      spriteID: 41811a83a517cfa78f5a9a45ea346ed4
       internalID: 5768089797984900181
       vertices: []
       indices: 
@@ -2279,19 +2240,19 @@ TextureImporter:
       name: Orc-Soldier-Red_71
       rect:
         serializedVersion: 2
-        x: 737
-        y: 166
-        width: 24
-        height: 14
+        x: 736
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a1b7c20f7353554e0800000000000000
+      spriteID: 28d23e408b70594008905ac1020ede7d
       internalID: -1993628745672656102
       vertices: []
       indices: 
@@ -2301,19 +2262,19 @@ TextureImporter:
       name: Orc-Soldier-Red_72
       rect:
         serializedVersion: 2
-        x: 9
-        y: 136
-        width: 14
-        height: 21
+        x: 0
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 99a769493db74dae0800000000000000
+      spriteID: ec276d6be4c36c8d5a19f3890a577fdc
       internalID: -1525458225110549863
       vertices: []
       indices: 
@@ -2323,19 +2284,19 @@ TextureImporter:
       name: Orc-Soldier-Red_73
       rect:
         serializedVersion: 2
-        x: 41
-        y: 136
-        width: 14
-        height: 22
+        x: 32
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8bc183aad37392b50800000000000000
+      spriteID: 8b6311edf846f71a67a007af6bcf80b0
       internalID: 6568842269484915896
       vertices: []
       indices: 
@@ -2345,19 +2306,19 @@ TextureImporter:
       name: Orc-Soldier-Red_74
       rect:
         serializedVersion: 2
-        x: 72
-        y: 135
-        width: 15
-        height: 22
+        x: 64
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5937d46933e404360800000000000000
+      spriteID: 3abcf64b4d3fa027b8d0f11c9532a4e7
       internalID: 7151802191736304533
       vertices: []
       indices: 
@@ -2367,19 +2328,19 @@ TextureImporter:
       name: Orc-Soldier-Red_75
       rect:
         serializedVersion: 2
-        x: 105
-        y: 136
-        width: 14
-        height: 22
+        x: 96
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b04790a31f5b695c0800000000000000
+      spriteID: 7bb4fe30e324dda0874de7a8143eaf7b
       internalID: -4208976754065705973
       vertices: []
       indices: 
@@ -2389,19 +2350,19 @@ TextureImporter:
       name: Orc-Soldier-Red_76
       rect:
         serializedVersion: 2
-        x: 137
-        y: 135
-        width: 14
-        height: 22
+        x: 128
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03cbc7bc725b783a0800000000000000
+      spriteID: d06f16871f2c0493309305b81a926789
       internalID: -6663157941149058000
       vertices: []
       indices: 
@@ -2411,19 +2372,19 @@ TextureImporter:
       name: Orc-Soldier-Red_77
       rect:
         serializedVersion: 2
-        x: 169
-        y: 136
-        width: 14
-        height: 22
+        x: 160
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7762c92e00c7dc860800000000000000
+      spriteID: d4e3677ce5f81eaa9ded171497c93aff
       internalID: 7551828493413918327
       vertices: []
       indices: 
@@ -2433,19 +2394,19 @@ TextureImporter:
       name: Orc-Soldier-Red_78
       rect:
         serializedVersion: 2
-        x: 201
-        y: 136
-        width: 14
-        height: 22
+        x: 192
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b31538719036f3530800000000000000
+      spriteID: 134cb70b8022c76c791fb61440dc2a73
       internalID: 3836894298243289403
       vertices: []
       indices: 
@@ -2455,19 +2416,19 @@ TextureImporter:
       name: Orc-Soldier-Red_79
       rect:
         serializedVersion: 2
-        x: 233
-        y: 136
-        width: 16
-        height: 21
+        x: 224
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 02ea4baece9beb3e0800000000000000
+      spriteID: c7c2cdecb008b0467ffacd8e507cc5c8
       internalID: -2035985554323755488
       vertices: []
       indices: 
@@ -2477,19 +2438,19 @@ TextureImporter:
       name: Orc-Soldier-Red_80
       rect:
         serializedVersion: 2
-        x: 265
-        y: 136
-        width: 15
-        height: 21
+        x: 256
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 800a761462f0f94d0800000000000000
+      spriteID: 7d4797822a40a9aab3102b9e6500d9bd
       internalID: -3125762959391350776
       vertices: []
       indices: 
@@ -2499,19 +2460,19 @@ TextureImporter:
       name: Orc-Soldier-Red_81
       rect:
         serializedVersion: 2
-        x: 297
-        y: 136
-        width: 16
-        height: 22
+        x: 288
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f16f2d7fb8a7a41f0800000000000000
+      spriteID: 1968e6814f4182f0b985cd8cc6bf4113
       internalID: -1059900020715489761
       vertices: []
       indices: 
@@ -2521,19 +2482,19 @@ TextureImporter:
       name: Orc-Soldier-Red_82
       rect:
         serializedVersion: 2
-        x: 329
-        y: 136
-        width: 16
-        height: 21
+        x: 320
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95482ba733cd1ed10800000000000000
+      spriteID: b10bddf01315c3d36cd47f7b7a4d2267
       internalID: 2153244210519770201
       vertices: []
       indices: 
@@ -2543,19 +2504,19 @@ TextureImporter:
       name: Orc-Soldier-Red_83
       rect:
         serializedVersion: 2
-        x: 361
-        y: 136
-        width: 16
-        height: 21
+        x: 352
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6c2c5f5985027c20800000000000000
+      spriteID: 72da466e43183f8bb219a5a9c13fbb61
       internalID: 3202628372582378607
       vertices: []
       indices: 
@@ -2565,19 +2526,19 @@ TextureImporter:
       name: Orc-Soldier-Red_84
       rect:
         serializedVersion: 2
-        x: 393
-        y: 136
-        width: 16
-        height: 22
+        x: 384
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 884b0d05e4480f500800000000000000
+      spriteID: 507b3c672614e042b89928033ddd29b2
       internalID: 427987436498367624
       vertices: []
       indices: 
@@ -2587,19 +2548,19 @@ TextureImporter:
       name: Orc-Soldier-Red_85
       rect:
         serializedVersion: 2
-        x: 425
-        y: 136
-        width: 14
-        height: 22
+        x: 416
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6aa553b12d5042030800000000000000
+      spriteID: 72c25726336654d8e07c62e322bd6a6d
       internalID: 3468904012939877030
       vertices: []
       indices: 
@@ -2609,19 +2570,19 @@ TextureImporter:
       name: Orc-Soldier-Red_86
       rect:
         serializedVersion: 2
-        x: 457
-        y: 136
-        width: 14
-        height: 22
+        x: 448
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67cfa281692d86e30800000000000000
+      spriteID: b7fb596be813b81ca7fdd38706667180
       internalID: 4497075770021837942
       vertices: []
       indices: 
@@ -2631,19 +2592,19 @@ TextureImporter:
       name: Orc-Soldier-Red_87
       rect:
         serializedVersion: 2
-        x: 489
-        y: 136
-        width: 18
-        height: 21
+        x: 480
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 042a794a8b6b550d0800000000000000
+      spriteID: 652e7fbd3590c45370f7246cbdfc18e2
       internalID: -3434638236648496576
       vertices: []
       indices: 
@@ -2653,19 +2614,19 @@ TextureImporter:
       name: Orc-Soldier-Red_88
       rect:
         serializedVersion: 2
-        x: 521
-        y: 136
-        width: 14
-        height: 22
+        x: 512
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 132fbde689133e350800000000000000
+      spriteID: 5eb4a0e9fe4bc8aeb1b8f92a4387644d
       internalID: 6044729655626035761
       vertices: []
       indices: 
@@ -2675,19 +2636,19 @@ TextureImporter:
       name: Orc-Soldier-Red_89
       rect:
         serializedVersion: 2
-        x: 553
-        y: 136
-        width: 14
-        height: 22
+        x: 544
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5127dc5b84150c340800000000000000
+      spriteID: c4c670d6f708017b7680d40b263fbd77
       internalID: 4881991368799253013
       vertices: []
       indices: 
@@ -2697,19 +2658,19 @@ TextureImporter:
       name: Orc-Soldier-Red_90
       rect:
         serializedVersion: 2
-        x: 585
-        y: 136
-        width: 14
-        height: 21
+        x: 576
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f107a9834db960020800000000000000
+      spriteID: 74ed40bb5217888a618ee6143b13ec12
       internalID: 2307703194858975263
       vertices: []
       indices: 
@@ -2719,19 +2680,19 @@ TextureImporter:
       name: Orc-Soldier-Red_91
       rect:
         serializedVersion: 2
-        x: 617
-        y: 136
-        width: 14
-        height: 22
+        x: 608
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 86d51adbd4a8df0d0800000000000000
+      spriteID: 9737d961f618c500fcc72652fc2f56a4
       internalID: -3387399278214161048
       vertices: []
       indices: 
@@ -2741,19 +2702,19 @@ TextureImporter:
       name: Orc-Soldier-Red_92
       rect:
         serializedVersion: 2
-        x: 648
-        y: 135
-        width: 14
-        height: 22
+        x: 640
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 14e7d3e555c5d3c10800000000000000
+      spriteID: b4c054dbd592200e2df867c5f0e2b767
       internalID: 2034884128364396097
       vertices: []
       indices: 
@@ -2763,19 +2724,19 @@ TextureImporter:
       name: Orc-Soldier-Red_93
       rect:
         serializedVersion: 2
-        x: 681
-        y: 136
-        width: 14
-        height: 23
+        x: 672
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66b95700eff1b3cf0800000000000000
+      spriteID: 1e9a0c64c9c054d0d66a42ba1741b2a1
       internalID: -271588176735921306
       vertices: []
       indices: 
@@ -2785,19 +2746,19 @@ TextureImporter:
       name: Orc-Soldier-Red_94
       rect:
         serializedVersion: 2
-        x: 713
-        y: 136
-        width: 14
-        height: 22
+        x: 704
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e0c82fcb6b6c9170800000000000000
+      spriteID: ded0f385f79ee3f97b2b1f19f4cbf58a
       internalID: 8186536333433946345
       vertices: []
       indices: 
@@ -2807,19 +2768,19 @@ TextureImporter:
       name: Orc-Soldier-Red_95
       rect:
         serializedVersion: 2
-        x: 743
-        y: 131
-        width: 16
-        height: 19
+        x: 736
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ff5aac1a5bdef59e0800000000000000
+      spriteID: 735b225ba7cd1bec5b0363bab54e8056
       internalID: -1630323175725554177
       vertices: []
       indices: 
@@ -2829,19 +2790,19 @@ TextureImporter:
       name: Orc-Soldier-Red_96
       rect:
         serializedVersion: 2
-        x: 8
-        y: 104
-        width: 16
-        height: 21
+        x: 0
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9bbed3575cd320220800000000000000
+      spriteID: 4c2d15d872ad467b7e31c64fd63496a6
       internalID: 2450589065527815097
       vertices: []
       indices: 
@@ -2851,19 +2812,19 @@ TextureImporter:
       name: Orc-Soldier-Red_97
       rect:
         serializedVersion: 2
-        x: 40
-        y: 104
-        width: 16
-        height: 22
+        x: 32
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ae35af3274463180800000000000000
+      spriteID: b718225aded03a2a3ec30c72310ca890
       internalID: -9136039536589717848
       vertices: []
       indices: 
@@ -2873,19 +2834,19 @@ TextureImporter:
       name: Orc-Soldier-Red_98
       rect:
         serializedVersion: 2
-        x: 73
-        y: 103
-        width: 14
-        height: 22
+        x: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a507068afe95a00d0800000000000000
+      spriteID: 2a5a7446dceac5d6d83f6d697cca5fa8
       internalID: -3455850878196486054
       vertices: []
       indices: 
@@ -2895,19 +2856,19 @@ TextureImporter:
       name: Orc-Soldier-Red_99
       rect:
         serializedVersion: 2
-        x: 104
-        y: 104
-        width: 16
-        height: 22
+        x: 96
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69dd5dd6969b717a0800000000000000
+      spriteID: 3148d2859a5bd633e8d8d877f90e4214
       internalID: -6406448082445804138
       vertices: []
       indices: 
@@ -2917,19 +2878,19 @@ TextureImporter:
       name: Orc-Soldier-Red_100
       rect:
         serializedVersion: 2
-        x: 137
-        y: 103
-        width: 14
-        height: 22
+        x: 128
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84d8e6f5ccc0905a0800000000000000
+      spriteID: ac898061f77406dd417dbd72d8cc84fa
       internalID: -6554693710747103928
       vertices: []
       indices: 
@@ -2939,19 +2900,19 @@ TextureImporter:
       name: Orc-Soldier-Red_101
       rect:
         serializedVersion: 2
-        x: 169
-        y: 104
-        width: 16
-        height: 22
+        x: 160
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 04cec4bca522a6c60800000000000000
+      spriteID: 8a84cae78568a922b320afadec86767a
       internalID: 7812094276980763712
       vertices: []
       indices: 
@@ -2961,19 +2922,19 @@ TextureImporter:
       name: Orc-Soldier-Red_102
       rect:
         serializedVersion: 2
-        x: 201
-        y: 104
-        width: 16
-        height: 22
+        x: 192
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f89bcda8827e120d0800000000000000
+      spriteID: 4fdc1b6268b8dcfde6260e002f4b61ef
       internalID: -3449221678274659953
       vertices: []
       indices: 
@@ -2983,19 +2944,19 @@ TextureImporter:
       name: Orc-Soldier-Red_103
       rect:
         serializedVersion: 2
-        x: 232
-        y: 104
-        width: 15
-        height: 21
+        x: 224
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62d9b155729aff650800000000000000
+      spriteID: 906edb74f328c01250eba2e48f0b6afc
       internalID: 6268915192719711526
       vertices: []
       indices: 
@@ -3005,19 +2966,19 @@ TextureImporter:
       name: Orc-Soldier-Red_104
       rect:
         serializedVersion: 2
-        x: 265
-        y: 104
-        width: 14
-        height: 21
+        x: 256
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 375e8470232c439b0800000000000000
+      spriteID: e61d3207433e4ed7c7e6303618056460
       internalID: -5101238957777558157
       vertices: []
       indices: 
@@ -3027,19 +2988,19 @@ TextureImporter:
       name: Orc-Soldier-Red_105
       rect:
         serializedVersion: 2
-        x: 297
-        y: 104
-        width: 14
-        height: 22
+        x: 288
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 81308ed90bf5496f0800000000000000
+      spriteID: 800a847b078d06941fd106fbba2b2af4
       internalID: -678812431657991400
       vertices: []
       indices: 
@@ -3049,19 +3010,19 @@ TextureImporter:
       name: Orc-Soldier-Red_106
       rect:
         serializedVersion: 2
-        x: 329
-        y: 104
-        width: 15
-        height: 21
+        x: 320
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95ea2bc3880b8d670800000000000000
+      spriteID: 7c3697c6761c1834fc06609823f85c0a
       internalID: 8563788790625381977
       vertices: []
       indices: 
@@ -3071,19 +3032,19 @@ TextureImporter:
       name: Orc-Soldier-Red_107
       rect:
         serializedVersion: 2
-        x: 361
-        y: 104
-        width: 15
-        height: 21
+        x: 352
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2dc0818b39f9319f0800000000000000
+      spriteID: b419ed274315bca9104b5b8511df04a0
       internalID: -498879676910400302
       vertices: []
       indices: 
@@ -3093,19 +3054,19 @@ TextureImporter:
       name: Orc-Soldier-Red_108
       rect:
         serializedVersion: 2
-        x: 393
-        y: 104
-        width: 14
-        height: 22
+        x: 384
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4bde307940c778e30800000000000000
+      spriteID: 6f190f79cc41a0ce0de2469dfe707fc4
       internalID: 4505706311362801076
       vertices: []
       indices: 
@@ -3115,19 +3076,19 @@ TextureImporter:
       name: Orc-Soldier-Red_109
       rect:
         serializedVersion: 2
-        x: 425
-        y: 104
-        width: 16
-        height: 22
+        x: 416
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e51b32b38e9ed5d50800000000000000
+      spriteID: c526da1cb5df6b13a49fed7cfe01f513
       internalID: 6727790601995268446
       vertices: []
       indices: 
@@ -3137,19 +3098,19 @@ TextureImporter:
       name: Orc-Soldier-Red_110
       rect:
         serializedVersion: 2
-        x: 457
-        y: 104
-        width: 16
-        height: 22
+        x: 448
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f7887a63f3b94d90800000000000000
+      spriteID: 29491726c3db713d48efa4d542034c6d
       internalID: -7112956278410278925
       vertices: []
       indices: 
@@ -3159,19 +3120,19 @@ TextureImporter:
       name: Orc-Soldier-Red_111
       rect:
         serializedVersion: 2
-        x: 489
-        y: 104
-        width: 14
-        height: 21
+        x: 480
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd347402a4d59b1f0800000000000000
+      spriteID: 7d9ec4f82302332fde33e52e8f3aa3da
       internalID: -1028688466926943269
       vertices: []
       indices: 
@@ -3181,19 +3142,19 @@ TextureImporter:
       name: Orc-Soldier-Red_112
       rect:
         serializedVersion: 2
-        x: 521
-        y: 104
-        width: 15
-        height: 22
+        x: 512
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 381f6c64c8cab8060800000000000000
+      spriteID: 5f8c25617f78717a95f11eebee7fba45
       internalID: 6956843767886705027
       vertices: []
       indices: 
@@ -3203,19 +3164,19 @@ TextureImporter:
       name: Orc-Soldier-Red_113
       rect:
         serializedVersion: 2
-        x: 553
-        y: 104
-        width: 15
-        height: 22
+        x: 544
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d34591fe9f176e10800000000000000
+      spriteID: d7b27441d1dfcd2ba928ea3b2cac4165
       internalID: 2190754511257420756
       vertices: []
       indices: 
@@ -3225,19 +3186,19 @@ TextureImporter:
       name: Orc-Soldier-Red_114
       rect:
         serializedVersion: 2
-        x: 585
-        y: 104
-        width: 14
-        height: 21
+        x: 576
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43f57a66140cdbe10800000000000000
+      spriteID: 38c54d7d84e13e65c754d1b5dea5b14d
       internalID: 2215137978863804212
       vertices: []
       indices: 
@@ -3247,19 +3208,19 @@ TextureImporter:
       name: Orc-Soldier-Red_115
       rect:
         serializedVersion: 2
-        x: 616
-        y: 104
-        width: 16
-        height: 22
+        x: 608
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2bc61d84f04c7c340800000000000000
+      spriteID: 088c4ffef1fcd3718707c9977bf1af23
       internalID: 4884087890831830194
       vertices: []
       indices: 
@@ -3269,19 +3230,19 @@ TextureImporter:
       name: Orc-Soldier-Red_116
       rect:
         serializedVersion: 2
-        x: 647
-        y: 103
-        width: 18
-        height: 22
+        x: 640
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6dbdea8bc9bea1cd0800000000000000
+      spriteID: 381fbd1ac5284b27a3b0abea1a62d302
       internalID: -2586495977625035818
       vertices: []
       indices: 
@@ -3291,19 +3252,19 @@ TextureImporter:
       name: Orc-Soldier-Red_117
       rect:
         serializedVersion: 2
-        x: 679
-        y: 104
-        width: 18
-        height: 23
+        x: 672
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8d79b95dfe257f920800000000000000
+      spriteID: 817e5fadd46f85259865db7c006adc16
       internalID: 3023976864836982744
       vertices: []
       indices: 
@@ -3313,19 +3274,19 @@ TextureImporter:
       name: Orc-Soldier-Red_118
       rect:
         serializedVersion: 2
-        x: 712
-        y: 104
-        width: 16
-        height: 22
+        x: 704
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d93577e3f30219b10800000000000000
+      spriteID: 3f8758c3d15501c0607962e744ba85d5
       internalID: 1986404366650135453
       vertices: []
       indices: 
@@ -3335,19 +3296,19 @@ TextureImporter:
       name: Orc-Soldier-Red_119
       rect:
         serializedVersion: 2
-        x: 744
-        y: 99
-        width: 16
-        height: 18
+        x: 736
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ae25ca19cfba190a0800000000000000
+      spriteID: 7abebb0824c4aed34b232f6e631db70c
       internalID: -6876526054753938710
       vertices: []
       indices: 
@@ -3357,19 +3318,19 @@ TextureImporter:
       name: Orc-Soldier-Red_120
       rect:
         serializedVersion: 2
-        x: 9
-        y: 72
-        width: 14
-        height: 21
+        x: 0
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c94806958655d7830800000000000000
+      spriteID: 69b15ced44588a489383a2fd9008a85a
       internalID: 4070503544877253788
       vertices: []
       indices: 
@@ -3379,19 +3340,19 @@ TextureImporter:
       name: Orc-Soldier-Red_121
       rect:
         serializedVersion: 2
-        x: 41
-        y: 72
-        width: 14
-        height: 22
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2e3e54f5c6cfff30800000000000000
+      spriteID: fb3f8f921e44202da649d9bd46783c0e
       internalID: 4611623096961351212
       vertices: []
       indices: 
@@ -3401,19 +3362,19 @@ TextureImporter:
       name: Orc-Soldier-Red_122
       rect:
         serializedVersion: 2
-        x: 73
-        y: 71
-        width: 15
-        height: 22
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 42ab87b2e64471890800000000000000
+      spriteID: 23cf5e2435032e27e3ad0428beef0e13
       internalID: -7487440615513736668
       vertices: []
       indices: 
@@ -3423,19 +3384,19 @@ TextureImporter:
       name: Orc-Soldier-Red_123
       rect:
         serializedVersion: 2
-        x: 105
-        y: 72
-        width: 14
-        height: 22
+        x: 96
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 882a12c2ac1d36f00800000000000000
+      spriteID: f4e5ddc54465d8a83d099524e633bbb0
       internalID: 1108960599517274760
       vertices: []
       indices: 
@@ -3445,19 +3406,19 @@ TextureImporter:
       name: Orc-Soldier-Red_124
       rect:
         serializedVersion: 2
-        x: 137
-        y: 71
-        width: 14
-        height: 22
+        x: 128
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd356479dc706a730800000000000000
+      spriteID: 040db1320333f5f0f174c4aa00c4be0a
       internalID: 4009901097807664092
       vertices: []
       indices: 
@@ -3467,19 +3428,19 @@ TextureImporter:
       name: Orc-Soldier-Red_125
       rect:
         serializedVersion: 2
-        x: 169
-        y: 72
-        width: 14
-        height: 22
+        x: 160
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48646c77385e68a30800000000000000
+      spriteID: 28bf9d9f2eda85e75d1a3f76af7bc947
       internalID: 4217310453892007556
       vertices: []
       indices: 
@@ -3489,19 +3450,19 @@ TextureImporter:
       name: Orc-Soldier-Red_126
       rect:
         serializedVersion: 2
-        x: 201
-        y: 72
-        width: 14
-        height: 22
+        x: 192
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44969336917399100800000000000000
+      spriteID: 89d1653f8be0f01bf7a55e9243535034
       internalID: 115183847653075268
       vertices: []
       indices: 
@@ -3511,19 +3472,19 @@ TextureImporter:
       name: Orc-Soldier-Red_127
       rect:
         serializedVersion: 2
-        x: 231
-        y: 72
-        width: 16
-        height: 21
+        x: 224
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2d3aaf1d43328dcd0800000000000000
+      spriteID: fc2a77d3f59c8656bc9ed60f01874493
       internalID: -2533236080627768366
       vertices: []
       indices: 
@@ -3533,19 +3494,19 @@ TextureImporter:
       name: Orc-Soldier-Red_128
       rect:
         serializedVersion: 2
-        x: 264
-        y: 72
-        width: 15
-        height: 21
+        x: 256
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5f2bcc8fd85f80150800000000000000
+      spriteID: 5177354e16c98b588a541ff46bb5b302
       internalID: 5839186906999206645
       vertices: []
       indices: 
@@ -3555,19 +3516,19 @@ TextureImporter:
       name: Orc-Soldier-Red_129
       rect:
         serializedVersion: 2
-        x: 295
-        y: 72
-        width: 16
-        height: 22
+        x: 288
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d44a3f6193cb9020800000000000000
+      spriteID: af54c081c8a280355a385d0847e8242a
       internalID: 2349686660007609559
       vertices: []
       indices: 
@@ -3577,19 +3538,19 @@ TextureImporter:
       name: Orc-Soldier-Red_130
       rect:
         serializedVersion: 2
-        x: 327
-        y: 72
-        width: 17
-        height: 21
+        x: 320
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4cf27446e99124ed0800000000000000
+      spriteID: 4f0bb052ec6da939d309cf2dd391124e
       internalID: -2431352680748732476
       vertices: []
       indices: 
@@ -3599,19 +3560,19 @@ TextureImporter:
       name: Orc-Soldier-Red_131
       rect:
         serializedVersion: 2
-        x: 359
-        y: 72
-        width: 17
-        height: 21
+        x: 352
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 17aee26a7db76d5c0800000000000000
+      spriteID: 8fc411762059bd43dbc79f1bf8227d44
       internalID: -4191026237085390223
       vertices: []
       indices: 
@@ -3621,19 +3582,19 @@ TextureImporter:
       name: Orc-Soldier-Red_132
       rect:
         serializedVersion: 2
-        x: 391
-        y: 72
-        width: 16
-        height: 22
+        x: 384
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bca4936c5d6bb5dd0800000000000000
+      spriteID: a0a103331e3b49f97087fe6380a53c47
       internalID: -2496200539176875317
       vertices: []
       indices: 
@@ -3643,19 +3604,19 @@ TextureImporter:
       name: Orc-Soldier-Red_133
       rect:
         serializedVersion: 2
-        x: 425
-        y: 72
-        width: 14
-        height: 22
+        x: 416
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44a99da8617d57e20800000000000000
+      spriteID: 0a38599aa8b717bc1f11da53cfc83ee7
       internalID: 3347818389838600772
       vertices: []
       indices: 
@@ -3665,19 +3626,19 @@ TextureImporter:
       name: Orc-Soldier-Red_134
       rect:
         serializedVersion: 2
-        x: 457
-        y: 72
-        width: 14
-        height: 22
+        x: 448
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4f15632062970fe0800000000000000
+      spriteID: 3baa6df3b1a334fa8ef71c3618652b11
       internalID: -1222847832199454900
       vertices: []
       indices: 
@@ -3687,19 +3648,19 @@ TextureImporter:
       name: Orc-Soldier-Red_135
       rect:
         serializedVersion: 2
-        x: 485
-        y: 72
-        width: 18
-        height: 21
+        x: 480
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a0b1606b0234a1500800000000000000
+      spriteID: 7df8b0f04a61c16f7371b24f2d1bda25
       internalID: 367680127355984650
       vertices: []
       indices: 
@@ -3709,19 +3670,19 @@ TextureImporter:
       name: Orc-Soldier-Red_136
       rect:
         serializedVersion: 2
-        x: 521
-        y: 72
-        width: 14
-        height: 22
+        x: 512
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3b1640afe3c53190800000000000000
+      spriteID: 83de1d60e11610de5e377f46c29c801c
       internalID: -7983259330490787011
       vertices: []
       indices: 
@@ -3731,19 +3692,19 @@ TextureImporter:
       name: Orc-Soldier-Red_137
       rect:
         serializedVersion: 2
-        x: 553
-        y: 72
-        width: 14
-        height: 22
+        x: 544
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a36d917e2dd23b90800000000000000
+      spriteID: 49b7b53aec3edceeb8bb8a0cd85feda0
       internalID: -7263500057450814559
       vertices: []
       indices: 
@@ -3753,19 +3714,19 @@ TextureImporter:
       name: Orc-Soldier-Red_138
       rect:
         serializedVersion: 2
-        x: 585
-        y: 72
-        width: 14
-        height: 21
+        x: 576
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2093068ac79e9b6b0800000000000000
+      spriteID: 7f821e0c976391dfede9de8a43355ab9
       internalID: -5279932366505101054
       vertices: []
       indices: 
@@ -3775,19 +3736,19 @@ TextureImporter:
       name: Orc-Soldier-Red_139
       rect:
         serializedVersion: 2
-        x: 617
-        y: 72
-        width: 14
-        height: 22
+        x: 608
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b2bee8144f7b83b60800000000000000
+      spriteID: ea44acee7df32bafa31756f41a98d0ac
       internalID: 7726127420453874475
       vertices: []
       indices: 
@@ -3797,19 +3758,19 @@ TextureImporter:
       name: Orc-Soldier-Red_140
       rect:
         serializedVersion: 2
-        x: 650
-        y: 71
-        width: 14
-        height: 22
+        x: 640
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ec39d30b0f5dd0ba0800000000000000
+      spriteID: 4b7735669db424acbf29ad0675afe2dc
       internalID: -6121001088800943154
       vertices: []
       indices: 
@@ -3819,19 +3780,19 @@ TextureImporter:
       name: Orc-Soldier-Red_141
       rect:
         serializedVersion: 2
-        x: 681
-        y: 72
-        width: 14
-        height: 23
+        x: 672
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6fa544d57228fbf30800000000000000
+      spriteID: 74bee8d17204afc84b7ec80a3cddc31c
       internalID: 4593533250521291510
       vertices: []
       indices: 
@@ -3841,19 +3802,19 @@ TextureImporter:
       name: Orc-Soldier-Red_142
       rect:
         serializedVersion: 2
-        x: 713
-        y: 72
-        width: 14
-        height: 22
+        x: 704
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ff154a8a1328b3f0800000000000000
+      spriteID: 86a0939a641587290eea903b6d871199
       internalID: -884918729882394636
       vertices: []
       indices: 
@@ -3863,19 +3824,19 @@ TextureImporter:
       name: Orc-Soldier-Red_143
       rect:
         serializedVersion: 2
-        x: 745
-        y: 67
-        width: 16
-        height: 19
+        x: 736
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70797a730e14f4e00800000000000000
+      spriteID: 54f3c4f84bf1d8d894481e85cdd8893d
       internalID: 1031115270953342727
       vertices: []
       indices: 
@@ -3885,19 +3846,19 @@ TextureImporter:
       name: Orc-Soldier-Red_144
       rect:
         serializedVersion: 2
-        x: 9
-        y: 40
-        width: 14
-        height: 21
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d08bdc8ae08b9e9b0800000000000000
+      spriteID: 44cd982c503c33f1fa2f1826557ed711
       internalID: -5050303134018193395
       vertices: []
       indices: 
@@ -3907,19 +3868,19 @@ TextureImporter:
       name: Orc-Soldier-Red_145
       rect:
         serializedVersion: 2
-        x: 41
-        y: 40
-        width: 14
-        height: 22
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7061eb420b33ced50800000000000000
+      spriteID: 9a632515313c967ce602c1fb0a319ae9
       internalID: 6767841171654710791
       vertices: []
       indices: 
@@ -3929,19 +3890,19 @@ TextureImporter:
       name: Orc-Soldier-Red_146
       rect:
         serializedVersion: 2
-        x: 73
-        y: 39
-        width: 14
-        height: 22
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e6d9632e74d47050800000000000000
+      spriteID: 88817f6772804ad4658aca3dde9aa427
       internalID: 5797492258557777632
       vertices: []
       indices: 
@@ -3951,19 +3912,19 @@ TextureImporter:
       name: Orc-Soldier-Red_147
       rect:
         serializedVersion: 2
-        x: 105
-        y: 40
-        width: 14
-        height: 22
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82e1af992772a8650800000000000000
+      spriteID: c18cf8a032754442ffd370c95873ec38
       internalID: 6235840007210933800
       vertices: []
       indices: 
@@ -3973,19 +3934,19 @@ TextureImporter:
       name: Orc-Soldier-Red_148
       rect:
         serializedVersion: 2
-        x: 137
-        y: 39
-        width: 14
-        height: 22
+        x: 128
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 269d6c5530b2c5640800000000000000
+      spriteID: 69f09bddbdc0a05833bb904b20a1e7ec
       internalID: 5069974573836327266
       vertices: []
       indices: 
@@ -3995,19 +3956,19 @@ TextureImporter:
       name: Orc-Soldier-Red_149
       rect:
         serializedVersion: 2
-        x: 169
-        y: 40
-        width: 14
-        height: 22
+        x: 160
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 495eeb02c0db9fee0800000000000000
+      spriteID: 5d6fab93e5353109274bd1710b69e4c5
       internalID: -1226741563695110764
       vertices: []
       indices: 
@@ -4017,19 +3978,19 @@ TextureImporter:
       name: Orc-Soldier-Red_150
       rect:
         serializedVersion: 2
-        x: 201
-        y: 40
-        width: 14
-        height: 22
+        x: 192
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8473a703e6b0dfb50800000000000000
+      spriteID: c9a635ebd4056d9d8395dba9fc4659eb
       internalID: 6628466794446862152
       vertices: []
       indices: 
@@ -4039,19 +4000,19 @@ TextureImporter:
       name: Orc-Soldier-Red_151
       rect:
         serializedVersion: 2
-        x: 231
-        y: 40
-        width: 16
-        height: 21
+        x: 224
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d9b8335c080408710800000000000000
+      spriteID: 581ea15e1570f2a512b3b4950dfed546
       internalID: 1693424381699787677
       vertices: []
       indices: 
@@ -4061,19 +4022,19 @@ TextureImporter:
       name: Orc-Soldier-Red_152
       rect:
         serializedVersion: 2
-        x: 263
-        y: 40
-        width: 16
-        height: 21
+        x: 256
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 75722cc75ff567cd0800000000000000
+      spriteID: 312a36d190fa404d3c41c64f8a7864e0
       internalID: -2560753830148823209
       vertices: []
       indices: 
@@ -4083,19 +4044,19 @@ TextureImporter:
       name: Orc-Soldier-Red_153
       rect:
         serializedVersion: 2
-        x: 294
-        y: 40
-        width: 17
-        height: 22
+        x: 288
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b235e21a8ef983c0800000000000000
+      spriteID: e741babbc5f7a17e2427ae68b7aa2f41
       internalID: -4356671295528291661
       vertices: []
       indices: 
@@ -4105,19 +4066,19 @@ TextureImporter:
       name: Orc-Soldier-Red_154
       rect:
         serializedVersion: 2
-        x: 328
-        y: 40
-        width: 15
-        height: 21
+        x: 320
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e5b7bb053f0f8500800000000000000
+      spriteID: e9a3f6cc575d37e06c4d496e9dedd53f
       internalID: 400555612363535846
       vertices: []
       indices: 
@@ -4127,19 +4088,19 @@ TextureImporter:
       name: Orc-Soldier-Red_155
       rect:
         serializedVersion: 2
-        x: 359
-        y: 40
-        width: 16
-        height: 21
+        x: 352
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a22600d655c0f64b0800000000000000
+      spriteID: a7dcb2172d1c5426cef75aaeb7b70c8c
       internalID: -5445119863427145174
       vertices: []
       indices: 
@@ -4149,19 +4110,19 @@ TextureImporter:
       name: Orc-Soldier-Red_156
       rect:
         serializedVersion: 2
-        x: 391
-        y: 40
-        width: 16
-        height: 22
+        x: 384
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3753bad4b4d67f8f0800000000000000
+      spriteID: 136ada9a9a92e291847fe6c0bdac93ab
       internalID: -506816262862850701
       vertices: []
       indices: 
@@ -4171,19 +4132,19 @@ TextureImporter:
       name: Orc-Soldier-Red_157
       rect:
         serializedVersion: 2
-        x: 425
-        y: 40
-        width: 14
-        height: 22
+        x: 416
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8faf6c005581fbc40800000000000000
+      spriteID: 70f1598f26a342b17812501ad5a8bd2f
       internalID: 5530165620798585592
       vertices: []
       indices: 
@@ -4193,19 +4154,19 @@ TextureImporter:
       name: Orc-Soldier-Red_158
       rect:
         serializedVersion: 2
-        x: 457
-        y: 40
-        width: 14
-        height: 22
+        x: 448
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d8d1d826e62449e80800000000000000
+      spriteID: 0ab16d4df50ea864c72e6f1d1e5031da
       internalID: -8172834381903356531
       vertices: []
       indices: 
@@ -4215,19 +4176,19 @@ TextureImporter:
       name: Orc-Soldier-Red_159
       rect:
         serializedVersion: 2
-        x: 485
-        y: 40
-        width: 18
-        height: 21
+        x: 480
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 23fcc847b8e354b90800000000000000
+      spriteID: 1a75ad4d2fa0984cb6209361fb3129ad
       internalID: -7258326455760924878
       vertices: []
       indices: 
@@ -4237,19 +4198,19 @@ TextureImporter:
       name: Orc-Soldier-Red_160
       rect:
         serializedVersion: 2
-        x: 521
-        y: 40
-        width: 14
-        height: 22
+        x: 512
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: caba2922209cec470800000000000000
+      spriteID: 5280323263be3e97a38e6ef6624a53f0
       internalID: 8416885764609190828
       vertices: []
       indices: 
@@ -4259,19 +4220,19 @@ TextureImporter:
       name: Orc-Soldier-Red_161
       rect:
         serializedVersion: 2
-        x: 553
-        y: 40
-        width: 14
-        height: 22
+        x: 544
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0348c0ee59d462cd0800000000000000
+      spriteID: d5f261fc1c24d9eb57e1fbb3a513bc0d
       internalID: -2583292029911137232
       vertices: []
       indices: 
@@ -4281,19 +4242,19 @@ TextureImporter:
       name: Orc-Soldier-Red_162
       rect:
         serializedVersion: 2
-        x: 585
-        y: 40
-        width: 14
-        height: 21
+        x: 576
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 639cb82b1546046c0800000000000000
+      spriteID: ec45d0d3cf12f87b203e76399b0f422a
       internalID: -4161215753639704266
       vertices: []
       indices: 
@@ -4303,19 +4264,19 @@ TextureImporter:
       name: Orc-Soldier-Red_163
       rect:
         serializedVersion: 2
-        x: 617
-        y: 40
-        width: 14
-        height: 22
+        x: 608
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 072b2668b9564fa10800000000000000
+      spriteID: 8048e4f280a840156f5eb56d43420b40
       internalID: 1942289057952477808
       vertices: []
       indices: 
@@ -4325,19 +4286,19 @@ TextureImporter:
       name: Orc-Soldier-Red_164
       rect:
         serializedVersion: 2
-        x: 651
-        y: 40
-        width: 14
-        height: 23
+        x: 640
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ddf3a81479a3dc50800000000000000
+      spriteID: 5bf6a53d5a9c2aff8a1f8795db289dcb
       internalID: 6688876187670019545
       vertices: []
       indices: 
@@ -4347,19 +4308,19 @@ TextureImporter:
       name: Orc-Soldier-Red_165
       rect:
         serializedVersion: 2
-        x: 681
-        y: 40
-        width: 14
-        height: 23
+        x: 672
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73fd46da7cf818d80800000000000000
+      spriteID: 9bfc95c58b7772fd971acbaf6e9eec4c
       internalID: -8250154954595705033
       vertices: []
       indices: 
@@ -4369,19 +4330,19 @@ TextureImporter:
       name: Orc-Soldier-Red_166
       rect:
         serializedVersion: 2
-        x: 713
-        y: 40
-        width: 14
-        height: 22
+        x: 704
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66cb25869c0580450800000000000000
+      spriteID: 2eb95e6e99668c732a755a52d483bb57
       internalID: 6055178524968533094
       vertices: []
       indices: 
@@ -4391,19 +4352,19 @@ TextureImporter:
       name: Orc-Soldier-Red_167
       rect:
         serializedVersion: 2
-        x: 743
-        y: 38
-        width: 24
-        height: 14
+        x: 736
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d2643335079510e30800000000000000
+      spriteID: 8ec73e5d828d768619c05fd69728f490
       internalID: 4467950644295321133
       vertices: []
       indices: 
@@ -4413,19 +4374,19 @@ TextureImporter:
       name: Orc-Soldier-Red_168
       rect:
         serializedVersion: 2
-        x: 9
-        y: 8
-        width: 14
-        height: 21
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 79353c4e8f6cd64d0800000000000000
+      spriteID: d6775485819fc5f646911e3dfa6b7d8a
       internalID: -3139634592915172457
       vertices: []
       indices: 
@@ -4435,19 +4396,19 @@ TextureImporter:
       name: Orc-Soldier-Red_169
       rect:
         serializedVersion: 2
-        x: 41
-        y: 8
-        width: 14
-        height: 22
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: beaede2faae8b3940800000000000000
+      spriteID: 3ceb27656327a83ba2fb7696899b16c6
       internalID: 5276968253265930987
       vertices: []
       indices: 
@@ -4457,19 +4418,19 @@ TextureImporter:
       name: Orc-Soldier-Red_170
       rect:
         serializedVersion: 2
-        x: 72
-        y: 7
-        width: 15
-        height: 22
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d076da7fc55f90ba0800000000000000
+      spriteID: 5d848fa0bb048d84dc710a154da506a6
       internalID: -6122092438792345843
       vertices: []
       indices: 
@@ -4479,19 +4440,19 @@ TextureImporter:
       name: Orc-Soldier-Red_171
       rect:
         serializedVersion: 2
-        x: 105
-        y: 8
-        width: 14
-        height: 22
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8d0ed07e791df54b0800000000000000
+      spriteID: f82a131f8c845057489230709ee5581c
       internalID: -5449406573748297512
       vertices: []
       indices: 
@@ -4501,19 +4462,19 @@ TextureImporter:
       name: Orc-Soldier-Red_172
       rect:
         serializedVersion: 2
-        x: 137
-        y: 7
-        width: 14
-        height: 22
+        x: 128
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 391ef9b163904cbf0800000000000000
+      spriteID: f8e7759038c5d0842b460d2fa3080e5c
       internalID: -305108746758004333
       vertices: []
       indices: 
@@ -4523,19 +4484,19 @@ TextureImporter:
       name: Orc-Soldier-Red_173
       rect:
         serializedVersion: 2
-        x: 169
-        y: 8
-        width: 14
-        height: 22
+        x: 160
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9954c6aeb8356e810800000000000000
+      spriteID: 8103d3af1b35bbe5e0f464d05b3e33b8
       internalID: 1794213361952245145
       vertices: []
       indices: 
@@ -4545,19 +4506,19 @@ TextureImporter:
       name: Orc-Soldier-Red_174
       rect:
         serializedVersion: 2
-        x: 201
-        y: 8
-        width: 14
-        height: 22
+        x: 192
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d79bf56dda6b38a80800000000000000
+      spriteID: a44caab4e347d6a41a7f82e661dc49f4
       internalID: -8465722016784205443
       vertices: []
       indices: 
@@ -4567,19 +4528,19 @@ TextureImporter:
       name: Orc-Soldier-Red_175
       rect:
         serializedVersion: 2
-        x: 231
-        y: 8
-        width: 16
-        height: 21
+        x: 224
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4ba20d42398d5af0800000000000000
+      spriteID: ca0bd230669763ca0c6701f578ebe158
       internalID: -406017542260085940
       vertices: []
       indices: 
@@ -4589,19 +4550,19 @@ TextureImporter:
       name: Orc-Soldier-Red_176
       rect:
         serializedVersion: 2
-        x: 264
-        y: 8
-        width: 15
-        height: 21
+        x: 256
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f1429ed916ccecc50800000000000000
+      spriteID: 2370c2d12836d6eb25709473eb1c3bbc
       internalID: 6687507216324961311
       vertices: []
       indices: 
@@ -4611,19 +4572,19 @@ TextureImporter:
       name: Orc-Soldier-Red_177
       rect:
         serializedVersion: 2
-        x: 296
-        y: 8
-        width: 15
-        height: 22
+        x: 288
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2145d8865b5e3ce0800000000000000
+      spriteID: f9497443d5cd904adaf898e9e2bd9e45
       internalID: -1423600004981505746
       vertices: []
       indices: 
@@ -4633,19 +4594,19 @@ TextureImporter:
       name: Orc-Soldier-Red_178
       rect:
         serializedVersion: 2
-        x: 327
-        y: 7
-        width: 16
-        height: 22
+        x: 320
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e018afe00c90d6ac0800000000000000
+      spriteID: ac4d765c89be4074c952f18ff1c77c70
       internalID: -3860418585096978162
       vertices: []
       indices: 
@@ -4655,19 +4616,19 @@ TextureImporter:
       name: Orc-Soldier-Red_179
       rect:
         serializedVersion: 2
-        x: 359
-        y: 7
-        width: 16
-        height: 22
+        x: 352
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 048bdcaf4078435b0800000000000000
+      spriteID: 593d02a651cddfed427d5a3737ace04c
       internalID: -5389534398598236096
       vertices: []
       indices: 
@@ -4677,19 +4638,19 @@ TextureImporter:
       name: Orc-Soldier-Red_180
       rect:
         serializedVersion: 2
-        x: 391
-        y: 7
-        width: 16
-        height: 23
+        x: 384
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4849133b56d38280800000000000000
+      spriteID: 58232b0ff803331a29b36363277d1a9f
       internalID: -9042147939642161076
       vertices: []
       indices: 
@@ -4699,19 +4660,19 @@ TextureImporter:
       name: Orc-Soldier-Red_181
       rect:
         serializedVersion: 2
-        x: 425
-        y: 8
-        width: 14
-        height: 22
+        x: 416
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c34ae4fefd784050800000000000000
+      spriteID: 4178068d351e7127e82595a89a078fb6
       internalID: 5785012255341560768
       vertices: []
       indices: 
@@ -4721,19 +4682,19 @@ TextureImporter:
       name: Orc-Soldier-Red_182
       rect:
         serializedVersion: 2
-        x: 457
-        y: 8
-        width: 14
-        height: 22
+        x: 448
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 10c5106927772e2c0800000000000000
+      spriteID: 17d87161db384e00078709c269fe5395
       internalID: -4403826151588275199
       vertices: []
       indices: 
@@ -4743,19 +4704,19 @@ TextureImporter:
       name: Orc-Soldier-Red_183
       rect:
         serializedVersion: 2
-        x: 486
-        y: 7
-        width: 17
-        height: 22
+        x: 480
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 721aa71c6ee82ef30800000000000000
+      spriteID: 77818c847ed3a92c6cc34287908b7786
       internalID: 4603398890865729831
       vertices: []
       indices: 
@@ -4765,19 +4726,19 @@ TextureImporter:
       name: Orc-Soldier-Red_184
       rect:
         serializedVersion: 2
-        x: 521
-        y: 8
-        width: 14
-        height: 22
+        x: 512
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a9e387c81c08b67e0800000000000000
+      spriteID: 9a525142e172499d46449cf9f30eb6c8
       internalID: -1771180459666424166
       vertices: []
       indices: 
@@ -4787,19 +4748,19 @@ TextureImporter:
       name: Orc-Soldier-Red_185
       rect:
         serializedVersion: 2
-        x: 553
-        y: 8
-        width: 14
-        height: 22
+        x: 544
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 13d3f53b76435fa00800000000000000
+      spriteID: 6558de131e0439c019c5eee61f124349
       internalID: 789594929669029169
       vertices: []
       indices: 
@@ -4809,19 +4770,19 @@ TextureImporter:
       name: Orc-Soldier-Red_186
       rect:
         serializedVersion: 2
-        x: 585
-        y: 8
-        width: 14
-        height: 21
+        x: 576
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 06667ad4483e7ddf0800000000000000
+      spriteID: 33c19b16acb2da90bcd665a0e9f0031b
       internalID: -155405504742988192
       vertices: []
       indices: 
@@ -4831,19 +4792,19 @@ TextureImporter:
       name: Orc-Soldier-Red_187
       rect:
         serializedVersion: 2
-        x: 617
-        y: 8
-        width: 15
-        height: 22
+        x: 608
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5688e3ea6eccb8a70800000000000000
+      spriteID: 97fa3ea1be360eafab2394c7014964b6
       internalID: 8830376785527867493
       vertices: []
       indices: 
@@ -4853,19 +4814,19 @@ TextureImporter:
       name: Orc-Soldier-Red_188
       rect:
         serializedVersion: 2
-        x: 650
-        y: 9
-        width: 15
-        height: 22
+        x: 640
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fea940718c2027d10800000000000000
+      spriteID: 13a89e5d6acd58530349cc84d416a6e9
       internalID: 2121761432847817455
       vertices: []
       indices: 
@@ -4875,19 +4836,19 @@ TextureImporter:
       name: Orc-Soldier-Red_189
       rect:
         serializedVersion: 2
-        x: 681
-        y: 8
-        width: 15
-        height: 23
+        x: 672
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08c5c5452730c23e0800000000000000
+      spriteID: a390f3501ba28826e642635f4f9a6540
       internalID: -2077281538548147072
       vertices: []
       indices: 
@@ -4897,19 +4858,19 @@ TextureImporter:
       name: Orc-Soldier-Red_190
       rect:
         serializedVersion: 2
-        x: 713
-        y: 8
-        width: 14
-        height: 22
+        x: 704
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e236865184d6b5b40800000000000000
+      spriteID: 8ca7ffff113c879d93daae9fbf760411
       internalID: 5430053932089500462
       vertices: []
       indices: 
@@ -4919,19 +4880,19 @@ TextureImporter:
       name: Orc-Soldier-Red_191
       rect:
         serializedVersion: 2
-        x: 744
-        y: 7
-        width: 16
-        height: 19
+        x: 736
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b942c30ccf58c860800000000000000
+      spriteID: e4ddd50abb1030fa37243fe3414f764b
       internalID: 7550390105127668144
       vertices: []
       indices: 
@@ -4953,109 +4914,24 @@ TextureImporter:
     nameFileIdTable:
       Orc-Soldier-Red_0: -8133799744575478624
       Orc-Soldier-Red_1: -7335010862398621068
-      Orc-Soldier-Red_10: 2854933943515316727
-      Orc-Soldier-Red_100: -6554693710747103928
-      Orc-Soldier-Red_101: 7812094276980763712
-      Orc-Soldier-Red_102: -3449221678274659953
-      Orc-Soldier-Red_103: 6268915192719711526
-      Orc-Soldier-Red_104: -5101238957777558157
-      Orc-Soldier-Red_105: -678812431657991400
-      Orc-Soldier-Red_106: 8563788790625381977
-      Orc-Soldier-Red_107: -498879676910400302
-      Orc-Soldier-Red_108: 4505706311362801076
-      Orc-Soldier-Red_109: 6727790601995268446
-      Orc-Soldier-Red_11: -674892013851973931
-      Orc-Soldier-Red_110: -7112956278410278925
-      Orc-Soldier-Red_111: -1028688466926943269
-      Orc-Soldier-Red_112: 6956843767886705027
-      Orc-Soldier-Red_113: 2190754511257420756
-      Orc-Soldier-Red_114: 2215137978863804212
-      Orc-Soldier-Red_115: 4884087890831830194
-      Orc-Soldier-Red_116: -2586495977625035818
-      Orc-Soldier-Red_117: 3023976864836982744
-      Orc-Soldier-Red_118: 1986404366650135453
-      Orc-Soldier-Red_119: -6876526054753938710
-      Orc-Soldier-Red_12: 4246329123225817588
-      Orc-Soldier-Red_120: 4070503544877253788
-      Orc-Soldier-Red_121: 4611623096961351212
-      Orc-Soldier-Red_122: -7487440615513736668
-      Orc-Soldier-Red_123: 1108960599517274760
-      Orc-Soldier-Red_124: 4009901097807664092
-      Orc-Soldier-Red_125: 4217310453892007556
-      Orc-Soldier-Red_126: 115183847653075268
-      Orc-Soldier-Red_127: -2533236080627768366
-      Orc-Soldier-Red_128: 5839186906999206645
-      Orc-Soldier-Red_129: 2349686660007609559
-      Orc-Soldier-Red_13: 8219666623904771752
-      Orc-Soldier-Red_130: -2431352680748732476
-      Orc-Soldier-Red_131: -4191026237085390223
-      Orc-Soldier-Red_132: -2496200539176875317
-      Orc-Soldier-Red_133: 3347818389838600772
-      Orc-Soldier-Red_134: -1222847832199454900
-      Orc-Soldier-Red_135: 367680127355984650
-      Orc-Soldier-Red_136: -7983259330490787011
-      Orc-Soldier-Red_137: -7263500057450814559
-      Orc-Soldier-Red_138: -5279932366505101054
-      Orc-Soldier-Red_139: 7726127420453874475
-      Orc-Soldier-Red_14: -1414953503469036801
-      Orc-Soldier-Red_140: -6121001088800943154
-      Orc-Soldier-Red_141: 4593533250521291510
-      Orc-Soldier-Red_142: -884918729882394636
-      Orc-Soldier-Red_143: 1031115270953342727
-      Orc-Soldier-Red_144: -5050303134018193395
-      Orc-Soldier-Red_145: 6767841171654710791
-      Orc-Soldier-Red_146: 5797492258557777632
-      Orc-Soldier-Red_147: 6235840007210933800
-      Orc-Soldier-Red_148: 5069974573836327266
-      Orc-Soldier-Red_149: -1226741563695110764
-      Orc-Soldier-Red_15: 2829936609838928236
-      Orc-Soldier-Red_150: 6628466794446862152
-      Orc-Soldier-Red_151: 1693424381699787677
-      Orc-Soldier-Red_152: -2560753830148823209
-      Orc-Soldier-Red_153: -4356671295528291661
-      Orc-Soldier-Red_154: 400555612363535846
-      Orc-Soldier-Red_155: -5445119863427145174
-      Orc-Soldier-Red_156: -506816262862850701
-      Orc-Soldier-Red_157: 5530165620798585592
-      Orc-Soldier-Red_158: -8172834381903356531
-      Orc-Soldier-Red_159: -7258326455760924878
-      Orc-Soldier-Red_16: -1701755022250127637
-      Orc-Soldier-Red_160: 8416885764609190828
-      Orc-Soldier-Red_161: -2583292029911137232
-      Orc-Soldier-Red_162: -4161215753639704266
-      Orc-Soldier-Red_163: 1942289057952477808
-      Orc-Soldier-Red_164: 6688876187670019545
-      Orc-Soldier-Red_165: -8250154954595705033
-      Orc-Soldier-Red_166: 6055178524968533094
-      Orc-Soldier-Red_167: 4467950644295321133
-      Orc-Soldier-Red_168: -3139634592915172457
-      Orc-Soldier-Red_169: 5276968253265930987
-      Orc-Soldier-Red_17: 4411188030283124223
-      Orc-Soldier-Red_170: -6122092438792345843
-      Orc-Soldier-Red_171: -5449406573748297512
-      Orc-Soldier-Red_172: -305108746758004333
-      Orc-Soldier-Red_173: 1794213361952245145
-      Orc-Soldier-Red_174: -8465722016784205443
-      Orc-Soldier-Red_175: -406017542260085940
-      Orc-Soldier-Red_176: 6687507216324961311
-      Orc-Soldier-Red_177: -1423600004981505746
-      Orc-Soldier-Red_178: -3860418585096978162
-      Orc-Soldier-Red_179: -5389534398598236096
-      Orc-Soldier-Red_18: -2198748180850624318
-      Orc-Soldier-Red_180: -9042147939642161076
-      Orc-Soldier-Red_181: 5785012255341560768
-      Orc-Soldier-Red_182: -4403826151588275199
-      Orc-Soldier-Red_183: 4603398890865729831
-      Orc-Soldier-Red_184: -1771180459666424166
-      Orc-Soldier-Red_185: 789594929669029169
-      Orc-Soldier-Red_186: -155405504742988192
-      Orc-Soldier-Red_187: 8830376785527867493
-      Orc-Soldier-Red_188: 2121761432847817455
-      Orc-Soldier-Red_189: -2077281538548147072
-      Orc-Soldier-Red_19: 3845425051524524401
-      Orc-Soldier-Red_190: 5430053932089500462
-      Orc-Soldier-Red_191: 7550390105127668144
       Orc-Soldier-Red_2: -3585329492432397769
+      Orc-Soldier-Red_3: 2262102998640017794
+      Orc-Soldier-Red_4: -1492350310232013755
+      Orc-Soldier-Red_5: 3499156164322950647
+      Orc-Soldier-Red_6: -8961406380771334457
+      Orc-Soldier-Red_7: -5888785953866028633
+      Orc-Soldier-Red_8: -5548486873373667330
+      Orc-Soldier-Red_9: 8723089518791095897
+      Orc-Soldier-Red_10: 2854933943515316727
+      Orc-Soldier-Red_11: -674892013851973931
+      Orc-Soldier-Red_12: 4246329123225817588
+      Orc-Soldier-Red_13: 8219666623904771752
+      Orc-Soldier-Red_14: -1414953503469036801
+      Orc-Soldier-Red_15: 2829936609838928236
+      Orc-Soldier-Red_16: -1701755022250127637
+      Orc-Soldier-Red_17: 4411188030283124223
+      Orc-Soldier-Red_18: -2198748180850624318
+      Orc-Soldier-Red_19: 3845425051524524401
       Orc-Soldier-Red_20: -7115909924964975761
       Orc-Soldier-Red_21: 5463125666992063717
       Orc-Soldier-Red_22: -6698277974523734387
@@ -5066,7 +4942,6 @@ TextureImporter:
       Orc-Soldier-Red_27: -2223092661331599946
       Orc-Soldier-Red_28: -6764175557429987976
       Orc-Soldier-Red_29: -7727257421312482581
-      Orc-Soldier-Red_3: 2262102998640017794
       Orc-Soldier-Red_30: 8616893174604654972
       Orc-Soldier-Red_31: -8413393560711220174
       Orc-Soldier-Red_32: 5915586660254548927
@@ -5077,7 +4952,6 @@ TextureImporter:
       Orc-Soldier-Red_37: -4478152492206983925
       Orc-Soldier-Red_38: -8647213869377593248
       Orc-Soldier-Red_39: 4842238631049052134
-      Orc-Soldier-Red_4: -1492350310232013755
       Orc-Soldier-Red_40: 3029295477419561081
       Orc-Soldier-Red_41: -3025104738757424063
       Orc-Soldier-Red_42: 7414934668506500367
@@ -5088,7 +4962,6 @@ TextureImporter:
       Orc-Soldier-Red_47: -4442159925232066706
       Orc-Soldier-Red_48: -11804802668970541
       Orc-Soldier-Red_49: 6924063681970036535
-      Orc-Soldier-Red_5: 3499156164322950647
       Orc-Soldier-Red_50: -6468129086641626383
       Orc-Soldier-Red_51: 1031436342919745702
       Orc-Soldier-Red_52: -883348802631524020
@@ -5099,7 +4972,6 @@ TextureImporter:
       Orc-Soldier-Red_57: 7261414698302010908
       Orc-Soldier-Red_58: -6106200509725630058
       Orc-Soldier-Red_59: 4004174266918925273
-      Orc-Soldier-Red_6: -8961406380771334457
       Orc-Soldier-Red_60: -6852943067698055477
       Orc-Soldier-Red_61: 112657463979671241
       Orc-Soldier-Red_62: -8379953367705191929
@@ -5110,7 +4982,6 @@ TextureImporter:
       Orc-Soldier-Red_67: -9168265157717929640
       Orc-Soldier-Red_68: -5465308628624618489
       Orc-Soldier-Red_69: -902961368930616211
-      Orc-Soldier-Red_7: -5888785953866028633
       Orc-Soldier-Red_70: 5768089797984900181
       Orc-Soldier-Red_71: -1993628745672656102
       Orc-Soldier-Red_72: -1525458225110549863
@@ -5121,7 +4992,6 @@ TextureImporter:
       Orc-Soldier-Red_77: 7551828493413918327
       Orc-Soldier-Red_78: 3836894298243289403
       Orc-Soldier-Red_79: -2035985554323755488
-      Orc-Soldier-Red_8: -5548486873373667330
       Orc-Soldier-Red_80: -3125762959391350776
       Orc-Soldier-Red_81: -1059900020715489761
       Orc-Soldier-Red_82: 2153244210519770201
@@ -5132,7 +5002,6 @@ TextureImporter:
       Orc-Soldier-Red_87: -3434638236648496576
       Orc-Soldier-Red_88: 6044729655626035761
       Orc-Soldier-Red_89: 4881991368799253013
-      Orc-Soldier-Red_9: 8723089518791095897
       Orc-Soldier-Red_90: 2307703194858975263
       Orc-Soldier-Red_91: -3387399278214161048
       Orc-Soldier-Red_92: 2034884128364396097
@@ -5143,6 +5012,98 @@ TextureImporter:
       Orc-Soldier-Red_97: -9136039536589717848
       Orc-Soldier-Red_98: -3455850878196486054
       Orc-Soldier-Red_99: -6406448082445804138
+      Orc-Soldier-Red_100: -6554693710747103928
+      Orc-Soldier-Red_101: 7812094276980763712
+      Orc-Soldier-Red_102: -3449221678274659953
+      Orc-Soldier-Red_103: 6268915192719711526
+      Orc-Soldier-Red_104: -5101238957777558157
+      Orc-Soldier-Red_105: -678812431657991400
+      Orc-Soldier-Red_106: 8563788790625381977
+      Orc-Soldier-Red_107: -498879676910400302
+      Orc-Soldier-Red_108: 4505706311362801076
+      Orc-Soldier-Red_109: 6727790601995268446
+      Orc-Soldier-Red_110: -7112956278410278925
+      Orc-Soldier-Red_111: -1028688466926943269
+      Orc-Soldier-Red_112: 6956843767886705027
+      Orc-Soldier-Red_113: 2190754511257420756
+      Orc-Soldier-Red_114: 2215137978863804212
+      Orc-Soldier-Red_115: 4884087890831830194
+      Orc-Soldier-Red_116: -2586495977625035818
+      Orc-Soldier-Red_117: 3023976864836982744
+      Orc-Soldier-Red_118: 1986404366650135453
+      Orc-Soldier-Red_119: -6876526054753938710
+      Orc-Soldier-Red_120: 4070503544877253788
+      Orc-Soldier-Red_121: 4611623096961351212
+      Orc-Soldier-Red_122: -7487440615513736668
+      Orc-Soldier-Red_123: 1108960599517274760
+      Orc-Soldier-Red_124: 4009901097807664092
+      Orc-Soldier-Red_125: 4217310453892007556
+      Orc-Soldier-Red_126: 115183847653075268
+      Orc-Soldier-Red_127: -2533236080627768366
+      Orc-Soldier-Red_128: 5839186906999206645
+      Orc-Soldier-Red_129: 2349686660007609559
+      Orc-Soldier-Red_130: -2431352680748732476
+      Orc-Soldier-Red_131: -4191026237085390223
+      Orc-Soldier-Red_132: -2496200539176875317
+      Orc-Soldier-Red_133: 3347818389838600772
+      Orc-Soldier-Red_134: -1222847832199454900
+      Orc-Soldier-Red_135: 367680127355984650
+      Orc-Soldier-Red_136: -7983259330490787011
+      Orc-Soldier-Red_137: -7263500057450814559
+      Orc-Soldier-Red_138: -5279932366505101054
+      Orc-Soldier-Red_139: 7726127420453874475
+      Orc-Soldier-Red_140: -6121001088800943154
+      Orc-Soldier-Red_141: 4593533250521291510
+      Orc-Soldier-Red_142: -884918729882394636
+      Orc-Soldier-Red_143: 1031115270953342727
+      Orc-Soldier-Red_144: -5050303134018193395
+      Orc-Soldier-Red_145: 6767841171654710791
+      Orc-Soldier-Red_146: 5797492258557777632
+      Orc-Soldier-Red_147: 6235840007210933800
+      Orc-Soldier-Red_148: 5069974573836327266
+      Orc-Soldier-Red_149: -1226741563695110764
+      Orc-Soldier-Red_150: 6628466794446862152
+      Orc-Soldier-Red_151: 1693424381699787677
+      Orc-Soldier-Red_152: -2560753830148823209
+      Orc-Soldier-Red_153: -4356671295528291661
+      Orc-Soldier-Red_154: 400555612363535846
+      Orc-Soldier-Red_155: -5445119863427145174
+      Orc-Soldier-Red_156: -506816262862850701
+      Orc-Soldier-Red_157: 5530165620798585592
+      Orc-Soldier-Red_158: -8172834381903356531
+      Orc-Soldier-Red_159: -7258326455760924878
+      Orc-Soldier-Red_160: 8416885764609190828
+      Orc-Soldier-Red_161: -2583292029911137232
+      Orc-Soldier-Red_162: -4161215753639704266
+      Orc-Soldier-Red_163: 1942289057952477808
+      Orc-Soldier-Red_164: 6688876187670019545
+      Orc-Soldier-Red_165: -8250154954595705033
+      Orc-Soldier-Red_166: 6055178524968533094
+      Orc-Soldier-Red_167: 4467950644295321133
+      Orc-Soldier-Red_168: -3139634592915172457
+      Orc-Soldier-Red_169: 5276968253265930987
+      Orc-Soldier-Red_170: -6122092438792345843
+      Orc-Soldier-Red_171: -5449406573748297512
+      Orc-Soldier-Red_172: -305108746758004333
+      Orc-Soldier-Red_173: 1794213361952245145
+      Orc-Soldier-Red_174: -8465722016784205443
+      Orc-Soldier-Red_175: -406017542260085940
+      Orc-Soldier-Red_176: 6687507216324961311
+      Orc-Soldier-Red_177: -1423600004981505746
+      Orc-Soldier-Red_178: -3860418585096978162
+      Orc-Soldier-Red_179: -5389534398598236096
+      Orc-Soldier-Red_180: -9042147939642161076
+      Orc-Soldier-Red_181: 5785012255341560768
+      Orc-Soldier-Red_182: -4403826151588275199
+      Orc-Soldier-Red_183: 4603398890865729831
+      Orc-Soldier-Red_184: -1771180459666424166
+      Orc-Soldier-Red_185: 789594929669029169
+      Orc-Soldier-Red_186: -155405504742988192
+      Orc-Soldier-Red_187: 8830376785527867493
+      Orc-Soldier-Red_188: 2121761432847817455
+      Orc-Soldier-Red_189: -2077281538548147072
+      Orc-Soldier-Red_190: 5430053932089500462
+      Orc-Soldier-Red_191: 7550390105127668144
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

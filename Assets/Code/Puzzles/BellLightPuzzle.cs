@@ -199,3 +199,4 @@ public class BellPedestalNode : MonoBehaviour
         GUI.Box(r, $"[E / J] Tocar {nombreCampana}", style);
     }
 }
+

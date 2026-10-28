@@ -32,6 +32,21 @@ TextureImporter:
   - first:
       213: 2781126975534714496
     second: worm_spritesheet_9
+  - first:
+      213: 500620619510763284
+    second: worm_spritesheet_10
+  - first:
+      213: 381199589713763166
+    second: worm_spritesheet_11
+  - first:
+      213: 580989052069830013
+    second: worm_spritesheet_12
+  - first:
+      213: 180870299175714460
+    second: worm_spritesheet_13
+  - first:
+      213: 610643821529734165
+    second: worm_spritesheet_14
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +66,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -64,7 +79,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -78,7 +93,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -104,7 +119,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -117,46 +132,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -172,18 +148,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 15
+        y: 16
         width: 16
-        height: 7
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ef007eaddb0c91d0800000000000000
+      spriteID: 5be7708b4471f1330ad07390f8eedbf4
       internalID: -3342783776673493023
       vertices: []
       indices: 
@@ -193,19 +169,19 @@ TextureImporter:
       name: worm_spritesheet_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 7
-        width: 14
-        height: 9
+        x: 16
+        y: 16
+        width: 16
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b25a30e39ec8c8c90800000000000000
+      spriteID: 8ae3caea1fb9dcb11143638754469a26
       internalID: -7166197973657606869
       vertices: []
       indices: 
@@ -215,19 +191,19 @@ TextureImporter:
       name: worm_spritesheet_2
       rect:
         serializedVersion: 2
-        x: 15
-        y: 11
-        width: 18
-        height: 11
+        x: 32
+        y: 16
+        width: 16
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d51485db874137d60800000000000000
+      spriteID: 4f115b76274b75c3ce9de249b4106793
       internalID: 7886669881261179229
       vertices: []
       indices: 
@@ -237,19 +213,19 @@ TextureImporter:
       name: worm_spritesheet_3
       rect:
         serializedVersion: 2
-        x: 32
-        y: 11
+        x: 48
+        y: 16
         width: 16
-        height: 12
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b153c45a197443800800000000000000
+      spriteID: ed7d7a5b6303d22c6a3bf7f1cfd0b006
       internalID: 591176141961442587
       vertices: []
       indices: 
@@ -259,19 +235,19 @@ TextureImporter:
       name: worm_spritesheet_4
       rect:
         serializedVersion: 2
-        x: 48
-        y: 11
+        x: 64
+        y: 16
         width: 16
-        height: 13
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 07696830345786020800000000000000
+      spriteID: a6aff942e99a620e09eaca472a0456aa
       internalID: 2335245337474012784
       vertices: []
       indices: 
@@ -281,19 +257,19 @@ TextureImporter:
       name: worm_spritesheet_5
       rect:
         serializedVersion: 2
-        x: 64
-        y: 12
+        x: 80
+        y: 16
         width: 16
-        height: 12
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 97abf4f6b4eff1970800000000000000
+      spriteID: 73442297418cc91567bdc64e65beab95
       internalID: 8727974202810808953
       vertices: []
       indices: 
@@ -303,19 +279,19 @@ TextureImporter:
       name: worm_spritesheet_6
       rect:
         serializedVersion: 2
-        x: 80
-        y: 13
+        x: 0
+        y: 8
         width: 16
-        height: 11
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9f0adbf01e0c752e0800000000000000
+      spriteID: ceb73ceeb0c4f939df9e1ec59a33a938
       internalID: -2137027425299750663
       vertices: []
       indices: 
@@ -325,19 +301,19 @@ TextureImporter:
       name: worm_spritesheet_7
       rect:
         serializedVersion: 2
-        x: 1
-        y: 0
-        width: 14
-        height: 7
+        x: 16
+        y: 8
+        width: 16
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a30bb63b5571a6360800000000000000
+      spriteID: f2aaf5199162d0f77fa5342af087c17b
       internalID: 7163563814136033338
       vertices: []
       indices: 
@@ -347,19 +323,19 @@ TextureImporter:
       name: worm_spritesheet_8
       rect:
         serializedVersion: 2
-        x: 17
-        y: 0
-        width: 14
-        height: 7
+        x: 32
+        y: 8
+        width: 16
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 50e41feadde36ec90800000000000000
+      spriteID: ae7b8dddc8b686eefd040fe60f19fc90
       internalID: -7140951037305598459
       vertices: []
       indices: 
@@ -369,20 +345,130 @@ TextureImporter:
       name: worm_spritesheet_9
       rect:
         serializedVersion: 2
-        x: 34
-        y: 0
-        width: 13
-        height: 7
+        x: 48
+        y: 8
+        width: 16
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08ec00ccf3c889620800000000000000
+      spriteID: 85bd89eb1396524a835e215932f88dbd
       internalID: 2781126975534714496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: worm_spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 8
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35c736596ba9677970ece95cbe0477c3
+      internalID: 500620619510763284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: worm_spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 8
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56acc7913a27023256b99762fac1c7c0
+      internalID: 381199589713763166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: worm_spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f6967fefa23ddb8344462332f1c75f0
+      internalID: 580989052069830013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: worm_spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e2cdf1f02530124d270b6b7ecf8cd73
+      internalID: 180870299175714460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: worm_spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f425c72430d6124a21d2972fc5e09a2b
+      internalID: 610643821529734165
       vertices: []
       indices: 
       edges: []
@@ -411,6 +497,11 @@ TextureImporter:
       worm_spritesheet_7: 7163563814136033338
       worm_spritesheet_8: -7140951037305598459
       worm_spritesheet_9: 2781126975534714496
+      worm_spritesheet_10: 500620619510763284
+      worm_spritesheet_11: 381199589713763166
+      worm_spritesheet_12: 580989052069830013
+      worm_spritesheet_13: 180870299175714460
+      worm_spritesheet_14: 610643821529734165
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

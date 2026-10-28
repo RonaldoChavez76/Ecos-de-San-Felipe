@@ -125,3 +125,4 @@ public class BossHealthBarUI : MonoBehaviour
         GUI.Label(new Rect(x, y + 46f, barWidth, 20f), estadoSellos, subStyle);
     }
 }
+

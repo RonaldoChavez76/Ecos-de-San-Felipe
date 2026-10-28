@@ -624,7 +624,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -663,46 +663,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -717,19 +678,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 232
-        width: 16
-        height: 21
+        x: 0
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 87304b8172fc66630800000000000000
+      spriteID: 6e07602bf654cda5d7a1b2cb35b2e8c3
       internalID: 3920048292497720184
       vertices: []
       indices: 
@@ -739,19 +700,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 232
-        width: 16
-        height: 22
+        x: 32
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e7e3aad15340e310800000000000000
+      spriteID: 1d15fddc8468e5d0b3fb55e63c396b90
       internalID: 1432218700343404518
       vertices: []
       indices: 
@@ -761,19 +722,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_2
       rect:
         serializedVersion: 2
-        x: 73
-        y: 231
-        width: 14
-        height: 22
+        x: 64
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15d27e52700230660800000000000000
+      spriteID: 749b8b65a2f4bdeaa18b73497682f69b
       internalID: 7350754231871548753
       vertices: []
       indices: 
@@ -783,19 +744,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_3
       rect:
         serializedVersion: 2
-        x: 104
-        y: 232
-        width: 16
-        height: 22
+        x: 96
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd7349599e3bc2990800000000000000
+      spriteID: 9fe5655db47b2de69fdac8eabbb73469
       internalID: -7409349471113037861
       vertices: []
       indices: 
@@ -805,19 +766,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_4
       rect:
         serializedVersion: 2
-        x: 137
-        y: 231
-        width: 14
-        height: 22
+        x: 128
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e8effa407422dad70800000000000000
+      spriteID: b94606ad10ff0a92467b86ae0a55bac9
       internalID: 9055932114128600718
       vertices: []
       indices: 
@@ -827,19 +788,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_5
       rect:
         serializedVersion: 2
-        x: 167
-        y: 232
-        width: 16
-        height: 22
+        x: 160
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37f69c89383065000800000000000000
+      spriteID: 42b18ab65e21e2d385ec1676bacea754
       internalID: 24210711736053619
       vertices: []
       indices: 
@@ -849,19 +810,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_6
       rect:
         serializedVersion: 2
-        x: 199
-        y: 232
-        width: 16
-        height: 22
+        x: 192
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fde1837e3c6884010800000000000000
+      spriteID: a5bbb1b3b50f1d9228f1cbda6c185297
       internalID: 1173335878885973727
       vertices: []
       indices: 
@@ -871,19 +832,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_7
       rect:
         serializedVersion: 2
-        x: 232
-        y: 231
-        width: 16
-        height: 22
+        x: 224
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74492a0311396aba0800000000000000
+      spriteID: f61c8de79b701507dcc19333172796e7
       internalID: -6078008945050217401
       vertices: []
       indices: 
@@ -893,19 +854,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_8
       rect:
         serializedVersion: 2
-        x: 265
-        y: 232
-        width: 15
-        height: 21
+        x: 256
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e87a08bfbf26fa30800000000000000
+      spriteID: ae6b8478b0f9257aa47e460c5c976393
       internalID: 4248635798943594725
       vertices: []
       indices: 
@@ -915,19 +876,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_9
       rect:
         serializedVersion: 2
-        x: 297
-        y: 231
-        width: 14
-        height: 23
+        x: 288
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f19e1665d9486510800000000000000
+      spriteID: d95f5f2745454ae6a87ec6151abfc047
       internalID: 1542564053264536055
       vertices: []
       indices: 
@@ -937,19 +898,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_10
       rect:
         serializedVersion: 2
-        x: 328
-        y: 231
-        width: 15
-        height: 22
+        x: 320
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: edba259a451878a50800000000000000
+      spriteID: 758334f381804d66614597b0edb80290
       internalID: 6523324785887456222
       vertices: []
       indices: 
@@ -959,19 +920,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_11
       rect:
         serializedVersion: 2
-        x: 360
-        y: 231
-        width: 15
-        height: 22
+        x: 352
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 80d8adb3792a2dc40800000000000000
+      spriteID: 9e5719503924e5f5d1eab067e8b9a054
       internalID: 5535665662419701000
       vertices: []
       indices: 
@@ -981,19 +942,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_12
       rect:
         serializedVersion: 2
-        x: 393
-        y: 232
-        width: 14
-        height: 22
+        x: 384
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e837e515d607b58a0800000000000000
+      spriteID: e954ea9245d18cf6aa4bbbc61db13ad0
       internalID: -6315330437638098034
       vertices: []
       indices: 
@@ -1003,19 +964,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_13
       rect:
         serializedVersion: 2
-        x: 423
-        y: 232
-        width: 16
-        height: 22
+        x: 416
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b8d94603b5302d00800000000000000
+      spriteID: 46345d58bc043f02529764f1e72d0d04
       internalID: 945814964768725174
       vertices: []
       indices: 
@@ -1025,19 +986,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_14
       rect:
         serializedVersion: 2
-        x: 455
-        y: 232
-        width: 16
-        height: 22
+        x: 448
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e422ec1ffe8ee0f0800000000000000
+      spriteID: f218109628ef9bf953b97fad93ef396d
       internalID: -1085773233797323547
       vertices: []
       indices: 
@@ -1047,19 +1008,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_15
       rect:
         serializedVersion: 2
-        x: 489
-        y: 228
-        width: 15
-        height: 25
+        x: 480
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9b67dc04ef6a3c650800000000000000
+      spriteID: a6b549d83c579997f0664599b18e932f
       internalID: 6252024318659491513
       vertices: []
       indices: 
@@ -1069,19 +1030,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_16
       rect:
         serializedVersion: 2
-        x: 520
-        y: 232
-        width: 15
-        height: 22
+        x: 512
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bfd6811ab1aac3de0800000000000000
+      spriteID: 08356c9e6fd2e0ebdd41072405211edc
       internalID: -1352018752474419717
       vertices: []
       indices: 
@@ -1091,19 +1052,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_17
       rect:
         serializedVersion: 2
-        x: 552
-        y: 232
-        width: 15
-        height: 22
+        x: 544
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 07fd914cf60012e80800000000000000
+      spriteID: 7dd921d120a6a9dedac80170116eae9e
       internalID: -8205276566060933264
       vertices: []
       indices: 
@@ -1113,19 +1074,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_18
       rect:
         serializedVersion: 2
-        x: 585
-        y: 232
-        width: 15
-        height: 21
+        x: 576
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f1daa50be95dc3920800000000000000
+      spriteID: 98edd2a1cbe0875932156a434b705198
       internalID: 2971484731697966367
       vertices: []
       indices: 
@@ -1135,19 +1096,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_19
       rect:
         serializedVersion: 2
-        x: 616
-        y: 232
-        width: 16
-        height: 22
+        x: 608
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01ff9e113f52cb070800000000000000
+      spriteID: ce2b284101276a070dea026478406bf3
       internalID: 8123409553777360656
       vertices: []
       indices: 
@@ -1157,19 +1118,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_20
       rect:
         serializedVersion: 2
-        x: 647
-        y: 233
-        width: 18
-        height: 22
+        x: 640
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 534cdcc4af1a51ae0800000000000000
+      spriteID: 58725d1d251f913fa85922af88e55c0f
       internalID: -1579177997921041355
       vertices: []
       indices: 
@@ -1179,19 +1140,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_21
       rect:
         serializedVersion: 2
-        x: 679
-        y: 232
-        width: 18
-        height: 23
+        x: 672
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a07ff6a5c8a9ac840800000000000000
+      spriteID: 8dff8a09880d6977f938d5ca0e9f6812
       internalID: 5245174643629750026
       vertices: []
       indices: 
@@ -1201,19 +1162,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_22
       rect:
         serializedVersion: 2
-        x: 712
-        y: 232
-        width: 16
-        height: 22
+        x: 704
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d85ee719cd86dd640800000000000000
+      spriteID: 96fde3c67f075e565987a203d4f042db
       internalID: 5106352849051116941
       vertices: []
       indices: 
@@ -1223,19 +1184,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_23
       rect:
         serializedVersion: 2
-        x: 744
-        y: 232
-        width: 16
-        height: 19
+        x: 736
+        y: 224
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7cbcd52e86fe68ba0800000000000000
+      spriteID: e6e21606dce7dc49eb4c03598e11b2df
       internalID: -6086914612591211577
       vertices: []
       indices: 
@@ -1245,19 +1206,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_24
       rect:
         serializedVersion: 2
-        x: 9
-        y: 200
-        width: 14
-        height: 21
+        x: 0
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 699c6fe07b3439470800000000000000
+      spriteID: ca9e591229d096a6f64ca34d473018da
       internalID: 8400132183485237654
       vertices: []
       indices: 
@@ -1267,19 +1228,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_25
       rect:
         serializedVersion: 2
-        x: 41
-        y: 200
-        width: 14
-        height: 22
+        x: 32
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15b86ec1064048380800000000000000
+      spriteID: bbf213137a39dae28b5206fd607c9bda
       internalID: -8970039746966942895
       vertices: []
       indices: 
@@ -1289,19 +1250,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_26
       rect:
         serializedVersion: 2
-        x: 73
-        y: 199
-        width: 15
-        height: 22
+        x: 64
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b2e7c4fbdffa751d0800000000000000
+      spriteID: 9928018fcf325c9fac9253996c3675f7
       internalID: -3362025092437737941
       vertices: []
       indices: 
@@ -1311,19 +1272,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_27
       rect:
         serializedVersion: 2
-        x: 105
-        y: 200
-        width: 14
-        height: 22
+        x: 96
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b973aedfecdba1610800000000000000
+      spriteID: 4c1f80f95f908966f50ceb9d124234ed
       internalID: 1592794114949789595
       vertices: []
       indices: 
@@ -1333,19 +1294,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_28
       rect:
         serializedVersion: 2
-        x: 137
-        y: 199
-        width: 14
-        height: 22
+        x: 128
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f1150fb3b14adff0800000000000000
+      spriteID: 49069e40e27a768ef7a7527a019115b0
       internalID: -10623808855272973
       vertices: []
       indices: 
@@ -1355,19 +1316,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_29
       rect:
         serializedVersion: 2
-        x: 167
-        y: 200
-        width: 17
-        height: 22
+        x: 160
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e153ee4cdb44e030800000000000000
+      spriteID: 0d6cce069f1d06b7180075e19c4ec98d
       internalID: 3523024218098979301
       vertices: []
       indices: 
@@ -1377,19 +1338,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_30
       rect:
         serializedVersion: 2
-        x: 199
-        y: 200
-        width: 17
-        height: 22
+        x: 192
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68f9bfc68edbca2c0800000000000000
+      spriteID: 1172ba4fc147b401dc8217a651d3d7e8
       internalID: -4418948328398807162
       vertices: []
       indices: 
@@ -1399,19 +1360,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_31
       rect:
         serializedVersion: 2
-        x: 233
-        y: 200
-        width: 16
-        height: 21
+        x: 224
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3c26fde0e2616260800000000000000
+      spriteID: e3a03d2c2bbe3a6af1cd9759269350ed
       internalID: 7089056006662401084
       vertices: []
       indices: 
@@ -1421,19 +1382,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_32
       rect:
         serializedVersion: 2
-        x: 265
-        y: 200
-        width: 15
-        height: 21
+        x: 256
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca045e24794c22c00800000000000000
+      spriteID: 56a72d477b5f549402e4145a5c17ee73
       internalID: 874477431604723884
       vertices: []
       indices: 
@@ -1443,19 +1404,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_33
       rect:
         serializedVersion: 2
-        x: 297
-        y: 200
-        width: 15
-        height: 22
+        x: 288
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 12f8295cec46d8640800000000000000
+      spriteID: 9ceb97e37a36091f198d20803cfd18c3
       internalID: 5083830393611915041
       vertices: []
       indices: 
@@ -1465,19 +1426,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_34
       rect:
         serializedVersion: 2
-        x: 328
-        y: 199
-        width: 17
-        height: 22
+        x: 320
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4dd7448bacf215100800000000000000
+      spriteID: af74dd635d4fdf045fe72f3aab4165a3
       internalID: 94909614872886740
       vertices: []
       indices: 
@@ -1487,19 +1448,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_35
       rect:
         serializedVersion: 2
-        x: 360
-        y: 199
-        width: 17
-        height: 22
+        x: 352
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 65b8c335e7e38c020800000000000000
+      spriteID: e5d2eb8e548d241506628802f377a8e7
       internalID: 2362206716839103318
       vertices: []
       indices: 
@@ -1509,19 +1470,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_36
       rect:
         serializedVersion: 2
-        x: 393
-        y: 200
-        width: 15
-        height: 22
+        x: 384
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4a1396688dbdadd90800000000000000
+      spriteID: 4d9c311d07be2032a2e07232dc5a46c8
       internalID: -7072098541817482844
       vertices: []
       indices: 
@@ -1531,19 +1492,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_37
       rect:
         serializedVersion: 2
-        x: 423
-        y: 200
-        width: 17
-        height: 22
+        x: 416
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a818da50dedff7240800000000000000
+      spriteID: fe71d18096c9386995f543fae3990727
       internalID: 4791827722989830538
       vertices: []
       indices: 
@@ -1553,19 +1514,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_38
       rect:
         serializedVersion: 2
-        x: 455
-        y: 200
-        width: 17
-        height: 22
+        x: 448
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b00ebe9eb08cc340800000000000000
+      spriteID: ca95d601d9f41b107585db72ba1c1e39
       internalID: 4885421251985539248
       vertices: []
       indices: 
@@ -1575,19 +1536,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_39
       rect:
         serializedVersion: 2
-        x: 489
-        y: 200
-        width: 17
-        height: 21
+        x: 480
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d46c700eaf66757f0800000000000000
+      spriteID: 38730edd093c8d3c12cf036b24eb59d2
       internalID: -623916795681061299
       vertices: []
       indices: 
@@ -1597,19 +1558,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_40
       rect:
         serializedVersion: 2
-        x: 520
-        y: 200
-        width: 16
-        height: 22
+        x: 512
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 893bcfccb30f68800800000000000000
+      spriteID: 77fc281d2a8b30d332e7ea481dcd8eaf
       internalID: 614442538815501208
       vertices: []
       indices: 
@@ -1619,19 +1580,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_41
       rect:
         serializedVersion: 2
-        x: 552
-        y: 200
-        width: 16
-        height: 22
+        x: 544
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fca0b796ac6061fe0800000000000000
+      spriteID: 7dbeb55917b835bd5f8a257b637dc7ee
       internalID: -1218779182734308657
       vertices: []
       indices: 
@@ -1641,19 +1602,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_42
       rect:
         serializedVersion: 2
-        x: 585
-        y: 200
-        width: 14
-        height: 21
+        x: 576
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc0817eb43dbb0bd0800000000000000
+      spriteID: 1bc8fc47ce53b1dbc2cac7a9a95e9ea8
       internalID: -2662826720428457777
       vertices: []
       indices: 
@@ -1663,19 +1624,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_43
       rect:
         serializedVersion: 2
-        x: 616
-        y: 200
-        width: 15
-        height: 22
+        x: 608
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62ec3af5bb3e80e90800000000000000
+      spriteID: 2a17dce2b6e252daf679d5811144d57b
       internalID: -7059142022000292314
       vertices: []
       indices: 
@@ -1685,19 +1646,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_44
       rect:
         serializedVersion: 2
-        x: 647
-        y: 201
-        width: 15
-        height: 22
+        x: 640
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 60f4c59088844d330800000000000000
+      spriteID: edc1483e8705d88f82d14e201f605708
       internalID: 3734689740106780422
       vertices: []
       indices: 
@@ -1707,19 +1668,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_45
       rect:
         serializedVersion: 2
-        x: 680
-        y: 200
-        width: 15
-        height: 23
+        x: 672
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 12ef645ec61b22410800000000000000
+      spriteID: 3e270d5886743233bc498a8bd0a42b13
       internalID: 1450917111227940385
       vertices: []
       indices: 
@@ -1729,19 +1690,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_46
       rect:
         serializedVersion: 2
-        x: 713
-        y: 200
-        width: 14
-        height: 22
+        x: 704
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e42493e4d69d8b80800000000000000
+      spriteID: 7fca782bc3c3107458d6d58e4f8818e4
       internalID: -8390884689625996064
       vertices: []
       indices: 
@@ -1751,19 +1712,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_47
       rect:
         serializedVersion: 2
-        x: 744
-        y: 199
-        width: 16
-        height: 19
+        x: 736
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a3535d4cfdf30d3d0800000000000000
+      spriteID: 6a3b5d1587e51efa62b77f1eec974d4d
       internalID: -3183974706238376646
       vertices: []
       indices: 
@@ -1773,19 +1734,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_48
       rect:
         serializedVersion: 2
-        x: 9
-        y: 168
-        width: 14
-        height: 21
+        x: 0
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 285c8deab08977920800000000000000
+      spriteID: 0adcaa570f617ccf97fbff5fc29fde00
       internalID: 2988024053729117570
       vertices: []
       indices: 
@@ -1795,19 +1756,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_49
       rect:
         serializedVersion: 2
-        x: 41
-        y: 168
-        width: 14
-        height: 22
+        x: 32
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8732b24d0280d78a0800000000000000
+      spriteID: 639f06442ab9d51937ccf000aa9c31e1
       internalID: -6305874966157253768
       vertices: []
       indices: 
@@ -1817,19 +1778,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_50
       rect:
         serializedVersion: 2
-        x: 73
-        y: 167
-        width: 14
-        height: 22
+        x: 64
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cea960492621be360800000000000000
+      spriteID: d0e5e9b2d83ce153a5f0c7ba7ace310f
       internalID: 7199868643881425644
       vertices: []
       indices: 
@@ -1839,19 +1800,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_51
       rect:
         serializedVersion: 2
-        x: 105
-        y: 168
-        width: 14
-        height: 22
+        x: 96
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ff3d97af5c8105760800000000000000
+      spriteID: 16c702becb84cb9bf073faec99ad3d83
       internalID: 7444477422633341951
       vertices: []
       indices: 
@@ -1861,19 +1822,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_52
       rect:
         serializedVersion: 2
-        x: 137
-        y: 167
-        width: 14
-        height: 22
+        x: 128
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82edbc05109fb35a0800000000000000
+      spriteID: 52d95088e3eb918018a7260b54b33441
       internalID: -6540360249779691992
       vertices: []
       indices: 
@@ -1883,19 +1844,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_53
       rect:
         serializedVersion: 2
-        x: 169
-        y: 168
-        width: 14
-        height: 22
+        x: 160
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a083b9b177335b500800000000000000
+      spriteID: 618d32411fccaa8a3e9b6d8ee2159825
       internalID: 411291527631550474
       vertices: []
       indices: 
@@ -1905,19 +1866,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_54
       rect:
         serializedVersion: 2
-        x: 201
-        y: 168
-        width: 14
-        height: 22
+        x: 192
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 130dcb83774c7ddb0800000000000000
+      spriteID: ea49f2689166af7f21c4b079264700cd
       internalID: -4767125664216330191
       vertices: []
       indices: 
@@ -1927,19 +1888,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_55
       rect:
         serializedVersion: 2
-        x: 233
-        y: 168
-        width: 16
-        height: 21
+        x: 224
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e1dd5773222eb0220800000000000000
+      spriteID: 9565894c6da5963ed5ccba887f5d1998
       internalID: 2453303058620603678
       vertices: []
       indices: 
@@ -1949,19 +1910,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_56
       rect:
         serializedVersion: 2
-        x: 265
-        y: 168
-        width: 16
-        height: 21
+        x: 256
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6d6e45b700cdfe40800000000000000
+      spriteID: 927eb215659bc9fac9451b51aa581ed1
       internalID: 5691916643405294954
       vertices: []
       indices: 
@@ -1971,19 +1932,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_57
       rect:
         serializedVersion: 2
-        x: 297
-        y: 168
-        width: 17
-        height: 22
+        x: 288
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b54dd897b9dcd7020800000000000000
+      spriteID: 46d8f12a14ae74beaeabb89d1c6b537a
       internalID: 2341253448945488987
       vertices: []
       indices: 
@@ -1993,19 +1954,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_58
       rect:
         serializedVersion: 2
-        x: 329
-        y: 168
-        width: 16
-        height: 21
+        x: 320
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2df29f1082abe9e60800000000000000
+      spriteID: f5832e5ec561a31f0030b8a47e0aab94
       internalID: 7971013071486922706
       vertices: []
       indices: 
@@ -2015,19 +1976,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_59
       rect:
         serializedVersion: 2
-        x: 361
-        y: 168
-        width: 15
-        height: 21
+        x: 352
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ea6e0620febf07490800000000000000
+      spriteID: 3162527156d16b3051527e1448faed87
       internalID: -7750417954748963154
       vertices: []
       indices: 
@@ -2037,19 +1998,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_60
       rect:
         serializedVersion: 2
-        x: 393
-        y: 168
-        width: 16
-        height: 22
+        x: 384
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee365a2fe926fed70800000000000000
+      spriteID: f226c3139822028465110d5d9602f453
       internalID: 9074580208990118894
       vertices: []
       indices: 
@@ -2059,19 +2020,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_61
       rect:
         serializedVersion: 2
-        x: 425
-        y: 168
-        width: 14
-        height: 22
+        x: 416
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9eb6e9457a06e540800000000000000
+      spriteID: 0eb5102d8adf8d15751c208b723088f9
       internalID: 5036724732127788702
       vertices: []
       indices: 
@@ -2081,19 +2042,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_62
       rect:
         serializedVersion: 2
-        x: 457
-        y: 168
-        width: 14
-        height: 22
+        x: 448
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dde6ee668156616a0800000000000000
+      spriteID: 0351692087cd704341d0b595b64a3979
       internalID: -6478879858445357347
       vertices: []
       indices: 
@@ -2103,19 +2064,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_63
       rect:
         serializedVersion: 2
-        x: 489
-        y: 168
-        width: 18
-        height: 21
+        x: 480
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b9402a263729c4fd0800000000000000
+      spriteID: bf808c9112f000c2f35e7cbc47b700aa
       internalID: -2356347480747932517
       vertices: []
       indices: 
@@ -2125,19 +2086,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_64
       rect:
         serializedVersion: 2
-        x: 521
-        y: 168
-        width: 14
-        height: 22
+        x: 512
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: db70d199e3deb4e80800000000000000
+      spriteID: 61aa43be1569fcd11b0fe91538c4b5d0
       internalID: -8193194243957913667
       vertices: []
       indices: 
@@ -2147,19 +2108,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_65
       rect:
         serializedVersion: 2
-        x: 553
-        y: 168
-        width: 14
-        height: 22
+        x: 544
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffa52325103010960800000000000000
+      spriteID: 6f482f71d3e2be051b9caecb005652d7
       internalID: 7566332153168026367
       vertices: []
       indices: 
@@ -2169,19 +2130,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_66
       rect:
         serializedVersion: 2
-        x: 585
-        y: 168
-        width: 14
-        height: 21
+        x: 576
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 279e169b203086260800000000000000
+      spriteID: 52fb4e7693f80ba84afdc954f63d5842
       internalID: 7090920923529865586
       vertices: []
       indices: 
@@ -2191,19 +2152,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_67
       rect:
         serializedVersion: 2
-        x: 617
-        y: 168
-        width: 14
-        height: 22
+        x: 608
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5f1e8d792a36f95c0800000000000000
+      spriteID: b03c77fc9e65b4efe50bd5c3e1f9df27
       internalID: -4206533976957328907
       vertices: []
       indices: 
@@ -2213,19 +2174,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_68
       rect:
         serializedVersion: 2
-        x: 647
-        y: 168
-        width: 14
-        height: 23
+        x: 640
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b10fd5e003c25ddd0800000000000000
+      spriteID: a419ca64950db472b068145fa0ee8e48
       internalID: -2462013036377018341
       vertices: []
       indices: 
@@ -2235,19 +2196,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_69
       rect:
         serializedVersion: 2
-        x: 681
-        y: 168
-        width: 14
-        height: 23
+        x: 672
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44ade0ab18d5dbe50800000000000000
+      spriteID: bdc287fd48b2cd31b6ee93b22707e453
       internalID: 6826715421917239876
       vertices: []
       indices: 
@@ -2257,19 +2218,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_70
       rect:
         serializedVersion: 2
-        x: 713
-        y: 168
-        width: 14
-        height: 22
+        x: 704
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8c0699879eea711d0800000000000000
+      spriteID: 97a56265cd871204c0b9d1e6cc1f8454
       internalID: -3380040677544337208
       vertices: []
       indices: 
@@ -2279,19 +2240,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_71
       rect:
         serializedVersion: 2
-        x: 737
-        y: 166
-        width: 24
-        height: 14
+        x: 736
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f9ae731a702b63600800000000000000
+      spriteID: c7b9c9256a1a4811e0eaf289de0d91b7
       internalID: 447740958809254559
       vertices: []
       indices: 
@@ -2301,19 +2262,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_72
       rect:
         serializedVersion: 2
-        x: 9
-        y: 136
-        width: 14
-        height: 21
+        x: 0
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44aca47eb3f5b2440800000000000000
+      spriteID: e66e65e484eecad53202df861286f839
       internalID: 4912124529465805380
       vertices: []
       indices: 
@@ -2323,19 +2284,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_73
       rect:
         serializedVersion: 2
-        x: 41
-        y: 136
-        width: 14
-        height: 22
+        x: 32
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b59dafa8ff758760800000000000000
+      spriteID: 8b76db105077b0ef90749ad7ac6e6e35
       internalID: 7459509063885100468
       vertices: []
       indices: 
@@ -2345,19 +2306,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_74
       rect:
         serializedVersion: 2
-        x: 72
-        y: 135
-        width: 15
-        height: 22
+        x: 64
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ebcc030c81ecf4630800000000000000
+      spriteID: 99abcb3a67d5c08012da1218f514e7e1
       internalID: 3913573206907210942
       vertices: []
       indices: 
@@ -2367,19 +2328,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_75
       rect:
         serializedVersion: 2
-        x: 105
-        y: 136
-        width: 14
-        height: 22
+        x: 96
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 42d41cccc7ffff4b0800000000000000
+      spriteID: 72a6399ee5f04ea202a08644c2ba21f6
       internalID: -5404320116345058012
       vertices: []
       indices: 
@@ -2389,19 +2350,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_76
       rect:
         serializedVersion: 2
-        x: 137
-        y: 135
-        width: 14
-        height: 22
+        x: 128
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 77eaf6df28bc29e00800000000000000
+      spriteID: cb60bd1c88dd3b948f1b09119a0ef99d
       internalID: 1050125426588888695
       vertices: []
       indices: 
@@ -2411,19 +2372,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_77
       rect:
         serializedVersion: 2
-        x: 169
-        y: 136
-        width: 14
-        height: 22
+        x: 160
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 62583642075bfe940800000000000000
+      spriteID: 046a8d6a1113454e82704fbecb2e7e59
       internalID: 5327676377454052646
       vertices: []
       indices: 
@@ -2433,19 +2394,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_78
       rect:
         serializedVersion: 2
-        x: 201
-        y: 136
-        width: 14
-        height: 22
+        x: 192
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 136ef9cc247d6edb0800000000000000
+      spriteID: ea56865d111ddeadf3f707ab35a80f78
       internalID: -4762882873996876239
       vertices: []
       indices: 
@@ -2455,19 +2416,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_79
       rect:
         serializedVersion: 2
-        x: 233
-        y: 136
-        width: 16
-        height: 21
+        x: 224
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1708683f28fe9b5e0800000000000000
+      spriteID: 45903c2336e950dd0715622a3331e1e7
       internalID: -1893218822622117775
       vertices: []
       indices: 
@@ -2477,19 +2438,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_80
       rect:
         serializedVersion: 2
-        x: 265
-        y: 136
-        width: 15
-        height: 21
+        x: 256
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e61192e35d4ad9d50800000000000000
+      spriteID: 7777f7afec5759e946a3324bf2a6f052
       internalID: 6745729052648739182
       vertices: []
       indices: 
@@ -2499,19 +2460,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_81
       rect:
         serializedVersion: 2
-        x: 297
-        y: 136
-        width: 16
-        height: 22
+        x: 288
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3d62904c039d3ea0800000000000000
+      spriteID: 2c6983eb267db3a3cead98f63bd50f7a
       internalID: -5891391056698512068
       vertices: []
       indices: 
@@ -2521,19 +2482,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_82
       rect:
         serializedVersion: 2
-        x: 329
-        y: 136
-        width: 16
-        height: 21
+        x: 320
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b00d2197cb91b630800000000000000
+      spriteID: d5b40b658d67af6d1af571f4ebf477e8
       internalID: 3941102430362337464
       vertices: []
       indices: 
@@ -2543,19 +2504,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_83
       rect:
         serializedVersion: 2
-        x: 361
-        y: 136
-        width: 16
-        height: 21
+        x: 352
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b3d1898c5efc9eb10800000000000000
+      spriteID: ddf49a2533c9aa55e624a7f09717a13d
       internalID: 2011367294417509691
       vertices: []
       indices: 
@@ -2565,19 +2526,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_84
       rect:
         serializedVersion: 2
-        x: 393
-        y: 136
-        width: 16
-        height: 22
+        x: 384
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddb2b05c5aae56950800000000000000
+      spriteID: ff843906dfdbcddf404f3978d5b3ac91
       internalID: 6441812839719709661
       vertices: []
       indices: 
@@ -2587,19 +2548,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_85
       rect:
         serializedVersion: 2
-        x: 425
-        y: 136
-        width: 14
-        height: 22
+        x: 416
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5ea06d5b3e0cf87d0800000000000000
+      spriteID: 962496ac5b6dd12598049cc89c317582
       internalID: -2913898349644608795
       vertices: []
       indices: 
@@ -2609,19 +2570,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_86
       rect:
         serializedVersion: 2
-        x: 457
-        y: 136
-        width: 14
-        height: 22
+        x: 448
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 14d4232de72cbae90800000000000000
+      spriteID: bb9e67b614e2acbb428319d455a80489
       internalID: -7013298144751235775
       vertices: []
       indices: 
@@ -2631,19 +2592,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_87
       rect:
         serializedVersion: 2
-        x: 489
-        y: 136
-        width: 18
-        height: 21
+        x: 480
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 446263a6bd52ea4e0800000000000000
+      spriteID: 94990744b00be09e07d77ebb93cc54f2
       internalID: -1968594362804328892
       vertices: []
       indices: 
@@ -2653,19 +2614,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_88
       rect:
         serializedVersion: 2
-        x: 521
-        y: 136
-        width: 14
-        height: 22
+        x: 512
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddbd847b007584b30800000000000000
+      spriteID: 17296badb05fe250d993c4937dc6e67e
       internalID: 4271759907147537373
       vertices: []
       indices: 
@@ -2675,19 +2636,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_89
       rect:
         serializedVersion: 2
-        x: 553
-        y: 136
-        width: 14
-        height: 22
+        x: 544
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 323f2cc87287367f0800000000000000
+      spriteID: 9472169d5a402f41feacba74d4294b29
       internalID: -620520212386352349
       vertices: []
       indices: 
@@ -2697,19 +2658,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_90
       rect:
         serializedVersion: 2
-        x: 585
-        y: 136
-        width: 14
-        height: 21
+        x: 576
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8db18fdd2b13badd0800000000000000
+      spriteID: 7e87e77286409da4622de4cb8b3cfdd1
       internalID: -2473828926011991080
       vertices: []
       indices: 
@@ -2719,19 +2680,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_91
       rect:
         serializedVersion: 2
-        x: 617
-        y: 136
-        width: 14
-        height: 22
+        x: 608
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f7323bed281b241f0800000000000000
+      spriteID: 869b13596c6e9e7497021c1c2320d163
       internalID: -1062091386465868929
       vertices: []
       indices: 
@@ -2741,19 +2702,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_92
       rect:
         serializedVersion: 2
-        x: 648
-        y: 135
-        width: 14
-        height: 22
+        x: 640
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c21685cefaf3214c0800000000000000
+      spriteID: ab75c979f0bcadd59c12dbb94b21b6cc
       internalID: -4318319067877842644
       vertices: []
       indices: 
@@ -2763,19 +2724,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_93
       rect:
         serializedVersion: 2
-        x: 681
-        y: 136
-        width: 14
-        height: 23
+        x: 672
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f7a455808077a9810800000000000000
+      spriteID: c37722535a26b6ebaa63f6332eafb03a
       internalID: 1772860279706962559
       vertices: []
       indices: 
@@ -2785,19 +2746,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_94
       rect:
         serializedVersion: 2
-        x: 713
-        y: 136
-        width: 14
-        height: 22
+        x: 704
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 098faba32c3525f10800000000000000
+      spriteID: 1e3c92eb6ffcd53185c55b1798a45006
       internalID: 2256958456940132496
       vertices: []
       indices: 
@@ -2807,19 +2768,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_95
       rect:
         serializedVersion: 2
-        x: 743
-        y: 131
-        width: 16
-        height: 19
+        x: 736
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ecda462d95a8c35b0800000000000000
+      spriteID: fc7961348de56ed8945a2976a8e19b82
       internalID: -5387278935855419954
       vertices: []
       indices: 
@@ -2829,19 +2790,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_96
       rect:
         serializedVersion: 2
-        x: 8
-        y: 104
-        width: 16
-        height: 21
+        x: 0
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a3e967ade973204f0800000000000000
+      spriteID: 12b23059cd992753c17e3fb64f4dead4
       internalID: -864067023092146630
       vertices: []
       indices: 
@@ -2851,19 +2812,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_97
       rect:
         serializedVersion: 2
-        x: 40
-        y: 104
-        width: 16
-        height: 22
+        x: 32
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fadd8a77a06e5eb10800000000000000
+      spriteID: 3f30e1f0607885017a52508a2a2f3d7e
       internalID: 2010265741322411439
       vertices: []
       indices: 
@@ -2873,19 +2834,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_98
       rect:
         serializedVersion: 2
-        x: 73
-        y: 103
-        width: 14
-        height: 22
+        x: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 27f05573057303b80800000000000000
+      spriteID: 3b37d4760fcafe6790bfd7d5cc481dac
       internalID: -8417166885890224270
       vertices: []
       indices: 
@@ -2895,19 +2856,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_99
       rect:
         serializedVersion: 2
-        x: 104
-        y: 104
-        width: 16
-        height: 22
+        x: 96
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb6c4ed2cbbf3d5f0800000000000000
+      spriteID: 38b95244493f9c9934d8a710b1ff0a37
       internalID: -732965528688867650
       vertices: []
       indices: 
@@ -2917,19 +2878,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_100
       rect:
         serializedVersion: 2
-        x: 137
-        y: 103
-        width: 14
-        height: 22
+        x: 128
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a5fb175e5e394660800000000000000
+      spriteID: 12c863eab57118b629e6a8b81d76f2b2
       internalID: 7370490840077825443
       vertices: []
       indices: 
@@ -2939,19 +2900,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_101
       rect:
         serializedVersion: 2
-        x: 169
-        y: 104
-        width: 16
-        height: 22
+        x: 160
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bcc9e3517f7a3f7b0800000000000000
+      spriteID: b377c4fa6988758ccddf7ad579a2cdaf
       internalID: -5191621265772864309
       vertices: []
       indices: 
@@ -2961,19 +2922,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_102
       rect:
         serializedVersion: 2
-        x: 201
-        y: 104
-        width: 16
-        height: 22
+        x: 192
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6a1dad28a596d9c20800000000000000
+      spriteID: ac18e732b2da649ef6c663ce28e0798d
       internalID: 3214841546475753894
       vertices: []
       indices: 
@@ -2983,19 +2944,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_103
       rect:
         serializedVersion: 2
-        x: 232
-        y: 104
-        width: 15
-        height: 21
+        x: 224
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f04e5e49d4a3a8f70800000000000000
+      spriteID: 3f238078782ac8633470ab7438efacc0
       internalID: 9190222094487905295
       vertices: []
       indices: 
@@ -3005,19 +2966,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_104
       rect:
         serializedVersion: 2
-        x: 265
-        y: 104
-        width: 14
-        height: 21
+        x: 256
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 89b2d8d7ad452bba0800000000000000
+      spriteID: 5215cecafee70e493164d523c03c770d
       internalID: -6074699649983370344
       vertices: []
       indices: 
@@ -3027,19 +2988,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_105
       rect:
         serializedVersion: 2
-        x: 297
-        y: 104
-        width: 14
-        height: 22
+        x: 288
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef8e5b8c64057f1b0800000000000000
+      spriteID: 1b7dc1adbfdc00120400319a13aabb0e
       internalID: -5622937344803477250
       vertices: []
       indices: 
@@ -3049,19 +3010,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_106
       rect:
         serializedVersion: 2
-        x: 329
-        y: 104
-        width: 15
-        height: 21
+        x: 320
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf74cc76218e177c0800000000000000
+      spriteID: 19d7529828077d6be1ea60ff7d4db60f
       internalID: -4075221022045091845
       vertices: []
       indices: 
@@ -3071,19 +3032,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_107
       rect:
         serializedVersion: 2
-        x: 361
-        y: 104
-        width: 15
-        height: 21
+        x: 352
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf3458f213115b7d0800000000000000
+      spriteID: a973812531edc2a078a2d7135723cf1f
       internalID: -2903395481822084101
       vertices: []
       indices: 
@@ -3093,19 +3054,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_108
       rect:
         serializedVersion: 2
-        x: 393
-        y: 104
-        width: 14
-        height: 22
+        x: 384
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5fc4e35338fb341b0800000000000000
+      spriteID: 9886374155b8a7ffc353ea19e71f7911
       internalID: -5673480535301796619
       vertices: []
       indices: 
@@ -3115,19 +3076,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_109
       rect:
         serializedVersion: 2
-        x: 425
-        y: 104
-        width: 16
-        height: 22
+        x: 416
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1fbbf204117b60c80800000000000000
+      spriteID: c9de2579470e464e644aa0eac472b25a
       internalID: -8356790773820179471
       vertices: []
       indices: 
@@ -3137,19 +3098,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_110
       rect:
         serializedVersion: 2
-        x: 457
-        y: 104
-        width: 16
-        height: 22
+        x: 448
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c62a7138319ad7280800000000000000
+      spriteID: b389178ab447284963b0810b3d526821
       internalID: -9043886575421250964
       vertices: []
       indices: 
@@ -3159,19 +3120,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_111
       rect:
         serializedVersion: 2
-        x: 489
-        y: 104
-        width: 14
-        height: 21
+        x: 480
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b4df16c741033e060800000000000000
+      spriteID: ab318937ce6fafcd3b6f86bbb3139e65
       internalID: 6981476711898676555
       vertices: []
       indices: 
@@ -3181,19 +3142,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_112
       rect:
         serializedVersion: 2
-        x: 521
-        y: 104
-        width: 15
-        height: 22
+        x: 512
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dda954861e1094ed0800000000000000
+      spriteID: 9dfb3c944b1562caf87f6684b1a6a1e4
       internalID: -2429408456361010467
       vertices: []
       indices: 
@@ -3203,19 +3164,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_113
       rect:
         serializedVersion: 2
-        x: 553
-        y: 104
-        width: 15
-        height: 22
+        x: 544
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1c98ba2eebcaee0a0800000000000000
+      spriteID: 740252f97ff08cfcdbb2772e9882174c
       internalID: -6850348047337289279
       vertices: []
       indices: 
@@ -3225,19 +3186,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_114
       rect:
         serializedVersion: 2
-        x: 585
-        y: 104
-        width: 14
-        height: 21
+        x: 576
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f166acaa9ad8e9f0800000000000000
+      spriteID: 60e8a821e09dbd15df8fd6d4c2095517
       internalID: -438860605812219405
       vertices: []
       indices: 
@@ -3247,19 +3208,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_115
       rect:
         serializedVersion: 2
-        x: 616
-        y: 104
-        width: 16
-        height: 22
+        x: 608
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 09f51b0df6e667610800000000000000
+      spriteID: 34d1ec4aff1ea34dce3a01503e9a443f
       internalID: 1618602542607982480
       vertices: []
       indices: 
@@ -3269,19 +3230,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_116
       rect:
         serializedVersion: 2
-        x: 647
-        y: 103
-        width: 18
-        height: 22
+        x: 640
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38f528b36bcc90590800000000000000
+      spriteID: 1d740c89b0d33e29ee9d867424934520
       internalID: -7707404204213379197
       vertices: []
       indices: 
@@ -3291,19 +3252,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_117
       rect:
         serializedVersion: 2
-        x: 679
-        y: 104
-        width: 18
-        height: 23
+        x: 672
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fcd397d2b55836c90800000000000000
+      spriteID: d6e791a6de9db41b10c497feb2cb9576
       internalID: -7177746754447000113
       vertices: []
       indices: 
@@ -3313,19 +3274,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_118
       rect:
         serializedVersion: 2
-        x: 712
-        y: 104
-        width: 16
-        height: 22
+        x: 704
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b5e47f6a7e9c2d220800000000000000
+      spriteID: ef09e24c2ccd45292121f49bddc02f0c
       internalID: 2509289939174641243
       vertices: []
       indices: 
@@ -3335,19 +3296,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_119
       rect:
         serializedVersion: 2
-        x: 744
-        y: 99
-        width: 16
-        height: 18
+        x: 736
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e9159705b9b4958a0800000000000000
+      spriteID: b81a0fc1dec582771b12f11bdaca59b8
       internalID: -6315933871968267874
       vertices: []
       indices: 
@@ -3357,19 +3318,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_120
       rect:
         serializedVersion: 2
-        x: 9
-        y: 72
-        width: 14
-        height: 21
+        x: 0
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 72034b6985a58b670800000000000000
+      spriteID: b8fe916529ae2d324c6d197cd1ef891e
       internalID: 8554686828722270247
       vertices: []
       indices: 
@@ -3379,19 +3340,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_121
       rect:
         serializedVersion: 2
-        x: 41
-        y: 72
-        width: 14
-        height: 22
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 093f7b45cc55da980800000000000000
+      spriteID: 86f9f4a776c01dc917f6c06bdd4b051b
       internalID: -8526064183459449968
       vertices: []
       indices: 
@@ -3401,19 +3362,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_122
       rect:
         serializedVersion: 2
-        x: 73
-        y: 71
-        width: 15
-        height: 22
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e4609c62bc3bdc270800000000000000
+      spriteID: f30aade5d05a0e159d6078188fe39cba
       internalID: 8272465775659910734
       vertices: []
       indices: 
@@ -3423,19 +3384,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_123
       rect:
         serializedVersion: 2
-        x: 105
-        y: 72
-        width: 14
-        height: 22
+        x: 96
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b07d7a8360d3c0990800000000000000
+      spriteID: 21e04cc06fb7e13ca28f6acf8dffbd67
       internalID: -7418487389256427765
       vertices: []
       indices: 
@@ -3445,19 +3406,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_124
       rect:
         serializedVersion: 2
-        x: 137
-        y: 71
-        width: 14
-        height: 22
+        x: 128
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dcc8917664f71eef0800000000000000
+      spriteID: 30b42ccf191c42aa019e9f38566812a7
       internalID: -80643377961792307
       vertices: []
       indices: 
@@ -3467,19 +3428,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_125
       rect:
         serializedVersion: 2
-        x: 169
-        y: 72
-        width: 14
-        height: 22
+        x: 160
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 552e4cb42cd6491b0800000000000000
+      spriteID: 1baa5a2862601a7ea2756c4db69f2d52
       internalID: -5650770951180852651
       vertices: []
       indices: 
@@ -3489,19 +3450,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_126
       rect:
         serializedVersion: 2
-        x: 201
-        y: 72
-        width: 14
-        height: 22
+        x: 192
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e7030f69a5c0649f0800000000000000
+      spriteID: 5a43b2db8e59afcfbcc1f197234ba259
       internalID: -484686326676836226
       vertices: []
       indices: 
@@ -3511,19 +3472,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_127
       rect:
         serializedVersion: 2
-        x: 231
-        y: 72
-        width: 16
-        height: 21
+        x: 224
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc3c72b80ccfd5730800000000000000
+      spriteID: c609a3be6be3abcfe477badf84a3336e
       internalID: 3989622748818686927
       vertices: []
       indices: 
@@ -3533,19 +3494,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_128
       rect:
         serializedVersion: 2
-        x: 264
-        y: 72
-        width: 15
-        height: 21
+        x: 256
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c50db3c9bea04edc0800000000000000
+      spriteID: eb6e269490fb2389c6e36da376da302d
       internalID: -3610748994189537188
       vertices: []
       indices: 
@@ -3555,19 +3516,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_129
       rect:
         serializedVersion: 2
-        x: 295
-        y: 72
-        width: 16
-        height: 22
+        x: 288
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 149575b315b9a4520800000000000000
+      spriteID: f36bbfe7b85c25f44c97f051e89e48ac
       internalID: 2687130900870158657
       vertices: []
       indices: 
@@ -3577,19 +3538,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_130
       rect:
         serializedVersion: 2
-        x: 327
-        y: 72
-        width: 17
-        height: 21
+        x: 320
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 35aa8fa79ad9e9310800000000000000
+      spriteID: 82751b7f707ff73686454d7622f7b4fd
       internalID: 1413740684279065171
       vertices: []
       indices: 
@@ -3599,19 +3560,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_131
       rect:
         serializedVersion: 2
-        x: 359
-        y: 72
-        width: 17
-        height: 21
+        x: 352
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9a3bf250f1aeecfc0800000000000000
+      spriteID: f44723671953e3af1cc445a0ed338dc7
       internalID: -3472580843704175703
       vertices: []
       indices: 
@@ -3621,19 +3582,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_132
       rect:
         serializedVersion: 2
-        x: 391
-        y: 72
-        width: 16
-        height: 22
+        x: 384
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8da4cec3211d8ed40800000000000000
+      spriteID: 96dbd2c72c73718a3e7ddd1a113f5766
       internalID: 5613966811779058392
       vertices: []
       indices: 
@@ -3643,19 +3604,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_133
       rect:
         serializedVersion: 2
-        x: 425
-        y: 72
-        width: 14
-        height: 22
+        x: 416
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a92ee480668b83070800000000000000
+      spriteID: 306cda677040a40eb915688ed5a2f040
       internalID: 8086415879309288090
       vertices: []
       indices: 
@@ -3665,19 +3626,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_134
       rect:
         serializedVersion: 2
-        x: 457
-        y: 72
-        width: 14
-        height: 22
+        x: 448
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dcdf1406f2d8c280800000000000000
+      spriteID: 450f0b7125f4f1cfdbb9089db048d36d
       internalID: -9022729899363803945
       vertices: []
       indices: 
@@ -3687,19 +3648,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_135
       rect:
         serializedVersion: 2
-        x: 485
-        y: 72
-        width: 18
-        height: 21
+        x: 480
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fd73d8ed380a99e20800000000000000
+      spriteID: bd042f6a8f6ceb51d9da2194afed744d
       internalID: 3357891485416372191
       vertices: []
       indices: 
@@ -3709,19 +3670,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_136
       rect:
         serializedVersion: 2
-        x: 521
-        y: 72
-        width: 14
-        height: 22
+        x: 512
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8df7616849358c010800000000000000
+      spriteID: a38a3d1e843ac5d9dae8a3dbb00814ab
       internalID: 1209308397318864856
       vertices: []
       indices: 
@@ -3731,19 +3692,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_137
       rect:
         serializedVersion: 2
-        x: 553
-        y: 72
-        width: 14
-        height: 22
+        x: 544
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bb771efbe71ec49c0800000000000000
+      spriteID: b4ecece03d35b0281d1c5e94431a0976
       internalID: -3941527639354673221
       vertices: []
       indices: 
@@ -3753,19 +3714,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_138
       rect:
         serializedVersion: 2
-        x: 585
-        y: 72
-        width: 14
-        height: 21
+        x: 576
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4e8ce43838a167520800000000000000
+      spriteID: 1c287c4214b072d7108850bc9a131b48
       internalID: 2699374178801207524
       vertices: []
       indices: 
@@ -3775,19 +3736,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_139
       rect:
         serializedVersion: 2
-        x: 617
-        y: 72
-        width: 14
-        height: 22
+        x: 608
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0edb846a173c4c5a0800000000000000
+      spriteID: b95c9b4fa807ffba153dcb6ba1f895e6
       internalID: -6501857069127647776
       vertices: []
       indices: 
@@ -3797,19 +3758,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_140
       rect:
         serializedVersion: 2
-        x: 650
-        y: 71
-        width: 14
-        height: 22
+        x: 640
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8a607af25ad0b700800000000000000
+      spriteID: 4a928e1d80a3bc2e33b0b67d81437cda
       internalID: 554182804090415756
       vertices: []
       indices: 
@@ -3819,19 +3780,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_141
       rect:
         serializedVersion: 2
-        x: 681
-        y: 72
-        width: 14
-        height: 23
+        x: 672
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a276517a0b2ca83a0800000000000000
+      spriteID: 610932a11f2a52c114e131c2c986f3dd
       internalID: -6662298634767997142
       vertices: []
       indices: 
@@ -3841,19 +3802,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_142
       rect:
         serializedVersion: 2
-        x: 713
-        y: 72
-        width: 14
-        height: 22
+        x: 704
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 220114142b4bc3550800000000000000
+      spriteID: 6b30c96ae4dd9480d275716f2eea6204
       internalID: 6141982669518475298
       vertices: []
       indices: 
@@ -3863,19 +3824,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_143
       rect:
         serializedVersion: 2
-        x: 745
-        y: 67
-        width: 16
-        height: 19
+        x: 736
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d789d92b02b00a00800000000000000
+      spriteID: add99d04b09404a464935590d06839aa
       internalID: 720771701395785686
       vertices: []
       indices: 
@@ -3885,19 +3846,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_144
       rect:
         serializedVersion: 2
-        x: 9
-        y: 40
-        width: 14
-        height: 21
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 770119ca4ccc570b0800000000000000
+      spriteID: bd5ef68f514bd71c54d969153caa0fd7
       internalID: -5731449805678243721
       vertices: []
       indices: 
@@ -3907,19 +3868,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_145
       rect:
         serializedVersion: 2
-        x: 41
-        y: 40
-        width: 14
-        height: 22
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a5437e6febb381720800000000000000
+      spriteID: e688ffa911cff3acd6cb4808ba010af3
       internalID: 2817067258292417626
       vertices: []
       indices: 
@@ -3929,19 +3890,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_146
       rect:
         serializedVersion: 2
-        x: 73
-        y: 39
-        width: 14
-        height: 22
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f2e7a101209cf1f0800000000000000
+      spriteID: 3bee91c3631995ea6af1c72845c68a37
       internalID: -1009773745001733384
       vertices: []
       indices: 
@@ -3951,19 +3912,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_147
       rect:
         serializedVersion: 2
-        x: 105
-        y: 40
-        width: 14
-        height: 22
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 72a6d8cf8ec955880800000000000000
+      spriteID: 09b4c0cad8d9911e8dd69c0397517eb4
       internalID: -8622813387047474649
       vertices: []
       indices: 
@@ -3973,19 +3934,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_148
       rect:
         serializedVersion: 2
-        x: 137
-        y: 39
-        width: 14
-        height: 22
+        x: 128
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 557ac70c1bd2103c0800000000000000
+      spriteID: d0c6cbc1ea365ae4e62415910478c47d
       internalID: -4395181519875037355
       vertices: []
       indices: 
@@ -3995,19 +3956,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_149
       rect:
         serializedVersion: 2
-        x: 169
-        y: 40
-        width: 14
-        height: 22
+        x: 160
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ca220548951906c0800000000000000
+      spriteID: 77ac236e8028b95085a5e77b33c72a7a
       internalID: -4176783435672442172
       vertices: []
       indices: 
@@ -4017,19 +3978,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_150
       rect:
         serializedVersion: 2
-        x: 201
-        y: 40
-        width: 14
-        height: 22
+        x: 192
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 47ad8b38e02281f40800000000000000
+      spriteID: f0c5c4f0a6a1ca3ae1a955541fafa5e3
       internalID: 5699342774172179060
       vertices: []
       indices: 
@@ -4039,19 +4000,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_151
       rect:
         serializedVersion: 2
-        x: 231
-        y: 40
-        width: 16
-        height: 21
+        x: 224
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf6cfce2f85f9ea90800000000000000
+      spriteID: 4fc004eecfae559463396753c4729395
       internalID: -7284020926980569349
       vertices: []
       indices: 
@@ -4061,19 +4022,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_152
       rect:
         serializedVersion: 2
-        x: 263
-        y: 40
-        width: 16
-        height: 21
+        x: 256
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 118b14052722cbbe0800000000000000
+      spriteID: d21a27dfbeee6fbd48e9074db55221b7
       internalID: -1460254304806782959
       vertices: []
       indices: 
@@ -4083,19 +4044,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_153
       rect:
         serializedVersion: 2
-        x: 294
-        y: 40
-        width: 17
-        height: 22
+        x: 288
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 035c823bd37bb55b0800000000000000
+      spriteID: b34ea8201808060fcd4173fc2d892682
       internalID: -5378503854337243856
       vertices: []
       indices: 
@@ -4105,19 +4066,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_154
       rect:
         serializedVersion: 2
-        x: 328
-        y: 40
-        width: 15
-        height: 21
+        x: 320
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 11fad91b99912c070800000000000000
+      spriteID: 2bdb537fa468b25b931566ccac8446d6
       internalID: 8125084825630387985
       vertices: []
       indices: 
@@ -4127,19 +4088,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_155
       rect:
         serializedVersion: 2
-        x: 359
-        y: 40
-        width: 16
-        height: 21
+        x: 352
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1c3eacbd3789f5b40800000000000000
+      spriteID: c2a9b1c91e4fcd3929575611bd99b442
       internalID: 5431227299008275393
       vertices: []
       indices: 
@@ -4149,19 +4110,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_156
       rect:
         serializedVersion: 2
-        x: 391
-        y: 40
-        width: 16
-        height: 22
+        x: 384
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8cd5030e7821c4930800000000000000
+      spriteID: 43055238bd577105aa526f46a540f709
       internalID: 4128695333183053256
       vertices: []
       indices: 
@@ -4171,19 +4132,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_157
       rect:
         serializedVersion: 2
-        x: 425
-        y: 40
-        width: 14
-        height: 22
+        x: 416
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 93a8814521f488240800000000000000
+      spriteID: 2921b2a192b32f3e5721a485f3841b64
       internalID: 4794168743474793017
       vertices: []
       indices: 
@@ -4193,19 +4154,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_158
       rect:
         serializedVersion: 2
-        x: 457
-        y: 40
-        width: 14
-        height: 22
+        x: 448
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f050a5858993e0f0800000000000000
+      spriteID: ca31c40e67a0afefa68341cd79fe16fb
       internalID: -1088857886141951753
       vertices: []
       indices: 
@@ -4215,19 +4176,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_159
       rect:
         serializedVersion: 2
-        x: 485
-        y: 40
-        width: 18
-        height: 21
+        x: 480
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dab0c9a4f07447580800000000000000
+      spriteID: dc65670209172b9ce9d09b4a728cdb97
       internalID: -8830354838364877907
       vertices: []
       indices: 
@@ -4237,19 +4198,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_160
       rect:
         serializedVersion: 2
-        x: 521
-        y: 40
-        width: 14
-        height: 22
+        x: 512
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 63502093385e9ac80800000000000000
+      spriteID: 490498ca07edab92bd81de95bcb8a4b0
       internalID: -8310859285575629514
       vertices: []
       indices: 
@@ -4259,19 +4220,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_161
       rect:
         serializedVersion: 2
-        x: 553
-        y: 40
-        width: 14
-        height: 22
+        x: 544
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2c1e68e415111170800000000000000
+      spriteID: 34740d8a04f7c47464e03233f11bab97
       internalID: 8147316380432997422
       vertices: []
       indices: 
@@ -4281,19 +4242,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_162
       rect:
         serializedVersion: 2
-        x: 585
-        y: 40
-        width: 14
-        height: 21
+        x: 576
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b4090c77e3acc24f0800000000000000
+      spriteID: 7d531a193753a7d2945d78ada18debe0
       internalID: -852083859833974709
       vertices: []
       indices: 
@@ -4303,19 +4264,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_163
       rect:
         serializedVersion: 2
-        x: 617
-        y: 40
-        width: 14
-        height: 22
+        x: 608
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f7116032f07349cd0800000000000000
+      spriteID: a9c97d626eff29c64364d9787ccb3782
       internalID: -2552354550660591233
       vertices: []
       indices: 
@@ -4325,19 +4286,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_164
       rect:
         serializedVersion: 2
-        x: 651
-        y: 40
-        width: 14
-        height: 23
+        x: 640
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 141eb7c9e84296f10800000000000000
+      spriteID: bcf89bb6dadc55dab5a4fd663da9de93
       internalID: 2263380482659705153
       vertices: []
       indices: 
@@ -4347,19 +4308,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_165
       rect:
         serializedVersion: 2
-        x: 681
-        y: 40
-        width: 14
-        height: 23
+        x: 672
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a5a14a6d90d50af50800000000000000
+      spriteID: 435d66f695298d71d94ff371817e2ce0
       internalID: 6890609726714026586
       vertices: []
       indices: 
@@ -4369,19 +4330,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_166
       rect:
         serializedVersion: 2
-        x: 713
-        y: 40
-        width: 14
-        height: 22
+        x: 704
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a2c4d069ba48f90a0800000000000000
+      spriteID: 6f68300faafb8c0ea164572eabac7208
       internalID: -6872628633852359638
       vertices: []
       indices: 
@@ -4391,19 +4352,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_167
       rect:
         serializedVersion: 2
-        x: 743
-        y: 38
-        width: 24
-        height: 14
+        x: 736
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1212f2d3bc6efd3b0800000000000000
+      spriteID: dea2cbacd0c7c35d2273860af2858741
       internalID: -5485412060534726367
       vertices: []
       indices: 
@@ -4413,19 +4374,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_168
       rect:
         serializedVersion: 2
-        x: 9
-        y: 8
-        width: 14
-        height: 21
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b5544dbbb703d4670800000000000000
+      spriteID: 29d49576d0cd9c661b037251012ec192
       internalID: 8524522977672578395
       vertices: []
       indices: 
@@ -4435,19 +4396,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_169
       rect:
         serializedVersion: 2
-        x: 41
-        y: 8
-        width: 14
-        height: 22
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74e34bed599317810800000000000000
+      spriteID: 8da6f61009b193d17fd1123c99de0ec9
       internalID: 1761252245127839303
       vertices: []
       indices: 
@@ -4457,19 +4418,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_170
       rect:
         serializedVersion: 2
-        x: 72
-        y: 7
-        width: 15
-        height: 22
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 40f8116eaf0ded870800000000000000
+      spriteID: 698e47496a7b0418fc44cbbee6a9dd11
       internalID: 8709628505401429764
       vertices: []
       indices: 
@@ -4479,19 +4440,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_171
       rect:
         serializedVersion: 2
-        x: 105
-        y: 8
-        width: 14
-        height: 22
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 57bb9208fa13d9fd0800000000000000
+      spriteID: 440ab9b7b2082263560525cdc7fdc5d9
       internalID: -2333654402068792459
       vertices: []
       indices: 
@@ -4501,19 +4462,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_172
       rect:
         serializedVersion: 2
-        x: 137
-        y: 7
-        width: 14
-        height: 22
+        x: 128
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 044bd20742d9916d0800000000000000
+      spriteID: dce46e6cb1c2ca5980a858788709c291
       internalID: -3019209295348779968
       vertices: []
       indices: 
@@ -4523,19 +4484,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_173
       rect:
         serializedVersion: 2
-        x: 169
-        y: 8
-        width: 14
-        height: 22
+        x: 160
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 91334f87661a250f0800000000000000
+      spriteID: ecfb02863d5f463a3559b7642d884792
       internalID: -1129663095028567271
       vertices: []
       indices: 
@@ -4545,19 +4506,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_174
       rect:
         serializedVersion: 2
-        x: 201
-        y: 8
-        width: 14
-        height: 22
+        x: 192
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3bf05e1cc91b7a1e0800000000000000
+      spriteID: 66481c7f7a2fd5fc67698cf7d9bd5ad5
       internalID: -2186583807239057485
       vertices: []
       indices: 
@@ -4567,19 +4528,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_175
       rect:
         serializedVersion: 2
-        x: 231
-        y: 8
-        width: 16
-        height: 21
+        x: 224
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 59ad4865518d8d070800000000000000
+      spriteID: b4bd24adaf1a7e33da2b32d270f9fe94
       internalID: 8131486713374890645
       vertices: []
       indices: 
@@ -4589,19 +4550,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_176
       rect:
         serializedVersion: 2
-        x: 264
-        y: 8
-        width: 15
-        height: 21
+        x: 256
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a9982d1e869ad830800000000000000
+      spriteID: 839004d84f8bac959f62e549c3d019af
       internalID: 4096752348165609891
       vertices: []
       indices: 
@@ -4611,19 +4572,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_177
       rect:
         serializedVersion: 2
-        x: 296
-        y: 8
-        width: 15
-        height: 22
+        x: 288
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15d2117c35eac24d0800000000000000
+      spriteID: 805ca090306a7abc2be4cbc9c5d32cd3
       internalID: -3157957563848250031
       vertices: []
       indices: 
@@ -4633,19 +4594,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_178
       rect:
         serializedVersion: 2
-        x: 327
-        y: 7
-        width: 16
-        height: 22
+        x: 320
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3516db5eb43c488b0800000000000000
+      spriteID: 0396ddbe720702bfda1f5dc20005b2b8
       internalID: -5150777343060647597
       vertices: []
       indices: 
@@ -4655,19 +4616,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_179
       rect:
         serializedVersion: 2
-        x: 359
-        y: 7
-        width: 16
-        height: 22
+        x: 352
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e6ccd99f6696bf640800000000000000
+      spriteID: 52ba853685d731b6bdc985fe51da9685
       internalID: 5114797692804779118
       vertices: []
       indices: 
@@ -4677,19 +4638,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_180
       rect:
         serializedVersion: 2
-        x: 391
-        y: 7
-        width: 16
-        height: 23
+        x: 384
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84fcbbfccc9381de0800000000000000
+      spriteID: 6a499129ae31a192ad661c80eb0c47b1
       internalID: -1362275335458271416
       vertices: []
       indices: 
@@ -4699,19 +4660,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_181
       rect:
         serializedVersion: 2
-        x: 425
-        y: 8
-        width: 14
-        height: 22
+        x: 416
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d51064f4eea167610800000000000000
+      spriteID: 9e1b717fcea5a90a1f2af678af22f7a3
       internalID: 1618510726920798557
       vertices: []
       indices: 
@@ -4721,19 +4682,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_182
       rect:
         serializedVersion: 2
-        x: 457
-        y: 8
-        width: 14
-        height: 22
+        x: 448
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a7f5f6252399d9e0800000000000000
+      spriteID: c9e1a998ed308ce9e49b31a3b0692b58
       internalID: -1596082805149403229
       vertices: []
       indices: 
@@ -4743,19 +4704,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_183
       rect:
         serializedVersion: 2
-        x: 486
-        y: 7
-        width: 17
-        height: 22
+        x: 480
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39a11fd5c1033f880800000000000000
+      spriteID: 6c3ebec5fc23cdec87f2bbda4db899dd
       internalID: -8578459966817363309
       vertices: []
       indices: 
@@ -4765,19 +4726,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_184
       rect:
         serializedVersion: 2
-        x: 521
-        y: 8
-        width: 14
-        height: 22
+        x: 512
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b19e148899d91e660800000000000000
+      spriteID: 239d8906d0dbe4098ea0fc689fe1173a
       internalID: 7413379744370125083
       vertices: []
       indices: 
@@ -4787,19 +4748,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_185
       rect:
         serializedVersion: 2
-        x: 553
-        y: 8
-        width: 14
-        height: 22
+        x: 544
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b2f0bfda796aab100800000000000000
+      spriteID: 8877f86101f34f1422f9d3284c1ebf8f
       internalID: 124595110095294251
       vertices: []
       indices: 
@@ -4809,19 +4770,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_186
       rect:
         serializedVersion: 2
-        x: 585
-        y: 8
-        width: 14
-        height: 21
+        x: 576
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d48e9deff11b86220800000000000000
+      spriteID: f63a0330d68e18d768f490ddd2a9a273
       internalID: 2479426345845254221
       vertices: []
       indices: 
@@ -4831,19 +4792,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_187
       rect:
         serializedVersion: 2
-        x: 617
-        y: 8
-        width: 15
-        height: 22
+        x: 608
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f2c6fbaf8ee51050800000000000000
+      spriteID: e164594ac4dede923ca52ed9b4e7c496
       internalID: 5770780798377968371
       vertices: []
       indices: 
@@ -4853,19 +4814,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_188
       rect:
         serializedVersion: 2
-        x: 650
-        y: 9
-        width: 15
-        height: 22
+        x: 640
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 608974f57883aa3f0800000000000000
+      spriteID: b7bea6f206e496e4c5f6785839412f10
       internalID: -888835822381983738
       vertices: []
       indices: 
@@ -4875,19 +4836,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_189
       rect:
         serializedVersion: 2
-        x: 681
-        y: 8
-        width: 15
-        height: 23
+        x: 672
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8bcc425d4964114d0800000000000000
+      spriteID: fb1082782932a5cfa2ca1b55c9e11721
       internalID: -3165671458019685192
       vertices: []
       indices: 
@@ -4897,19 +4858,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_190
       rect:
         serializedVersion: 2
-        x: 713
-        y: 8
-        width: 14
-        height: 22
+        x: 704
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28b560e0916df4800800000000000000
+      spriteID: f88b5b2bb88dc844da4edde2ed793405
       internalID: 598932678561389442
       vertices: []
       indices: 
@@ -4919,19 +4880,19 @@ TextureImporter:
       name: Human-Soldier-Cyan_191
       rect:
         serializedVersion: 2
-        x: 744
-        y: 7
-        width: 16
-        height: 19
+        x: 736
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6012aa994dfb069a0800000000000000
+      spriteID: d65d464f09d390b0cec3c45fa4d4a8fb
       internalID: -6241778163703471866
       vertices: []
       indices: 
@@ -4953,109 +4914,24 @@ TextureImporter:
     nameFileIdTable:
       Human-Soldier-Cyan_0: 3920048292497720184
       Human-Soldier-Cyan_1: 1432218700343404518
-      Human-Soldier-Cyan_10: 6523324785887456222
-      Human-Soldier-Cyan_100: 7370490840077825443
-      Human-Soldier-Cyan_101: -5191621265772864309
-      Human-Soldier-Cyan_102: 3214841546475753894
-      Human-Soldier-Cyan_103: 9190222094487905295
-      Human-Soldier-Cyan_104: -6074699649983370344
-      Human-Soldier-Cyan_105: -5622937344803477250
-      Human-Soldier-Cyan_106: -4075221022045091845
-      Human-Soldier-Cyan_107: -2903395481822084101
-      Human-Soldier-Cyan_108: -5673480535301796619
-      Human-Soldier-Cyan_109: -8356790773820179471
-      Human-Soldier-Cyan_11: 5535665662419701000
-      Human-Soldier-Cyan_110: -9043886575421250964
-      Human-Soldier-Cyan_111: 6981476711898676555
-      Human-Soldier-Cyan_112: -2429408456361010467
-      Human-Soldier-Cyan_113: -6850348047337289279
-      Human-Soldier-Cyan_114: -438860605812219405
-      Human-Soldier-Cyan_115: 1618602542607982480
-      Human-Soldier-Cyan_116: -7707404204213379197
-      Human-Soldier-Cyan_117: -7177746754447000113
-      Human-Soldier-Cyan_118: 2509289939174641243
-      Human-Soldier-Cyan_119: -6315933871968267874
-      Human-Soldier-Cyan_12: -6315330437638098034
-      Human-Soldier-Cyan_120: 8554686828722270247
-      Human-Soldier-Cyan_121: -8526064183459449968
-      Human-Soldier-Cyan_122: 8272465775659910734
-      Human-Soldier-Cyan_123: -7418487389256427765
-      Human-Soldier-Cyan_124: -80643377961792307
-      Human-Soldier-Cyan_125: -5650770951180852651
-      Human-Soldier-Cyan_126: -484686326676836226
-      Human-Soldier-Cyan_127: 3989622748818686927
-      Human-Soldier-Cyan_128: -3610748994189537188
-      Human-Soldier-Cyan_129: 2687130900870158657
-      Human-Soldier-Cyan_13: 945814964768725174
-      Human-Soldier-Cyan_130: 1413740684279065171
-      Human-Soldier-Cyan_131: -3472580843704175703
-      Human-Soldier-Cyan_132: 5613966811779058392
-      Human-Soldier-Cyan_133: 8086415879309288090
-      Human-Soldier-Cyan_134: -9022729899363803945
-      Human-Soldier-Cyan_135: 3357891485416372191
-      Human-Soldier-Cyan_136: 1209308397318864856
-      Human-Soldier-Cyan_137: -3941527639354673221
-      Human-Soldier-Cyan_138: 2699374178801207524
-      Human-Soldier-Cyan_139: -6501857069127647776
-      Human-Soldier-Cyan_14: -1085773233797323547
-      Human-Soldier-Cyan_140: 554182804090415756
-      Human-Soldier-Cyan_141: -6662298634767997142
-      Human-Soldier-Cyan_142: 6141982669518475298
-      Human-Soldier-Cyan_143: 720771701395785686
-      Human-Soldier-Cyan_144: -5731449805678243721
-      Human-Soldier-Cyan_145: 2817067258292417626
-      Human-Soldier-Cyan_146: -1009773745001733384
-      Human-Soldier-Cyan_147: -8622813387047474649
-      Human-Soldier-Cyan_148: -4395181519875037355
-      Human-Soldier-Cyan_149: -4176783435672442172
-      Human-Soldier-Cyan_15: 6252024318659491513
-      Human-Soldier-Cyan_150: 5699342774172179060
-      Human-Soldier-Cyan_151: -7284020926980569349
-      Human-Soldier-Cyan_152: -1460254304806782959
-      Human-Soldier-Cyan_153: -5378503854337243856
-      Human-Soldier-Cyan_154: 8125084825630387985
-      Human-Soldier-Cyan_155: 5431227299008275393
-      Human-Soldier-Cyan_156: 4128695333183053256
-      Human-Soldier-Cyan_157: 4794168743474793017
-      Human-Soldier-Cyan_158: -1088857886141951753
-      Human-Soldier-Cyan_159: -8830354838364877907
-      Human-Soldier-Cyan_16: -1352018752474419717
-      Human-Soldier-Cyan_160: -8310859285575629514
-      Human-Soldier-Cyan_161: 8147316380432997422
-      Human-Soldier-Cyan_162: -852083859833974709
-      Human-Soldier-Cyan_163: -2552354550660591233
-      Human-Soldier-Cyan_164: 2263380482659705153
-      Human-Soldier-Cyan_165: 6890609726714026586
-      Human-Soldier-Cyan_166: -6872628633852359638
-      Human-Soldier-Cyan_167: -5485412060534726367
-      Human-Soldier-Cyan_168: 8524522977672578395
-      Human-Soldier-Cyan_169: 1761252245127839303
-      Human-Soldier-Cyan_17: -8205276566060933264
-      Human-Soldier-Cyan_170: 8709628505401429764
-      Human-Soldier-Cyan_171: -2333654402068792459
-      Human-Soldier-Cyan_172: -3019209295348779968
-      Human-Soldier-Cyan_173: -1129663095028567271
-      Human-Soldier-Cyan_174: -2186583807239057485
-      Human-Soldier-Cyan_175: 8131486713374890645
-      Human-Soldier-Cyan_176: 4096752348165609891
-      Human-Soldier-Cyan_177: -3157957563848250031
-      Human-Soldier-Cyan_178: -5150777343060647597
-      Human-Soldier-Cyan_179: 5114797692804779118
-      Human-Soldier-Cyan_18: 2971484731697966367
-      Human-Soldier-Cyan_180: -1362275335458271416
-      Human-Soldier-Cyan_181: 1618510726920798557
-      Human-Soldier-Cyan_182: -1596082805149403229
-      Human-Soldier-Cyan_183: -8578459966817363309
-      Human-Soldier-Cyan_184: 7413379744370125083
-      Human-Soldier-Cyan_185: 124595110095294251
-      Human-Soldier-Cyan_186: 2479426345845254221
-      Human-Soldier-Cyan_187: 5770780798377968371
-      Human-Soldier-Cyan_188: -888835822381983738
-      Human-Soldier-Cyan_189: -3165671458019685192
-      Human-Soldier-Cyan_19: 8123409553777360656
-      Human-Soldier-Cyan_190: 598932678561389442
-      Human-Soldier-Cyan_191: -6241778163703471866
       Human-Soldier-Cyan_2: 7350754231871548753
+      Human-Soldier-Cyan_3: -7409349471113037861
+      Human-Soldier-Cyan_4: 9055932114128600718
+      Human-Soldier-Cyan_5: 24210711736053619
+      Human-Soldier-Cyan_6: 1173335878885973727
+      Human-Soldier-Cyan_7: -6078008945050217401
+      Human-Soldier-Cyan_8: 4248635798943594725
+      Human-Soldier-Cyan_9: 1542564053264536055
+      Human-Soldier-Cyan_10: 6523324785887456222
+      Human-Soldier-Cyan_11: 5535665662419701000
+      Human-Soldier-Cyan_12: -6315330437638098034
+      Human-Soldier-Cyan_13: 945814964768725174
+      Human-Soldier-Cyan_14: -1085773233797323547
+      Human-Soldier-Cyan_15: 6252024318659491513
+      Human-Soldier-Cyan_16: -1352018752474419717
+      Human-Soldier-Cyan_17: -8205276566060933264
+      Human-Soldier-Cyan_18: 2971484731697966367
+      Human-Soldier-Cyan_19: 8123409553777360656
       Human-Soldier-Cyan_20: -1579177997921041355
       Human-Soldier-Cyan_21: 5245174643629750026
       Human-Soldier-Cyan_22: 5106352849051116941
@@ -5066,7 +4942,6 @@ TextureImporter:
       Human-Soldier-Cyan_27: 1592794114949789595
       Human-Soldier-Cyan_28: -10623808855272973
       Human-Soldier-Cyan_29: 3523024218098979301
-      Human-Soldier-Cyan_3: -7409349471113037861
       Human-Soldier-Cyan_30: -4418948328398807162
       Human-Soldier-Cyan_31: 7089056006662401084
       Human-Soldier-Cyan_32: 874477431604723884
@@ -5077,7 +4952,6 @@ TextureImporter:
       Human-Soldier-Cyan_37: 4791827722989830538
       Human-Soldier-Cyan_38: 4885421251985539248
       Human-Soldier-Cyan_39: -623916795681061299
-      Human-Soldier-Cyan_4: 9055932114128600718
       Human-Soldier-Cyan_40: 614442538815501208
       Human-Soldier-Cyan_41: -1218779182734308657
       Human-Soldier-Cyan_42: -2662826720428457777
@@ -5088,7 +4962,6 @@ TextureImporter:
       Human-Soldier-Cyan_47: -3183974706238376646
       Human-Soldier-Cyan_48: 2988024053729117570
       Human-Soldier-Cyan_49: -6305874966157253768
-      Human-Soldier-Cyan_5: 24210711736053619
       Human-Soldier-Cyan_50: 7199868643881425644
       Human-Soldier-Cyan_51: 7444477422633341951
       Human-Soldier-Cyan_52: -6540360249779691992
@@ -5099,7 +4972,6 @@ TextureImporter:
       Human-Soldier-Cyan_57: 2341253448945488987
       Human-Soldier-Cyan_58: 7971013071486922706
       Human-Soldier-Cyan_59: -7750417954748963154
-      Human-Soldier-Cyan_6: 1173335878885973727
       Human-Soldier-Cyan_60: 9074580208990118894
       Human-Soldier-Cyan_61: 5036724732127788702
       Human-Soldier-Cyan_62: -6478879858445357347
@@ -5110,7 +4982,6 @@ TextureImporter:
       Human-Soldier-Cyan_67: -4206533976957328907
       Human-Soldier-Cyan_68: -2462013036377018341
       Human-Soldier-Cyan_69: 6826715421917239876
-      Human-Soldier-Cyan_7: -6078008945050217401
       Human-Soldier-Cyan_70: -3380040677544337208
       Human-Soldier-Cyan_71: 447740958809254559
       Human-Soldier-Cyan_72: 4912124529465805380
@@ -5121,7 +4992,6 @@ TextureImporter:
       Human-Soldier-Cyan_77: 5327676377454052646
       Human-Soldier-Cyan_78: -4762882873996876239
       Human-Soldier-Cyan_79: -1893218822622117775
-      Human-Soldier-Cyan_8: 4248635798943594725
       Human-Soldier-Cyan_80: 6745729052648739182
       Human-Soldier-Cyan_81: -5891391056698512068
       Human-Soldier-Cyan_82: 3941102430362337464
@@ -5132,7 +5002,6 @@ TextureImporter:
       Human-Soldier-Cyan_87: -1968594362804328892
       Human-Soldier-Cyan_88: 4271759907147537373
       Human-Soldier-Cyan_89: -620520212386352349
-      Human-Soldier-Cyan_9: 1542564053264536055
       Human-Soldier-Cyan_90: -2473828926011991080
       Human-Soldier-Cyan_91: -1062091386465868929
       Human-Soldier-Cyan_92: -4318319067877842644
@@ -5143,6 +5012,98 @@ TextureImporter:
       Human-Soldier-Cyan_97: 2010265741322411439
       Human-Soldier-Cyan_98: -8417166885890224270
       Human-Soldier-Cyan_99: -732965528688867650
+      Human-Soldier-Cyan_100: 7370490840077825443
+      Human-Soldier-Cyan_101: -5191621265772864309
+      Human-Soldier-Cyan_102: 3214841546475753894
+      Human-Soldier-Cyan_103: 9190222094487905295
+      Human-Soldier-Cyan_104: -6074699649983370344
+      Human-Soldier-Cyan_105: -5622937344803477250
+      Human-Soldier-Cyan_106: -4075221022045091845
+      Human-Soldier-Cyan_107: -2903395481822084101
+      Human-Soldier-Cyan_108: -5673480535301796619
+      Human-Soldier-Cyan_109: -8356790773820179471
+      Human-Soldier-Cyan_110: -9043886575421250964
+      Human-Soldier-Cyan_111: 6981476711898676555
+      Human-Soldier-Cyan_112: -2429408456361010467
+      Human-Soldier-Cyan_113: -6850348047337289279
+      Human-Soldier-Cyan_114: -438860605812219405
+      Human-Soldier-Cyan_115: 1618602542607982480
+      Human-Soldier-Cyan_116: -7707404204213379197
+      Human-Soldier-Cyan_117: -7177746754447000113
+      Human-Soldier-Cyan_118: 2509289939174641243
+      Human-Soldier-Cyan_119: -6315933871968267874
+      Human-Soldier-Cyan_120: 8554686828722270247
+      Human-Soldier-Cyan_121: -8526064183459449968
+      Human-Soldier-Cyan_122: 8272465775659910734
+      Human-Soldier-Cyan_123: -7418487389256427765
+      Human-Soldier-Cyan_124: -80643377961792307
+      Human-Soldier-Cyan_125: -5650770951180852651
+      Human-Soldier-Cyan_126: -484686326676836226
+      Human-Soldier-Cyan_127: 3989622748818686927
+      Human-Soldier-Cyan_128: -3610748994189537188
+      Human-Soldier-Cyan_129: 2687130900870158657
+      Human-Soldier-Cyan_130: 1413740684279065171
+      Human-Soldier-Cyan_131: -3472580843704175703
+      Human-Soldier-Cyan_132: 5613966811779058392
+      Human-Soldier-Cyan_133: 8086415879309288090
+      Human-Soldier-Cyan_134: -9022729899363803945
+      Human-Soldier-Cyan_135: 3357891485416372191
+      Human-Soldier-Cyan_136: 1209308397318864856
+      Human-Soldier-Cyan_137: -3941527639354673221
+      Human-Soldier-Cyan_138: 2699374178801207524
+      Human-Soldier-Cyan_139: -6501857069127647776
+      Human-Soldier-Cyan_140: 554182804090415756
+      Human-Soldier-Cyan_141: -6662298634767997142
+      Human-Soldier-Cyan_142: 6141982669518475298
+      Human-Soldier-Cyan_143: 720771701395785686
+      Human-Soldier-Cyan_144: -5731449805678243721
+      Human-Soldier-Cyan_145: 2817067258292417626
+      Human-Soldier-Cyan_146: -1009773745001733384
+      Human-Soldier-Cyan_147: -8622813387047474649
+      Human-Soldier-Cyan_148: -4395181519875037355
+      Human-Soldier-Cyan_149: -4176783435672442172
+      Human-Soldier-Cyan_150: 5699342774172179060
+      Human-Soldier-Cyan_151: -7284020926980569349
+      Human-Soldier-Cyan_152: -1460254304806782959
+      Human-Soldier-Cyan_153: -5378503854337243856
+      Human-Soldier-Cyan_154: 8125084825630387985
+      Human-Soldier-Cyan_155: 5431227299008275393
+      Human-Soldier-Cyan_156: 4128695333183053256
+      Human-Soldier-Cyan_157: 4794168743474793017
+      Human-Soldier-Cyan_158: -1088857886141951753
+      Human-Soldier-Cyan_159: -8830354838364877907
+      Human-Soldier-Cyan_160: -8310859285575629514
+      Human-Soldier-Cyan_161: 8147316380432997422
+      Human-Soldier-Cyan_162: -852083859833974709
+      Human-Soldier-Cyan_163: -2552354550660591233
+      Human-Soldier-Cyan_164: 2263380482659705153
+      Human-Soldier-Cyan_165: 6890609726714026586
+      Human-Soldier-Cyan_166: -6872628633852359638
+      Human-Soldier-Cyan_167: -5485412060534726367
+      Human-Soldier-Cyan_168: 8524522977672578395
+      Human-Soldier-Cyan_169: 1761252245127839303
+      Human-Soldier-Cyan_170: 8709628505401429764
+      Human-Soldier-Cyan_171: -2333654402068792459
+      Human-Soldier-Cyan_172: -3019209295348779968
+      Human-Soldier-Cyan_173: -1129663095028567271
+      Human-Soldier-Cyan_174: -2186583807239057485
+      Human-Soldier-Cyan_175: 8131486713374890645
+      Human-Soldier-Cyan_176: 4096752348165609891
+      Human-Soldier-Cyan_177: -3157957563848250031
+      Human-Soldier-Cyan_178: -5150777343060647597
+      Human-Soldier-Cyan_179: 5114797692804779118
+      Human-Soldier-Cyan_180: -1362275335458271416
+      Human-Soldier-Cyan_181: 1618510726920798557
+      Human-Soldier-Cyan_182: -1596082805149403229
+      Human-Soldier-Cyan_183: -8578459966817363309
+      Human-Soldier-Cyan_184: 7413379744370125083
+      Human-Soldier-Cyan_185: 124595110095294251
+      Human-Soldier-Cyan_186: 2479426345845254221
+      Human-Soldier-Cyan_187: 5770780798377968371
+      Human-Soldier-Cyan_188: -888835822381983738
+      Human-Soldier-Cyan_189: -3165671458019685192
+      Human-Soldier-Cyan_190: 598932678561389442
+      Human-Soldier-Cyan_191: -6241778163703471866
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -50,6 +50,15 @@ TextureImporter:
   - first:
       213: -4952055252602381489
     second: goblin_bomber_spritesheet_15
+  - first:
+      213: 1069851293467607656
+    second: goblin_bomber_spritesheet_16
+  - first:
+      213: 188771956625387811
+    second: goblin_bomber_spritesheet_17
+  - first:
+      213: 8923021594724429
+    second: goblin_bomber_spritesheet_18
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -69,7 +78,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -82,7 +91,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -96,7 +105,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -122,7 +131,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -135,46 +144,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -190,18 +160,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 14
+        y: 48
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39ea2f941b98e02f0800000000000000
+      spriteID: f3a1f78eb399ac7811b7757ff7377cc4
       internalID: -1004714272314184045
       vertices: []
       indices: 
@@ -211,19 +181,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 47
-        width: 15
+        x: 16
+        y: 48
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5be83c0cc5ce2e100800000000000000
+      spriteID: b40f54d15621fe137ea45ad3e6340767
       internalID: 135930821889724085
       vertices: []
       indices: 
@@ -233,19 +203,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_2
       rect:
         serializedVersion: 2
-        x: 16
-        y: 35
-        width: 14
-        height: 13
+        x: 32
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc973eefc041e4b90800000000000000
+      spriteID: 55afcee7d56ff6e8a9eb59c57b7810fd
       internalID: -7255839903598806580
       vertices: []
       indices: 
@@ -255,19 +225,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_3
       rect:
         serializedVersion: 2
-        x: 17
-        y: 47
-        width: 15
+        x: 48
+        y: 48
+        width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dd41dec307a7fb50800000000000000
+      spriteID: 6d33e53735ef2427c9fe2ff87b92afce
       internalID: 6626949011495538135
       vertices: []
       indices: 
@@ -277,19 +247,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_4
       rect:
         serializedVersion: 2
-        x: 32
-        y: 47
-        width: 17
-        height: 17
+        x: 64
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: be68968ae33a87310800000000000000
+      spriteID: c1fcb86e131c273d0ba0b213a932f2ec
       internalID: 1403050773434697451
       vertices: []
       indices: 
@@ -299,19 +269,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_5
       rect:
         serializedVersion: 2
-        x: 34
-        y: 38
-        width: 11
-        height: 9
+        x: 80
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: faeb80c92497e35a0800000000000000
+      spriteID: e8a437ad14ca7bc83463ec863aa3fb45
       internalID: -6539656281902760273
       vertices: []
       indices: 
@@ -321,19 +291,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_6
       rect:
         serializedVersion: 2
-        x: 48
-        y: 38
-        width: 17
-        height: 26
+        x: 0
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d6a0d54d91697400800000000000000
+      spriteID: 905231374d16e8b5709b071ede8754aa
       internalID: 322396176442762964
       vertices: []
       indices: 
@@ -343,19 +313,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_7
       rect:
         serializedVersion: 2
-        x: 65
-        y: 37
+        x: 16
+        y: 32
         width: 16
-        height: 24
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 64ce1451e33aff000800000000000000
+      spriteID: 028474a1f677b406915b98db47ab3bce
       internalID: 71955606101158982
       vertices: []
       indices: 
@@ -365,19 +335,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_8
       rect:
         serializedVersion: 2
-        x: 81
-        y: 37
-        width: 15
-        height: 24
+        x: 32
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 659616ae54345fc10800000000000000
+      spriteID: 233b624886aa22da42163dc143f86397
       internalID: 2086647969920149846
       vertices: []
       indices: 
@@ -387,19 +357,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 15
+        x: 48
+        y: 32
         width: 16
-        height: 17
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7ba6720c39772d380800000000000000
+      spriteID: 073bbb9498466998e8f837350424cd53
       internalID: -8947958033164047689
       vertices: []
       indices: 
@@ -409,19 +379,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 64
+        y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4610905fd1f73af0800000000000000
+      spriteID: ad72652c4499189b17cb82f6c02f6653
       internalID: -416598499076860339
       vertices: []
       indices: 
@@ -431,19 +401,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_11
       rect:
         serializedVersion: 2
-        x: 16
-        y: 15
+        x: 80
+        y: 32
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0462555d003fda920800000000000000
+      spriteID: 9739d7be9dbb4157a2431fe4013f807a
       internalID: 3003323711430665792
       vertices: []
       indices: 
@@ -453,19 +423,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_12
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 0
+        y: 16
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 24147d47f976fc810800000000000000
+      spriteID: 71928f2a4a68f7f7265a0d6f909f0c22
       internalID: 1787761511647101250
       vertices: []
       indices: 
@@ -475,19 +445,19 @@ TextureImporter:
       name: goblin_bomber_spritesheet_13
       rect:
         serializedVersion: 2
-        x: 32
-        y: 15
+        x: 16
+        y: 16
         width: 16
-        height: 17
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4c58ef3988f70660800000000000000
+      spriteID: b0159a066621f730949ee9527cfff97d
       internalID: 7352118185072024653
       vertices: []
       indices: 
@@ -498,18 +468,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 0
-        width: 15
-        height: 15
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3aa645ffe5b5c0e90800000000000000
+      spriteID: cc5b9882bcfd69fbbe6f485beb7e3469
       internalID: -7058166052427634013
       vertices: []
       indices: 
@@ -520,19 +490,85 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 15
+        y: 16
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f4b17802cf3c64bb0800000000000000
+      spriteID: 4a93cbaaa3e883f4ae2b3aa2906b10b2
       internalID: -4952055252602381489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goblin_bomber_spritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e785b29fc573cc5978d03553f808764
+      internalID: 1069851293467607656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goblin_bomber_spritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8038f544623e6b407c5a434af4b4abc7
+      internalID: 188771956625387811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goblin_bomber_spritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14ce245611bda5dd4f3215ff06c50fd5
+      internalID: 8923021594724429
       vertices: []
       indices: 
       edges: []
@@ -553,12 +589,6 @@ TextureImporter:
     nameFileIdTable:
       goblin_bomber_spritesheet_0: -1004714272314184045
       goblin_bomber_spritesheet_1: 135930821889724085
-      goblin_bomber_spritesheet_10: -416598499076860339
-      goblin_bomber_spritesheet_11: 3003323711430665792
-      goblin_bomber_spritesheet_12: 1787761511647101250
-      goblin_bomber_spritesheet_13: 7352118185072024653
-      goblin_bomber_spritesheet_14: -7058166052427634013
-      goblin_bomber_spritesheet_15: -4952055252602381489
       goblin_bomber_spritesheet_2: -7255839903598806580
       goblin_bomber_spritesheet_3: 6626949011495538135
       goblin_bomber_spritesheet_4: 1403050773434697451
@@ -567,6 +597,15 @@ TextureImporter:
       goblin_bomber_spritesheet_7: 71955606101158982
       goblin_bomber_spritesheet_8: 2086647969920149846
       goblin_bomber_spritesheet_9: -8947958033164047689
+      goblin_bomber_spritesheet_10: -416598499076860339
+      goblin_bomber_spritesheet_11: 3003323711430665792
+      goblin_bomber_spritesheet_12: 1787761511647101250
+      goblin_bomber_spritesheet_13: 7352118185072024653
+      goblin_bomber_spritesheet_14: -7058166052427634013
+      goblin_bomber_spritesheet_15: -4952055252602381489
+      goblin_bomber_spritesheet_16: 1069851293467607656
+      goblin_bomber_spritesheet_17: 188771956625387811
+      goblin_bomber_spritesheet_18: 8923021594724429
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
