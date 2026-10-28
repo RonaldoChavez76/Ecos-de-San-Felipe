@@ -79,6 +79,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         // 4.5. Construir Zonas Modulares (Nivel 1: Parroquia Exterior e Interior con Acertijo de Campanas)
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
         ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
+        MercadoBuilder.ConstruirZonaMercado();
 
         // 5. Inicializar Audio
         InicializarSistemaDeAudio();
@@ -220,6 +221,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         GenerarEnemigosEnEditor();
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
         ParroquiaInteriorBuilder.ConstruirInteriorParroquia();
+        MercadoBuilder.ConstruirZonaMercado();
     }
 
     // =========================================================================
