@@ -172,9 +172,9 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         wOeste1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.GoblinRaider, spawnPosition = new Vector2(-30f, 5.5f) });
         wOeste1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.GoblinRaider, spawnPosition = new Vector2(-26f, 5.5f) });
 
-        ZoneWaveSpawner.WaveDefinition wOeste2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Artillero de la Niebla" };
+        ZoneWaveSpawner.WaveDefinition wOeste2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Artillero y Arquero de la Niebla" };
         wOeste2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.GoblinBomber, spawnPosition = new Vector2(-28f, 6.5f) });
-        wOeste2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.GoblinRaider, spawnPosition = new Vector2(-29.5f, 3.0f) });
+        wOeste2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedArcher, spawnPosition = new Vector2(-29.5f, 3.0f) });
 
         spawnerOeste.waves.Add(wOeste1);
         spawnerOeste.waves.Add(wOeste2);
@@ -190,14 +190,22 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
 
         ZoneWaveSpawner.WaveDefinition wEste1 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Brotes del Musgo Antiguo" };
         wEste1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.SporeMushroom, spawnPosition = new Vector2(26f, 7.5f) });
-        wEste1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.SporeMushroom, spawnPosition = new Vector2(30f, 7.5f) });
+        wEste1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedArcher, spawnPosition = new Vector2(30f, 7.5f) });
 
-        ZoneWaveSpawner.WaveDefinition wEste2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Guardián de las Columnas" };
+        ZoneWaveSpawner.WaveDefinition wEste2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Conjurador de las Columnas" };
         wEste2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.MistSlime, spawnPosition = new Vector2(27f, 5.0f) });
         wEste2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.OblivionMage, spawnPosition = new Vector2(29f, 8.0f) });
 
         spawnerEste.waves.Add(wEste1);
         spawnerEste.waves.Add(wEste2);
+
+        // 5. CORAZONES CURATIVOS EN EL MAPA EXTERIOR PARA RECUPERAR VIDA (+25 HP CADA UNO)
+        HeartPickup.SpawnHeart(new Vector3(-3.2f, -1.8f, 0f), 25f, root.transform);  // Junto a Don Anselmo en la Plaza
+        HeartPickup.SpawnHeart(new Vector3(-12.0f, -21.5f, 0f), 25f, root.transform); // En el Campamento de Viajeros al Sur
+        HeartPickup.SpawnHeart(new Vector3(-17.5f, 0.5f, 0f), 25f, root.transform);   // Entrada al Barrio Poniente
+        HeartPickup.SpawnHeart(new Vector3(17.5f, 0.5f, 0f), 25f, root.transform);    // Entrada a la Villa Oriente
+        HeartPickup.SpawnHeart(new Vector3(-2.5f, 18.2f, 0f), 25f, root.transform);   // Antes de subir al Atrio de la Parroquia
+        HeartPickup.SpawnHeart(new Vector3(2.5f, 18.2f, 0f), 25f, root.transform);    // Antes de subir al Atrio de la Parroquia
 
         return root;
     }
@@ -294,7 +302,7 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
 
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
         sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10);
-        sr.sprite = ExtraerSpriteExactoSinCosturas(sheetNameWithoutExt, col, rowTop, cellW, cellH, ppu);
+        sr.sprite = ExtraerSpriteExactoSinCosturas(sheetNameWithoutExt, col, rowTop, cellW, cellH, ppu, cellW);
 
         return go;
     }
@@ -312,9 +320,10 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         int rowTop,
         int pixelW,
         int pixelH,
-        float ppu = 16f)
+        float ppu = 16f,
+        int gridCellSize = 16)
     {
-        string key = $"{sheetNameWithoutExt}_{col}_{rowTop}_{pixelW}_{pixelH}_{ppu}";
+        string key = $"{sheetNameWithoutExt}_{col}_{rowTop}_{pixelW}_{pixelH}_{ppu}_{gridCellSize}";
         if (spriteCache.TryGetValue(key, out Sprite cached) && cached != null)
         {
             return cached;
@@ -326,25 +335,31 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
             return CrearSpriteRadial(new Color(0.95f, 0.85f, 0.35f, 1f));
         }
 
-        RenderTexture rt = RenderTexture.GetTemporary(sheet.width, sheet.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
-        Graphics.Blit(sheet, rt);
-        RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = rt;
+        int px = Mathf.Clamp(col * gridCellSize, 0, Mathf.Max(0, sheet.width - pixelW));
+        int pyUnity = Mathf.Clamp(sheet.height - ((rowTop * gridCellSize) + pixelH), 0, Mathf.Max(0, sheet.height - pixelH));
 
-        int px = Mathf.Clamp(col * pixelW, 0, sheet.width - pixelW);
-        int pyTop = Mathf.Clamp(rowTop * pixelH, 0, sheet.height - pixelH);
+        Color[] pixels;
+        if (sheet.isReadable)
+        {
+            pixels = sheet.GetPixels(px, pyUnity, pixelW, pixelH);
+        }
+        else
+        {
+            RenderTexture rt = RenderTexture.GetTemporary(sheet.width, sheet.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+            Graphics.Blit(sheet, rt);
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
 
-        // En ReadPixels de RenderTexture, el origen Y depende de la API gráfica; leemos toda la hoja a memoria una vez y cortamos con GetPixels
-        Texture2D fullCopy = new Texture2D(sheet.width, sheet.height, TextureFormat.RGBA32, false);
-        fullCopy.ReadPixels(new Rect(0, 0, sheet.width, sheet.height), 0, 0);
-        fullCopy.Apply();
+            Texture2D fullCopy = new Texture2D(sheet.width, sheet.height, TextureFormat.RGBA32, false);
+            fullCopy.ReadPixels(new Rect(0, 0, sheet.width, sheet.height), 0, 0);
+            fullCopy.Apply();
 
-        RenderTexture.active = prev;
-        RenderTexture.ReleaseTemporary(rt);
+            RenderTexture.active = prev;
+            RenderTexture.ReleaseTemporary(rt);
 
-        int pyUnity = Mathf.Clamp(sheet.height - ((rowTop * pixelH) + pixelH), 0, sheet.height - pixelH);
-        Color[] pixels = fullCopy.GetPixels(px, pyUnity, pixelW, pixelH);
-        DestroyImmediateIfEditor(fullCopy);
+            pixels = fullCopy.GetPixels(px, pyUnity, pixelW, pixelH);
+            DestroyImmediateIfEditor(fullCopy);
+        }
 
         Texture2D subTex = new Texture2D(pixelW, pixelH, TextureFormat.RGBA32, false);
         subTex.filterMode = FilterMode.Point;

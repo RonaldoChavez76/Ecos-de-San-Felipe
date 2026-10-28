@@ -19,6 +19,7 @@ public class ZoneWaveSpawner : MonoBehaviour
         QuarryWorm,
         DarkOrcBrute,
         OblivionMage,
+        CorruptedArcher,
         CorruptedGuard,
         SombraErrante,
         SombraLanzadora
@@ -154,7 +155,10 @@ public class ZoneWaveSpawner : MonoBehaviour
             rewardToEnableOnClear.SetActive(true);
         }
 
-        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! ★", 4.0f);
+        // Soltar un corazón sagrado de recompensa al purificar la zona
+        HeartPickup.SpawnHeart(transform.position, 35f, transform);
+
+        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (+Corazón Sagrado) ★", 4.0f);
     }
 
     private void MostrarBanner(string msg, float duration)
@@ -198,6 +202,7 @@ public class ZoneWaveSpawner : MonoBehaviour
         }
 
         string sheetName = "slime_spritesheet";
+        EnemySpriteSheetAnimator.PunyWeaponType forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.AutoDetect;
         switch (kind)
         {
             case EnemyKind.MistSlime: sheetName = "slime_spritesheet"; break;
@@ -205,16 +210,22 @@ public class ZoneWaveSpawner : MonoBehaviour
             case EnemyKind.GoblinRaider: sheetName = "goblin_spritesheet"; break;
             case EnemyKind.GoblinBomber: sheetName = "goblin_bomber_spritesheet"; break;
             case EnemyKind.QuarryWorm: sheetName = "worm_spritesheet"; break;
-            case EnemyKind.DarkOrcBrute: sheetName = "Orc-Soldier-Red"; break;
-            case EnemyKind.OblivionMage: sheetName = "Mage-Red"; break;
-            case EnemyKind.CorruptedGuard: sheetName = "Human-Soldier-Cyan"; break;
-        }
-
-        Texture2D tex = LoadSpriteTexture(sheetName);
-        EnemySpriteSheetAnimator anim = go.AddComponent<EnemySpriteSheetAnimator>();
-        if (tex != null)
-        {
-            anim.AutoDetectAndInitialize(tex);
+            case EnemyKind.DarkOrcBrute:
+                sheetName = "Orc-Soldier-Red";
+                forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Sword;
+                break;
+            case EnemyKind.OblivionMage:
+                sheetName = "Mage-Red";
+                forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Staff;
+                break;
+            case EnemyKind.CorruptedArcher:
+                sheetName = "Orc-Peon-Cyan";
+                forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Bow;
+                break;
+            case EnemyKind.CorruptedGuard:
+                sheetName = "Human-Soldier-Cyan";
+                forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Sword;
+                break;
         }
 
         switch (kind)
@@ -226,7 +237,16 @@ public class ZoneWaveSpawner : MonoBehaviour
             case EnemyKind.QuarryWorm: go.AddComponent<QuarryWormEnemyAI>(); break;
             case EnemyKind.DarkOrcBrute: go.AddComponent<DarkOrcBruteAI>(); break;
             case EnemyKind.OblivionMage: go.AddComponent<OblivionMageAI>(); break;
+            case EnemyKind.CorruptedArcher: go.AddComponent<CorruptedArcherAI>(); break;
             case EnemyKind.CorruptedGuard: go.AddComponent<CorruptedGuardAI>(); break;
+        }
+
+        Texture2D tex = LoadSpriteTexture(sheetName);
+        EnemySpriteSheetAnimator anim = go.AddComponent<EnemySpriteSheetAnimator>();
+        anim.weaponType = forcedWeapon;
+        if (tex != null)
+        {
+            anim.AutoDetectAndInitialize(tex);
         }
 
         return go;

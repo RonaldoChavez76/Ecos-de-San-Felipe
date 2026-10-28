@@ -78,10 +78,20 @@ public class ParroquiaInteriorBuilder : MonoBehaviour
     public static GameObject ConstruirInteriorParroquia(Transform parentRoot = null)
     {
         GameObject existente = GameObject.Find("Zona_Parroquia_Interior_Detallada");
-        if (existente != null) return existente;
+        if (existente != null)
+        {
+            if (GameObject.Find("Marca_Parroquia_Interior_V4") != null)
+            {
+                return existente;
+            }
+            if (Application.isPlaying) Destroy(existente);
+            else DestroyImmediate(existente);
+        }
 
         GameObject root = new GameObject("Zona_Parroquia_Interior_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
+        GameObject marca = new GameObject("Marca_Parroquia_Interior_V4");
+        marca.transform.SetParent(root.transform);
 
         // Si estamos en SampleScene, solo construimos el interior cuando se carga la escena ParroquiaInterior
         // (o si se pide explícitamente en el editor para inspección, lo centramos en 0,0 de su escena)
@@ -101,12 +111,12 @@ public class ParroquiaInteriorBuilder : MonoBehaviour
         Sprite spBancaMadera = CortarCelda("tileset_camp", 0, 7, 3, 1);
 
         Sprite spColumna = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3);
-        Sprite spEscaleraAncha = CortarCelda("TilesetHouse", 9, 19, 4, 3);
+        Sprite spEscaleraAncha = CortarCelda("TilesetHouse", 10, 19, 3, 3);
         Sprite spEstandarteDorado = CortarCelda("TilesetHouse", 28, 20, 1, 2);
         Sprite spEstandarteMorado = CortarCelda("TilesetHouse", 27, 20, 1, 2);
-        Sprite spEstandarteRojo = CortarCelda("TilesetHouse", 22, 20, 1, 2);
+        Sprite spEstandarteRojo = CortarCelda("TilesetHouse", 23, 20, 1, 2);
         Sprite spEstatuaSabio = CortarCelda("TilesetHouse", 3, 15, 2, 2);
-        Sprite spEstatuaGuerrero = CortarCelda("TilesetHouse", 5, 15, 2, 2);
+        Sprite spEstatuaGuerrero = CortarCelda("TilesetHouse", 5, 17, 2, 2);
 
         Sprite spEstanteriaLibros = CortarCelda("TilesetElement", 8, 7, 2, 2);
         Sprite spArmario = CortarCelda("TilesetElement", 6, 7, 2, 2);
@@ -286,7 +296,14 @@ public class ParroquiaInteriorBuilder : MonoBehaviour
         };
         waveCrucero.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedGuard, spawnPosition = offset + new Vector2(-3.5f, 7.5f) });
         waveCrucero.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.OblivionMage, spawnPosition = offset + new Vector2(3.5f, 7.5f) });
+        waveCrucero.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedArcher, spawnPosition = offset + new Vector2(0.0f, 8.8f) });
         spawnerCrucero.waves.Add(waveCrucero);
+
+        // Corazones Sagrados de curación dentro de la Parroquia (+25 HP cada uno)
+        HeartPickup.SpawnHeart(offset + new Vector2(-9.5f, 2.2f), 25f, root.transform);
+        HeartPickup.SpawnHeart(offset + new Vector2(9.5f, 2.2f), 25f, root.transform);
+        HeartPickup.SpawnHeart(offset + new Vector2(-4.5f, 11.5f), 25f, root.transform);
+        HeartPickup.SpawnHeart(offset + new Vector2(4.5f, 11.5f), 25f, root.transform);
 
         // 8. ALTAR MAYOR, CÓDICE LITÚRGICO, ACERTIJO DE LAS TRES CAMPANAS Y ECO DE LA FE
         ColocarDecoracion("Mesa_Altar_Mayor", spMesaBanquete, offset + new Vector2(0f, 20.5f), new Vector2(3.0f, 1.1f), true, root.transform);
