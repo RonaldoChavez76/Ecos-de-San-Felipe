@@ -40,7 +40,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
     void Start()
     {
         // 1. Buscar a Ronan
-        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
         if (player != null)
         {
             playerTransform = player.transform;
@@ -732,7 +732,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
     {
         if (playerTransform == null)
         {
-            PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
+            PlayerMovement p = FindAnyObjectByType<PlayerMovement>();
             if (p != null) playerTransform = p.transform;
         }
     }
@@ -851,7 +851,7 @@ public class SombraLanzadoraAI : MonoBehaviour
     {
         if (objetivo == null)
         {
-            PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
+            PlayerMovement p = FindAnyObjectByType<PlayerMovement>();
             if (p != null) objetivo = p.transform;
         }
         if (objetivo == null || ejecutandoAtaque) return;
@@ -981,7 +981,7 @@ public class SombraErranteAI : MonoBehaviour
     {
         if (objetivo == null)
         {
-            PlayerMovement p = FindFirstObjectByType<PlayerMovement>();
+            PlayerMovement p = FindAnyObjectByType<PlayerMovement>();
             if (p != null) objetivo = p.transform;
         }
         if (objetivo == null) return;

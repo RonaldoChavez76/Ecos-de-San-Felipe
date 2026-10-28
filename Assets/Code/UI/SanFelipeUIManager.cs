@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -71,7 +71,7 @@ public class SanFelipeUIManager : MonoBehaviour
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerMovement>();
+        player = FindAnyObjectByType<PlayerMovement>();
 
         // Generar las 4 ilustraciones de respaldo por si el usuario aún no arrastra las suyas
         for (int i = 0; i < 4; i++)
@@ -93,7 +93,7 @@ public class SanFelipeUIManager : MonoBehaviour
 
     void Update()
     {
-        if (player == null) player = FindFirstObjectByType<PlayerMovement>();
+        if (player == null) player = FindAnyObjectByType<PlayerMovement>();
 
         // 1. Detectar si Ronan murió (Vida <= 0) para activar la secuencia de Muerte en Cámara Lenta
         if (!enMenuOIntro && player != null && player.currentHealth <= 0f && !gameOverMostrado)
@@ -365,7 +365,7 @@ public class SanFelipeUIManager : MonoBehaviour
     private void ConstruirTodaLaInterfazPorCodigo()
     {
         // Asegurar que exista EventSystem para que los botones respondan al clic del mouse
-        if (FindFirstObjectByType<EventSystem>() == null)
+        if (FindAnyObjectByType<EventSystem>() == null)
         {
             GameObject es = new GameObject("EventSystem");
             es.AddComponent<EventSystem>();

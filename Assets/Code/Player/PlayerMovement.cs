@@ -490,8 +490,8 @@ public class PlayerMovement : MonoBehaviour
 
         float panelX = 16f;
         float panelY = 16f;
-        float panelW = 315f;
-        float panelH = 142f;
+        float panelW = 350f;
+        float panelH = 112f;
 
         Color prevColor = GUI.color;
 
@@ -510,7 +510,10 @@ public class PlayerMovement : MonoBehaviour
         {
             fontSize = 13,
             fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleLeft
+            alignment = TextAnchor.MiddleLeft,
+            wordWrap = false,
+            clipping = TextClipping.Overflow,
+            padding = new RectOffset(0, 0, 0, 0)
         };
         titleStyle.normal.textColor = new Color(1f, 0.90f, 0.55f);
 
@@ -518,21 +521,24 @@ public class PlayerMovement : MonoBehaviour
         {
             fontSize = 12,
             fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleLeft
+            alignment = TextAnchor.MiddleLeft,
+            wordWrap = false,
+            clipping = TextClipping.Overflow,
+            padding = new RectOffset(0, 0, 0, 0)
         };
         textStyle.normal.textColor = new Color(0.95f, 0.95f, 0.95f);
 
         GUI.color = Color.white;
         float hpPct = Mathf.Clamp01(currentHealth / Mathf.Max(1f, maxHealth));
         bool lowHp = hpPct <= 0.30f;
-        string headerAlert = lowHp ? "  <color=#FF4444>[¡PELIGRO: VIDA BAJA!]</color>" : "";
-        GUI.Label(new Rect(panelX + 12f, panelY + 6f, panelW - 20f, 20f), $"⚔ RONAN — GUARDIÁN DE SAN FELIPE{headerAlert}", titleStyle);
+        string headerAlert = lowHp ? "  <color=#FF4444>[¡VIDA BAJA!]</color>" : "";
+        GUI.Label(new Rect(panelX + 12f, panelY + 6f, panelW - 20f, 22f), $"⚔ RONAN — GUARDIÁN DE SAN FELIPE{headerAlert}", titleStyle);
 
         // 1. Barra de Vida (HP)
         float barX = panelX + 12f;
-        float hpBarY = panelY + 30f;
+        float hpBarY = panelY + 32f;
         float barW = panelW - 24f;
-        float barH = 20f;
+        float barH = 22f;
 
         GUI.color = new Color(0.22f, 0.08f, 0.08f, 0.95f);
         GUI.DrawTexture(new Rect(barX, hpBarY, barW, barH), whiteBarTex);
@@ -546,45 +552,41 @@ public class PlayerMovement : MonoBehaviour
         GUI.color = Color.white;
         GUI.Label(new Rect(barX + 8f, hpBarY, barW - 12f, barH), $"♥ VIDA: {Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth)} HP", textStyle);
 
-        // 2. Barra de Modo Asalto (Tecla L)
-        float assaultBarY = panelY + 56f;
+        // 2. Barra de Modo Asalto
+        float assaultBarY = panelY + 58f;
         float assaultPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
 
         GUI.color = new Color(0.08f, 0.14f, 0.24f, 0.95f);
-        GUI.DrawTexture(new Rect(barX, assaultBarY, barW, 18f), whiteBarTex);
+        GUI.DrawTexture(new Rect(barX, assaultBarY, barW, 20f), whiteBarTex);
 
         GUI.color = isAssaultActive
             ? new Color(0.20f, 0.95f, 1f, 0.8f + Mathf.PingPong(Time.time * 3f, 0.2f))
             : (assaultPct >= 1f ? new Color(0.15f, 0.85f, 1f, 0.95f) : new Color(0.18f, 0.52f, 0.88f, 0.95f));
-        GUI.DrawTexture(new Rect(barX + 2f, assaultBarY + 2f, (barW - 4f) * assaultPct, 14f), whiteBarTex);
+        GUI.DrawTexture(new Rect(barX + 2f, assaultBarY + 2f, (barW - 4f) * assaultPct, 16f), whiteBarTex);
 
         GUI.color = Color.white;
         string estadoAsalto = isAssaultActive
             ? "¡MODO ASALTO ACTIVO! (+60% ATQ / +30% VEL)"
-            : (assaultPct >= 1f ? $"⚡ ASALTO: 100% — ¡PRESIONA [L]!" : $"⚡ MODO ASALTO [L]: {assaultCharge:0}%");
-        GUI.Label(new Rect(barX + 8f, assaultBarY - 1f, barW - 12f, 18f), estadoAsalto, textStyle);
+            : (assaultPct >= 1f ? "⚡ MODO ASALTO: 100% (¡LISTO!)" : $"⚡ MODO ASALTO: {assaultCharge:0}%");
+        GUI.Label(new Rect(barX + 8f, assaultBarY, barW - 12f, 20f), estadoAsalto, textStyle);
 
-        // 3. Estadísticas de Ronan (Ataque, Velocidad, Ventana Parry y Controles)
+        // 3. Estadísticas de Ronan (Ataque, Velocidad, Ventana Parry y Estado) sin cortarse
         float atkActual = isAssaultActive ? baseAttack * 1.60f : baseAttack;
         float spdActual = isAssaultActive ? moveSpeed * 1.30f : moveSpeed;
 
         GUIStyle statStyle = new GUIStyle(GUI.skin.label)
         {
-            fontSize = 11,
-            alignment = TextAnchor.MiddleLeft
+            fontSize = 12,
+            alignment = TextAnchor.MiddleLeft,
+            richText = true,
+            wordWrap = false,
+            clipping = TextClipping.Overflow,
+            padding = new RectOffset(0, 0, 0, 0)
         };
-        statStyle.normal.textColor = new Color(0.88f, 0.90f, 0.96f);
+        statStyle.normal.textColor = new Color(0.92f, 0.94f, 0.98f);
 
-        GUI.Label(new Rect(barX, panelY + 80f, barW, 18f),
+        GUI.Label(new Rect(barX + 2f, panelY + 82f, barW, 24f),
             $"<b>ATQ:</b> {atkActual:0.#}   |   <b>VEL:</b> {spdActual:0.#} u/s   |   <b>PARRY:</b> {counterWindow:0.00}s   |   <b>ESTADO:</b> {currentState}",
-            statStyle);
-
-        GUI.Label(new Rect(barX, panelY + 100f, barW, 18f),
-            "<b>[J / Clic Izq]</b> Atacar   <b>[K / Clic Der]</b> Bloquear/Reflejar   <b>[Espacio]</b> Esquivar",
-            statStyle);
-
-        GUI.Label(new Rect(barX, panelY + 118f, barW, 18f),
-            "<color=#7CFC90>♥ Recoge Corazones de enemigos o altares para recuperar +25 HP</color>",
             statStyle);
 
         GUI.color = prevColor;

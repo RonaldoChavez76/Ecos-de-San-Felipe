@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 /// <summary>
@@ -31,7 +31,7 @@ public class PuzzleManager : MonoBehaviour
     public static PuzzleManager EnsureInstance()
     {
         if (Instance != null) return Instance;
-        PuzzleManager existing = FindFirstObjectByType<PuzzleManager>();
+        PuzzleManager existing = FindAnyObjectByType<PuzzleManager>();
         if (existing != null)
         {
             Instance = existing;

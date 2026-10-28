@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -339,7 +339,7 @@ public class PantallaInicioManager : MonoBehaviour
         }
 
         // 2. Asegurar EventSystem
-        if (FindFirstObjectByType<EventSystem>() == null)
+        if (FindAnyObjectByType<EventSystem>() == null)
         {
             GameObject es = new GameObject("EventSystem");
             es.AddComponent<EventSystem>();
@@ -671,7 +671,7 @@ public static class PantallaInicioAutoSetup
         {
             if (GameObject.Find("Canvas_PantallaInicio") == null)
             {
-                PantallaInicioManager mgr = Object.FindFirstObjectByType<PantallaInicioManager>();
+                PantallaInicioManager mgr = Object.FindAnyObjectByType<PantallaInicioManager>();
                 if (mgr != null)
                 {
                     mgr.GenerarUIEnEscena();
@@ -683,7 +683,7 @@ public static class PantallaInicioAutoSetup
     [MenuItem("Ecos de San Felipe/🎨 Generar UI en Hierarchy (PantallaInicio)")]
     public static void MenuGenerarUI()
     {
-        PantallaInicioManager mgr = Object.FindFirstObjectByType<PantallaInicioManager>();
+        PantallaInicioManager mgr = Object.FindAnyObjectByType<PantallaInicioManager>();
         if (mgr != null)
         {
             mgr.GenerarUIEnEscena();
