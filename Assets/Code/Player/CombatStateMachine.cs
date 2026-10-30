@@ -15,7 +15,8 @@ public class CombatStateMachine : MonoBehaviour
         Counter,
         Dodge,
         Hurt,
-        Dead
+        Dead,
+        Victory
     }
 
     [Header("Estado Actual")]
@@ -34,7 +35,7 @@ public class CombatStateMachine : MonoBehaviour
     private float lastDodgeTime = -10f;
 
     public bool IsInCounterWindow => currentState == State.Block && (Time.time - blockStartTime) <= counterWindow;
-    public bool IsInvulnerable => currentState == State.Dodge || currentState == State.Counter;
+    public bool IsInvulnerable => currentState == State.Dodge || currentState == State.Counter || currentState == State.Victory;
 
     public event Action<State, State> OnStateChanged;
     public event Action OnCounterTriggered;
@@ -131,7 +132,7 @@ public class CombatStateMachine : MonoBehaviour
 
     public void TriggerHurt()
     {
-        if (currentState == State.Dead) return;
+        if (currentState == State.Dead || currentState == State.Victory) return;
         ChangeState(State.Hurt);
     }
 

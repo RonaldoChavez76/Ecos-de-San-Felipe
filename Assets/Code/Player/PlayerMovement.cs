@@ -3,11 +3,19 @@ using UnityEngine;
 
 /// <summary>
 /// Controlador principal de Ronan para movimiento Top-Down 8 direcciones,
-/// gestión de combate (Ataque, Bloqueo, Contraataque, Esquive) y Modo Asalto.
+/// gestión de combate (Ataque, Bloqueo, Contraataque, Esquive, Modo Asalto y Victoria con Eco).
 /// </summary>
 public class PlayerMovement : MonoBehaviour
 {
-    public enum CombatState { Idle, Attack, Block, Counter, Dodge }
+    public enum CombatState
+    {
+        Idle = 0,
+        Attack = 1,
+        Block = 2,
+        Counter = 3,
+        Dodge = 4,
+        Victory = 7
+    }
 
     [Header("Estado Actual")]
     public CombatState currentState = CombatState.Idle;
@@ -58,6 +66,11 @@ public class PlayerMovement : MonoBehaviour
     // Efectos visuales de brazal / escudo
     private GameObject visualEffectObj;
     private SpriteRenderer effectSr;
+
+    // Efectos visuales de Victoria con Eco en Manos
+    private GameObject ecoEnManosObj;
+    private SpriteRenderer ecoEnManosSr;
+    private SpriteRenderer ecoHaloSr;
 
     private void Awake()
     {
@@ -120,6 +133,27 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        // Durante la animación de victoria con el Eco, Ronan mantiene la pose triunfal con pulso luminoso
+        if (currentState == CombatState.Victory)
+        {
+            movement = Vector2.zero;
+            if (ecoEnManosObj != null)
+            {
+                float bob = Mathf.Sin(Time.unscaledTime * 4.5f) * 0.05f;
+                ecoEnManosObj.transform.localPosition = new Vector3(0f, 0.78f + bob, 0f);
+                if (ecoHaloSr != null)
+                {
+                    ecoHaloSr.transform.localRotation = Quaternion.Euler(0f, 0f, Time.unscaledTime * 70f);
+                }
+                if (ecoEnManosSr != null)
+                {
+                    float t = (Mathf.Sin(Time.unscaledTime * 3.5f) + 1f) * 0.5f;
+                    ecoEnManosSr.color = Color.Lerp(new Color(0.2f, 0.95f, 1f, 1f), new Color(1f, 0.95f, 0.45f, 1f), t);
+                }
+            }
+            return;
+        }
+
         if (currentState == CombatState.Idle)
         {
             LeerMovimientoOchoDirecciones();
@@ -172,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // En Attack, Block y Counter Ronan debe mantenerse firme sin deslizarse hacia atrás ni en diagonal
+            // En Attack, Block, Counter y Victory Ronan debe mantenerse firme sin deslizarse hacia atrás ni en diagonal
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
@@ -185,6 +219,8 @@ public class PlayerMovement : MonoBehaviour
             // Orden de renderizado dinámico Top-Down según el eje Y
             sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10f);
             if (effectSr != null) effectSr.sortingOrder = sr.sortingOrder + 1;
+            if (ecoEnManosSr != null) ecoEnManosSr.sortingOrder = sr.sortingOrder + 12;
+            if (ecoHaloSr != null) ecoHaloSr.sortingOrder = sr.sortingOrder + 11;
         }
     }
 
@@ -364,7 +400,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void RecibirDanio(float cantidad)
     {
-        if (isInvulnerable) return;
+        if (isInvulnerable || currentState == CombatState.Victory) return;
 
         if (currentState == CombatState.Block)
         {
@@ -424,6 +460,94 @@ public class PlayerMovement : MonoBehaviour
         {
             assaultCharge = Mathf.Clamp(assaultCharge + cantidad, 0f, maxAssaultCharge);
         }
+    }
+
+    /// <summary>
+    /// Activa la animación heroica de victoria levantando el Eco Sagrado por encima de su cabeza.
+    /// </summary>
+    public void ActivarPoseDeVictoriaConEco(string nombreEco, int indiceEco)
+    {
+        SetState(CombatState.Victory);
+        movement = Vector2.zero;
+        lookDirection = Vector2.down; // Ronan mira al frente / hacia la cámara
+        isInvulnerable = true;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+        if (anim != null) anim.SetFloat("Speed", 0f);
+        if (visualEffectObj != null) visualEffectObj.SetActive(false);
+
+        CrearOMostrarEcoEnManos(indiceEco);
+    }
+
+    /// <summary>
+    /// Desactiva la pose de victoria, absorbiendo el eco y permitiendo a Ronan reanudar la marcha.
+    /// </summary>
+    public void DesactivarPoseDeVictoria()
+    {
+        if (ecoEnManosObj != null)
+        {
+            Destroy(ecoEnManosObj);
+            ecoEnManosObj = null;
+            ecoEnManosSr = null;
+            ecoHaloSr = null;
+        }
+        isInvulnerable = false;
+        SetState(CombatState.Idle);
+    }
+
+    private void CrearOMostrarEcoEnManos(int indiceEco)
+    {
+        if (ecoEnManosObj != null) Destroy(ecoEnManosObj);
+
+        ecoEnManosObj = new GameObject("EcoEnManos_VFX");
+        ecoEnManosObj.transform.SetParent(transform);
+        ecoEnManosObj.transform.localPosition = new Vector3(0f, 0.78f, 0f);
+
+        // Orbe sagrado central del Eco
+        ecoEnManosSr = ecoEnManosObj.AddComponent<SpriteRenderer>();
+        Texture2D orbTex = new Texture2D(28, 28);
+        for (int y = 0; y < 28; y++)
+        {
+            for (int x = 0; x < 28; x++)
+            {
+                float dist = Vector2.Distance(new Vector2(x, y), new Vector2(13.5f, 13.5f)) / 14f;
+                float alpha = Mathf.Clamp01(1f - dist);
+                alpha = Mathf.Pow(alpha, 1.3f);
+                orbTex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
+            }
+        }
+        orbTex.Apply();
+        ecoEnManosSr.sprite = Sprite.Create(orbTex, new Rect(0, 0, 28, 28), new Vector2(0.5f, 0.5f), 16f);
+        ecoEnManosSr.sortingOrder = (sr != null ? sr.sortingOrder : 10) + 12;
+        ecoEnManosSr.color = new Color(0.2f, 0.95f, 1f, 1f);
+
+        // Halo místico giratorio
+        GameObject haloObj = new GameObject("EcoHalo");
+        haloObj.transform.SetParent(ecoEnManosObj.transform);
+        haloObj.transform.localPosition = Vector3.zero;
+        ecoHaloSr = haloObj.AddComponent<SpriteRenderer>();
+
+        Texture2D haloTex = new Texture2D(36, 36);
+        for (int y = 0; y < 36; y++)
+        {
+            for (int x = 0; x < 36; x++)
+            {
+                Vector2 c = new Vector2(x - 17.5f, y - 17.5f);
+                float dist = c.magnitude / 18f;
+                float angle = Mathf.Atan2(c.y, c.x) * Mathf.Rad2Deg;
+                float rayMod = Mathf.Abs(Mathf.Sin(angle * 4f * Mathf.Deg2Rad));
+                float alpha = Mathf.Clamp01((1f - dist) * (0.35f + 0.65f * rayMod));
+                haloTex.SetPixel(x, y, new Color(1f, 0.95f, 0.5f, alpha * 0.8f));
+            }
+        }
+        haloTex.Apply();
+        ecoHaloSr.sprite = Sprite.Create(haloTex, new Rect(0, 0, 36, 36), new Vector2(0.5f, 0.5f), 16f);
+        ecoHaloSr.sortingOrder = ecoEnManosSr.sortingOrder - 1;
+        ecoHaloSr.color = new Color(1f, 0.95f, 0.6f, 0.85f);
     }
 
     private void SetState(CombatState nuevoEstado)
