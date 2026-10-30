@@ -3,7 +3,9 @@ using UnityEngine;
 
 /// <summary>
 /// Coleccionable sagrado de los Ecos de San Felipe.
-/// Al recogerlo, restaura recuerdos, incrementa +25 HP permanentemente a Ronan y restaura su vida.
+/// Al recogerlo, restaura recuerdos, incrementa +25 HP permanentemente a Ronan,
+/// restaura su vida, activa la animación de victoria con el eco en manos y despliega
+/// la pantalla de nivel completado.
 /// </summary>
 public class EchoCollectible : MonoBehaviour
 {
@@ -68,7 +70,13 @@ public class EchoCollectible : MonoBehaviour
 
     private void Recolectar(GameObject player)
     {
+        if (recolectado) return;
         recolectado = true;
+
+        // Desactivar colisiones y renderizado en el suelo
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+        if (sr != null) sr.enabled = false;
 
         // 1. Guardar en SaveStateManager (+25 HP permanente y vida restaurada)
         SaveStateManager.Instance?.RecuperarEco(indiceEco);
@@ -96,7 +104,21 @@ public class EchoCollectible : MonoBehaviour
         CrearExplosionLuminosa();
 
         Debug.Log($"<color=#FFDF00>[EchoCollectible] ¡{nombreEco} recolectado con éxito por Ronan!</color>");
-        Destroy(gameObject, 0.25f);
+
+        // 4. Activar pose heroica de victoria con el eco en alto sobre la cabeza
+        if (pm != null)
+        {
+            pm.ActivarPoseDeVictoriaConEco(nombreEco, indiceEco);
+        }
+
+        // 5. Desplegar pantalla modal de Nivel Completado
+        PauseAndVictoryUI ui = PauseAndVictoryUI.EnsureInstance();
+        if (ui != null)
+        {
+            ui.MostrarVictoriaDeNivel(indiceEco, nombreEco, pm);
+        }
+
+        Destroy(gameObject, 0.5f);
     }
 
     private void AsegurarSpriteLuminoso()

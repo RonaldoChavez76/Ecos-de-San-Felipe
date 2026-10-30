@@ -86,8 +86,12 @@ public class PunyCharacterAnimator : MonoBehaviour
         float vy = Input.GetAxisRaw("Vertical");
         Vector2 inputDir = new Vector2(hx, vy);
 
-        // Sincronizar siempre la fila de dirección con hacia dónde mira Ronan (player.LookDirection)
-        if (player.LookDirection.sqrMagnitude > 0.01f)
+        // Si está en estado de Victoria, siempre mira hacia el frente/cámara (Fila 0 = Sur)
+        if (player.currentState == PlayerMovement.CombatState.Victory)
+        {
+            currentDirectionRow = 0;
+        }
+        else if (player.LookDirection.sqrMagnitude > 0.01f)
         {
             currentDirectionRow = ObtenerFilaDeDireccion(player.LookDirection);
         }
@@ -106,6 +110,12 @@ public class PunyCharacterAnimator : MonoBehaviour
             deathAnimTimer += Time.unscaledDeltaTime * 3.5f;
             int frameMuerte = Mathf.Clamp(Mathf.FloorToInt(deathAnimTimer), 0, 3);
             columnaElegida = 20 + frameMuerte;
+        }
+        else if (player.currentState == PlayerMovement.CombatState.Victory)
+        {
+            // Pose heroica de triunfo con el Eco en alto mirando a la cámara (Columna 4 = Brazos alzados)
+            currentDirectionRow = 0;
+            columnaElegida = 4;
         }
         else
         {
