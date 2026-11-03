@@ -19,6 +19,12 @@ public class EchoCollectible : MonoBehaviour
     public float amplitudLevitacion = 0.20f;
     public float velocidadPulso = 3.0f;
 
+    [Header("Secuencia de Recolección")]
+    [Tooltip("Segundos que tarda el Eco en subir hasta las manos de Ronan.")]
+    public float duracionAscenso = 1.0f;
+    [Tooltip("Pausa (segundos) con Ronan celebrando antes de mostrar la pantalla de Nivel Completado.")]
+    public float retrasoPantallaVictoria = 1.8f;
+
     private Vector3 posicionInicial;
     private SpriteRenderer sr;
     private bool recolectado = false;
@@ -72,11 +78,11 @@ public class EchoCollectible : MonoBehaviour
     {
         if (recolectado) return;
         recolectado = true;
+        PauseAndVictoryUI.SecuenciaEcoEnCurso = true; // impide que cualquier pantalla de victoria aparezca antes de tiempo
 
-        // Desactivar colisiones y renderizado en el suelo
+        // Desactivar colisiones (el sprite sigue visible: va a ascender hacia las manos de Ronan)
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
-        if (sr != null) sr.enabled = false;
 
         // 1. Guardar en SaveStateManager (+25 HP permanente y vida restaurada)
         SaveStateManager.Instance?.RecuperarEco(indiceEco);
@@ -99,28 +105,58 @@ public class EchoCollectible : MonoBehaviour
             }
         }
 
-        // 3. Audio y partículas
+        Debug.Log($"<color=#FFDF00>[EchoCollectible] ¡{nombreEco} recolectado con éxito por Ronan!</color>");
+
+        // 3. Ronan adopta la pose de victoria (el Eco aún no está en sus manos) y arranca la secuencia
+        if (pm != null) pm.ActivarPoseDeVictoriaConEco(nombreEco, indiceEco, false);
+        StartCoroutine(RutinaRecoleccion(pm));
+    }
+
+    /// <summary>
+    /// Secuencia completa: el Eco asciende hasta las manos de Ronan → destello → Ronan lo sostiene en alto
+    /// → pausa de celebración → pantalla de «Nivel Completado».
+    /// </summary>
+    private IEnumerator RutinaRecoleccion(PlayerMovement pm)
+    {
         AudioManager.Instance?.PlayEchoSound();
         CrearExplosionLuminosa();
 
-        Debug.Log($"<color=#FFDF00>[EchoCollectible] ¡{nombreEco} recolectado con éxito por Ronan!</color>");
-
-        // 4. Activar pose heroica de victoria con el eco en alto sobre la cabeza
-        if (pm != null)
+        // Fase 1: ascenso del Eco hasta las manos (la animación de recolección completa)
+        Vector3 inicio = transform.position;
+        float t = 0f;
+        while (t < duracionAscenso)
         {
-            pm.ActivarPoseDeVictoriaConEco(nombreEco, indiceEco);
+            t += Time.deltaTime;
+            float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / duracionAscenso));
+            Vector3 destino = pm != null ? pm.PosicionEcoEnManos : inicio + Vector3.up * 1.2f;
+            transform.position = Vector3.Lerp(inicio, destino, k) + Vector3.up * Mathf.Sin(k * Mathf.PI) * 0.35f;
+
+            float escala = Mathf.Lerp(1.15f, 0.85f, k) + Mathf.Sin(Time.time * 14f) * 0.08f;
+            transform.localScale = new Vector3(escala, escala, 1f);
+            if (sr != null)
+            {
+                float lerp = (Mathf.Sin(Time.time * 12f) + 1f) * 0.5f;
+                sr.color = Color.Lerp(new Color(0f, 0.95f, 1f, 1f), new Color(1f, 0.95f, 0.5f, 1f), lerp);
+            }
+            yield return null;
         }
 
-        // 5. Desplegar pantalla modal de Nivel Completado
+        // Fase 2: el Eco llega a las manos → destello y Ronan lo sostiene en alto
+        CrearExplosionLuminosa();
+        AudioManager.Instance?.PlayBellSound();
+        if (sr != null) sr.enabled = false;
+        if (pm != null) pm.MostrarEcoEnManos(indiceEco);
+
+        // Fase 3: pausa de celebración con la pose de victoria visible (el juego sigue corriendo)
+        yield return new WaitForSeconds(retrasoPantallaVictoria);
+
+        // Fase 4: pantalla de Nivel Completado
+        PauseAndVictoryUI.SecuenciaEcoEnCurso = false;
         PauseAndVictoryUI ui = PauseAndVictoryUI.EnsureInstance();
-        if (ui != null)
-        {
-            ui.MostrarVictoriaDeNivel(indiceEco, nombreEco, pm);
-        }
+        if (ui != null) ui.MostrarVictoriaDeNivel(indiceEco, nombreEco, pm);
 
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 0.1f);
     }
-
     private void AsegurarSpriteLuminoso()
     {
         if (sr == null) sr = gameObject.AddComponent<SpriteRenderer>();

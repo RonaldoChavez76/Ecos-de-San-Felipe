@@ -4,10 +4,23 @@ using UnityEngine;
 /// <summary>
 /// Gestiona la persistencia de datos globales del jugador, Ecos recuperados,
 /// estadísticas y estado entre escenas y transiciones de zonas.
+/// Auto-instanciable como Singleton persistente para que nunca sea nulo.
 /// </summary>
 public class SaveStateManager : MonoBehaviour
 {
-    public static SaveStateManager Instance { get; private set; }
+    private static SaveStateManager _instance;
+    public static SaveStateManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                EnsureInstance();
+            }
+            return _instance;
+        }
+        private set => _instance = value;
+    }
 
     [Header("Ecos Recuperados")]
     public bool ecoFeRecuperado = false;         // Nivel 1: Parroquia
@@ -18,6 +31,9 @@ public class SaveStateManager : MonoBehaviour
     public float baseMaxHealth = 100f;
     public float currentHealth = 100f;
     public int goldKeys = 0;
+    public int oro = 50;
+    public bool arcoComprado = false;
+    public bool baculoComprado = false;
     public int copperBars = 0;
     public int ironBars = 0;
     public int goldBars = 0;
@@ -38,16 +54,32 @@ public class SaveStateManager : MonoBehaviour
 
     public event Action<int, string> OnEcoRecuperado;
     public event Action<float> OnVidaMaximaActualizada;
+    public event Action<int> OnOroCambiado;
+
+    public static SaveStateManager EnsureInstance()
+    {
+        if (_instance != null) return _instance;
+        SaveStateManager existing = FindAnyObjectByType<SaveStateManager>();
+        if (existing != null)
+        {
+            _instance = existing;
+            return existing;
+        }
+        GameObject go = new GameObject("SaveStateManager");
+        _instance = go.AddComponent<SaveStateManager>();
+        DontDestroyOnLoad(go);
+        return _instance;
+    }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
         CargarProgreso();
     }
@@ -107,7 +139,7 @@ public class SaveStateManager : MonoBehaviour
         }
 
         float nuevaVidaMax = ObtenerVidaMaximaTotal();
-        currentHealth = nuevaVidaMax; // Al recuperar un eco se restaura la vida al 100%
+        currentHealth = nuevaVidaMax;
 
         GuardarProgreso();
         OnEcoRecuperado?.Invoke(indiceEco, nombre);
@@ -131,6 +163,27 @@ public class SaveStateManager : MonoBehaviour
         goldKeys = Mathf.Max(0, goldKeys + cantidad);
     }
 
+    public bool GastarOro(int cantidad)
+    {
+        if (oro < cantidad) return false;
+        oro -= cantidad;
+        GuardarProgreso();
+        PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
+        if (pm != null) pm.oro = oro;
+        OnOroCambiado?.Invoke(oro);
+        return true;
+    }
+
+    public void AgregarOro(int cantidad)
+    {
+        oro += cantidad;
+        GuardarProgreso();
+        PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
+        if (pm != null) pm.oro = oro;
+        OnOroCambiado?.Invoke(oro);
+        Debug.Log($"<color=#FFD700>[SaveStateManager] +{cantidad} Oro añadido. Oro total: {oro}</color>");
+    }
+
     public void GuardarCheckpoint(string zonaId, Vector2 posicion)
     {
         ultimaZonaId = zonaId;
@@ -140,44 +193,20 @@ public class SaveStateManager : MonoBehaviour
 
     public void GuardarProgreso()
     {
-        PlayerPrefs.SetInt("Save_EcoFe", ecoFeRecuperado ? 1 : 0);
-        PlayerPrefs.SetInt("Save_EcoTradicion", ecoTradicionRecuperado ? 1 : 0);
-        PlayerPrefs.SetInt("Save_EcoMemoria", ecoMemoriaRecuperado ? 1 : 0);
-        PlayerPrefs.SetFloat("Save_Health", currentHealth);
-        PlayerPrefs.SetInt("Save_Keys", goldKeys);
-        PlayerPrefs.SetFloat("Save_Time", tiempoDeJuego);
-        PlayerPrefs.SetInt("Save_Counters", contraataquesExitosos);
-        PlayerPrefs.SetInt("Save_Kills", enemigosDerrotados);
-        PlayerPrefs.SetString("Save_Zone", ultimaZonaId);
-        PlayerPrefs.SetFloat("Save_PosX", ultimoCheckpoint.x);
-        PlayerPrefs.SetFloat("Save_PosY", ultimoCheckpoint.y);
-        PlayerPrefs.Save();
+        // Progreso estrictamente en memoria para la sesión activa (sin persistencia en disco ni PlayerPrefs)
     }
 
     public void CargarProgreso()
     {
-        ecoFeRecuperado = PlayerPrefs.GetInt("Save_EcoFe", 0) == 1;
-        ecoTradicionRecuperado = PlayerPrefs.GetInt("Save_EcoTradicion", 0) == 1;
-        ecoMemoriaRecuperado = PlayerPrefs.GetInt("Save_EcoMemoria", 0) == 1;
-        currentHealth = PlayerPrefs.GetFloat("Save_Health", ObtenerVidaMaximaTotal());
-        goldKeys = PlayerPrefs.GetInt("Save_Keys", 0);
-        tiempoDeJuego = PlayerPrefs.GetFloat("Save_Time", 0f);
-        contraataquesExitosos = PlayerPrefs.GetInt("Save_Counters", 0);
-        enemigosDerrotados = PlayerPrefs.GetInt("Save_Kills", 0);
-        ultimaZonaId = PlayerPrefs.GetString("Save_Zone", "ParroquiaExterior");
-        ultimoCheckpoint = new Vector2(
-            PlayerPrefs.GetFloat("Save_PosX", 0f),
-            PlayerPrefs.GetFloat("Save_PosY", 0f)
-        );
-    }
-
-    public void ReiniciarProgreso()
-    {
+        // Progreso de sesión única en memoria
         ecoFeRecuperado = false;
         ecoTradicionRecuperado = false;
         ecoMemoriaRecuperado = false;
         currentHealth = baseMaxHealth;
         goldKeys = 0;
+        oro = 50;
+        arcoComprado = false;
+        baculoComprado = false;
         copperBars = 0;
         ironBars = 0;
         goldBars = 0;
@@ -191,7 +220,13 @@ public class SaveStateManager : MonoBehaviour
         enemigosDerrotados = 0;
         ultimaZonaId = "ParroquiaExterior";
         ultimoCheckpoint = Vector2.zero;
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+
+        // Limpiar cualquier rastro previo en PlayerPrefs
+        try { PlayerPrefs.DeleteAll(); } catch { }
+    }
+
+    public void ReiniciarProgreso()
+    {
+        CargarProgreso();
     }
 }

@@ -7,27 +7,48 @@ using UnityEngine;
 public class HeartPickup : MonoBehaviour
 {
     public float healAmount = 25f;
-    private Vector3 basePos;
+    public float targetScale = 0.65f;
+    private SpriteRenderer sr;
     private float spawnTime;
     private static Sprite cachedHeartSprite;
 
-    public static GameObject SpawnHeart(Vector3 position, float heal = 25f, Transform parent = null)
+    public static GameObject SpawnHeart(Vector3 position, float heal = 25f, Transform parent = null, bool applyImpulse = false)
     {
         GameObject go = new GameObject("Corazon_Curativo");
         if (parent != null) go.transform.SetParent(parent);
         go.transform.position = position;
 
-        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = GetHeartSprite();
-        sr.sortingOrder = Mathf.RoundToInt(-position.y * 10f) + 2;
-        go.transform.localScale = new Vector3(1.25f, 1.25f, 1f);
+        SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
+        renderer.sprite = GetHeartSprite();
+        renderer.sortingLayerName = "Default";
+        renderer.sortingOrder = Mathf.RoundToInt(-position.y * 10f) + 2;
+        go.transform.localScale = new Vector3(0.65f, 0.65f, 1f);
 
         CircleCollider2D col = go.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
-        col.radius = 0.48f;
+        col.radius = 0.40f;
+
+        Rigidbody2D rb = go.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+        rb.linearDamping = 4.5f;
+        rb.freezeRotation = true;
+
+        if (applyImpulse)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            Vector2 dirImpulso = Random.insideUnitCircle;
+            if (dirImpulso.sqrMagnitude < 0.05f) dirImpulso = Random.insideUnitCircle.normalized;
+            rb.AddForce(dirImpulso.normalized * Random.Range(2.0f, 3.8f), ForceMode2D.Impulse);
+        }
+        else
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
 
         HeartPickup hp = go.AddComponent<HeartPickup>();
         hp.healAmount = heal;
+        hp.sr = renderer;
+        hp.targetScale = 0.65f;
         return go;
     }
 
@@ -58,16 +79,20 @@ public class HeartPickup : MonoBehaviour
 
     private void Start()
     {
-        basePos = transform.position;
         spawnTime = Time.time;
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        if (sr != null) sr.sortingLayerName = "Default";
     }
 
     private void Update()
     {
-        float bob = Mathf.Sin((Time.time - spawnTime) * 4.2f) * 0.10f;
-        float pulse = 1.20f + Mathf.Sin((Time.time - spawnTime) * 5.5f) * 0.10f;
-        transform.position = basePos + new Vector3(0f, bob, 0f);
+        float pulse = targetScale * (1.0f + Mathf.Sin((Time.time - spawnTime) * 4.5f) * 0.08f);
         transform.localScale = new Vector3(pulse, pulse, 1f);
+
+        if (sr != null)
+        {
+            sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10f) + 2;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

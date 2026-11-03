@@ -145,7 +145,7 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
             ZoneWaveSpawner spawnerAtrio = spawnerAtrioGO.AddComponent<ZoneWaveSpawner>();
             spawnerAtrio.zoneTitle = "Atrio de la Parroquia";
             spawnerAtrio.activationRadius = 7.5f;
-            spawnerAtrio.barrierToDisableOnClear = barreraPortico;
+            // La barrera ya no la abre el spawner: la controla ParroquiaDoorGate (requiere 0 enemigos activos en el exterior)
 
             // Oleada 1: 2 Slimes de Niebla + 1 Sombra Errante
             ZoneWaveSpawner.WaveDefinition wave1 = new ZoneWaveSpawner.WaveDefinition
@@ -168,6 +168,24 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
             spawnerAtrio.waves.Add(wave2);
         }
 
+        // PUERTA DE LA PARROQUIA: bloqueada hasta purificar el Atrio y que el contador de enemigos activos del exterior sea 0
+        GameObject gateGO = new GameObject("Cerrojo_Puerta_Parroquia");
+        gateGO.transform.SetParent(root.transform);
+        gateGO.transform.position = new Vector3(0f, 29.5f, 0f);
+        ParroquiaDoorGate gate = gateGO.AddComponent<ParroquiaDoorGate>();
+        gate.barrera = barreraPortico;
+        gate.portalTrigger = puertaParroquia.GetComponent<Collider2D>();
+        gate.portalVisual = puertaParroquia.GetComponent<SpriteRenderer>();
+        GameObject spawnerAtrioExistente = GameObject.Find("Horda_Zona_Atrio_Parroquia");
+        if (!atrioYaPurificado && spawnerAtrioExistente != null)
+        {
+            gate.encuentrosRequeridos = new ZoneWaveSpawner[] { spawnerAtrioExistente.GetComponent<ZoneWaveSpawner>() };
+        }
+        gate.abiertaPermanentemente = atrioYaPurificado;
+        if (atrioYaPurificado)
+        {
+            barreraPortico.SetActive(false);
+        }
         // B) Horda Opcional Poniente: Plazoleta de los Hornos (-28, 4)
         GameObject spawnerOesteGO = new GameObject("Horda_Zona_Barrio_Poniente");
         spawnerOesteGO.transform.SetParent(root.transform);

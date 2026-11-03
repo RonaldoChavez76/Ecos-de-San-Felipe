@@ -159,48 +159,57 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel = new GameObject("Panel_Dialogo");
         dialoguePanel.transform.SetParent(canvasObj.transform, false);
         Image bg = dialoguePanel.AddComponent<Image>();
-        bg.color = new Color(0.09f, 0.06f, 0.04f, 0.95f);
+        bg.color = new Color(0.04f, 0.03f, 0.06f, 0.98f);
         RectTransform rt = dialoguePanel.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(0f, -225f);
-        rt.sizeDelta = new Vector2(960f, 175f);
+        rt.anchoredPosition = new Vector2(0f, -220f);
+        rt.sizeDelta = new Vector2(1000f, 200f);
 
         // Nombre del hablante / placa
         GameObject speakerObj = new GameObject("Txt_Speaker");
         speakerObj.transform.SetParent(dialoguePanel.transform, false);
         speakerNameText = speakerObj.AddComponent<Text>();
         speakerNameText.font = font;
-        speakerNameText.fontSize = 20;
+        speakerNameText.fontSize = 26;
         speakerNameText.fontStyle = FontStyle.Bold;
-        speakerNameText.color = new Color(0f, 0.92f, 1f, 1f);
+        speakerNameText.color = new Color(0.55f, 0.97f, 1f, 1f);
         speakerNameText.alignment = TextAnchor.MiddleLeft;
         RectTransform speakerRt = speakerObj.GetComponent<RectTransform>();
-        speakerRt.anchoredPosition = new Vector2(0f, 58f);
-        speakerRt.sizeDelta = new Vector2(900f, 32f);
+        speakerRt.anchoredPosition = new Vector2(0f, 72f);
+        speakerRt.sizeDelta = new Vector2(940f, 40f);
 
         // Cuerpo del diálogo
         GameObject bodyObj = new GameObject("Txt_Body");
         bodyObj.transform.SetParent(dialoguePanel.transform, false);
         bodyText = bodyObj.AddComponent<Text>();
         bodyText.font = font;
-        bodyText.fontSize = 21;
-        bodyText.color = new Color(0.96f, 0.93f, 0.86f, 1f);
+        bodyText.fontSize = 26;
+        bodyText.color = Color.white;
         bodyText.alignment = TextAnchor.UpperLeft;
+        bodyText.horizontalOverflow = HorizontalWrapMode.Wrap;
         RectTransform bodyRt = bodyObj.GetComponent<RectTransform>();
-        bodyRt.anchoredPosition = new Vector2(0f, -4f);
-        bodyRt.sizeDelta = new Vector2(900f, 92f);
+        bodyRt.anchoredPosition = new Vector2(0f, 0f);
+        bodyRt.sizeDelta = new Vector2(940f, 110f);
 
         // Indicador de avance
         GameObject promptObj = new GameObject("Txt_Prompt");
         promptObj.transform.SetParent(dialoguePanel.transform, false);
         promptText = promptObj.AddComponent<Text>();
         promptText.font = font;
-        promptText.fontSize = 15;
-        promptText.color = new Color(0.85f, 0.78f, 0.55f, 0.9f);
+        promptText.fontSize = 18;
+        promptText.color = new Color(1f, 0.90f, 0.50f, 1f);
         promptText.alignment = TextAnchor.MiddleRight;
         promptText.text = "[E] / [ESPACIO] Continuar";
         RectTransform promptRt = promptObj.GetComponent<RectTransform>();
-        promptRt.anchoredPosition = new Vector2(0f, -64f);
-        promptRt.sizeDelta = new Vector2(900f, 26f);
+        promptRt.anchoredPosition = new Vector2(0f, -80f);
+        promptRt.sizeDelta = new Vector2(940f, 28f);
+
+        // Contorno oscuro para máximo contraste sobre cualquier fondo
+        foreach (Text tx in new Text[] { speakerNameText, bodyText, promptText })
+        {
+            Outline ol = tx.gameObject.AddComponent<Outline>();
+            ol.effectColor = new Color(0f, 0f, 0f, 0.9f);
+            ol.effectDistance = new Vector2(1.5f, -1.5f);
+        }
 
         dialoguePanel.SetActive(false);
     }

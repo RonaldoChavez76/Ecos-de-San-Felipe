@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -79,12 +79,36 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
 
         // 5. Asegurar Sistemas Globales y HUD de Juego Completo
+        SaveStateManager.EnsureInstance();
         DialogueManager.EnsureInstance();
         InventoryManager.EnsureInstance();
         PuzzleManager.EnsureInstance();
+        EnemyManager.EnsureInstance();
+        ShopManager.EnsureInstance();
         InventoryHUD.EnsureInstance();
         BossHealthBarUI.EnsureInstance();
         PauseAndVictoryUI.EnsureInstance();
+
+        // 5.1 Garantizar que los puentes estén siempre en orden -400 (suelo) y capa Default
+        foreach (SpriteRenderer sr in FindObjectsByType<SpriteRenderer>())
+        {
+            if (sr != null)
+            {
+                string n = sr.gameObject.name;
+                if (n.StartsWith("Puente_") || n.Contains("Escalinata") || n.Contains("Escalera") || n.Contains("Bridge"))
+                {
+                    sr.sortingLayerName = "Default";
+                    sr.sortingOrder = -400;
+                }
+                else if (sr.sortingLayerName == "Characters")
+                {
+                    sr.sortingLayerName = "Default";
+                }
+            }
+        }
+
+        // 5.2 Asegurar que las luces URP 2D iluminen todas las capas de ordenación
+        AsegurarIluminacionUniversal2D();
 
         // 6. Inicializar Audio
         InicializarSistemaDeAudio();
@@ -101,6 +125,39 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
         {
             if (sfxSource != null && sfxSlash != null) sfxSource.PlayOneShot(sfxSlash, 0.5f);
+        }
+    }
+
+    private void AsegurarIluminacionUniversal2D()
+    {
+        try
+        {
+            System.Type light2DType = System.Type.GetType("UnityEngine.Rendering.Universal.Light2D, Unity.RenderPipelines.Universal.2D.Runtime");
+            if (light2DType == null) return;
+
+            var lights = FindObjectsByType(light2DType, FindObjectsInactive.Include);
+            if (lights == null || lights.Length == 0) return;
+
+            var field = light2DType.GetField("m_ApplyToSortingLayers", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (field == null) return;
+
+            int[] allLayerIDs = new int[SortingLayer.layers.Length];
+            for (int i = 0; i < SortingLayer.layers.Length; i++)
+            {
+                allLayerIDs[i] = SortingLayer.layers[i].id;
+            }
+
+            foreach (var l in lights)
+            {
+                if (l != null)
+                {
+                    field.SetValue(l, allLayerIDs);
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("[SanFelipeDemoBuilder] No se pudo sincronizar m_ApplyToSortingLayers: " + e.Message);
         }
     }
 
@@ -459,9 +516,15 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         // ---------------------------------------------------------------------
         // A) DISTRITO SUR: RÍO SAN FELIPE, PUENTES Y CAMPAMENTO DE VIAJEROS
         // ---------------------------------------------------------------------
-        ColocarObjetoDecorativo("Puente_Sur_Principal_Izq", spPuenteMadera, new Vector2(-1.2f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown);
-        ColocarObjetoDecorativo("Puente_Sur_Principal_Der", spPuenteMadera, new Vector2(1.2f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown);
-        ColocarObjetoDecorativo("Puente_Sur_Oriente", spPuenteMadera, new Vector2(24.5f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown);
+        // Los puentes son SUELO transitable: se dibujan en un orden fijo (justo sobre el terreno y bajo cualquier personaje/objeto).
+        // Antes usaban orden = -y*10 y tapaban a Ronan al cruzar la mitad norte del puente.
+        // Puente central: 3 tramos de 2u cubren exactamente el hueco del río (x = -3..3).
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Puente_Sur_Principal_Izq", spPuenteMadera, new Vector2(-2.0f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown));
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Puente_Sur_Principal_Centro", spPuenteMadera, new Vector2(0.0f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown));
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Puente_Sur_Principal_Der", spPuenteMadera, new Vector2(2.0f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown));
+        // Puente oriente: 2 tramos cubren el hueco x = 22..26
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Puente_Sur_Oriente_A", spPuenteMadera, new Vector2(23.0f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown));
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Puente_Sur_Oriente_B", spPuenteMadera, new Vector2(25.0f, -19.0f), Vector2.zero, false, distritoSur.transform, Color.brown));
 
         ColocarObjetoDecorativo("Lancha_Rio_Oeste", spLanchaH, new Vector2(-10.5f, -19.0f), new Vector2(1.8f, 0.9f), true, distritoSur.transform, Color.brown);
         ColocarObjetoDecorativo("Lancha_Rio_Este", spLanchaH, new Vector2(12.5f, -19.0f), new Vector2(1.8f, 0.9f), true, distritoSur.transform, Color.brown);
@@ -469,7 +532,7 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         // Colisionadores del Río (excepto en los puentes)
         CrearColisionadorInvisible("Colision_Rio_Oeste", new Vector2(-21.5f, -19.0f), new Vector2(37f, 2.6f), distritoSur.transform);
         CrearColisionadorInvisible("Colision_Rio_Centro", new Vector2(12.5f, -19.0f), new Vector2(19f, 2.6f), distritoSur.transform);
-        CrearColisionadorInvisible("Colision_Rio_Este", new Vector2(33.5f, -19.0f), new Vector2(13f, 2.6f), distritoSur.transform);
+        CrearColisionadorInvisible("Colision_Rio_Este", new Vector2(33.0f, -19.0f), new Vector2(14f, 2.6f), distritoSur.transform);
 
         // Campamento de Viajeros al Suroeste del Río
         ColocarObjetoDecorativo("Tienda_Viajeros_1", spTiendaGrande, new Vector2(-14.5f, -22.0f), new Vector2(2.6f, 2.0f), true, distritoSur.transform, Color.yellow);
@@ -585,8 +648,8 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         ColocarObjetoDecorativo("Estandarte_Calzada_Izq_2", spEstandarteAzul, new Vector2(-4.0f, 17.5f), new Vector2(0.8f, 1.2f), true, distritoNorte.transform, Color.blue);
         ColocarObjetoDecorativo("Estandarte_Calzada_Der_2", spEstandarteAzul, new Vector2(4.0f, 17.5f), new Vector2(0.8f, 1.2f), true, distritoNorte.transform, Color.blue);
 
-        // Escalinata Monumental de acceso al Atrio (Y = 19.5)
-        ColocarObjetoDecorativo("Escalinata_Atrio_Parroquia", spEscaleraAncha, new Vector2(0f, 19.5f), Vector2.zero, false, distritoNorte.transform, Color.gray);
+        // Escalinata Monumental / Puente de acceso al Atrio (Y = 19.5, suelo transitable en orden -400)
+        PonerComoSueloTransitable(ColocarObjetoDecorativo("Escalinata_Atrio_Parroquia", spEscaleraAncha, new Vector2(0f, 19.5f), Vector2.zero, false, distritoNorte.transform, Color.gray));
 
         // Muralla Frontal del Atrio (con entrada abierta en X = -3..3)
         ColocarObjetoDecorativo("Muro_Atrio_Sur_Izq_1", spMuroAlmenas, new Vector2(-6.0f, 19.8f), new Vector2(2.8f, 2.0f), true, distritoNorte.transform, Color.gray);
@@ -644,6 +707,18 @@ public class SanFelipeDemoBuilder : MonoBehaviour
         CrearColisionadorInvisible("Limite_Mundo_Sur", new Vector2(0f, -26.5f), new Vector2(84f, 2f), bordesBosque.transform);
         CrearColisionadorInvisible("Limite_Mundo_Oeste", new Vector2(-40.5f, 6f), new Vector2(2f, 68f), bordesBosque.transform);
         CrearColisionadorInvisible("Limite_Mundo_Este", new Vector2(40.5f, 6f), new Vector2(2f, 68f), bordesBosque.transform);
+    }
+
+    /// <summary>Fija el orden de dibujo de un objeto de suelo (puentes, alfombras) para que nunca oculte a los personajes.</summary>
+    private void PonerComoSueloTransitable(GameObject obj)
+    {
+        if (obj == null) return;
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sortingLayerName = "Default";
+            sr.sortingOrder = -400; // terreno = -500, personajes/objetos >= -300 aprox.
+        }
     }
 
     private void ColocarTileSuelo(Sprite sprite, Vector2 pos, Color fallbackColor, int order, Transform parent)
@@ -835,6 +910,9 @@ public class SombraLanzadoraAI : MonoBehaviour
 
     void Start()
     {
+        if (!CompareTag("Enemy") && !CompareTag("Player")) gameObject.tag = "Enemy";
+        EnemyManager.EnsureInstance()?.RegisterEnemy(gameObject);
+
         CircleCollider2D col = GetComponent<CircleCollider2D>();
         if (col != null && col.radius > 0.55f) col.radius = 0.48f;
 
@@ -923,8 +1001,9 @@ public class SombraLanzadoraAI : MonoBehaviour
         {
             muerto = true;
             ejecutandoAtaque = true;
+            EnemyManager.Instance?.UnregisterEnemy(gameObject);
             SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
-            HeartPickup.SpawnHeart(transform.position, 25f);
+            ResourcePickup.SpawnEnemyLoot(transform.position, transform.parent);
             StartCoroutine(RutinaMuerteSombra());
         }
     }
@@ -965,6 +1044,8 @@ public class SombraErranteAI : MonoBehaviour
     void Start()
     {
         puntoOrigen = transform.position;
+        if (!CompareTag("Enemy") && !CompareTag("Player")) gameObject.tag = "Enemy";
+        EnemyManager.EnsureInstance()?.RegisterEnemy(gameObject);
         CircleCollider2D col = GetComponent<CircleCollider2D>();
         if (col != null && col.radius > 0.55f) col.radius = 0.48f;
 
@@ -1042,8 +1123,9 @@ public class SombraErranteAI : MonoBehaviour
         {
             muerto = true;
             ejecutandoAtaque = true;
+            EnemyManager.Instance?.UnregisterEnemy(gameObject);
             SaveStateManager.Instance?.RegistrarEnemigoDerrotado();
-            HeartPickup.SpawnHeart(transform.position, 25f);
+            ResourcePickup.SpawnEnemyLoot(transform.position, transform.parent);
             StartCoroutine(RutinaMuerteSombraErrante());
         }
     }

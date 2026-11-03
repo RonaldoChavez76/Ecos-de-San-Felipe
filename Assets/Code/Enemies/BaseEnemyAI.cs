@@ -85,6 +85,9 @@ public abstract class BaseEnemyAI : MonoBehaviour
         spawnOrigin = transform.position;
         ChooseNewPatrolPoint();
         LocatePlayer();
+
+        if (!CompareTag("Enemy") && !CompareTag("Player")) gameObject.tag = "Enemy";
+        EnemyManager.EnsureInstance()?.RegisterEnemy(gameObject);
     }
 
     protected void LocatePlayer()
@@ -274,6 +277,10 @@ public abstract class BaseEnemyAI : MonoBehaviour
         if (deathSequenceStarted) return;
         deathSequenceStarted = true;
         ChangeState(AIState.Dead);
+
+        // Desregistrar inmediatamente para que la puerta de la Parroquia y los contadores se actualicen al instante
+        EnemyManager.Instance?.UnregisterEnemy(gameObject);
+
         StopAllCoroutines();
         StartCoroutine(DeathAnimationAndCleanupRoutine());
     }
@@ -294,11 +301,8 @@ public abstract class BaseEnemyAI : MonoBehaviour
             rb.simulated = false;
         }
 
-        // Soltar corazón curativo con probabilidad configurada
-        if (Random.value <= heartDropChance)
-        {
-            HeartPickup.SpawnHeart(transform.position, heartHealAmount);
-        }
+        // Soltar botín balanceado con físicas de dispersión y Drop Table
+        ResourcePickup.SpawnEnemyLoot(transform.position, transform.parent);
 
         if (sr != null) sr.color = baseColor;
 

@@ -60,11 +60,12 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_COPPER_BAR);
+                    ResourcePickup.SpawnDrops(transform.position + Vector3.down * 0.7f, 1f, 35, 60, 1f, 6, 0.8f, 30f, 0.8f, 30f);
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Arcón de la Antigua Fragua",
                         new string[]
                         {
-                            "¡Has encontrado un [Lingote de Cobre] intacto entre las cajas del mercado!",
+                            "¡Has encontrado un [Lingote de Cobre] intacto y provisiones entre las cajas del mercado!",
                             "Llévalo al puesto de Don Braulio, el Herrero de Cantera, al Noroeste de la plaza del mercado."
                         });
                 }
@@ -188,10 +189,11 @@ public class MarketStallTradeNode : MonoBehaviour
         };
         style.normal.textColor = new Color(0.98f, 0.88f, 0.42f);
 
-        float w = 250f;
-        float h = 28f;
+        float w = UITheme.Px(250f * 1.25f);
+        float h = UITheme.Px(36f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        GUI.Box(r, labelPrompt, style);
+        UITheme.Panel(r, style.normal.textColor, 2f);
+        GUI.Label(r, labelPrompt, UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
     }
 }
 

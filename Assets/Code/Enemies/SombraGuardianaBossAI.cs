@@ -180,6 +180,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     protected override void HandleDeath()
     {
         base.HandleDeath();
+        ResourcePickup.SpawnDrops(transform.position, 1.0f, 60, 100, 1.0f, 10, 1.0f, 60f, 1.0f, 50f);
         OnBossDefeated?.Invoke();
 
         // Liberar el Eco de la Memoria al derrotar a la Sombra Guardiana
