@@ -57,20 +57,20 @@ public class SanFelipeSceneAutoSetup
         }
         else if (activeScene.name == "Nivel2_Mercado")
         {
-            if (GameObject.Find("Marca_Mercado_V2") == null || missingRemoved > 0)
+            if (GameObject.Find("Marca_Mercado_V3") == null || missingRemoved > 0)
             {
                 MercadoBuilder.ConstruirZonaMercado();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado]</b> Escena del Mercado Municipal inicializada y verificada con éxito.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado V3]</b> Escena del Mercado Municipal (75x75) inicializada y verificada con éxito.</color>");
             }
         }
         else if (activeScene.name == "Nivel3_CerroDelFraile")
         {
-            if (GameObject.Find("Marca_Cerro_V2") == null || missingRemoved > 0)
+            if (GameObject.Find("Marca_Cerro_V3") == null || missingRemoved > 0)
             {
                 CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile]</b> Escena de la Cruz Azul y La Sombra Guardiana inicializada y verificada con éxito.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile V3]</b> Escena de la Cruz Azul (65x95) y La Sombra Guardiana inicializada y verificada con éxito.</color>");
             }
         }
     }

@@ -29,6 +29,7 @@ public class MarketTradePuzzle : MonoBehaviour
         {
             acertijoResuelto = true;
             PuzzleManager.EnsureInstance().MarcarAcertijoResuelto(2);
+            InventoryHUD.NotificarIntercambio("¡Cofre Abierto! [Eco de la Tradición] Liberado");
 
             if (barreraCofreGremio != null) barreraCofreGremio.SetActive(false);
             if (ecoDeLaTradicionObjeto != null) ecoDeLaTradicionObjeto.SetActive(true);

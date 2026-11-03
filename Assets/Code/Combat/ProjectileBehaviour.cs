@@ -17,6 +17,61 @@ public class ProjectileBehaviour : MonoBehaviour
     [Header("Efectos")]
     public Color normalColor = new Color(0.6f, 0.1f, 0.8f, 1f); // Oscuro / Sombra
     public Color deflectedColor = new Color(0f, 0.9f, 1f, 1f);  // Azul Ecos luminoso
+    public Transform haloFuego;
+
+    private static readonly System.Collections.Generic.Dictionary<string, Sprite> fireballCache = new System.Collections.Generic.Dictionary<string, Sprite>();
+
+    /// <summary>
+    /// Genera y cachea de forma procedural una bola de fuego ardiente de 24x24 con gradiente radial y núcleo brillante.
+    /// Funciona de forma 100% autónoma sin requerir dependencias de builderRef ni referencias de otra escena.
+    /// </summary>
+    public static Sprite ObtenerSpriteBolaDeFuegoSombra(Color colorExterior, Color colorNucleo)
+    {
+        string key = $"{colorExterior.r:F2}_{colorExterior.g:F2}_{colorExterior.b:F2}_{colorExterior.a:F2}__{colorNucleo.r:F2}_{colorNucleo.g:F2}_{colorNucleo.b:F2}_{colorNucleo.a:F2}";
+        if (fireballCache.TryGetValue(key, out Sprite cached) && cached != null)
+        {
+            return cached;
+        }
+
+        int size = 24;
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+        Vector2 center = new Vector2(11.5f, 11.5f);
+        float radius = 11.5f;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dist = Vector2.Distance(new Vector2(x, y), center) / radius;
+                if (dist > 1.0f)
+                {
+                    tex.SetPixel(x, y, Color.clear);
+                }
+                else
+                {
+                    Color c;
+                    if (dist < 0.38f)
+                    {
+                        float t = dist / 0.38f;
+                        c = Color.Lerp(colorNucleo, colorExterior, t);
+                    }
+                    else
+                    {
+                        float t = (dist - 0.38f) / 0.62f;
+                        c = Color.Lerp(colorExterior, new Color(colorExterior.r * 0.7f, colorExterior.g * 0.15f, colorExterior.b * 0.1f, 0f), t);
+                    }
+                    tex.SetPixel(x, y, c);
+                }
+            }
+        }
+        tex.Apply();
+
+        Sprite sp = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 16f);
+        fireballCache[key] = sp;
+        return sp;
+    }
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -78,6 +133,13 @@ public class ProjectileBehaviour : MonoBehaviour
         if (rb == null || rb.bodyType == RigidbodyType2D.Kinematic)
         {
             transform.position += (Vector3)(currentDirection * speed * Time.deltaTime);
+        }
+
+        // Pulso visual del halo de fuego para máxima legibilidad del contraataque
+        if (haloFuego != null)
+        {
+            float pulse = 1.25f + Mathf.PingPong(Time.time * 8f, 0.20f);
+            haloFuego.localScale = new Vector3(pulse, pulse, 1f);
         }
     }
 
@@ -180,7 +242,18 @@ public class ProjectileBehaviour : MonoBehaviour
         if (sr != null)
         {
             sr.color = deflectedColor;
-            sr.transform.localScale *= 1.4f;
+            sr.transform.localScale *= 1.3f;
+            sr.sortingOrder = 17;
+        }
+
+        if (haloFuego != null)
+        {
+            SpriteRenderer hSr = haloFuego.GetComponent<SpriteRenderer>();
+            if (hSr != null)
+            {
+                hSr.sprite = ObtenerSpriteBolaDeFuegoSombra(new Color(0f, 0.75f, 1f, 0.8f), new Color(0.7f, 1f, 1f, 1f));
+                hSr.sortingOrder = 18;
+            }
         }
 
         float angle = Mathf.Atan2(currentDirection.y, currentDirection.x) * Mathf.Rad2Deg;
@@ -218,7 +291,7 @@ public class ProjectileBehaviour : MonoBehaviour
         }
         tex.Apply();
         fsr.sprite = Sprite.Create(tex, new Rect(0, 0, 32, 32), new Vector2(0.5f, 0.5f), 16);
-        fsr.sortingOrder = 15;
+        fsr.sortingOrder = 19;
         Destroy(flash, 0.15f);
     }
 
@@ -226,23 +299,24 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         GameObject burst = new GameObject("BurstImpact", typeof(SpriteRenderer));
         burst.transform.position = transform.position;
-        burst.transform.localScale = Vector3.one * 0.8f;
+        burst.transform.localScale = Vector3.one * 1.1f;
         SpriteRenderer bsr = burst.GetComponent<SpriteRenderer>();
-        bsr.color = isDeflected ? deflectedColor : normalColor;
-        bsr.sortingOrder = 12;
+        bsr.color = isDeflected ? new Color(0f, 0.95f, 1f, 0.95f) : new Color(1f, 0.35f, 0.1f, 0.95f);
+        bsr.sortingOrder = 20;
 
-        Texture2D tex = new Texture2D(16, 16);
-        for (int y = 0; y < 16; y++)
+        Texture2D tex = new Texture2D(20, 20);
+        Vector2 c = new Vector2(9.5f, 9.5f);
+        for (int y = 0; y < 20; y++)
         {
-            for (int x = 0; x < 16; x++)
+            for (int x = 0; x < 20; x++)
             {
-                float dist = Vector2.Distance(new Vector2(x, y), new Vector2(8, 8)) / 8f;
+                float dist = Vector2.Distance(new Vector2(x, y), c) / 9.5f;
                 float a = Mathf.Clamp01(1f - dist);
                 tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
             }
         }
         tex.Apply();
-        bsr.sprite = Sprite.Create(tex, new Rect(0, 0, 16, 16), new Vector2(0.5f, 0.5f), 16);
-        Destroy(burst, 0.12f);
+        bsr.sprite = Sprite.Create(tex, new Rect(0, 0, 20, 20), new Vector2(0.5f, 0.5f), 16f);
+        Destroy(burst, 0.18f);
     }
 }

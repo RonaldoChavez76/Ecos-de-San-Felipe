@@ -76,6 +76,7 @@ public class AudioManager : MonoBehaviour
     public void PlayAssaultSound() => PlaySFX(sfxAssault, 0.8f);
     public void PlayBellSound() => PlaySFX(sfxBell, 0.9f);
     public void PlaySecretSound() => PlaySFX(sfxSecret, 0.85f);
+    public void PlayItemPickupSound() => PlaySFX(sfxSecret, 0.85f);
 
     private void AsegurarAudioSources()
     {

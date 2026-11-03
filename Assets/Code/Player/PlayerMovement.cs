@@ -842,15 +842,16 @@ public class PlayerMovement : MonoBehaviour
         WeaponDefinition arma = ArmaActual;
         bool muestraRecurso = (arma.tipo == WeaponType.Staff || arma.tipo == WeaponType.Bow);
 
-        // Anclado estrictamente a la esquina superior izquierda
-        float panelX = UITheme.Px(8f);
-        float panelY = UITheme.Px(8f);
-        float panelW = UITheme.Px(260f); // Reducido drásticamente de 430px a 260px
-        float pad = UITheme.Px(7f);
+        // Anclado con margen seguro a la esquina superior izquierda
+        float panelX = UITheme.Px(18f);
+        float panelY = UITheme.Px(16f);
+        float panelW = Mathf.Clamp(UITheme.Px(320f), 290f, 380f);
+        float pad = UITheme.Px(12f);
+        float gap = UITheme.Px(4f);
         float barW = panelW - pad * 2f;
-        float barH = UITheme.Px(14f);    // Barras estilizadas y compactas
-        float panelH = UITheme.Px(muestraRecurso ? 98f : 82f);
-        if (avisoRecursoTimer > 0f) panelH += UITheme.Px(20f);
+        float barH = UITheme.Px(16f);
+        float panelH = UITheme.Px(muestraRecurso ? 116f : 96f);
+        if (avisoRecursoTimer > 0f) panelH += UITheme.Px(24f);
 
         Rect panel = new Rect(panelX, panelY, panelW, panelH);
         UITheme.Panel(panel, UITheme.BordeDorado, 1.5f);
@@ -858,85 +859,86 @@ public class PlayerMovement : MonoBehaviour
         float hpPct = Mathf.Clamp01(currentHealth / Mathf.Max(1f, maxHealth));
         bool lowHp = hpPct <= 0.30f;
 
-        // Línea 1: Encabezado compacto (Nombre a la izquierda, Vida numérica a la derecha)
+        // Línea 1: Encabezado con margen interior garantizado
+        float headerY = panelY + UITheme.Px(8f);
         string alerta = lowHp ? " <color=#FF6B5E>¡BAJA!</color>" : "";
-        GUI.Label(new Rect(panelX + pad, panelY + UITheme.Px(2f), barW * 0.58f, UITheme.Px(16f)),
-            "<b>RONAN</b>" + alerta, UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
+        GUI.Label(new Rect(panelX + pad, headerY, barW * 0.55f, UITheme.Px(18f)),
+            "<b>RONAN</b>" + alerta, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
-        GUI.Label(new Rect(panelX + pad + barW * 0.58f, panelY + UITheme.Px(2f), barW * 0.42f, UITheme.Px(16f)),
+        GUI.Label(new Rect(panelX + pad + barW * 0.48f, headerY, barW * 0.52f, UITheme.Px(18f)),
             $"♥ {Mathf.CeilToInt(currentHealth)}/{Mathf.CeilToInt(maxHealth)}",
-            UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, Color.white));
+            UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleRight, Color.white));
 
-        // 1. Barra de Vida compacta
-        float hpY = panelY + UITheme.Px(18f);
-        GUI.color = new Color(0.20f, 0.05f, 0.05f, 0.85f);
+        // 1. Barra de Vida con marco interior y fondo oscuro
+        float hpY = headerY + UITheme.Px(20f);
+        GUI.color = new Color(0.12f, 0.03f, 0.03f, 0.90f);
         GUI.DrawTexture(new Rect(panelX + pad, hpY, barW, barH), UITheme.Blanca);
         GUI.color = hpPct > 0.5f
-            ? new Color(0.18f, 0.75f, 0.30f, 0.95f)
-            : (hpPct > 0.3f ? new Color(0.90f, 0.65f, 0.10f, 0.95f) : new Color(0.92f, 0.15f, 0.15f, 0.85f + Mathf.PingPong(Time.time * 2.5f, 0.15f)));
-        GUI.DrawTexture(new Rect(panelX + pad + 1f, hpY + 1f, (barW - 2f) * hpPct, barH - 2f), UITheme.Blanca);
+            ? new Color(0.18f, 0.78f, 0.32f, 0.95f)
+            : (hpPct > 0.3f ? new Color(0.92f, 0.68f, 0.12f, 0.95f) : new Color(0.95f, 0.18f, 0.18f, 0.85f + Mathf.PingPong(Time.time * 2.5f, 0.15f)));
+        GUI.DrawTexture(new Rect(panelX + pad + 1.5f, hpY + 1.5f, (barW - 3f) * hpPct, barH - 3f), UITheme.Blanca);
         GUI.color = Color.white;
 
-        float currY = hpY + barH + UITheme.Px(3f);
+        float currY = hpY + barH + gap;
 
         // 2. Barra de Recurso (Maná si es báculo, Flechas si es arco)
         if (arma.tipo == WeaponType.Staff)
         {
             float manaPct = Mathf.Clamp01(manaActual / Mathf.Max(1f, manaMaximo));
-            float rH = UITheme.Px(12f);
-            GUI.color = new Color(0.04f, 0.12f, 0.25f, 0.85f);
+            float rH = UITheme.Px(14f);
+            GUI.color = new Color(0.04f, 0.12f, 0.25f, 0.88f);
             GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
             GUI.color = manaActual >= arma.costoMana ? new Color(0f, 0.85f, 1f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * manaPct, rH - 2f), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * manaPct, rH - 3f), UITheme.Blanca);
             GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(4f), currY, barW, rH),
-                $"💧 {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
-                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-            currY += rH + UITheme.Px(3f);
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(6f), currY, barW - UITheme.Px(12f), rH),
+                $"💧 Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
+                UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+            currY += rH + gap;
         }
         else if (arma.tipo == WeaponType.Bow)
         {
             float flechasPct = Mathf.Clamp01((float)flechas / Mathf.Max(1f, maxFlechas));
-            float rH = UITheme.Px(12f);
-            GUI.color = new Color(0.20f, 0.15f, 0.05f, 0.85f);
+            float rH = UITheme.Px(14f);
+            GUI.color = new Color(0.20f, 0.15f, 0.05f, 0.88f);
             GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
             GUI.color = flechas > 0 ? new Color(1f, 0.80f, 0.25f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * flechasPct, rH - 2f), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * flechasPct, rH - 3f), UITheme.Blanca);
             GUI.color = Color.white;
-            string txtF = flechas > 0 ? $"🏹 {flechas}/{maxFlechas} (-1)" : "🏹 ¡Sin Flechas!";
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(4f), currY, barW, rH),
-                txtF, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-            currY += rH + UITheme.Px(3f);
+            string txtF = flechas > 0 ? $"🏹 Flechas: {flechas}/{maxFlechas} (-1)" : "🏹 ¡Sin Flechas!";
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(6f), currY, barW - UITheme.Px(12f), rH),
+                txtF, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+            currY += rH + gap;
         }
 
-        // 3. Barra delgada de Modo Asalto (7px)
-        float asH = UITheme.Px(7f);
+        // 3. Barra de Modo Asalto (8px)
+        float asH = UITheme.Px(8f);
         float asaltoPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
-        GUI.color = new Color(0.05f, 0.10f, 0.20f, 0.85f);
+        GUI.color = new Color(0.05f, 0.10f, 0.20f, 0.88f);
         GUI.DrawTexture(new Rect(panelX + pad, currY, barW, asH), UITheme.Blanca);
         GUI.color = isAssaultActive
-            ? new Color(0.20f, 0.90f, 1f, 0.85f + Mathf.PingPong(Time.time * 3f, 0.15f))
-            : (asaltoPct >= 1f ? new Color(0.15f, 0.80f, 1f, 1f) : new Color(0.16f, 0.45f, 0.82f, 0.9f));
-        GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * asaltoPct, asH - 2f), UITheme.Blanca);
+            ? new Color(0.20f, 0.92f, 1f, 0.85f + Mathf.PingPong(Time.time * 3f, 0.15f))
+            : (asaltoPct >= 1f ? new Color(0.15f, 0.85f, 1f, 1f) : new Color(0.16f, 0.48f, 0.85f, 0.9f));
+        GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * asaltoPct, asH - 3f), UITheme.Blanca);
         GUI.color = Color.white;
-        currY += asH + UITheme.Px(3f);
+        currY += asH + gap;
 
-        // 4. Arma y estadísticas en 1 línea compacta
+        // 4. Arma y estadísticas en línea con suficiente margen y ancho completo
         float atkActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
-        GUI.Label(new Rect(panelX + pad, currY, barW, UITheme.Px(16f)),
-            $"⚔ <color=#FFE066>{arma.nombre}</color>  ATQ <b>{atkActual:0.#}</b>  <color=#9AA6B8>[Q][B]</color>",
-            UITheme.Estilo(11, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
+        GUI.Label(new Rect(panelX + pad, currY, barW, UITheme.Px(18f)),
+            $"⚔ <color=#FFE066>{arma.nombre}</color>  |  ATQ <b>{atkActual:0.#}</b>  <color=#9AA6B8>[Q]</color>",
+            UITheme.Estilo(12, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
 
         // 5. Aviso flotante de recurso insuficiente
         if (avisoRecursoTimer > 0f)
         {
-            float avY = currY + UITheme.Px(17f);
-            GUI.color = new Color(0.85f, 0.20f, 0.20f, 0.90f);
-            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(17f)), UITheme.Blanca);
+            float avY = currY + UITheme.Px(20f);
+            GUI.color = new Color(0.85f, 0.20f, 0.20f, 0.92f);
+            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(19f)), UITheme.Blanca);
             GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(17f)),
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(19f)),
                 avisoRecurso,
-                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+                UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
 
         GUI.color = prevColor;

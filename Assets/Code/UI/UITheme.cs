@@ -102,6 +102,18 @@ public static class UITheme
         GUI.color = previo;
     }
 
+    /// <summary>Dibuja únicamente el marco o contorno de un rectángulo con el grosor especificado.</summary>
+    public static void Borde(Rect r, Color color, float grosor = 1.5f)
+    {
+        Color previo = GUI.color;
+        GUI.color = color;
+        GUI.DrawTexture(new Rect(r.x, r.y, r.width, grosor), Blanca);
+        GUI.DrawTexture(new Rect(r.x, r.yMax - grosor, r.width, grosor), Blanca);
+        GUI.DrawTexture(new Rect(r.x, r.y, grosor, r.height), Blanca);
+        GUI.DrawTexture(new Rect(r.xMax - grosor, r.y, grosor, r.height), Blanca);
+        GUI.color = previo;
+    }
+
     /// <summary>Banner de una línea centrado horizontalmente (avisos de zona, puertas, hordas).</summary>
     public static void Banner(float y, string texto, Color colorTexto, float anchoBase = 620f, int fuenteBase = 16)
     {

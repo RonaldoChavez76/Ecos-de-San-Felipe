@@ -60,6 +60,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_COPPER_BAR);
+                    InventoryHUD.NotificarIntercambio("¡Obtuviste [Lingote de Cobre Antiguo]!");
                     ResourcePickup.SpawnDrops(transform.position + Vector3.down * 0.7f, 1f, 35, 60, 1f, 6, 0.8f, 30f, 0.8f, 30f);
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Arcón de la Antigua Fragua",
@@ -82,6 +83,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_MITHRIL_BAR);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Lingote de Cobre -> [Lingote Templado]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Don Braulio, Herrero de Cantera",
                         new string[]
@@ -112,6 +114,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_GREEN_GEM);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Lingote Templado -> [Esmeralda de San Felipe]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Doña Remedios, Maestra Alfarera",
                         new string[]
@@ -142,6 +145,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_GOLD_KEY);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Esmeralda -> [Llave Dorada del Gremio]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Don Teodoro, Joyero del Callejón",
                         new string[]
