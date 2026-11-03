@@ -61,6 +61,33 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
             barreraPortico.SetActive(false);
         }
 
+        // Portal al Poniente hacia el Nivel 2: El Mercado Municipal
+        CrearPortalTransicionEscena(
+            "Portal_A_Nivel2_Mercado",
+            new Vector2(-15.0f, 0.0f),
+            new Vector2(1.8f, 3.0f),
+            "Nivel2_Mercado",
+            LevelManager.ZoneId.Mercado,
+            new Vector2(18.5f, 0.0f),
+            new Color(0.95f, 0.65f, 0.20f, 0.85f),
+            root.transform);
+
+        // Letrero del Mercado al Poniente
+        GameObject letreroMercado = CrearNPCConSpriteExacto(
+            "Letrero_Mercado",
+            "TilesetElement",
+            1, 2, 16, 16, 16f,
+            new Vector2(-13.5f, 1.2f),
+            root.transform);
+        InteractableSignOrNPC signMercado = letreroMercado.AddComponent<InteractableSignOrNPC>();
+        signMercado.speakerTitle = "Arco del Mercado Municipal de San Felipe";
+        signMercado.interactionPrompt = "[E] Leer Directorio del Mercado";
+        signMercado.dialoguePages = new string[]
+        {
+            "«Hacia el Poniente (Oeste) se extiende el Gran Mercado Municipal de Artesanos y Alfareros.»",
+            "«Avanza hacia el portal luminoso al Oeste (-15, 0) para adentrarte en el Nivel 2: El Mercado Municipal y recuperar el Eco de la Tradición.»"
+        };
+
         // 2. NPCS Y LETREROS CON RECORTE EXACTO DE CELDA (SIN CORTES ERRÓNEOS)
         GameObject letreroTut = GameObject.Find("Letrero_Tutorial");
         if (letreroTut != null && letreroTut.GetComponent<InteractableSignOrNPC>() == null)

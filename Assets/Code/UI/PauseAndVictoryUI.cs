@@ -203,14 +203,27 @@ public class PauseAndVictoryUI : MonoBehaviour
         float by = py + panelH - btnH - UITheme.Px(18f);
         GUIStyle boton = UITheme.Boton(16);
 
-        if (GUI.Button(new Rect(px + pad, by, btnW, btnH), "Continuar Aventura", boton))
-        {
-            CerrarVictoriaDeNivel();
-        }
-        if (GUI.Button(new Rect(px + pad + btnW + gap, by, btnW, btnH), "Reiniciar Nivel", boton))
+        string txtSiguienteNivel = nivelCompletado == 1
+            ? "Ir al Nivel 2: El Mercado"
+            : (nivelCompletado == 2 ? "Ir al Nivel 3: Cerro del Fraile" : "Continuar Aventura");
+
+        if (GUI.Button(new Rect(px + pad, by, btnW, btnH), txtSiguienteNivel, boton))
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            mostrarVictoriaNivel = false;
+            LiberarARonan();
+            if (nivelCompletado == 1)
+            {
+                SceneManager.LoadScene("Nivel2_Mercado");
+            }
+            else if (nivelCompletado == 2)
+            {
+                SceneManager.LoadScene("Nivel3_CerroDelFraile");
+            }
+        }
+        if (GUI.Button(new Rect(px + pad + btnW + gap, by, btnW, btnH), "Seguir Explorando", boton))
+        {
+            CerrarVictoriaDeNivel();
         }
         if (GUI.Button(new Rect(px + pad + (btnW + gap) * 2f, by, btnW, btnH), "Menú Principal", boton))
         {

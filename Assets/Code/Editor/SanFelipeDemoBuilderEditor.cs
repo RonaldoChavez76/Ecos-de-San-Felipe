@@ -55,6 +55,15 @@ public class SanFelipeSceneAutoSetup
                 Debug.Log("<color=cyan><b>[San Felipe - Parroquia Interior V4]</b> Nave de Cruz Latina (33x43), Pedestales, Corazones y Horda Interior actualizados sin scripts faltantes.</color>");
             }
         }
+        else if (activeScene.name == "Nivel2_Mercado")
+        {
+            if (GameObject.Find("Marca_Mercado_V2") == null || missingRemoved > 0)
+            {
+                MercadoBuilder.ConstruirZonaMercado();
+                EditorSceneManager.MarkSceneDirty(activeScene);
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado]</b> Escena del Mercado Municipal inicializada y verificada con éxito.</color>");
+            }
+        }
     }
 
     private static bool ExisteObjetoSinComponente<T>(string nombreObjeto) where T : Component
@@ -192,6 +201,15 @@ public class SanFelipeDemoBuilderEditor : Editor
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
             EditorSceneManager.OpenScene("Assets/Scenes/ParroquiaInterior.unity");
+        }
+    }
+
+    [MenuItem("San Felipe/🏪 Abrir Escena: Nivel 2 (Mercado Municipal)")]
+    public static void AbrirEscenaMercado()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/Nivel2_Mercado.unity");
         }
     }
 }
