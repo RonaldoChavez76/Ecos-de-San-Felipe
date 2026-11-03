@@ -64,6 +64,15 @@ public class SanFelipeSceneAutoSetup
                 Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado]</b> Escena del Mercado Municipal inicializada y verificada con éxito.</color>");
             }
         }
+        else if (activeScene.name == "Nivel3_CerroDelFraile")
+        {
+            if (GameObject.Find("Marca_Cerro_V2") == null || missingRemoved > 0)
+            {
+                CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
+                EditorSceneManager.MarkSceneDirty(activeScene);
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile]</b> Escena de la Cruz Azul y La Sombra Guardiana inicializada y verificada con éxito.</color>");
+            }
+        }
     }
 
     private static bool ExisteObjetoSinComponente<T>(string nombreObjeto) where T : Component
@@ -210,6 +219,15 @@ public class SanFelipeDemoBuilderEditor : Editor
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
             EditorSceneManager.OpenScene("Assets/Scenes/Nivel2_Mercado.unity");
+        }
+    }
+
+    [MenuItem("San Felipe/⛰️ Abrir Escena: Nivel 3 (Cerro del Fraile y Cruz Azul)")]
+    public static void AbrirEscenaCerroDelFraile()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/Nivel3_CerroDelFraile.unity");
         }
     }
 }

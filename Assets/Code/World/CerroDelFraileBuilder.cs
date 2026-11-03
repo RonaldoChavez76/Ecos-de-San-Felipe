@@ -1,114 +1,382 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Constructor modular del Nivel 3: El Cerro del Fraile y Mirador de la Cruz Azul.
-/// Construye el sendero rocoso de ascenso y la cumbre (centrada en X=56, Y=2),
-/// la monumental Cruz Azul luminosa, el Acertijo de los 3 Sellos de la Cruz Azul (BlueCrossShrinePuzzle),
-/// enemigos de montaña (Gusanos de Cantera, Orcos, Magos) y el Jefe Final: La Sombra Guardiana.
+/// Constructor y controlador del Nivel 3: El Cerro del Fraile y Mirador de la Gran Cruz Azul.
+/// Construye una escena modular completa de 45x65 unidades que abarca el ascenso épico a la cumbre:
+///  • Faldas del Cerro (Y = -28..-10): arroyo con puente de piedra, pinos, rocas y primera horda.
+///  • Desfiladero Rocoso (Y = -10..+6): paso estrecho entre riscos, campamento de peregrinos con el Ermitaño (NPC) y segunda horda.
+///  • Mirador de la Gran Cruz Azul (Y = +6..+28): explanada ceremonial de piedra, 3 pedestales de sellos (Viento, Cantera, Alba),
+///    la Monumental Cruz Azul cristalina con halos y destellos, y el combate multi-fase contra La Sombra Guardiana (Jefe Final).
+///  • Auto-inicialización autónoma (cámara ortográfica suave, Ronan y todos los singletons de UI y sistemas).
 /// </summary>
 public class CerroDelFraileBuilder : MonoBehaviour
 {
-    public static GameObject ConstruirZonaCerroDelFraile(Transform parentRoot = null)
+    [Header("Seguimiento de Cámara")]
+    public Transform playerTransform;
+    public float cameraSmoothTime = 0.14f;
+    private Vector3 cameraVelocity = Vector3.zero;
+    private Camera mainCam;
+
+    private void Start()
     {
-        GameObject existente = GameObject.Find("Zona_Cerro_Del_Fraile");
-        if (existente != null) return existente;
-
-        GameObject root = new GameObject("Zona_Cerro_Del_Fraile");
-        if (parentRoot != null) root.transform.SetParent(parentRoot);
-
-        // 1. SUELO ROCOSO DEL SENDERO Y EXPLANADA DEL MIRADOR (X: 45..67, Y: -11..15)
-        GameObject pisoRoot = new GameObject("Piso_CerroDelFraile");
-        pisoRoot.transform.SetParent(root.transform);
-
-        Sprite spRocaMontana = CrearSpriteLosa(new Color(0.46f, 0.44f, 0.42f), new Color(0.32f, 0.30f, 0.28f));
-        Sprite spSenderoAscenso = CrearSpriteLosa(new Color(0.62f, 0.56f, 0.46f), new Color(0.48f, 0.42f, 0.34f));
-        Sprite spMiradorSagrado = CrearSpriteLosa(new Color(0.38f, 0.52f, 0.64f), new Color(0.22f, 0.72f, 0.92f));
-
-        for (int x = 45; x <= 67; x++)
+        if (SceneManager.GetActiveScene().name == "Nivel3_CerroDelFraile")
         {
-            for (int y = -11; y <= 15; y++)
-            {
-                Sprite sp = spRocaMontana;
-                if (Mathf.Abs(x - 56) <= 2 && y < 4) sp = spSenderoAscenso;
-                else if (Vector2.Distance(new Vector2(x, y), new Vector2(56f, 7f)) <= 6.5f) sp = spMiradorSagrado;
+            InicializarEscenaCerroDelFraile();
+        }
+    }
 
-                GameObject tile = new GameObject($"Tile_Cerro_{x}_{y}");
-                tile.transform.SetParent(pisoRoot.transform);
-                tile.transform.position = new Vector3(x, y, 0f);
-                SpriteRenderer sr = tile.AddComponent<SpriteRenderer>();
-                sr.sprite = sp;
-                sr.sortingOrder = -500;
+    private void LateUpdate()
+    {
+        if (SceneManager.GetActiveScene().name != "Nivel3_CerroDelFraile") return;
+
+        if (mainCam == null) mainCam = Camera.main;
+        if (playerTransform == null)
+        {
+            PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
+            if (pm != null) playerTransform = pm.transform;
+        }
+
+        if (mainCam != null && playerTransform != null)
+        {
+            Vector3 targetPos = new Vector3(playerTransform.position.x, playerTransform.position.y, -10f);
+            mainCam.transform.position = Vector3.SmoothDamp(mainCam.transform.position, targetPos, ref cameraVelocity, cameraSmoothTime);
+        }
+    }
+
+    public void InicializarEscenaCerroDelFraile()
+    {
+        // 1. Asegurar singletons de sistema y UI
+        DialogueManager.EnsureInstance();
+        InventoryManager.EnsureInstance();
+        PuzzleManager.EnsureInstance();
+        EnemyManager.EnsureInstance();
+        ShopManager.EnsureInstance();
+        InventoryHUD.EnsureInstance();
+        PauseAndVictoryUI.EnsureInstance();
+        BossHealthBarUI.EnsureInstance();
+        if (AudioManager.Instance == null)
+        {
+            GameObject am = new GameObject("AudioManager");
+            am.AddComponent<AudioManager>();
+        }
+
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.currentZone = LevelManager.ZoneId.CerroDelFraile;
+        }
+
+        // 2. Asegurar a Ronan (Player) al pie de la montaña
+        GameObject playerObj = MercadoBuilder.AsegurarPlayer(new Vector2(0f, -25.5f));
+        if (playerObj != null)
+        {
+            playerTransform = playerObj.transform;
+        }
+
+        // 3. Configurar Cámara Principal
+        mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            mainCam.orthographic = true;
+            mainCam.orthographicSize = 5.5f;
+            mainCam.backgroundColor = new Color(0.08f, 0.11f, 0.16f); // Noche estrellada de montaña
+            if (playerTransform != null)
+            {
+                mainCam.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, -10f);
             }
         }
 
-        // 2. RISCOS Y MUROS PERIMETRALES DEL CERRO DEL FRAILE
-        CrearBloqueRoca("Risco_Norte_Cumbre", new Vector2(56.0f, 16.0f), new Vector2(24f, 1.5f), root.transform, new Color(0.28f, 0.30f, 0.35f));
-        CrearBloqueRoca("Risco_Sur_Base", new Vector2(56.0f, -12.0f), new Vector2(24f, 1.5f), root.transform, new Color(0.28f, 0.30f, 0.35f));
-        CrearBloqueRoca("Risco_Este_Barranco", new Vector2(68.0f, 2.0f), new Vector2(1.5f, 28f), root.transform, new Color(0.28f, 0.30f, 0.35f));
-        CrearBloqueRoca("Risco_Oeste_Sup", new Vector2(44.0f, 5.5f), new Vector2(1.5f, 21f), root.transform, new Color(0.28f, 0.30f, 0.35f));
-        CrearBloqueRoca("Risco_Oeste_Inf", new Vector2(44.0f, -10.5f), new Vector2(1.5f, 3f), root.transform, new Color(0.28f, 0.30f, 0.35f));
+        // 4. Construir el mundo del Cerro del Fraile
+        ConstruirZonaCerroDelFraile();
+    }
 
-        // 3. PORTAL DE REGRESO A LA PLAZA PRINCIPAL DE SAN FELIPE
-        ParroquiaExteriorBuilder.CrearPortalTransicion(
-            "Portal_Regreso_Cerro_A_Plaza",
-            new Vector2(45.2f, -8.0f),
-            new Vector2(1.6f, 2.8f),
-            LevelManager.ZoneId.ParroquiaExterior,
-            new Vector2(11.0f, 0.0f),
-            new Color(0.25f, 0.85f, 1.0f, 0.80f),
-            root.transform);
-
-        // Placa del Mirador y Pista de los Sellos de la Cruz Azul
-        GameObject placaMirador = CrearBloqueRoca("Estela_Mirador_CruzAzul", new Vector2(53.0f, -6.5f), new Vector2(1.1f, 1.1f), root.transform, new Color(0.25f, 0.80f, 0.98f));
-        InteractableSignOrNPC signMirador = placaMirador.AddComponent<InteractableSignOrNPC>();
-        signMirador.speakerTitle = "Estela del Cerro del Fraile y la Cruz Azul";
-        signMirador.interactionPrompt = "[E] Leer Estela del Cerro del Fraile";
-        signMirador.dialoguePages = new string[]
+    public static GameObject ConstruirZonaCerroDelFraile(Transform parentRoot = null)
+    {
+        GameObject existente = GameObject.Find("Zona_Cerro_Del_Fraile_Detallada");
+        if (existente != null)
         {
-            "«En la cumbre del Cerro del Fraile se erige la monumental Cruz Azul, faro protector de San Felipe.»",
-            "«La Sombra Guardiana ha corrompido los Tres Sellos del Mirador para protegerse con un escudo abismal.»",
-            "«Purifica los 3 Sellos alrededor de la cumbre golpeándolos con tu espada [J], presionando [E] o reflejando proyectiles hacia ellos para romper el escudo del Jefe Final y recuperar el Eco de la Memoria.»"
+            if (GameObject.Find("Marca_Cerro_V2") != null) return existente;
+            if (Application.isPlaying) Destroy(existente);
+            else DestroyImmediate(existente);
+        }
+
+        GameObject root = new GameObject("Zona_Cerro_Del_Fraile_Detallada");
+        if (parentRoot != null) root.transform.SetParent(parentRoot);
+        GameObject marca = new GameObject("Marca_Cerro_V2");
+        marca.transform.SetParent(root.transform);
+
+        // 1. RECORTE DE SPRITES REALES DE LOS TILESETS
+        Sprite spPastoMontana = CortarCelda("TilesetField", 1, 1, 1, 1);
+        Sprite spSenderoTierra = CortarCelda("TilesetFloor", 0, 0, 1, 1);
+        Sprite spLosaPlataforma = CortarCelda("TilesetInteriorFloor", 13, 1, 1, 1);
+        Sprite spMuroRisco = CortarCelda("TilesetRelief", 0, 0, 2, 2);
+        Sprite spAguaArroyo = CortarCelda("TilesetWater", 0, 0, 1, 1);
+        Sprite spPuentePiedra = CortarCelda("TilesetVillageAbandoned", 0, 0, 3, 2);
+
+        Sprite spPinoGrande = CortarCelda("TilesetNature", 0, 0, 3, 4);
+        Sprite spPinoChico = CortarCelda("TilesetNature", 3, 0, 2, 3);
+        Sprite spRocaMontana = CortarCelda("TilesetRelief", 4, 0, 2, 2);
+        Sprite spColumnaCeremonial = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3);
+        Sprite spEscaleraCumbre = CortarCelda("TilesetHouse", 10, 19, 3, 2);
+        Sprite spEstandarteAzul = CortarCelda("TilesetHouse", 27, 20, 1, 2);
+
+        // Campamento de Peregrinos
+        Sprite spCarpaCamp = CortarCelda("tileset_camp", 0, 0, 3, 3);
+        Sprite spFogata = CortarCelda("tileset_camp", 3, 5, 2, 2);
+        Sprite spBancaCamp = CortarCelda("tileset_camp", 0, 7, 3, 1);
+        Sprite spCajasCamp = CortarCelda("TilesetElement", 0, 1, 2, 2);
+
+        // 2. SUELO DEL ASCENSO (45x65 unidades, X: -22..+22, Y: -28..+28)
+        GameObject pisoRoot = new GameObject("Piso_Cerro");
+        pisoRoot.transform.SetParent(root.transform);
+
+        for (int x = -22; x <= 22; x++)
+        {
+            for (int y = -28; y <= 28; y++)
+            {
+                // Determinar el terreno según la elevación (Y)
+                bool esArroyo = (y == -23 || y == -22) && (x < -2 || x > 2);
+                bool esPuente = (y == -23 || y == -22) && (Mathf.Abs(x) <= 2);
+                bool esSendero = (Mathf.Abs(x) <= 2 && y <= 6) || (Mathf.Abs(x - Mathf.Sin(y * 0.35f) * 3f) <= 2.2f && y > -10 && y <= 6);
+                bool esCumbre = (y >= 6 && Mathf.Abs(x) <= 14);
+
+                GameObject tile = new GameObject($"Tile_{x}_{y}");
+                tile.transform.SetParent(pisoRoot.transform);
+                tile.transform.position = new Vector3(x, y, 0f);
+                SpriteRenderer sr = tile.AddComponent<SpriteRenderer>();
+
+                if (esArroyo)
+                {
+                    sr.sprite = spAguaArroyo;
+                    sr.sortingOrder = -520;
+                    BoxCollider2D colAgua = tile.AddComponent<BoxCollider2D>();
+                    colAgua.size = Vector2.one;
+                }
+                else if (esPuente)
+                {
+                    sr.sprite = spSenderoTierra;
+                    sr.sortingOrder = -400; // Por encima de los tiles del arroyo
+                }
+                else if (esCumbre)
+                {
+                    sr.sprite = spLosaPlataforma;
+                    sr.sortingOrder = -500;
+                }
+                else if (esSendero)
+                {
+                    sr.sprite = spSenderoTierra;
+                    sr.sortingOrder = -490;
+                }
+                else
+                {
+                    sr.sprite = spPastoMontana;
+                    sr.sortingOrder = -500;
+                }
+            }
+        }
+
+        // Puente ornamental de piedra sobre el arroyo
+        ColocarDecoracion("Puente_Piedra_Arroyo", spPuentePiedra, new Vector2(0f, -22.5f), Vector2.zero, false, root.transform, -400);
+
+        // 3. DESFILADERO ROCOSO Y RISCOS (Y: -10..+6)
+        GameObject riscosRoot = new GameObject("Riscos_Y_Barrancos");
+        riscosRoot.transform.SetParent(root.transform);
+
+        // Paredes de riscos que encajonan el desfiladero
+        for (int y = -10; y <= 5; y += 2)
+        {
+            // Riscos poniente
+            ColocarRisco(spMuroRisco, new Vector2(-10f, y), riscosRoot.transform);
+            ColocarRisco(spMuroRisco, new Vector2(-14f, y), riscosRoot.transform);
+            ColocarRisco(spMuroRisco, new Vector2(-18f, y), riscosRoot.transform);
+
+            // Riscos oriente
+            ColocarRisco(spMuroRisco, new Vector2(10f, y), riscosRoot.transform);
+            ColocarRisco(spMuroRisco, new Vector2(14f, y), riscosRoot.transform);
+            ColocarRisco(spMuroRisco, new Vector2(18f, y), riscosRoot.transform);
+        }
+
+        // Muros perimetrales exteriores de la cumbre
+        for (int x = -15; x <= 15; x += 2)
+        {
+            ColocarRisco(spMuroRisco, new Vector2(x, 27f), riscosRoot.transform); // Límite norte
+        }
+        for (int y = 6; y <= 27; y += 2)
+        {
+            ColocarRisco(spMuroRisco, new Vector2(-15f, y), riscosRoot.transform);
+            ColocarRisco(spMuroRisco, new Vector2(15f, y), riscosRoot.transform);
+        }
+
+        // 4. ELEMENTOS DE LAS FALDAS (Y = -28..-10)
+        ColocarDecoracion("Pino_Entrada_Izq", spPinoGrande, new Vector2(-6f, -26f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Pino_Entrada_Der", spPinoGrande, new Vector2(6f, -26f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Roca_Arroyo_1", spRocaMontana, new Vector2(-5f, -21f), new Vector2(1.5f, 1.2f), true, root.transform);
+        ColocarDecoracion("Roca_Arroyo_2", spRocaMontana, new Vector2(5f, -21f), new Vector2(1.5f, 1.2f), true, root.transform);
+        ColocarDecoracion("Pino_Faldas_1", spPinoChico, new Vector2(-8f, -16f), new Vector2(1f, 0.8f), true, root.transform);
+        ColocarDecoracion("Pino_Faldas_2", spPinoGrande, new Vector2(8f, -15f), new Vector2(1.2f, 1.0f), true, root.transform);
+
+        // Letrero inicial al pie del cerro
+        GameObject cartelInicio = ColocarDecoracion("Cartel_Pie_Cerro", CortarCelda("TilesetElement", 1, 2, 1, 1), new Vector2(3.0f, -26.0f), new Vector2(0.8f, 0.8f), true, root.transform);
+        InteractableSignOrNPC signInicio = cartelInicio.AddComponent<InteractableSignOrNPC>();
+        signInicio.speakerTitle = "Sendero de Ascenso al Cerro del Fraile";
+        signInicio.interactionPrompt = "[E] Leer Señal del Sendero";
+        signInicio.dialoguePages = new string[]
+        {
+            "«Camino de Peregrinación al Cerro del Fraile y Mirador de la Gran Cruz Azul.»",
+            "«Asciende por el desfiladero y cruza el campamento de peregrinos hacia la cumbre sagrada.»"
         };
 
-        // 4. MONUMENTAL CRUZ AZUL EN LA CIMA DEL CERRO DEL FRAILE (56, 13.0)
-        GameObject cruzRoot = new GameObject("Monumento_Cruz_Azul");
-        cruzRoot.transform.SetParent(root.transform);
-        cruzRoot.transform.position = new Vector3(56.0f, 13.2f, 0f);
+        // 5. CAMPAMENTO DE PEREGRINOS Y ERMITAÑO (Y = -3..-1)
+        Vector2 posCamp = new Vector2(-6.5f, -2.0f);
+        ColocarDecoracion("Carpa_Peregrinos", spCarpaCamp, posCamp + new Vector2(0f, 1.2f), new Vector2(3.0f, 2.2f), true, root.transform);
+        ColocarDecoracion("Fogata_Campamento", spFogata, posCamp + new Vector2(2.5f, -0.4f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Banca_Campamento", spBancaCamp, posCamp + new Vector2(-2.2f, -0.6f), new Vector2(2.0f, 0.6f), true, root.transform);
+        ColocarDecoracion("Cajas_Campamento", spCajasCamp, posCamp + new Vector2(2.8f, 1.2f), new Vector2(1.2f, 1.2f), true, root.transform);
 
+        // Ermitaño del Cerro (NPC con recorte de celda)
+        GameObject ermitaño = ParroquiaExteriorBuilder.CrearNPCConSpriteExacto(
+            "NPC_Ermitaño_Del_Cerro",
+            "Mage-Red",
+            0, 0, 32, 32, 20f,
+            posCamp + new Vector2(0.2f, -0.8f),
+            root.transform);
+        InteractableSignOrNPC signErmitaño = ermitaño.AddComponent<InteractableSignOrNPC>();
+        signErmitaño.speakerTitle = "Hermano Mateo, Ermitaño del Cerro";
+        signErmitaño.interactionPrompt = "[E] Hablar con el Ermitaño";
+        signErmitaño.dialoguePages = new string[]
+        {
+            "«¡Ronan! Los vientos de la montaña traen el eco de tus victorias en la Parroquia y el Mercado.»",
+            "«En la cumbre reposa la Gran Cruz Azul, pero La Sombra Guardiana ha corrompido sus tres sellos sagrados: el Sello del Viento al Poniente, el Sello de la Cantera al Oriente y el Sello del Alba al frente.»",
+            "«Mientras esos sellos permanezcan oscurecidos, su escudo sombrío mitigará tus golpes. ¡Purifícalos con tu espada [J] o interactuando [E] para romper su escudo antes de entablar combate!»",
+            "«Recuerda usar tu contraataque [K] (0.20s) contra sus orbes reflejables y desata el Modo Asalto [L] cuando esté vulnerable. ¡Devuélvele la memoria a San Felipe!»"
+        };
+
+        // 6. ENTRADA A LA CUMBRE Y ESCALINATA (Y = 5.5..7.5)
+        ColocarDecoracion("Escalera_Acceso_Cumbre", spEscaleraCumbre, new Vector2(0f, 6.2f), Vector2.zero, false, root.transform, -480);
+        ColocarDecoracion("Columna_Cumbre_Izq", spColumnaCeremonial, new Vector2(-4.5f, 7.5f), new Vector2(0.8f, 1.5f), true, root.transform);
+        ColocarDecoracion("Columna_Cumbre_Der", spColumnaCeremonial, new Vector2(4.5f, 7.5f), new Vector2(0.8f, 1.5f), true, root.transform);
+        ColocarDecoracion("Estandarte_Cumbre_Izq", spEstandarteAzul, new Vector2(-4.5f, 9.2f), Vector2.zero, false, root.transform);
+        ColocarDecoracion("Estandarte_Cumbre_Der", spEstandarteAzul, new Vector2(4.5f, 9.2f), Vector2.zero, false, root.transform);
+
+        // Estela con la pista del acertijo de la Cruz Azul
+        GameObject estela = ColocarDecoracion("Estela_Mirador_CruzAzul", CortarCelda("TilesetElement", 1, 2, 1, 1), new Vector2(3.5f, 8.5f), new Vector2(1f, 1f), true, root.transform);
+        InteractableSignOrNPC signMirador = estela.AddComponent<InteractableSignOrNPC>();
+        signMirador.speakerTitle = "Estela Ancestral de la Gran Cruz Azul";
+        signMirador.interactionPrompt = "[E] Leer Inscripción de la Cumbre";
+        signMirador.dialoguePages = new string[]
+        {
+            "«CUMBRE DEL CERRO DEL FRAILE — MIRADOR DE LA CRUZ AZUL:»",
+            "«Los Tres Sellos de la Cruz Azul (Viento al Poniente, Cantera al Oriente y Alba al Sur) sostienen el equilibrio espiritual de Torres Mochas.»",
+            "«Purifica los 3 sellos para derribar la invulnerabilidad de La Sombra Guardiana y recuperar el Eco de la Memoria.»"
+        };
+
+        // 7. MONUMENTAL GRAN CRUZ AZUL EN LA CIMA (0, 22.5)
+        GameObject cruzRoot = new GameObject("Monumento_Gran_Cruz_Azul");
+        cruzRoot.transform.SetParent(root.transform);
+        cruzRoot.transform.position = new Vector3(0f, 22.5f, 0f);
+
+        // Base escalonada de piedra
+        ColocarDecoracion("Base_Cruz_Inferior", spEscaleraCumbre, new Vector2(0f, 20.8f), new Vector2(3.0f, 1.0f), true, cruzRoot.transform, -460);
+
+        // Sprite procedural cristalino de la Cruz Azul (4.5 x 6.5 unidades)
+        Sprite spCruzCristal = CrearSpriteCruzAzulCristalina();
+        GameObject cruzGO = new GameObject("Cruz_Azul_Sprite");
+        cruzGO.transform.SetParent(cruzRoot.transform);
+        cruzGO.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+        SpriteRenderer srCruz = cruzGO.AddComponent<SpriteRenderer>();
+        srCruz.sprite = spCruzCristal;
+        srCruz.sortingOrder = 15;
+
+        // Halos luminosos (dual aura azul celestial)
         GameObject haloCruz = new GameObject("Halo_Luminoso_CruzAzul");
         haloCruz.transform.SetParent(cruzRoot.transform);
-        haloCruz.transform.localPosition = Vector3.zero;
-        haloCruz.transform.localScale = Vector3.one * 3.2f;
+        haloCruz.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+        haloCruz.transform.localScale = Vector3.one * 5.0f;
         SpriteRenderer srHaloCruz = haloCruz.AddComponent<SpriteRenderer>();
-        srHaloCruz.sprite = CrearSpriteRadial(new Color(0.15f, 0.85f, 1.0f, 0.55f));
-        srHaloCruz.sortingOrder = -400;
+        srHaloCruz.sprite = ParroquiaExteriorBuilder.CrearSpriteRadial(new Color(0.12f, 0.78f, 1.0f, 0.65f));
+        srHaloCruz.sortingOrder = 10;
 
-        CrearBloqueRoca("Pedestal_Cruz_Azul", new Vector2(56.0f, 11.8f), new Vector2(2.6f, 0.9f), cruzRoot.transform, new Color(0.30f, 0.45f, 0.65f));
-        CrearBloqueRoca("Poste_Vertical_CruzAzul", new Vector2(56.0f, 13.4f), new Vector2(0.75f, 3.2f), cruzRoot.transform, new Color(0.10f, 0.82f, 1.0f));
-        CrearBloqueRoca("Brazo_Horizontal_CruzAzul", new Vector2(56.0f, 13.9f), new Vector2(2.4f, 0.65f), cruzRoot.transform, new Color(0.10f, 0.82f, 1.0f));
+        GameObject haloCruzExterior = new GameObject("Halo_Exterior_CruzAzul");
+        haloCruzExterior.transform.SetParent(cruzRoot.transform);
+        haloCruzExterior.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+        haloCruzExterior.transform.localScale = Vector3.one * 8.0f;
+        SpriteRenderer srHaloExt = haloCruzExterior.AddComponent<SpriteRenderer>();
+        srHaloExt.sprite = ParroquiaExteriorBuilder.CrearSpriteRadial(new Color(0.05f, 0.35f, 0.90f, 0.28f));
+        srHaloExt.sortingOrder = 5;
 
-        // 5. JEFE FINAL: LA SOMBRA GUARDIANA (56, 5.8)
-        SombraGuardianaBossAI bossAI = ConstruirJefeSombraGuardiana(new Vector2(56.0f, 5.8f), root.transform, out GameObject escudoVisual);
+        // Columnas ceremoniales alrededor del monumento
+        ColocarDecoracion("Columna_Cruz_NO", spColumnaCeremonial, new Vector2(-3.5f, 23.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_NE", spColumnaCeremonial, new Vector2(3.5f, 23.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_SO", spColumnaCeremonial, new Vector2(-4.2f, 20.0f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_SE", spColumnaCeremonial, new Vector2(4.2f, 20.0f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
 
-        // 6. ACERTIJO DE LOS TRES SELLOS DE LA CRUZ AZUL
+        // 8. JEFE FINAL: LA SOMBRA GUARDIANA (0, 16.5)
+        SombraGuardianaBossAI bossAI = ConstruirJefeSombraGuardiana(new Vector2(0f, 16.5f), root.transform, out GameObject escudoVisual);
+
+        // 9. ACERTIJO DE LOS TRES SELLOS DE LA CRUZ AZUL
         BlueCrossShrinePuzzle puzzleCruz = root.AddComponent<BlueCrossShrinePuzzle>();
         puzzleCruz.jefeSombraGuardiana = bossAI;
         puzzleCruz.cruzAzulHaloRenderer = srHaloCruz;
         puzzleCruz.escudoVisualJefe = escudoVisual;
 
-        BlueCrossSealNode s1 = CrearSelloCruzAzul("Sello de la Cantera Poniente [1]", new Vector2(49.5f, 6.2f), puzzleCruz, root.transform);
-        BlueCrossSealNode s2 = CrearSelloCruzAzul("Sello del Viento Norte [2]", new Vector2(56.0f, 10.2f), puzzleCruz, root.transform);
-        BlueCrossSealNode s3 = CrearSelloCruzAzul("Sello del Valle Oriente [3]", new Vector2(62.5f, 6.2f), puzzleCruz, root.transform);
+        BlueCrossSealNode s1 = CrearSelloCruzAzul("Sello del Viento [Poniente]", new Vector2(-8.0f, 15.5f), puzzleCruz, root.transform);
+        BlueCrossSealNode s2 = CrearSelloCruzAzul("Sello de la Cantera [Oriente]", new Vector2(8.0f, 15.5f), puzzleCruz, root.transform);
+        BlueCrossSealNode s3 = CrearSelloCruzAzul("Sello del Alba [Sur]", new Vector2(0.0f, 10.5f), puzzleCruz, root.transform);
 
         puzzleCruz.sellos.Add(s1);
         puzzleCruz.sellos.Add(s2);
         puzzleCruz.sellos.Add(s3);
 
-        // 7. ENEMIGOS DEL ASCENSO AL CERRO DEL FRAILE
-        CrearEnemigoCerro<QuarryWormEnemyAI>("Gusano_Cantera_Ascenso_1", "Assets/Sprites/worm_spritesheet.png", new Vector2(51.5f, -4.5f), root.transform);
-        CrearEnemigoCerro<QuarryWormEnemyAI>("Gusano_Cantera_Ascenso_2", "Assets/Sprites/worm_spritesheet.png", new Vector2(60.5f, -3.5f), root.transform);
-        CrearEnemigoCerro<DarkOrcBruteAI>("Orco_Bruto_Paso_Cerro", "Assets/Sprites/Orc-Grunt.png", new Vector2(56.0f, -1.5f), root.transform);
-        CrearEnemigoCerro<OblivionMageAI>("Mago_Del_Olvido_Cumbre", "Assets/Sprites/Mage-Red.png", new Vector2(61.5f, 1.5f), root.transform);
+        // 10. COMBATES POR OLEADAS DEL ASCENSO (ZONE WAVE SPAWNERS)
+        // A) Horda 1: Faldas de la Montaña (Y = -17)
+        List<ZoneWaveSpawner.WaveDefinition> horda1Oleadas = new List<ZoneWaveSpawner.WaveDefinition>();
+        ZoneWaveSpawner.WaveDefinition h1w1 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Esporas del Sotobosque" };
+        h1w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.SporeMushroom, spawnPosition = new Vector2(-3.5f, -17f) });
+        h1w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.SporeMushroom, spawnPosition = new Vector2(3.5f, -17f) });
+        h1w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.QuarryWorm, spawnPosition = new Vector2(0f, -19f) });
+        horda1Oleadas.Add(h1w1);
+
+        ZoneWaveSpawner.WaveDefinition h1w2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Gusanos de la Cantera Antigua" };
+        h1w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.QuarryWorm, spawnPosition = new Vector2(-2.5f, -16f) });
+        h1w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.QuarryWorm, spawnPosition = new Vector2(2.5f, -16f) });
+        h1w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedGuard, spawnPosition = new Vector2(0f, -15f) });
+        horda1Oleadas.Add(h1w2);
+
+        CrearZonaHorda("Horda_Faldas_Montana", "Faldas del Cerro del Fraile", new Vector2(0f, -17f), 7.5f, horda1Oleadas, root.transform);
+
+        // B) Horda 2: Desfiladero Rocoso (Y = 0)
+        List<ZoneWaveSpawner.WaveDefinition> horda2Oleadas = new List<ZoneWaveSpawner.WaveDefinition>();
+        ZoneWaveSpawner.WaveDefinition h2w1 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Tiradores del Barranco" };
+        h2w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.DarkOrcBrute, spawnPosition = new Vector2(0f, 1f) });
+        h2w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedArcher, spawnPosition = new Vector2(-3.5f, 0f) });
+        h2w1.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.CorruptedArcher, spawnPosition = new Vector2(3.5f, 0f) });
+        horda2Oleadas.Add(h2w1);
+
+        ZoneWaveSpawner.WaveDefinition h2w2 = new ZoneWaveSpawner.WaveDefinition { waveTitle = "Vanguardia de la Niebla de Montaña" };
+        h2w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.DarkOrcBrute, spawnPosition = new Vector2(-2.5f, 2f) });
+        h2w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.SombraLanzadora, spawnPosition = new Vector2(2.5f, 2f) });
+        h2w2.enemies.Add(new ZoneWaveSpawner.SpawnEntry { kind = ZoneWaveSpawner.EnemyKind.OblivionMage, spawnPosition = new Vector2(0f, 3.5f) });
+        horda2Oleadas.Add(h2w2);
+
+        CrearZonaHorda("Horda_Desfiladero_Rocoso", "Desfiladero del Fraile", new Vector2(0f, 0f), 7.5f, horda2Oleadas, root.transform);
+
+        // 11. CORAZONES CURATIVOS (+25 HP) EN PUNTOS ESTRATÉGICOS
+        HeartPickup.SpawnHeart(new Vector3(0f, -23.5f, 0f), 25f, root.transform);  // Tras cruzar el puente
+        HeartPickup.SpawnHeart(new Vector3(-4.5f, -1.5f, 0f), 25f, root.transform); // En el Campamento
+        HeartPickup.SpawnHeart(new Vector3(-7f, 9f, 0f), 25f, root.transform);      // En la entrada a la cumbre
+        HeartPickup.SpawnHeart(new Vector3(7f, 9f, 0f), 25f, root.transform);       // En la entrada a la cumbre
+
+        // 12. PORTAL DE REGRESO AL MERCADO MUNICIPAL (SUR)
+        ParroquiaExteriorBuilder.CrearPortalTransicionEscena(
+            "Portal_Cerro_A_Mercado",
+            new Vector2(0.0f, -27.5f),
+            new Vector2(3.0f, 1.8f),
+            "Nivel2_Mercado",
+            LevelManager.ZoneId.Mercado,
+            new Vector2(0.0f, 18.5f),
+            new Color(0.95f, 0.65f, 0.20f, 0.85f),
+            root.transform);
 
         return root;
     }
@@ -118,34 +386,19 @@ public class CerroDelFraileBuilder : MonoBehaviour
         GameObject bossGO = new GameObject("JefeFinal_La_Sombra_Guardiana");
         bossGO.transform.SetParent(parent);
         bossGO.transform.position = pos;
+        bossGO.tag = "Enemy";
+        EnemyManager.EnsureInstance()?.RegisterEnemy(bossGO);
 
         SpriteRenderer sr = bossGO.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 8;
 
-        RuntimeAnimatorController animCtrl = null;
-        Sprite spBoss = null;
-#if UNITY_EDITOR
-        animCtrl = UnityEditor.AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>("Assets/Animations/SombraGuardiana.controller");
-        Object[] assets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/SombraGuardiana_SpriteSheet.png");
-        if (assets != null)
-        {
-            foreach (var a in assets)
-            {
-                if (a is Sprite s) { spBoss = s; break; }
-            }
-        }
-#endif
-        if (spBoss == null) spBoss = CrearSpriteRadial(new Color(0.85f, 0.15f, 0.95f, 1f));
-        sr.sprite = spBoss;
-
-        if (animCtrl != null)
-        {
-            Animator anim = bossGO.AddComponent<Animator>();
-            anim.runtimeAnimatorController = animCtrl;
-        }
+        CircleCollider2D col = bossGO.AddComponent<CircleCollider2D>();
+        col.radius = 0.85f;
 
         BlackCloverDemonRenderer demonRend = bossGO.AddComponent<BlackCloverDemonRenderer>();
         demonRend.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraGuardianaJefe;
+        demonRend.customDemonImage = ZoneWaveSpawner.LoadSpriteTexture("SombraGuardiana_SpriteSheet");
+        demonRend.InicializarSpritesDemonio();
 
         SombraGuardianaBossAI bossAI = bossGO.AddComponent<SombraGuardianaBossAI>();
         bossAI.isShieldedBySeals = true;
@@ -154,9 +407,9 @@ public class CerroDelFraileBuilder : MonoBehaviour
         escudoVisual = new GameObject("Escudo_Abismal_Sellos");
         escudoVisual.transform.SetParent(bossGO.transform);
         escudoVisual.transform.localPosition = Vector3.zero;
-        escudoVisual.transform.localScale = Vector3.one * 2.2f;
+        escudoVisual.transform.localScale = Vector3.one * 2.4f;
         SpriteRenderer srEscudo = escudoVisual.AddComponent<SpriteRenderer>();
-        srEscudo.sprite = CrearSpriteRadial(new Color(0.65f, 0.12f, 0.95f, 0.45f));
+        srEscudo.sprite = ParroquiaExteriorBuilder.CrearSpriteRadial(new Color(0.55f, 0.10f, 0.90f, 0.55f));
         srEscudo.sortingOrder = 9;
 
         return bossAI;
@@ -169,20 +422,20 @@ public class CerroDelFraileBuilder : MonoBehaviour
         go.transform.position = pos;
 
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = CrearSpriteLosa(new Color(0.45f, 0.25f, 0.65f), new Color(0.25f, 0.85f, 1.0f));
-        sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10);
+        sr.sprite = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3);
+        sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10f);
 
         CircleCollider2D col = go.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
-        col.radius = 0.85f;
+        col.radius = 1.0f;
 
         GameObject flama = new GameObject("Flama_Sello");
         flama.transform.SetParent(go.transform);
-        flama.transform.localPosition = Vector3.zero;
-        flama.transform.localScale = Vector3.one * 2.1f;
+        flama.transform.localPosition = new Vector3(0f, 0.8f, 0f);
+        flama.transform.localScale = Vector3.one * 2.2f;
         SpriteRenderer srFlama = flama.AddComponent<SpriteRenderer>();
-        srFlama.sprite = CrearSpriteRadial(new Color(0.65f, 0.15f, 0.85f, 0.75f));
-        srFlama.sortingOrder = sr.sortingOrder - 1;
+        srFlama.sprite = ParroquiaExteriorBuilder.CrearSpriteRadial(new Color(0.65f, 0.15f, 0.85f, 0.75f));
+        srFlama.sortingOrder = sr.sortingOrder + 1;
 
         BlueCrossSealNode node = go.AddComponent<BlueCrossSealNode>();
         node.nombreSello = nombre;
@@ -191,79 +444,135 @@ public class CerroDelFraileBuilder : MonoBehaviour
         return node;
     }
 
-    private static void CrearEnemigoCerro<T>(string nombre, string assetPath, Vector2 pos, Transform parent) where T : BaseEnemyAI
+    /// <summary>
+    /// Genera un sprite monumental de alta resolución para la Gran Cruz Azul (4.5 x 6.5 unidades),
+    /// con facetado cristalino en tonos celestes/azur profundos y un núcleo refulgente de luz sagrada.
+    /// </summary>
+    public static Sprite CrearSpriteCruzAzulCristalina()
     {
-        GameObject go = new GameObject(nombre);
-        go.transform.SetParent(parent);
-        go.transform.position = pos;
+        int w = 72;
+        int h = 104;
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
 
-        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sortingOrder = 5;
+        Color transparente = new Color(0, 0, 0, 0);
+        Color bordeAzulOscuro = new Color(0.04f, 0.16f, 0.42f, 1f);
+        Color azulZafiro = new Color(0.10f, 0.38f, 0.78f, 1f);
+        Color azulCeleste = new Color(0.18f, 0.78f, 1.0f, 1f);
+        Color blancoBrillo = new Color(0.88f, 0.98f, 1.0f, 1f);
 
-        Texture2D tex = null;
-#if UNITY_EDITOR
-        tex = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-#endif
-        EnemySpriteSheetAnimator anim = go.AddComponent<EnemySpriteSheetAnimator>();
-        if (tex != null)
+        int vertMinX = 26;
+        int vertMaxX = 45;
+        int horizMinY = 56;
+        int horizMaxY = 75;
+
+        for (int y = 0; y < h; y++)
         {
-            anim.spriteSheet = tex;
-        }
-        else
-        {
-            sr.sprite = CrearSpriteRadial(new Color(0.75f, 0.25f, 0.35f, 1f));
-        }
+            for (int x = 0; x < w; x++)
+            {
+                bool enVertical = (x >= vertMinX && x <= vertMaxX && y >= 6 && y <= 98);
+                bool enHorizontal = (y >= horizMinY && y <= horizMaxY && x >= 6 && x <= 65);
 
-        go.AddComponent<T>();
+                if (enVertical || enHorizontal)
+                {
+                    // Determinar bordes
+                    bool esBordeVert = (x == vertMinX || x == vertMaxX || y == 6 || y == 98);
+                    bool esBordeHoriz = (y == horizMinY || y == horizMaxY || x == 6 || x == 65);
+                    bool esBordeExterior = false;
+
+                    if (enVertical && !enHorizontal && esBordeVert) esBordeExterior = true;
+                    if (enHorizontal && !enVertical && esBordeHoriz) esBordeExterior = true;
+                    if (enVertical && enHorizontal)
+                    {
+                        if ((x == vertMinX || x == vertMaxX) && (y < horizMinY || y > horizMaxY)) esBordeExterior = true;
+                        if ((y == horizMinY || y == horizMaxY) && (x < vertMinX || x > vertMaxX)) esBordeExterior = true;
+                    }
+
+                    if (esBordeExterior)
+                    {
+                        tex.SetPixel(x, y, bordeAzulOscuro);
+                    }
+                    else
+                    {
+                        // Eje central de brillo
+                        bool enEjeX = (x == 35 || x == 36);
+                        bool enEjeY = (y == 65 || y == 66);
+
+                        if (enEjeX || enEjeY)
+                        {
+                            tex.SetPixel(x, y, blancoBrillo);
+                        }
+                        else if (Mathf.Abs(x - 35.5f) <= 4 || Mathf.Abs(y - 65.5f) <= 4)
+                        {
+                            tex.SetPixel(x, y, azulCeleste);
+                        }
+                        else
+                        {
+                            tex.SetPixel(x, y, azulZafiro);
+                        }
+                    }
+                }
+                else
+                {
+                    tex.SetPixel(x, y, transparente);
+                }
+            }
+        }
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.15f), 16f);
     }
 
-    private static GameObject CrearBloqueRoca(string nombre, Vector2 pos, Vector2 size, Transform parent, Color color)
+    private static GameObject CrearZonaHorda(
+        string nombre,
+        string tituloZona,
+        Vector2 centro,
+        float radioActivacion,
+        List<ZoneWaveSpawner.WaveDefinition> oleadas,
+        Transform parent)
     {
-        GameObject go = new GameObject(nombre);
+        GameObject spawnerGO = new GameObject(nombre);
+        spawnerGO.transform.SetParent(parent);
+        spawnerGO.transform.position = centro;
+
+        ZoneWaveSpawner spawner = spawnerGO.AddComponent<ZoneWaveSpawner>();
+        spawner.zoneTitle = tituloZona;
+        spawner.activationRadius = radioActivacion;
+        spawner.waves = oleadas;
+
+        return spawnerGO;
+    }
+
+    private static Sprite CortarCelda(string sheetName, int col, int rowTop, int wCells, int hCells)
+    {
+        return ParroquiaExteriorBuilder.ExtraerSpriteExactoSinCosturas(sheetName, col, rowTop, wCells * 16, hCells * 16, 16f);
+    }
+
+    private static void ColocarRisco(Sprite sp, Vector2 pos, Transform parent)
+    {
+        GameObject go = new GameObject($"Risco_{pos.x}_{pos.y}");
         go.transform.SetParent(parent);
         go.transform.position = pos;
-        go.transform.localScale = new Vector3(size.x, size.y, 1f);
-
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = CrearSpriteLosa(color, color * 0.72f);
-        sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10);
-
+        sr.sprite = sp;
+        sr.sortingOrder = Mathf.RoundToInt(-pos.y * 10f);
         BoxCollider2D col = go.AddComponent<BoxCollider2D>();
-        col.size = Vector2.one;
+        col.size = new Vector2(2f, 2f);
+    }
+
+    private static GameObject ColocarDecoracion(string nombre, Sprite sp, Vector2 pos, Vector2 sizeCol, bool conColision, Transform parent, int? customOrder = null)
+    {
+        GameObject go = new GameObject(nombre);
+        go.transform.SetParent(parent);
+        go.transform.position = pos;
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = sp;
+        sr.sortingOrder = customOrder ?? Mathf.RoundToInt(-pos.y * 10f);
+
+        if (conColision && sizeCol.sqrMagnitude > 0.01f)
+        {
+            BoxCollider2D col = go.AddComponent<BoxCollider2D>();
+            col.size = sizeCol;
+        }
         return go;
-    }
-
-    private static Sprite CrearSpriteLosa(Color fill, Color border)
-    {
-        Texture2D tex = new Texture2D(16, 16);
-        tex.filterMode = FilterMode.Point;
-        for (int y = 0; y < 16; y++)
-        {
-            for (int x = 0; x < 16; x++)
-            {
-                bool isBorder = (x == 0 || y == 0 || x == 15 || y == 15);
-                tex.SetPixel(x, y, isBorder ? border : fill);
-            }
-        }
-        tex.Apply();
-        return Sprite.Create(tex, new Rect(0, 0, 16, 16), new Vector2(0.5f, 0.5f), 16f);
-    }
-
-    private static Sprite CrearSpriteRadial(Color color)
-    {
-        Texture2D tex = new Texture2D(32, 32);
-        tex.filterMode = FilterMode.Point;
-        Vector2 c = new Vector2(15.5f, 15.5f);
-        for (int y = 0; y < 32; y++)
-        {
-            for (int x = 0; x < 32; x++)
-            {
-                float d = Vector2.Distance(new Vector2(x, y), c) / 15.5f;
-                float a = Mathf.Clamp01(1f - d) * color.a;
-                tex.SetPixel(x, y, new Color(color.r, color.g, color.b, a));
-            }
-        }
-        tex.Apply();
-        return Sprite.Create(tex, new Rect(0, 0, 32, 32), new Vector2(0.5f, 0.5f), 16f);
     }
 }
