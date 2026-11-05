@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 /// <summary>
 /// Componente de salud universal para Ronan, enemigos y jefes.
-/// Soporta invulnerabilidad temporal, mitigación por bloqueo, eventos de vida y muerte.
+/// Soporta invulnerabilidad temporal, mitigación por bloqueo, contraataque activo, eventos de vida y muerte.
 /// </summary>
 public class HealthComponent : MonoBehaviour
 {
@@ -63,31 +63,45 @@ public class HealthComponent : MonoBehaviour
         if (currentHealth <= 0f || isInvulnerable) return false;
 
         // Comprobación de combate para Ronan
-        if (isPlayer && playerCombatState != null)
+        if (isPlayer)
         {
+            PlayerMovement pm = GetComponent<PlayerMovement>();
+
             // 1. Si está esquivando o en contraataque, es totalmente invulnerable
-            if (playerCombatState.IsInvulnerable) return false;
-
-            // 2. Si está en la ventana exacta de contraataque (0.20s), desvía el golpe
-            if (playerCombatState.IsInCounterWindow)
+            if ((playerCombatState != null && playerCombatState.IsInvulnerable) ||
+                (pm != null && (pm.currentState == PlayerMovement.CombatState.Counter || pm.currentState == PlayerMovement.CombatState.Dodge)))
             {
-                playerCombatState.TriggerCounter();
-                PlayerMovement pm = GetComponent<PlayerMovement>();
-                if (pm != null) pm.AñadirCargaAsalto(35f);
-
-                SaveStateManager.Instance?.RegistrarContraataqueExitoso();
-                AudioManager.Instance?.PlayCounterSound();
-                Debug.Log("<color=#00E5FF>[HealthComponent] ¡Contraataque perfecto! Daño anulado y ataque devuelto.</color>");
                 return false;
             }
 
-            // 3. Si está bloqueando fuera de la ventana de 0.20s, mitiga el daño un 70%
-            if (playerCombatState.CurrentState == CombatStateMachine.State.Block)
+            // 2. Si está en la ventana de contraataque, desvía el golpe y daña al enemigo con 200% de ataque
+            if ((playerCombatState != null && playerCombatState.IsInCounterWindow) ||
+                (pm != null && pm.EstaEnVentanaDeContraataque()))
             {
-                damage *= 0.30f; // Solo recibe el 30% del daño
-                Debug.Log($"<color=#70A0FF>[HealthComponent] Bloqueo simple: Daño mitigado a {damage:F1} HP.</color>");
+                if (playerCombatState != null) playerCombatState.TriggerCounter();
+                if (pm != null)
+                {
+                    pm.EjecutarContraataque(attacker, 2.0f);
+                }
+
+                SaveStateManager.Instance?.RegistrarContraataqueExitoso();
+                AudioManager.Instance?.PlayCounterSound();
+                Debug.Log("<color=#00E5FF>[HealthComponent] ¡Contraataque perfecto! Daño anulado y ataque devuelto al enemigo.</color>");
+                return false;
             }
-            else
+
+            // 3. Si está bloqueando fuera de la ventana inicial, mitiga 75% y devuelve golpe de guardia (125%)
+            if ((playerCombatState != null && playerCombatState.CurrentState == CombatStateMachine.State.Block) ||
+                (pm != null && pm.currentState == PlayerMovement.CombatState.Block))
+            {
+                damage *= 0.25f;
+                if (pm != null)
+                {
+                    pm.EjecutarContraataque(attacker, 1.25f);
+                }
+                Debug.Log($"<color=#70A0FF>[HealthComponent] Contraataque de guardia: Daño mitigado a {damage:F1} HP y golpe devuelto.</color>");
+            }
+            else if (playerCombatState != null)
             {
                 playerCombatState.TriggerHurt();
             }

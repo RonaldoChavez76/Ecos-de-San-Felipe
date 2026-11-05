@@ -77,7 +77,9 @@ public class ProjectileBehaviour : MonoBehaviour
     private SpriteRenderer sr;
     private Vector2 currentDirection = Vector2.zero;
     private bool isDeflected = false;
+    private bool hasImpacted = false;
     private GameObject originalShooter;
+    private GameObject deflectedBy;
     private SanFelipeDemoBuilder builderRef;
 
     private void Awake()
@@ -129,6 +131,8 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (hasImpacted) return;
+
         // Movimiento por Transform en caso de que el Rigidbody2D no esté configurado como dinámico
         if (rb == null || rb.bodyType == RigidbodyType2D.Kinematic)
         {
@@ -140,6 +144,17 @@ public class ProjectileBehaviour : MonoBehaviour
         {
             float pulse = 1.25f + Mathf.PingPong(Time.time * 8f, 0.20f);
             haloFuego.localScale = new Vector3(pulse, pulse, 1f);
+        }
+
+        // Detección activa por OverlapCircleAll para impactar enemigos aunque no tengan Rigidbody2D
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.45f);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i] != null && hits[i].gameObject != gameObject)
+            {
+                ProcesarColision(hits[i]);
+                if (hasImpacted) return;
+            }
         }
     }
 
@@ -153,19 +168,29 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!hasImpacted && collision != null)
+        {
+            ProcesarColision(collision);
+        }
+    }
+
+    private void ProcesarColision(Collider2D collision)
+    {
+        if (hasImpacted || collision == null) return;
+
         // 1. Impacto con Ronan (cuando aún es proyectil enemigo)
         if (!isDeflected && (collision.CompareTag("Player") || collision.GetComponent<PlayerMovement>() != null))
         {
-            PlayerMovement pm = collision.GetComponent<PlayerMovement>();
-            CombatStateMachine csm = collision.GetComponent<CombatStateMachine>();
+            PlayerMovement pm = collision.GetComponent<PlayerMovement>() ?? collision.GetComponentInParent<PlayerMovement>();
+            CombatStateMachine csm = collision.GetComponent<CombatStateMachine>() ?? collision.GetComponentInParent<CombatStateMachine>();
 
-            // Comprobar ventana de contraataque (0.20s)
+            // Comprobar bloqueo / ventana de contraataque
             bool contraataco = false;
             if (pm != null && pm.IntentarContraataqueProyectil())
             {
                 contraataco = true;
             }
-            else if (isCounterable && csm != null && csm.IsInCounterWindow)
+            else if (isCounterable && csm != null && (csm.IsInCounterWindow || csm.CurrentState == CombatStateMachine.State.Block))
             {
                 csm.TriggerCounter();
                 if (pm != null) pm.AñadirCargaAsalto(35f);
@@ -184,7 +209,11 @@ public class ProjectileBehaviour : MonoBehaviour
                     dirRetorno = ((Vector2)originalShooter.transform.position - (Vector2)transform.position).normalized;
                 }
 
-                Deflect(dirRetorno, speed * 1.5f, 2.0f, collision.gameObject);
+                Deflect(dirRetorno, speed * 1.6f, 2.2f, collision.gameObject);
+                if (pm != null)
+                {
+                    pm.MostrarAvisoRecurso("⚡ ¡CONTRAATAQUE! Proyectil devuelto");
+                }
                 return;
             }
 
@@ -203,22 +232,20 @@ public class ProjectileBehaviour : MonoBehaviour
             return;
         }
 
-        // 2. Impacto con enemigos tras ser devuelto
-        if (isDeflected && (collision.CompareTag("Enemy") || collision.gameObject == originalShooter || collision.name.Contains("Sombra")))
+        // 2. Impacto con enemigos tras ser devuelto por el contraataque de Ronan
+        if (isDeflected)
         {
-            HealthComponent hc = collision.GetComponent<HealthComponent>() ?? collision.transform.root.GetComponent<HealthComponent>();
-            if (hc != null)
+            if (collision.CompareTag("Player") || collision.GetComponent<PlayerMovement>() != null)
             {
-                hc.TakeDamage(damage, currentDirection, 6f, null);
-            }
-            else
-            {
-                collision.SendMessage("RecibirDanio", damage, SendMessageOptions.DontRequireReceiver);
+                return;
             }
 
-            Debug.Log($"<color=#00E5FF>[Projectile] ¡Proyectil devuelto impactó al enemigo con {damage:F1} de daño crítico!</color>");
-            ImpactAndDestroy();
-            return;
+            if (PlayerCombatUtil.AplicarDanio(collision, damage, currentDirection, 6f, deflectedBy))
+            {
+                Debug.Log($"<color=#00E5FF>[Projectile] ¡Proyectil devuelto impactó al enemigo con {damage:F1} de daño crítico!</color>");
+                ImpactAndDestroy();
+                return;
+            }
         }
 
         // 3. Impacto con muros y obstáculos
@@ -234,6 +261,7 @@ public class ProjectileBehaviour : MonoBehaviour
     public void Deflect(Vector2 newDirection, float newSpeed, float damageMultiplier, GameObject newAttacker)
     {
         isDeflected = true;
+        deflectedBy = newAttacker;
         currentDirection = newDirection.normalized;
         speed = newSpeed;
         damage *= damageMultiplier;
@@ -269,6 +297,8 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void ImpactAndDestroy()
     {
+        if (hasImpacted) return;
+        hasImpacted = true;
         CrearEfectoImpacto();
         Destroy(gameObject);
     }

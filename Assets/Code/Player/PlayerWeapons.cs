@@ -71,8 +71,8 @@ public class WeaponDefinition
                 columnaInicial = 8, cuadros = 4,
                 multiplicadorDanio = 0.85f, duracionAtaque = 0.36f, enfriamiento = 0.20f, empuje = 2.5f,
                 costoFlechas = 1, costoMana = 0f,
-                esADistancia = true, velocidadProyectil = 13f, distanciaMaxima = 11f, radioProyectil = 0.16f,
-                spriteProyectil = "Arrow", colorProyectil = Color.white, escalaProyectil = 1f
+                esADistancia = true, velocidadProyectil = 13f, distanciaMaxima = 11f, radioProyectil = 0.14f,
+                spriteProyectil = "Arrow", colorProyectil = Color.white, escalaProyectil = 0.45f
             },
             new WeaponDefinition
             {
@@ -90,20 +90,47 @@ public class WeaponDefinition
     }
 }
 
-/// <summary>Utilidades de daño compartidas por ataques cuerpo a cuerpo y proyectiles del jugador.</summary>
+/// <summary>Utilidades de daño compartidas por ataques cuerpo a cuerpo, contraataques y proyectiles del jugador.</summary>
 public static class PlayerCombatUtil
 {
     /// <summary>Aplica daño al collider si pertenece a un enemigo. Devuelve true si impactó a algo dañable.</summary>
     public static bool AplicarDanio(Collider2D col, float danio, Vector2 direccion, float empuje, GameObject origen)
     {
         if (col == null || col.gameObject == origen) return false;
+        if (col.CompareTag("Player")) return false;
 
-        HealthComponent hc = col.GetComponent<HealthComponent>() ?? col.transform.root.GetComponent<HealthComponent>();
-        if (hc != null && !hc.isPlayer && !col.CompareTag("Player"))
+        GameObject targetObj = col.gameObject;
+
+        // 1. Enemigos clásicos del builder (SombraLanzadoraAI / SombraErranteAI)
+        SombraLanzadoraAI lanzadora = targetObj.GetComponent<SombraLanzadoraAI>() ?? targetObj.GetComponentInParent<SombraLanzadoraAI>();
+        if (lanzadora != null)
+        {
+            lanzadora.RecibirDanio(danio);
+            return true;
+        }
+
+        SombraErranteAI errante = targetObj.GetComponent<SombraErranteAI>() ?? targetObj.GetComponentInParent<SombraErranteAI>();
+        if (errante != null)
+        {
+            errante.RecibirDanio(danio);
+            return true;
+        }
+
+        // 2. Enemigos basados en BaseEnemyAI y jefes con HealthComponent
+        BaseEnemyAI baseEnemy = targetObj.GetComponent<BaseEnemyAI>() ?? targetObj.GetComponentInParent<BaseEnemyAI>();
+        if (baseEnemy != null)
+        {
+            baseEnemy.RecibirDanio(danio);
+            return true;
+        }
+
+        HealthComponent hc = targetObj.GetComponent<HealthComponent>() ?? targetObj.transform.root.GetComponent<HealthComponent>();
+        if (hc != null && !hc.isPlayer)
         {
             hc.TakeDamage(danio, direccion, empuje, origen);
             return true;
         }
+
         if (col.CompareTag("Enemy") || col.name.Contains("Sombra"))
         {
             col.SendMessage("RecibirDanio", danio, SendMessageOptions.DontRequireReceiver);
@@ -143,7 +170,8 @@ public class PlayerProjectile : MonoBehaviour
                 Texture2D tex = ZoneWaveSpawner.LoadSpriteTexture(arma.spriteProyectil);
                 if (tex != null)
                 {
-                    sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 16f);
+                    float ppu = arma.tipo == WeaponType.Bow ? 24f : 16f;
+                    sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), ppu);
                     cacheSprites[arma.spriteProyectil] = sprite;
                 }
             }
@@ -158,7 +186,12 @@ public class PlayerProjectile : MonoBehaviour
 
         float angulo = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         go.transform.rotation = Quaternion.Euler(0f, 0f, apuntaDiagonal ? angulo - 45f : 0f);
-        go.transform.localScale = Vector3.one * arma.escalaProyectil;
+
+        // Escala reducida para las flechas del arco para que se vean proporcionadas y estilizadas
+        float escalaFinal = arma.tipo == WeaponType.Bow
+            ? Mathf.Min(arma.escalaProyectil, 0.48f)
+            : arma.escalaProyectil;
+        go.transform.localScale = Vector3.one * escalaFinal;
 
         PlayerProjectile p = go.AddComponent<PlayerProjectile>();
         p.direccion = dir.normalized;

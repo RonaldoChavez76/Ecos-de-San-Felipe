@@ -114,12 +114,19 @@ public class PlayerMovement : MonoBehaviour
         if (combatSM == null) combatSM = gameObject.AddComponent<CombatStateMachine>();
 
         if (armas == null || armas.Count == 0) armas = WeaponDefinition.CrearArmasPorDefecto();
+        counterWindow = Mathf.Max(counterWindow, 0.55f);
 
-        // Asegurar que solo la espada esté desbloqueada por defecto al comenzar
+        // Asegurar que solo la espada esté desbloqueada por defecto al comenzar y que la flecha tenga escala compacta
         foreach (WeaponDefinition w in armas)
         {
             if (w.tipo == WeaponType.Sword) w.desbloqueada = true;
             else w.desbloqueada = false;
+
+            if (w.tipo == WeaponType.Bow)
+            {
+                w.escalaProyectil = 0.45f;
+                w.radioProyectil = 0.14f;
+            }
         }
 
         healthComp = GetComponent<HealthComponent>();
@@ -597,47 +604,98 @@ public class PlayerMovement : MonoBehaviour
         if (sr != null) sr.color = Color.white;
     }
 
+    public bool EstaEnVentanaDeContraataque()
+    {
+        return currentState == CombatState.Block && (Time.time - blockStartTime) <= counterWindow;
+    }
+
     public bool IntentarContraataqueProyectil()
     {
-        if (currentState == CombatState.Block)
+        if (currentState == CombatState.Block || currentState == CombatState.Counter)
         {
-            float tiempoDesdeBloqueo = Time.time - blockStartTime;
-            if (tiempoDesdeBloqueo <= counterWindow)
-            {
-                StartCoroutine(EfectoContraataqueExitoso());
-                AñadirCargaAsalto(35f);
-                SaveStateManager.Instance?.RegistrarContraataqueExitoso();
-                AudioManager.Instance?.PlayCounterSound();
-                return true;
-            }
+            StartCoroutine(EfectoContraataqueExitoso());
+            AñadirCargaAsalto(35f);
+            SaveStateManager.Instance?.RegistrarContraataqueExitoso();
+            AudioManager.Instance?.PlayCounterSound();
+            return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Desata un tajo/onda de contraataque celeste que inflige daño real al atacante y a los enemigos cercanos.
+    /// </summary>
+    public void EjecutarContraataque(GameObject atacanteEspecifico = null, float multiplicador = 2.0f)
+    {
+        StartCoroutine(EfectoContraataqueExitoso());
+        AñadirCargaAsalto(35f);
+        SaveStateManager.Instance?.RegistrarContraataqueExitoso();
+        AudioManager.Instance?.PlayCounterSound();
+
+        float danioContraataque = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * multiplicador;
+        int enemigosGolpeados = 0;
+
+        // 1. Dañar directamente al atacante específico si se conoce
+        if (atacanteEspecifico != null && atacanteEspecifico != gameObject)
+        {
+            Collider2D colAtacante = atacanteEspecifico.GetComponent<Collider2D>() ?? atacanteEspecifico.GetComponentInChildren<Collider2D>();
+            Vector2 dirEmpuje = ((Vector2)atacanteEspecifico.transform.position - (Vector2)transform.position).normalized;
+            if (colAtacante != null && PlayerCombatUtil.AplicarDanio(colAtacante, danioContraataque, dirEmpuje, 7f, gameObject))
+            {
+                enemigosGolpeados++;
+            }
+            else
+            {
+                atacanteEspecifico.SendMessage("RecibirDanio", danioContraataque, SendMessageOptions.DontRequireReceiver);
+                enemigosGolpeados++;
+            }
+        }
+
+        // 2. Onda expansiva de contraataque alrededor de Ronan (radio 2.4m) para golpear enemigos cuerpo a cuerpo cercanos
+        Collider2D[] cercanos = Physics2D.OverlapCircleAll(transform.position, 2.4f);
+        foreach (Collider2D col in cercanos)
+        {
+            if (col == null || col.gameObject == gameObject || col.gameObject == atacanteEspecifico) continue;
+            if (col.CompareTag("Player")) continue;
+
+            Vector2 dir = ((Vector2)col.transform.position - (Vector2)transform.position).normalized;
+            if (PlayerCombatUtil.AplicarDanio(col, danioContraataque, dir, 7f, gameObject))
+            {
+                enemigosGolpeados++;
+            }
+        }
+
+        if (enemigosGolpeados > 0)
+        {
+            MostrarAvisoRecurso($"⚡ ¡CONTRAATAQUE! -{danioContraataque:0} HP al enemigo");
+        }
     }
 
     private IEnumerator EfectoContraataqueExitoso()
     {
         SetState(CombatState.Counter);
-        MostrarEfectoFrenteAlJugador(new Color(0f, 1f, 1f, 1f), new Vector3(1.2f, 1.2f, 1f));
-        yield return new WaitForSeconds(0.18f);
+        MostrarEfectoFrenteAlJugador(new Color(0f, 1f, 1f, 1f), new Vector3(1.35f, 1.35f, 1f));
+        yield return new WaitForSeconds(0.20f);
         if (visualEffectObj != null) visualEffectObj.SetActive(false);
         SetState(CombatState.Idle);
     }
 
     public void RecibirDanio(float cantidad)
     {
-        if (isInvulnerable || currentState == CombatState.Victory) return;
+        if (isInvulnerable || currentState == CombatState.Victory || currentState == CombatState.Counter) return;
 
         if (currentState == CombatState.Block)
         {
             float tiempoDesdeBloqueo = Time.time - blockStartTime;
             if (tiempoDesdeBloqueo <= counterWindow)
             {
-                // Contraataque perfecto
-                StartCoroutine(EfectoContraataqueExitoso());
-                AñadirCargaAsalto(35f);
+                // Contraataque perfecto: 0 daño recibido y 200% de daño devuelto al enemigo
+                EjecutarContraataque(null, 2.0f);
                 return;
             }
-            cantidad *= 0.30f; // Mitigación
+            // Contraataque en guardia mantenida: mitiga 75% del daño y devuelve 125% de daño al enemigo
+            cantidad *= 0.25f;
+            EjecutarContraataque(null, 1.25f);
         }
 
         currentHealth = Mathf.Clamp(currentHealth - cantidad, 0f, maxHealth);
@@ -946,11 +1004,12 @@ public class PlayerMovement : MonoBehaviour
             $"{iconoArma} <color=#FFE066>{arma.nombre}</color> | ATQ <b>{atkActual:0.#}</b> | Cambiar: <color=#00E5FF>[Q]</color>",
             UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
 
-        // Aviso temporal si falta maná o flechas
+        // Aviso temporal si falta maná/flechas o confirmación de contraataque
         if (avisoRecursoTimer > 0f)
         {
             float avY = row4Y + row4H + UITheme.Px(3f);
-            GUI.color = new Color(0.85f, 0.20f, 0.20f, 0.92f);
+            bool esContraataque = avisoRecurso.Contains("CONTRAATAQUE") || avisoRecurso.Contains("Oro");
+            GUI.color = esContraataque ? new Color(0.04f, 0.42f, 0.56f, 0.94f) : new Color(0.85f, 0.20f, 0.20f, 0.92f);
             GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)), UITheme.Blanca);
             GUI.color = Color.white;
             UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)),
@@ -958,6 +1017,195 @@ public class PlayerMovement : MonoBehaviour
                 UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
 
+        // Pequeño Menú Gráfico de Armas (debajo del panel de Ronan, dentro del área segura izquierda)
+        DibujarMenuGraficoArmas(panelX, panel.yMax + UITheme.Px(6f), panelW);
+
         GUI.color = prevColor;
+    }
+
+    private static Texture2D texArmaEspada;
+    private static Texture2D texArmaArco;
+    private static Texture2D texArmaBaculo;
+
+    private static void AsegurarIconosMenuArmas()
+    {
+        if (texArmaEspada == null) texArmaEspada = CrearIconoArmaPixelArt(WeaponType.Sword);
+        if (texArmaArco == null) texArmaArco = CrearIconoArmaPixelArt(WeaponType.Bow);
+        if (texArmaBaculo == null) texArmaBaculo = CrearIconoArmaPixelArt(WeaponType.Staff);
+    }
+
+    private static Texture2D CrearIconoArmaPixelArt(WeaponType tipo)
+    {
+        int s = 24;
+        Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+
+        for (int y = 0; y < s; y++)
+            for (int x = 0; x < s; x++)
+                tex.SetPixel(x, y, Color.clear);
+
+        if (tipo == WeaponType.Sword)
+        {
+            // Hoja diagonal de acero reluciente y guarda dorada
+            for (int i = 6; i <= 20; i++)
+            {
+                tex.SetPixel(i, i, new Color(0.94f, 0.98f, 1f, 1f));
+                if (i < 20) tex.SetPixel(i - 1, i, new Color(0.68f, 0.80f, 0.94f, 1f));
+                if (i < 20) tex.SetPixel(i, i - 1, new Color(0.68f, 0.80f, 0.94f, 1f));
+            }
+            for (int g = -3; g <= 3; g++)
+            {
+                tex.SetPixel(7 + g, 7 - g, new Color(1f, 0.86f, 0.28f, 1f));
+            }
+            for (int h = 3; h <= 6; h++)
+            {
+                tex.SetPixel(h, h, new Color(0.58f, 0.30f, 0.14f, 1f));
+            }
+            tex.SetPixel(2, 2, new Color(1f, 0.86f, 0.28f, 1f));
+        }
+        else if (tipo == WeaponType.Bow)
+        {
+            // Arco curvo de madera dorada con cuerda tensa y flecha estilizada
+            for (int t = 4; t <= 19; t++)
+            {
+                int bx = Mathf.Clamp(Mathf.RoundToInt(16f - Mathf.Pow((t - 11.5f) / 3.8f, 2f) * 2.2f), 2, 21);
+                tex.SetPixel(bx, t, new Color(0.92f, 0.65f, 0.24f, 1f));
+                tex.SetPixel(bx - 1, t, new Color(0.68f, 0.42f, 0.14f, 1f));
+            }
+            // Cuerda del arco
+            for (int y = 5; y <= 18; y++)
+            {
+                tex.SetPixel(8, y, new Color(0.88f, 0.92f, 0.96f, 0.85f));
+            }
+            // Flecha cruzando el arco
+            for (int x = 6; x <= 20; x++)
+            {
+                tex.SetPixel(x, 12, new Color(0.95f, 0.88f, 0.55f, 1f));
+            }
+            tex.SetPixel(21, 12, new Color(0.92f, 0.96f, 1f, 1f));
+            tex.SetPixel(19, 13, new Color(0.92f, 0.96f, 1f, 1f));
+            tex.SetPixel(19, 11, new Color(0.92f, 0.96f, 1f, 1f));
+        }
+        else
+        {
+            // Báculo del Eco con vara ancestral y orbe arcano celeste
+            for (int i = 3; i <= 16; i++)
+            {
+                tex.SetPixel(i, i, new Color(0.66f, 0.38f, 0.18f, 1f));
+                tex.SetPixel(i - 1, i, new Color(0.46f, 0.25f, 0.10f, 1f));
+            }
+            Vector2 orbCenter = new Vector2(17.5f, 17.5f);
+            for (int y = 12; y < 23; y++)
+            {
+                for (int x = 12; x < 23; x++)
+                {
+                    float d = Vector2.Distance(new Vector2(x, y), orbCenter);
+                    if (d <= 4.3f)
+                    {
+                        Color c = d < 2.0f ? new Color(0.92f, 1f, 1f, 1f) : new Color(0f, 0.88f, 1f, 0.95f);
+                        tex.SetPixel(x, y, c);
+                    }
+                }
+            }
+        }
+
+        tex.Apply();
+        tex.hideFlags = HideFlags.HideAndDontSave;
+        return tex;
+    }
+
+    private void DibujarMenuGraficoArmas(float x, float y, float width)
+    {
+        if (armas == null || armas.Count == 0) return;
+        AsegurarIconosMenuArmas();
+
+        float pad = UITheme.Px(8f);
+        float gap = UITheme.Px(6f);
+        int count = Mathf.Min(3, armas.Count);
+        float cardW = (width - pad * 2f - gap * (count - 1)) / count;
+        float cardH = UITheme.Px(44f);
+        float totalH = cardH + pad * 2f;
+
+        Rect rMenu = new Rect(x, y, width, totalH);
+        UITheme.Panel(rMenu, UITheme.BordeDorado, 1.5f);
+
+        for (int i = 0; i < count; i++)
+        {
+            WeaponDefinition w = armas[i];
+            bool activa = (i == armaActual);
+            bool desbloqueada = w.desbloqueada;
+
+            Rect rCard = new Rect(x + pad + i * (cardW + gap), y + pad, cardW, cardH);
+
+            // Fondo de la casilla de arma
+            GUI.color = activa
+                ? new Color(0.14f, 0.22f, 0.34f, 0.96f)
+                : (desbloqueada ? new Color(0.06f, 0.09f, 0.14f, 0.92f) : new Color(0.04f, 0.05f, 0.08f, 0.85f));
+            GUI.DrawTexture(rCard, UITheme.Blanca);
+
+            Color colBorde = activa
+                ? new Color(1f, 0.86f, 0.32f, 1f)
+                : (desbloqueada ? new Color(0.35f, 0.52f, 0.68f, 0.85f) : new Color(0.28f, 0.30f, 0.35f, 0.65f));
+            UITheme.Borde(rCard, colBorde, activa ? 2f : 1f);
+
+            // Icono gráfico del arma a la izquierda de la tarjeta
+            float iconSize = cardH - UITheme.Px(10f);
+            Rect rIcon = new Rect(rCard.x + UITheme.Px(4f), rCard.y + UITheme.Px(5f), iconSize, iconSize);
+            Texture2D tex = w.tipo == WeaponType.Bow ? texArmaArco : (w.tipo == WeaponType.Staff ? texArmaBaculo : texArmaEspada);
+
+            if (tex != null)
+            {
+                GUI.color = desbloqueada ? Color.white : new Color(0.45f, 0.50f, 0.58f, 0.38f);
+                GUI.DrawTexture(rIcon, tex, ScaleMode.ScaleToFit);
+            }
+
+            // Textos a la derecha del icono: Tecla [1/2/3], Nombre corto y Estado/Recurso
+            float txtX = rIcon.xMax + UITheme.Px(3f);
+            float txtW = rCard.xMax - txtX - UITheme.Px(3f);
+
+            string nombreCorto = w.tipo == WeaponType.Sword ? "Espada" : (w.tipo == WeaponType.Bow ? "Arco" : "Báculo");
+            Color colTitulo = activa ? UITheme.Dorado : (desbloqueada ? Color.white : new Color(0.55f, 0.60f, 0.68f));
+
+            GUI.color = Color.white;
+            GUI.Label(new Rect(txtX, rCard.y + UITheme.Px(4f), txtW, UITheme.Px(17f)),
+                $"<b>[{i + 1}] {nombreCorto}</b>",
+                UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleLeft, colTitulo));
+
+            string subInfo;
+            Color colSub;
+            if (!desbloqueada)
+            {
+                subInfo = "🔒 Tienda [B]";
+                colSub = new Color(0.68f, 0.62f, 0.52f, 0.90f);
+            }
+            else if (w.tipo == WeaponType.Bow)
+            {
+                subInfo = $"🏹 {flechas} flechas";
+                colSub = flechas > 0 ? new Color(1f, 0.88f, 0.45f) : UITheme.Alerta;
+            }
+            else if (w.tipo == WeaponType.Staff)
+            {
+                subInfo = $"💧 -{w.costoMana:0} maná";
+                colSub = manaActual >= w.costoMana ? UITheme.Turquesa : UITheme.Alerta;
+            }
+            else
+            {
+                float atk = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * w.multiplicadorDanio;
+                subInfo = $"ATQ {atk:0.#}";
+                colSub = new Color(0.75f, 0.95f, 0.80f);
+            }
+
+            GUI.Label(new Rect(txtX, rCard.y + UITheme.Px(22f), txtW, UITheme.Px(16f)),
+                subInfo,
+                UITheme.Estilo(8, FontStyle.Bold, TextAnchor.MiddleLeft, colSub));
+
+            // Permitir clic directo sobre la tarjeta para equipar el arma si está desbloqueada
+            if (desbloqueada && Event.current.type == EventType.MouseDown && rCard.Contains(Event.current.mousePosition))
+            {
+                CambiarArma(i);
+                Event.current.Use();
+            }
+        }
     }
 }
