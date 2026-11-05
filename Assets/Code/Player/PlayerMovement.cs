@@ -840,18 +840,28 @@ public class PlayerMovement : MonoBehaviour
         Color prevColor = GUI.color;
 
         WeaponDefinition arma = ArmaActual;
-        bool muestraRecurso = (arma.tipo == WeaponType.Staff || arma.tipo == WeaponType.Bow);
 
-        // Anclado con margen seguro a la esquina superior izquierda
-        float panelX = UITheme.Px(18f);
-        float panelY = UITheme.Px(16f);
-        float panelW = Mathf.Clamp(UITheme.Px(320f), 290f, 380f);
-        float pad = UITheme.Px(12f);
-        float gap = UITheme.Px(4f);
+        // 1. Margen seguro (Safe Area) contra bordes cortados
+        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
+        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
+
+        float panelX = safeMarginX;
+        float panelY = safeMarginY;
+        float pad = UITheme.Px(14f);
+        float panelW = Mathf.Clamp(UITheme.Px(330f), 295f, Screen.width * 0.35f);
         float barW = panelW - pad * 2f;
-        float barH = UITheme.Px(16f);
-        float panelH = UITheme.Px(muestraRecurso ? 116f : 96f);
-        if (avisoRecursoTimer > 0f) panelH += UITheme.Px(24f);
+
+        float row1H = UITheme.Px(18f);
+        float barH = UITheme.Px(15f);
+        float row3H = UITheme.Px(14f);
+        float row4H = UITheme.Px(18f);
+        float gap = UITheme.Px(5f);
+
+        float panelH = pad * 2f + row1H + gap + barH + gap + row3H + gap + row4H;
+        if (avisoRecursoTimer > 0f)
+        {
+            panelH += UITheme.Px(22f);
+        }
 
         Rect panel = new Rect(panelX, panelY, panelW, panelH);
         UITheme.Panel(panel, UITheme.BordeDorado, 1.5f);
@@ -859,266 +869,95 @@ public class PlayerMovement : MonoBehaviour
         float hpPct = Mathf.Clamp01(currentHealth / Mathf.Max(1f, maxHealth));
         bool lowHp = hpPct <= 0.30f;
 
-        // Línea 1: Encabezado con margen interior garantizado
-        float headerY = panelY + UITheme.Px(8f);
+        // Fila 1: RONAN (en dorado) a la izquierda (en panelX + pad) y vida numérica ♥ 100/100 a la derecha
+        float row1Y = panelY + pad;
         string alerta = lowHp ? " <color=#FF6B5E>¡BAJA!</color>" : "";
-        GUI.Label(new Rect(panelX + pad, headerY, barW * 0.55f, UITheme.Px(18f)),
-            "<b>RONAN</b>" + alerta, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
+        GUI.Label(new Rect(panelX + pad, row1Y, barW * 0.56f, row1H),
+            "<b>RONAN</b>" + alerta,
+            UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
-        GUI.Label(new Rect(panelX + pad + barW * 0.48f, headerY, barW * 0.52f, UITheme.Px(18f)),
+        GUI.Label(new Rect(panelX + pad + barW * 0.48f, row1Y, barW * 0.52f, row1H),
             $"♥ {Mathf.CeilToInt(currentHealth)}/{Mathf.CeilToInt(maxHealth)}",
             UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleRight, Color.white));
 
-        // 1. Barra de Vida con marco interior y fondo oscuro
-        float hpY = headerY + UITheme.Px(20f);
-        GUI.color = new Color(0.12f, 0.03f, 0.03f, 0.90f);
-        GUI.DrawTexture(new Rect(panelX + pad, hpY, barW, barH), UITheme.Blanca);
+        // Fila 2: Barra de Vida (verde con fondo oscuro y marco interior)
+        float row2Y = row1Y + row1H + gap;
+        Rect rHp = new Rect(panelX + pad, row2Y, barW, barH);
+        GUI.color = new Color(0.10f, 0.03f, 0.03f, 0.92f);
+        GUI.DrawTexture(rHp, UITheme.Blanca);
+
         GUI.color = hpPct > 0.5f
             ? new Color(0.18f, 0.78f, 0.32f, 0.95f)
             : (hpPct > 0.3f ? new Color(0.92f, 0.68f, 0.12f, 0.95f) : new Color(0.95f, 0.18f, 0.18f, 0.85f + Mathf.PingPong(Time.time * 2.5f, 0.15f)));
-        GUI.DrawTexture(new Rect(panelX + pad + 1.5f, hpY + 1.5f, (barW - 3f) * hpPct, barH - 3f), UITheme.Blanca);
+        GUI.DrawTexture(new Rect(rHp.x + 1.5f, rHp.y + 1.5f, (rHp.width - 3f) * hpPct, rHp.height - 3f), UITheme.Blanca);
         GUI.color = Color.white;
+        UITheme.Borde(rHp, new Color(1f, 1f, 1f, 0.25f), 1f);
 
-        float currY = hpY + barH + gap;
-
-        // 2. Barra de Recurso (Maná si es báculo, Flechas si es arco)
+        // Fila 3: Barra de Recurso (Maná o Flechas según el arma activa) o Barra de Modo Asalto [L]
+        float row3Y = row2Y + barH + gap;
+        Rect rRes = new Rect(panelX + pad, row3Y, barW, row3H);
         if (arma.tipo == WeaponType.Staff)
         {
             float manaPct = Mathf.Clamp01(manaActual / Mathf.Max(1f, manaMaximo));
-            float rH = UITheme.Px(14f);
-            GUI.color = new Color(0.04f, 0.12f, 0.25f, 0.88f);
-            GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
+            GUI.color = new Color(0.04f, 0.12f, 0.25f, 0.90f);
+            GUI.DrawTexture(rRes, UITheme.Blanca);
             GUI.color = manaActual >= arma.costoMana ? new Color(0f, 0.85f, 1f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * manaPct, rH - 3f), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * manaPct, rRes.height - 3f), UITheme.Blanca);
             GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(6f), currY, barW - UITheme.Px(12f), rH),
+            UITheme.Borde(rRes, new Color(0.45f, 0.88f, 1f, 0.35f), 1f);
+            UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
                 $"💧 Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
-                UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-            currY += rH + gap;
+                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
         else if (arma.tipo == WeaponType.Bow)
         {
             float flechasPct = Mathf.Clamp01((float)flechas / Mathf.Max(1f, maxFlechas));
-            float rH = UITheme.Px(14f);
-            GUI.color = new Color(0.20f, 0.15f, 0.05f, 0.88f);
-            GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
+            GUI.color = new Color(0.20f, 0.15f, 0.05f, 0.90f);
+            GUI.DrawTexture(rRes, UITheme.Blanca);
             GUI.color = flechas > 0 ? new Color(1f, 0.80f, 0.25f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * flechasPct, rH - 3f), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * flechasPct, rRes.height - 3f), UITheme.Blanca);
             GUI.color = Color.white;
+            UITheme.Borde(rRes, new Color(1f, 0.85f, 0.35f, 0.35f), 1f);
             string txtF = flechas > 0 ? $"🏹 Flechas: {flechas}/{maxFlechas} (-1)" : "🏹 ¡Sin Flechas!";
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(6f), currY, barW - UITheme.Px(12f), rH),
-                txtF, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-            currY += rH + gap;
+            UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
+                txtF, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+        }
+        else
+        {
+            float asaltoPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
+            GUI.color = new Color(0.05f, 0.10f, 0.20f, 0.90f);
+            GUI.DrawTexture(rRes, UITheme.Blanca);
+            GUI.color = isAssaultActive
+                ? new Color(0.20f, 0.92f, 1f, 0.85f + Mathf.PingPong(Time.time * 3f, 0.15f))
+                : (asaltoPct >= 1f ? new Color(0.15f, 0.85f, 1f, 1f) : new Color(0.16f, 0.48f, 0.85f, 0.90f));
+            GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * asaltoPct, rRes.height - 3f), UITheme.Blanca);
+            GUI.color = Color.white;
+            UITheme.Borde(rRes, new Color(0.45f, 0.85f, 1f, 0.35f), 1f);
+            string txtAsalto = isAssaultActive ? "⚡ Modo Asalto Activo [L]" : (asaltoPct >= 1f ? "⚡ Modo Asalto Listo [L]" : $"⚡ Carga de Asalto [L]: {Mathf.RoundToInt(asaltoPct * 100f)}%");
+            UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
+                txtAsalto, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
 
-        // 3. Barra de Modo Asalto (8px)
-        float asH = UITheme.Px(8f);
-        float asaltoPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
-        GUI.color = new Color(0.05f, 0.10f, 0.20f, 0.88f);
-        GUI.DrawTexture(new Rect(panelX + pad, currY, barW, asH), UITheme.Blanca);
-        GUI.color = isAssaultActive
-            ? new Color(0.20f, 0.92f, 1f, 0.85f + Mathf.PingPong(Time.time * 3f, 0.15f))
-            : (asaltoPct >= 1f ? new Color(0.15f, 0.85f, 1f, 1f) : new Color(0.16f, 0.48f, 0.85f, 0.9f));
-        GUI.DrawTexture(new Rect(panelX + pad + 1.5f, currY + 1.5f, (barW - 3f) * asaltoPct, asH - 3f), UITheme.Blanca);
-        GUI.color = Color.white;
-        currY += asH + gap;
-
-        // 4. Arma y estadísticas en línea con suficiente margen y ancho completo
+        // Fila 4: Arma activa en una sola línea limpia: ⚔ Espada de San Felipe | ATQ 12 | Cambiar: [Q]
+        float row4Y = row3Y + row3H + gap;
         float atkActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
-        GUI.Label(new Rect(panelX + pad, currY, barW, UITheme.Px(18f)),
-            $"⚔ <color=#FFE066>{arma.nombre}</color>  |  ATQ <b>{atkActual:0.#}</b>  <color=#9AA6B8>[Q]</color>",
-            UITheme.Estilo(12, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
+        string iconoArma = arma.tipo == WeaponType.Bow ? "🏹" : (arma.tipo == WeaponType.Staff ? "🔮" : "⚔");
+        GUI.Label(new Rect(panelX + pad, row4Y, barW, row4H),
+            $"{iconoArma} <color=#FFE066>{arma.nombre}</color> | ATQ <b>{atkActual:0.#}</b> | Cambiar: <color=#00E5FF>[Q]</color>",
+            UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
 
-        // 5. Aviso flotante de recurso insuficiente
+        // Aviso temporal si falta maná o flechas
         if (avisoRecursoTimer > 0f)
         {
-            float avY = currY + UITheme.Px(20f);
+            float avY = row4Y + row4H + UITheme.Px(3f);
             GUI.color = new Color(0.85f, 0.20f, 0.20f, 0.92f);
-            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(19f)), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)), UITheme.Blanca);
             GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(19f)),
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)),
                 avisoRecurso,
-                UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
-
-        // 6. Selector Visual del Arma Equipada (Esquina Inferior Izquierda)
-        DibujarSelectorVisualArma(arma, atkActual);
 
         GUI.color = prevColor;
-    }
-
-    private static Texture2D texIconoEspada;
-    private static Texture2D texIconoArco;
-    private static Texture2D texIconoBaculo;
-
-    private static void AsegurarIconosArmas()
-    {
-        if (texIconoArco == null)
-        {
-            texIconoArco = ZoneWaveSpawner.LoadSpriteTexture("Arrow");
-        }
-        if (texIconoEspada == null)
-        {
-            texIconoEspada = CrearIconoArmaProcedural(WeaponType.Sword);
-        }
-        if (texIconoBaculo == null)
-        {
-            texIconoBaculo = CrearIconoArmaProcedural(WeaponType.Staff);
-        }
-        if (texIconoArco == null)
-        {
-            texIconoArco = CrearIconoArmaProcedural(WeaponType.Bow);
-        }
-    }
-
-    private static Texture2D CrearIconoArmaProcedural(WeaponType tipo)
-    {
-        int s = 24;
-        Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        tex.wrapMode = TextureWrapMode.Clamp;
-
-        for (int y = 0; y < s; y++)
-            for (int x = 0; x < s; x++)
-                tex.SetPixel(x, y, Color.clear);
-
-        if (tipo == WeaponType.Sword)
-        {
-            // Hoja diagonal de acero reluciente y empuñadura dorada
-            for (int i = 6; i <= 20; i++)
-            {
-                tex.SetPixel(i, i, new Color(0.92f, 0.96f, 1f, 1f));
-                if (i < 20) tex.SetPixel(i - 1, i, new Color(0.68f, 0.78f, 0.90f, 1f));
-                if (i < 20) tex.SetPixel(i, i - 1, new Color(0.68f, 0.78f, 0.90f, 1f));
-            }
-            // Guarda dorada
-            for (int g = -3; g <= 3; g++)
-            {
-                tex.SetPixel(7 + g, 7 - g, new Color(1f, 0.85f, 0.25f, 1f));
-            }
-            // Empuñadura y pomo
-            for (int h = 3; h <= 6; h++)
-            {
-                tex.SetPixel(h, h, new Color(0.55f, 0.28f, 0.12f, 1f));
-            }
-            tex.SetPixel(2, 2, new Color(1f, 0.85f, 0.25f, 1f));
-        }
-        else if (tipo == WeaponType.Staff)
-        {
-            // Vara de madera ancestral con orbe arcano celeste en la punta
-            for (int i = 3; i <= 16; i++)
-            {
-                tex.SetPixel(i, i, new Color(0.62f, 0.36f, 0.16f, 1f));
-                tex.SetPixel(i - 1, i, new Color(0.45f, 0.24f, 0.10f, 1f));
-            }
-            Vector2 orbCenter = new Vector2(18f, 18f);
-            for (int y = 13; y < 23; y++)
-            {
-                for (int x = 13; x < 23; x++)
-                {
-                    float d = Vector2.Distance(new Vector2(x, y), orbCenter);
-                    if (d <= 4.2f)
-                    {
-                        Color c = d < 2.0f ? new Color(0.90f, 1f, 1f, 1f) : new Color(0f, 0.88f, 1f, 0.95f);
-                        tex.SetPixel(x, y, c);
-                    }
-                }
-            }
-        }
-        else
-        {
-            // Arco curvo con cuerda y flecha
-            for (int i = 4; i <= 19; i++)
-            {
-                tex.SetPixel(i, i, new Color(0.95f, 0.85f, 0.45f, 1f));
-            }
-        }
-
-        tex.Apply();
-        tex.hideFlags = HideFlags.HideAndDontSave;
-        return tex;
-    }
-
-    private void DibujarSelectorVisualArma(WeaponDefinition arma, float atkActual)
-    {
-        AsegurarIconosArmas();
-
-        float w = Mathf.Clamp(UITheme.Px(310f), 280f, 360f);
-        float h = UITheme.Px(68f);
-        float x = UITheme.Px(18f);
-        float y = Screen.height - h - UITheme.Px(16f);
-        float pad = UITheme.Px(8f);
-
-        Rect rPanel = new Rect(x, y, w, h);
-        UITheme.Panel(rPanel, UITheme.BordeDorado, 1.5f);
-
-        // Casilla cuadrada del icono del arma activa
-        float iconBoxSize = h - pad * 2f;
-        Rect rIconBox = new Rect(x + pad, y + pad, iconBoxSize, iconBoxSize);
-        GUI.color = new Color(0.05f, 0.07f, 0.12f, 0.95f);
-        GUI.DrawTexture(rIconBox, UITheme.Blanca);
-        UITheme.Borde(rIconBox, new Color(1f, 0.86f, 0.35f, 0.98f), 1.5f);
-
-        Texture2D texArma = arma.tipo == WeaponType.Bow
-            ? texIconoArco
-            : (arma.tipo == WeaponType.Staff ? texIconoBaculo : texIconoEspada);
-
-        if (texArma != null)
-        {
-            GUI.color = new Color(1f, 0.88f, 0.35f, 0.18f);
-            GUI.DrawTexture(new Rect(rIconBox.x + 2f, rIconBox.y + 2f, rIconBox.width - 4f, rIconBox.height - 4f), UITheme.Blanca);
-            GUI.color = Color.white;
-            float p = UITheme.Px(6f);
-            GUI.DrawTexture(new Rect(rIconBox.x + p, rIconBox.y + p, rIconBox.width - p * 2f, rIconBox.height - p * 2f), texArma, ScaleMode.ScaleToFit);
-        }
-
-        // Etiqueta [Q] en esquina de la casilla del icono
-        Rect rBadgeQ = new Rect(rIconBox.xMax - UITheme.Px(20f), rIconBox.yMax - UITheme.Px(15f), UITheme.Px(19f), UITheme.Px(14f));
-        GUI.color = new Color(0.08f, 0.12f, 0.18f, 0.95f);
-        GUI.DrawTexture(rBadgeQ, UITheme.Blanca);
-        GUI.color = Color.white;
-        GUI.Label(rBadgeQ, "[Q]", UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Dorado));
-
-        // Información derecha: Nombre, Daño y Munición/Maná gráfico
-        float infoX = rIconBox.xMax + UITheme.Px(10f);
-        float infoW = w - (infoX - x) - pad;
-
-        GUI.Label(new Rect(infoX, y + UITheme.Px(6f), infoW, UITheme.Px(18f)),
-            $"<b><color=#FFE066>{arma.nombre}</color></b>",
-            UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-
-        GUI.Label(new Rect(infoX, y + UITheme.Px(24f), infoW, UITheme.Px(16f)),
-            $"DAÑO: <b>{atkActual:0.#}</b>   |   Cambiar: <b><color=#00E5FF>[Q]</color></b>   Tienda: <b>[B]</b>",
-            UITheme.Estilo(10, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
-
-        // Barra / Indicador gráfico de munición o maná en la parte inferior del selector
-        Rect rBar = new Rect(infoX, y + UITheme.Px(44f), infoW, UITheme.Px(14f));
-        if (arma.tipo == WeaponType.Bow)
-        {
-            float pct = Mathf.Clamp01((float)flechas / Mathf.Max(1f, maxFlechas));
-            GUI.color = new Color(0.18f, 0.12f, 0.04f, 0.92f);
-            GUI.DrawTexture(rBar, UITheme.Blanca);
-            GUI.color = flechas > 0 ? new Color(1f, 0.80f, 0.25f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(rBar.x + 1.5f, rBar.y + 1.5f, (rBar.width - 3f) * pct, rBar.height - 3f), UITheme.Blanca);
-            GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(rBar, $"🏹 Munición: {flechas}/{maxFlechas} Flechas", UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
-        }
-        else if (arma.tipo == WeaponType.Staff)
-        {
-            float pct = Mathf.Clamp01(manaActual / Mathf.Max(1f, manaMaximo));
-            GUI.color = new Color(0.04f, 0.12f, 0.24f, 0.92f);
-            GUI.DrawTexture(rBar, UITheme.Blanca);
-            GUI.color = manaActual >= arma.costoMana ? new Color(0f, 0.85f, 1f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
-            GUI.DrawTexture(new Rect(rBar.x + 1.5f, rBar.y + 1.5f, (rBar.width - 3f) * pct, rBar.height - 3f), UITheme.Blanca);
-            GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(rBar, $"💧 Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)}", UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
-        }
-        else
-        {
-            bool tieneArco = TieneArmaDesbloqueada(WeaponType.Bow);
-            bool tieneBaculo = TieneArmaDesbloqueada(WeaponType.Staff);
-            string slots = $"<color=#7CFF8E>[1] Espada</color>  {(tieneArco ? "<color=#FFE066>[2] Arco</color>" : "<color=#667080>[2] Arco🔒</color>")}  {(tieneBaculo ? "<color=#00E5FF>[3] Báculo</color>" : "<color=#667080>[3] Báculo🔒</color>")}";
-            GUI.Label(rBar, slots, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-        }
     }
 }

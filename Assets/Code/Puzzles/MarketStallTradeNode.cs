@@ -186,14 +186,16 @@ public class MarketStallTradeNode : MonoBehaviour
         if (screenPos.z <= 0) return;
 
         Color colBorde = new Color(0.98f, 0.88f, 0.42f);
+        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
+        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
         float w = UITheme.Px(290f);
         float h = UITheme.Px(34f);
-        float rx = screenPos.x - w * 0.5f;
-        float ry = Screen.height - screenPos.y - h * 0.5f;
+        float rx = Mathf.Clamp(screenPos.x - w * 0.5f, safeMarginX, Screen.width - w - safeMarginX);
+        float ry = Mathf.Clamp(Screen.height - screenPos.y - h * 0.5f, safeMarginY, Screen.height - h - safeMarginY);
 
-        if (ZoneWaveSpawner.HordaActivaEnEscena != null && ry >= UITheme.Px(90f) && ry <= UITheme.Px(155f))
+        if (ZoneWaveSpawner.HordaActivaEnEscena != null && ry >= UITheme.Px(85f) && ry <= UITheme.Px(150f))
         {
-            ry = UITheme.Px(160f);
+            ry = UITheme.Px(155f);
         }
 
         Rect r = new Rect(rx, ry, w, h);

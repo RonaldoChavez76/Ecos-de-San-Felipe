@@ -312,7 +312,7 @@ public class ZoneWaveSpawner : MonoBehaviour
     {
         if (Time.timeScale == 0f) return;
 
-        float y = UITheme.Px(110f);
+        float y = UITheme.Px(105f);
         if (bannerTimer > 0f && !string.IsNullOrEmpty(bannerMessage))
         {
             UITheme.Banner(y, bannerMessage, UITheme.Dorado, 760f, 18);

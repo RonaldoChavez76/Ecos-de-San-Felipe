@@ -177,44 +177,54 @@ public class InventoryHUD : MonoBehaviour
             oro = SaveStateManager.Instance.oro;
         }
 
-        // Dimensiones con margen seguro del borde derecho: Rect(Screen.width - width - UITheme.Px(18f), UITheme.Px(14f), width, height)
-        float width = Mathf.Clamp(UITheme.Px(336f), 300f, 380f);
-        float height = UITheme.Px(152f);
-        float pad = UITheme.Px(10f);
+        // 1. Margen Seguro (Safe Area) contra bordes cortados y ancho proporcional
+        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
+        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
+        float pad = UITheme.Px(14f);
+
+        float width = Mathf.Clamp(UITheme.Px(340f), 310f, Screen.width * 0.35f);
         float innerW = width - pad * 2f;
 
-        Rect rect = new Rect(Screen.width - width - UITheme.Px(18f), UITheme.Px(14f), width, height);
+        float row1H = UITheme.Px(18f);
+        float ecoBoxH = UITheme.Px(32f);
+        float bagTitleH = UITheme.Px(15f);
+        float slotGap = UITheme.Px(8f);
+        float slotSize = Mathf.Min(UITheme.Px(46f), (innerW - slotGap * 3f) / 4f);
+        float gapY = UITheme.Px(6f);
+
+        float height = pad * 2f + row1H + gapY + ecoBoxH + gapY + bagTitleH + UITheme.Px(4f) + slotSize;
+
+        Rect rect = new Rect(Screen.width - width - safeMarginX, safeMarginY, width, height);
         UITheme.Panel(rect, UITheme.BordeDorado, 1.5f);
 
-        // Línea 1: Zona Activa y Recursos Rápidos (Oro y Flechas)
-        float row1Y = rect.y + UITheme.Px(6f);
-        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.58f, UITheme.Px(18f)),
+        // Fila 1: Zona Activa y Recursos Rápidos (Oro y Flechas) dentro de innerW
+        float row1Y = rect.y + pad;
+        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.60f, row1H),
             $"📍 <b><color=#FFE066>{zonaNombre}</color></b>",
             UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
 
-        GUI.Label(new Rect(rect.x + pad + innerW * 0.56f, row1Y, innerW * 0.44f, UITheme.Px(18f)),
-            $"🏹 <b>{flechas}</b>   💰 <b>{oro}</b> Oro",
+        GUI.Label(new Rect(rect.x + pad + innerW * 0.56f, row1Y, innerW * 0.44f, row1H),
+            $"🏹 <b>{flechas}</b>  💰 <b>{oro}</b>",
             UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, new Color(1f, 0.92f, 0.55f)));
 
-        // Línea 2: Exhibidor Visual de los 3 ECOS SAGRADOS ([1. Fe] | [2. Tradición] | [3. Memoria])
-        float ecosY = row1Y + UITheme.Px(22f);
-        float ecoBoxW = (innerW - UITheme.Px(12f)) / 3f;
-        float ecoBoxH = UITheme.Px(34f);
+        // Fila 2: Exhibidor Visual de los 3 ECOS SAGRADOS ([1. Fe] | [2. Tradición] | [3. Memoria])
+        float ecosY = row1Y + row1H + gapY;
+        float ecoGap = UITheme.Px(5f);
+        float ecoBoxW = (innerW - ecoGap * 2f) / 3f;
 
         DibujarCasillaEco(new Rect(rect.x + pad, ecosY, ecoBoxW, ecoBoxH), 1, "1. Fe", eco1);
-        DibujarCasillaEco(new Rect(rect.x + pad + ecoBoxW + UITheme.Px(6f), ecosY, ecoBoxW, ecoBoxH), 2, "2. Tradición", eco2);
-        DibujarCasillaEco(new Rect(rect.x + pad + (ecoBoxW + UITheme.Px(6f)) * 2f, ecosY, ecoBoxW, ecoBoxH), 3, "3. Memoria", eco3);
+        DibujarCasillaEco(new Rect(rect.x + pad + ecoBoxW + ecoGap, ecosY, ecoBoxW, ecoBoxH), 2, "2. Tradición", eco2);
+        DibujarCasillaEco(new Rect(rect.x + pad + (ecoBoxW + ecoGap) * 2f, ecosY, ecoBoxW, ecoBoxH), 3, "3. Memoria", eco3);
 
-        // Línea 3: Encabezado de Mochila Gráfica
-        float bagTitleY = ecosY + ecoBoxH + UITheme.Px(6f);
-        GUI.Label(new Rect(rect.x + pad, bagTitleY, innerW, UITheme.Px(15f)),
-            "🎒 <b>MOCHILA DE OBJETOS CLAVE (TRUEQUE Y RELIQUIAS):</b>",
+        // Fila 3: Encabezado de Mochila Gráfica
+        float bagTitleY = ecosY + ecoBoxH + gapY;
+        GUI.Label(new Rect(rect.x + pad, bagTitleY, innerW, bagTitleH),
+            "🎒 <b>MOCHILA DE OBJETOS CLAVE:</b>",
             UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
-        // Línea 4: 4 Ranuras cuadradas tipo Zelda con borde de cantera/oro
-        float slotSize = UITheme.Px(46f);
-        float gap = (innerW - slotSize * 4f) / 3f;
-        float slotY = bagTitleY + UITheme.Px(17f);
+        // Fila 4: 4 Ranuras cuadradas tipo Zelda distribuidas equitativamente dentro de innerW
+        float eqGap = (innerW - slotSize * 4f) / 3f;
+        float slotY = bagTitleY + bagTitleH + UITheme.Px(4f);
 
         InventoryManager inv = InventoryManager.Instance;
         bool hasCopper = inv != null && inv.HasItem(InventoryManager.ITEM_COPPER_BAR);
@@ -222,35 +232,35 @@ public class InventoryHUD : MonoBehaviour
         bool hasGreenGem = inv != null && inv.HasItem(InventoryManager.ITEM_GREEN_GEM);
         bool hasGoldKey = (inv != null && inv.HasItem(InventoryManager.ITEM_GOLD_KEY)) || (inv != null && inv.goldKeysCount > 0);
 
-        // Slot 1: Lingote de Cobre (BarCopper.png) / Lingote Templado (BarMithril.png)
+        // Slot 1: BarCopper.png o BarMithril.png
         Texture2D t1 = hasMithril ? texMithril : texCopper;
         string lbl1 = hasMithril ? "Lingote Templado" : (hasCopper ? "Lingote de Cobre" : "Vacío: Lingote");
         string sub1 = hasMithril ? "Templado" : "Cobre";
         DibujarSlotMochila(new Rect(rect.x + pad, slotY, slotSize, slotSize), t1, hasCopper || hasMithril, lbl1, sub1);
 
-        // Slot 2: Esmeralda de San Felipe (GemGreen.png)
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + gap), slotY, slotSize, slotSize), texGreenGem, hasGreenGem, "Esmeralda de San Felipe", "Esmeralda");
+        // Slot 2: GemGreen.png
+        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap), slotY, slotSize, slotSize), texGreenGem, hasGreenGem, "Esmeralda de San Felipe", "Esmeralda");
 
-        // Slot 3: Llave Dorada del Gremio (GoldKey.png)
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + gap) * 2f, slotY, slotSize, slotSize), texGoldKey, hasGoldKey, "Llave Dorada del Gremio", "Llave Oro");
+        // Slot 3: GoldKey.png
+        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 2f, slotY, slotSize, slotSize), texGoldKey, hasGoldKey, "Llave Dorada del Gremio", "Llave Oro");
 
-        // Slot 4: Monedas/Bolsa de Oro o Corazón de Reserva
+        // Slot 4: BarGold.png o Heart.png
         bool tieneReservaOro = oro > 0;
-        Texture2D t4 = texHeart != null ? texHeart : texGoldBar;
+        Texture2D t4 = texGoldBar != null ? texGoldBar : texHeart;
         string lbl4 = $"Reserva: {oro} Oro / Salud";
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + gap) * 3f, slotY, slotSize, slotSize), t4, tieneReservaOro, lbl4, $"{oro} Oro");
+        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 3f, slotY, slotSize, slotSize), t4, tieneReservaOro, lbl4, $"{oro} Oro");
 
         // 5. Notificación flotante de trueque (centro superior)
         if (notificacionTimer > 0f && !string.IsNullOrEmpty(notificacionTexto))
         {
-            float notifW = Mathf.Clamp(UITheme.Px(580f), 450f, Screen.width - 40f);
+            float notifW = Mathf.Clamp(UITheme.Px(580f), 420f, Screen.width - safeMarginX * 2f);
             float notifH = UITheme.Px(38f);
             float notifX = (Screen.width - notifW) * 0.5f;
             float notifY = UITheme.Px(58f);
 
             Rect rNotif = new Rect(notifX, notifY, notifW, notifH);
             UITheme.Panel(rNotif, UITheme.Turquesa, 2f);
-            GUI.Label(rNotif, notificacionTexto, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+            GUI.Label(rNotif, notificacionTexto, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
     }
 
@@ -262,13 +272,13 @@ public class InventoryHUD : MonoBehaviour
         GUI.color = recuperado ? new Color(0.03f, 0.16f, 0.24f, 0.92f) : new Color(0.07f, 0.09f, 0.13f, 0.88f);
         GUI.DrawTexture(r, UITheme.Blanca);
 
-        // Borde: celeste/dorado si fue recuperado, gris azulado (#445566) si falta
-        Color colBorde = recuperado ? new Color(0f, 0.90f, 1f, 0.95f) : new Color(0.27f, 0.33f, 0.40f, 0.80f);
+        // Borde: celeste/dorado si fue recuperado (#00E5FF), gris azulado (#445566) si falta
+        Color colBorde = recuperado ? new Color(0f, 0.90f, 1f, 0.95f) : new Color(0.27f, 0.33f, 0.40f, 0.85f);
         UITheme.Borde(r, colBorde, 1.5f);
 
-        // Orbe circular a la izquierda
-        float orbSize = r.height - UITheme.Px(6f);
-        Rect rOrb = new Rect(r.x + UITheme.Px(4f), r.y + UITheme.Px(3f), orbSize, orbSize);
+        // Orbe circular compacto a la izquierda para dejar amplio espacio al texto
+        float orbSize = Mathf.Min(r.height - UITheme.Px(10f), UITheme.Px(20f));
+        Rect rOrb = new Rect(r.x + UITheme.Px(4f), r.y + (r.height - orbSize) * 0.5f, orbSize, orbSize);
         GUI.color = Color.white;
         Texture2D orbTex = recuperado ? texEcoActivo : texEcoInactivo;
         if (orbTex != null)
@@ -278,14 +288,14 @@ public class InventoryHUD : MonoBehaviour
 
         if (!recuperado)
         {
-            // Número del eco sobre la silueta apagada (#445566)
-            GUI.Label(rOrb, numero.ToString(), UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.65f, 0.74f, 0.84f, 0.85f)));
+            // Número del eco visible sobre la silueta atenuada (#445566)
+            GUI.Label(rOrb, numero.ToString(), UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleCenter, new Color(0.72f, 0.80f, 0.90f, 0.92f)));
         }
 
-        // Texto del Eco a la derecha del orbe
-        Rect rTxt = new Rect(rOrb.xMax + UITheme.Px(3f), r.y, r.width - orbSize - UITheme.Px(8f), r.height);
-        Color txtColor = recuperado ? new Color(0f, 0.90f, 1f, 1f) : new Color(0.45f, 0.54f, 0.64f, 0.90f);
-        GUI.Label(rTxt, etiqueta, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, txtColor));
+        // Texto del Eco a la derecha del orbe con margen suficiente para no cortarse
+        Rect rTxt = new Rect(rOrb.xMax + UITheme.Px(3f), r.y, r.xMax - rOrb.xMax - UITheme.Px(5f), r.height);
+        Color txtColor = recuperado ? new Color(0f, 0.90f, 1f, 1f) : new Color(0.56f, 0.65f, 0.75f, 0.95f);
+        GUI.Label(rTxt, etiqueta, UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleLeft, txtColor));
 
         GUI.color = prev;
     }
