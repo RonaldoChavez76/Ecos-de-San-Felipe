@@ -45,7 +45,8 @@ public class BlueCrossSealNode : MonoBehaviour
         if (purificado) return;
 
         ProjectileBehaviour proj = other.GetComponent<ProjectileBehaviour>();
-        if (proj != null)
+        PlayerProjectile playerProj = other.GetComponent<PlayerProjectile>();
+        if (proj != null || playerProj != null)
         {
             Purificar();
         }
@@ -98,11 +99,13 @@ public class BlueCrossSealNode : MonoBehaviour
         };
         style.normal.textColor = new Color(0.35f, 0.95f, 1.0f);
 
-        float w = UITheme.Px(240f * 1.25f);
-        float h = UITheme.Px(36f);
+        float w = UITheme.Px(340f);
+        float h = UITheme.Px(34f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
         UITheme.Panel(r, style.normal.textColor, 2f);
-        GUI.Label(r, $"[E / J] Purificar {nombreSello}", UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
+        GUIStyle lblStyle = UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor);
+        lblStyle.wordWrap = false;
+        GUI.Label(r, $"[E / J] Purificar {nombreSello}", lblStyle);
     }
 }
 

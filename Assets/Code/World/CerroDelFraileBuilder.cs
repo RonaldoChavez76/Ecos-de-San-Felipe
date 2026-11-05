@@ -103,17 +103,18 @@ public class CerroDelFraileBuilder : MonoBehaviour
         GameObject existente = GameObject.Find("Zona_Cerro_Del_Fraile_Detallada");
         if (existente != null)
         {
-            if (GameObject.Find("Marca_Cerro_V5") != null) return existente;
+            if (GameObject.Find("Marca_Cerro_V6") != null) return existente;
             if (Application.isPlaying) Destroy(existente);
             else DestroyImmediate(existente);
         }
 
         GameObject root = new GameObject("Zona_Cerro_Del_Fraile_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
-        GameObject marca = new GameObject("Marca_Cerro_V5");
+        GameObject marca = new GameObject("Marca_Cerro_V6");
         marca.transform.SetParent(root.transform);
 
-        // 1. RECORTE DE SPRITES REALES DE LOS TILESETS VERIFICADOS (CERO TilesetRelief ROTO)
+        // 1. TABLA OFICIAL DE COORDENADAS VERIFICADAS (0 PÍXELES DE SANGRADO / BLEED)
+        // Suelos y Agua
         Sprite spPastoBase          = CortarCelda("TilesetFloor", 0, 12, 1, 1);
         Sprite spPastoClaro         = CortarCelda("TilesetFloor", 1, 12, 1, 1);
         Sprite spSenderoPiedra      = CortarCelda("TilesetFloor", 12, 15, 1, 1);
@@ -121,36 +122,43 @@ public class CerroDelFraileBuilder : MonoBehaviour
         Sprite spAdoquinCumbre      = CortarCelda("TilesetFloor", 12, 1, 1, 1);
         Sprite spDetallePiedra      = CortarCelda("TilesetFloorDetail", 2, 1, 1, 1);
         Sprite spAlfombraAzul       = CortarCelda("TilesetInteriorFloor", 13, 1, 1, 1);
-
         Sprite spAguaArroyo         = CortarCelda("TilesetWater", 1, 1, 1, 1);
-        Sprite spPuenteMadera       = CortarCelda("TilesetWater", 0, 12, 2, 4);
 
-        Sprite spPinoGrande         = CortarCelda("TilesetNature", 0, 2, 4, 3);
-        Sprite spArbolVerde         = CortarCelda("TilesetNature", 3, 18, 3, 3);
-        Sprite spArbolSagrado       = CortarCelda("TilesetNature", 6, 18, 3, 3);
-        Sprite spArbolDorado        = CortarCelda("TilesetNature", 9, 18, 3, 3);
-        Sprite spRocaMontana        = CortarCelda("TilesetNature", 16, 4, 2, 2);
-        Sprite spDetallePasto       = CortarCelda("TilesetNature", 2, 11, 1, 1);
+        // A) TILESET NATURE (Assets/Sprites/TilesetNature.png — 384x336 px, 24x21 celdas)
+        Sprite spPinoGrande         = CortarCelda("TilesetNature", 0, 2, 4, 3);   // Macizo de pinos coníferas verdes (64x48 px, completo)
+        Sprite spBosqueFrondoso     = CortarCelda("TilesetNature", 4, 2, 4, 3);   // Macizo de árboles verdes frondosos (64x48 px, completo)
+        Sprite spBosqueOlivo        = CortarCelda("TilesetNature", 20, 2, 4, 3);  // Macizo de árboles verde olivo (64x48 px, completo)
+        Sprite spArbolVerde         = CortarCelda("TilesetNature", 3, 18, 3, 3);  // Árbol verde individual completo (48x48 px)
+        Sprite spArbolDorado        = CortarCelda("TilesetNature", 9, 18, 3, 3);  // Árbol dorado otoñal completo (48x48 px)
+        Sprite spArbolCerezo        = CortarCelda("TilesetNature", 0, 18, 3, 3);  // Árbol florido sagrado para la cumbre (48x48 px)
+        Sprite spPinoChico          = CortarCelda("TilesetNature", 2, 0, 2, 2);   // Pino joven completo (32x32 px)
+        Sprite spArbustoRedondo     = CortarCelda("TilesetNature", 0, 0, 2, 2);   // Arbusto grande completo (32x32 px)
+        Sprite spMacizoRocaCafe     = CortarCelda("TilesetNature", 12, 5, 4, 3);  // Gran formación de 3 peñascos cafés (64x48 px, 0 bleed)
+        Sprite spMacizoRocaGris     = CortarCelda("TilesetNature", 16, 5, 4, 3);  // Gran formación de 3 peñascos grises (64x48 px, 0 bleed)
+        Sprite spRocaMedianaCafe    = CortarCelda("TilesetNature", 13, 8, 2, 2);  // Roca mediana café completa (32x32 px, 0 bleed)
+        Sprite spRocaMedianaGris    = CortarCelda("TilesetNature", 16, 8, 2, 2);  // Roca mediana gris completa (32x32 px, 0 bleed)
+        Sprite spPenascoAltoCafe    = CortarCelda("TilesetNature", 21, 10, 2, 3); // Peñasco vertical escarpado café (32x48 px, 0 bleed)
+        Sprite spPenascoAltoGris    = CortarCelda("TilesetNature", 21, 14, 2, 3); // Peñasco vertical escarpado gris (32x48 px, 0 bleed)
+        Sprite spToconOscuro        = CortarCelda("TilesetNature", 0, 8, 2, 2);   // Tocón de árbol antiguo (32x32 px, 0 bleed)
+        Sprite spDetallePasto       = CortarCelda("TilesetNature", 2, 10, 1, 1);  // Trébol de sotobosque en fila 10 (16x16 px, 0 bleed)
 
-        Sprite spColumnaCeremonial  = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3);
-        Sprite spRuinaPilar         = CortarCelda("TilesetVillageAbandoned", 9, 5, 2, 2);
-        Sprite spEstatuaMusgo       = CortarCelda("TilesetVillageAbandoned", 0, 3, 2, 3);
-        Sprite spEscaleraCumbre     = CortarCelda("TilesetHouse", 10, 19, 3, 3);
-        Sprite spEstatuaDorada      = CortarCelda("TilesetHouse", 3, 15, 2, 2);
-        Sprite spEstandarteAzul     = CortarCelda("TilesetHouse", 24, 20, 1, 2);
-        Sprite spEstandarteOro      = CortarCelda("TilesetHouse", 28, 20, 1, 2);
-        Sprite spMuroAlmenas        = CortarCelda("TilesetDesert", 17, 4, 3, 3);
-
-        // Campamento de Peregrinos y Elementos Urbanos
-        Sprite spTiendaGrande       = CortarCelda("tileset_camp", 4, 0, 3, 3);
-        Sprite spFogata             = CortarCelda("tileset_camp", 10, 3, 2, 2);
-        Sprite spBancaMadera        = CortarCelda("tileset_camp", 0, 7, 3, 1);
-        Sprite spFarolAceite        = CortarCelda("tileset_camp", 6, 5, 1, 2);
-        Sprite spFarolHierro        = CortarCelda("TilesetElement", 6, 3, 1, 2);
-        Sprite spCajasCamp          = CortarCelda("TilesetElement", 10, 5, 2, 2);
-        Sprite spBarrilesCamp       = CortarCelda("TilesetElement", 12, 5, 2, 2);
-        Sprite spVasijasCopa        = CortarCelda("TilesetElement", 4, 0, 2, 1);
-        Sprite spLetrero            = CortarCelda("TilesetElement", 0, 2, 1, 1);
+        // B) TILESET HOUSE, VILLAGE ABANDONED, ELEMENT Y CAMP (Verificados sin cortes)
+        Sprite spArcoPiedra         = CortarCelda("TilesetHouse", 29, 20, 3, 3);  // Arco monumental de piedra gris (48x48 px, 0 bleed)
+        Sprite spEstatuaDorada      = CortarCelda("TilesetHouse", 3, 15, 2, 2);   // Estatua de sabio en cantera dorada (32x32 px, 0 bleed)
+        Sprite spEstatuaCustodio    = CortarCelda("TilesetHouse", 3, 19, 2, 2);   // Estatua de sabio en piedra gris oscura (32x32 px, 0 bleed)
+        Sprite spEstatuaGuerrero    = CortarCelda("TilesetHouse", 5, 19, 2, 2);   // Estatua de guardián en piedra gris (32x32 px, 0 bleed)
+        Sprite spEstandarteAzul     = CortarCelda("TilesetHouse", 24, 20, 1, 2);  // Estandarte ceremonial (16x32 px)
+        Sprite spEstandarteOro      = CortarCelda("TilesetHouse", 28, 20, 1, 2);  // Estandarte dorado (16x32 px)
+        Sprite spColumnaMusgo       = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3); // Columna antigua con musgo (16x48 px)
+        Sprite spBosqueMusgo        = CortarCelda("TilesetVillageAbandoned", 0, 6, 4, 3); // Árboles antiguos musgosos (64x48 px)
+        Sprite spCajasApiladas      = CortarCelda("TilesetElement", 4, 3, 2, 2);  // Cajas de madera apiladas (32x32 px, 0 bleed)
+        Sprite spCajasCamp          = CortarCelda("TilesetElement", 10, 5, 2, 2); // Cajas de provisiones (32x32 px, 0 bleed)
+        Sprite spVasijasCopa        = CortarCelda("TilesetElement", 4, 0, 2, 1);  // Vasijas ceremoniales (32x16 px, 0 bleed)
+        Sprite spLetrero            = CortarCelda("TilesetElement", 0, 2, 1, 1);  // Cartel de madera (16x16 px, 0 bleed)
+        Sprite spTiendaGrande       = CortarCelda("tileset_camp", 4, 0, 3, 3);    // Carpa del ermitaño (48x48 px)
+        Sprite spFogata             = CortarCelda("tileset_camp", 10, 3, 2, 2);   // Fogata encendida (32x32 px, 0 bleed)
+        Sprite spBancaMadera        = CortarCelda("tileset_camp", 0, 7, 3, 1);    // Troncos para sentarse (48x16 px, 0 bleed)
+        Sprite spFarolAceite        = CortarCelda("tileset_camp", 6, 5, 1, 2);    // Farol colgante (16x32 px)
 
         // 2. SUELO ORGÁNICO DEL ASCENSO (65x95 unidades, X: -32..+32, Y: -45..+45)
         GameObject pisoRoot = new GameObject("Piso_Cerro_Organico");
@@ -163,14 +171,21 @@ public class CerroDelFraileBuilder : MonoBehaviour
         {
             for (int y = -45; y <= 45; y++)
             {
-                // Franja continua del río (y >= -34 && y <= -32): 100% agua sin tierra ni damero debajo del puente
+                // Franja continua del río (y >= -34 && y <= -32): agua continua en todo el ancho del río
                 bool enFranjaRio = (y >= -34 && y <= -32);
                 bool esOrillaRio = (y == -35 || y == -31) && (Mathf.Abs(x) > 3 && Mathf.Abs(x) <= 22);
+
+                // Plataforma ceremonial limpia del Altar de la Gran Cruz Azul (X = -4..+4, Y = 34..38)
+                bool enPlataformaAltar = (x >= -4 && x <= 4 && y >= 34 && y <= 38);
+                bool esBordePlataformaAltar = enPlataformaAltar && (Mathf.Abs(x) == 4 || y == 34 || y == 38);
+
+                // Paso empedrado limpio en la entrada a la cumbre (Y = 12..14, X = -2..+2)
+                bool esPasoEntradaCumbre = (y >= 12 && y <= 14 && Mathf.Abs(x) <= 2);
 
                 float distCumbre = Vector2.Distance(new Vector2(x, y), centroCumbre);
                 bool esExplanadaCircular = (y >= 13 && distCumbre <= radioExplanadaCircular) || (y >= 13 && y <= 39 && Mathf.Abs(x) <= 13);
                 bool esBordeExplanada    = esExplanadaCircular && (distCumbre >= radioExplanadaCircular - 1.4f || Mathf.Abs(x) == 13);
-                bool esCalzadaAltar      = (y >= 14 && y <= 36 && Mathf.Abs(x) <= 2);
+                bool esCalzadaAltar      = (y >= 15 && y <= 34 && Mathf.Abs(x) <= 2);
 
                 float curvaDesfiladero = Mathf.Sin(y * 0.25f) * 3.5f;
                 bool esSendero = !enFranjaRio && (
@@ -188,12 +203,42 @@ public class CerroDelFraileBuilder : MonoBehaviour
                     sr.sprite = spAguaArroyo;
                     sr.sortingOrder = -520;
                     sr.color = new Color(0.75f, 0.92f, 1f, 0.98f);
-                    // Colisión de agua fuera del puente (Mathf.Abs(x) > 3)
+                    // Colisión de agua únicamente fuera del puente (Mathf.Abs(x) > 3)
                     if (Mathf.Abs(x) > 3 && Mathf.Abs(x) <= 22)
                     {
                         BoxCollider2D colAgua = tile.AddComponent<BoxCollider2D>();
                         colAgua.size = Vector2.one;
                     }
+
+                    // Pasarela del puente limpia sobre el agua (Mathf.Abs(x) <= 2 calzada y X = -3, +3 bordes de cantera)
+                    if (Mathf.Abs(x) <= 2)
+                    {
+                        GameObject calzadaPuente = new GameObject($"Puente_Calzada_{x}_{y}");
+                        calzadaPuente.transform.SetParent(pisoRoot.transform);
+                        calzadaPuente.transform.position = new Vector3(x, y, 0f);
+                        SpriteRenderer srP = calzadaPuente.AddComponent<SpriteRenderer>();
+                        srP.sprite = spAdoquinCumbre;
+                        srP.sortingOrder = -400;
+                    }
+                    else if (Mathf.Abs(x) == 3)
+                    {
+                        GameObject bordePuente = new GameObject($"Puente_Borde_{x}_{y}");
+                        bordePuente.transform.SetParent(pisoRoot.transform);
+                        bordePuente.transform.position = new Vector3(x, y, 0f);
+                        SpriteRenderer srB = bordePuente.AddComponent<SpriteRenderer>();
+                        srB.sprite = spCanteraPulida;
+                        srB.sortingOrder = -395;
+                    }
+                }
+                else if (enPlataformaAltar)
+                {
+                    sr.sprite = esBordePlataformaAltar ? spAdoquinCumbre : (spAlfombraAzul != null ? spAlfombraAzul : spCanteraPulida);
+                    sr.sortingOrder = -482;
+                }
+                else if (esPasoEntradaCumbre)
+                {
+                    sr.sprite = spAdoquinCumbre;
+                    sr.sortingOrder = -486;
                 }
                 else if (esCalzadaAltar)
                 {
@@ -221,13 +266,11 @@ public class CerroDelFraileBuilder : MonoBehaviour
                 }
                 else if (esSendero)
                 {
-                    // Sendero empedrado uniforme sin patrón de damero (checkerboard)
                     sr.sprite = spSenderoPiedra;
                     sr.sortingOrder = -490;
                 }
                 else if (esOrillaRio)
                 {
-                    // Borde de ribera empedrado que delimita limpiamente el río respecto a la tierra y el pasto
                     sr.sprite = spAdoquinCumbre != null ? spAdoquinCumbre : spSenderoPiedra;
                     sr.sortingOrder = -492;
                 }
@@ -248,94 +291,128 @@ public class CerroDelFraileBuilder : MonoBehaviour
             }
         }
 
-        // Puente colonial limpio y continuo sobre el arroyo (sortingOrder = -400 / -395 sobre el agua en sortingOrder = -520)
-        ColocarDecoracion("Puente_Base_Cantera_Izq", spEscaleraCumbre, new Vector2(-2.0f, -33.0f), Vector2.zero, false, root.transform, -405);
-        ColocarDecoracion("Puente_Base_Cantera_Cen", spEscaleraCumbre, new Vector2(0.0f,  -33.0f), Vector2.zero, false, root.transform, -405);
-        ColocarDecoracion("Puente_Base_Cantera_Der", spEscaleraCumbre, new Vector2(2.0f,  -33.0f), Vector2.zero, false, root.transform, -405);
-        ColocarDecoracion("Puente_Colonial_Izq",     spPuenteMadera,   new Vector2(-2.0f, -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Puente_Colonial_Centro",  spPuenteMadera,   new Vector2(0.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Puente_Colonial_Der",     spPuenteMadera,   new Vector2(2.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Farol_Puente_Sur_Izq",    spFarolAceite,    new Vector2(-3.8f, -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Sur_Der",    spFarolAceite,    new Vector2(3.8f,  -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Norte_Izq",  spFarolAceite,    new Vector2(-3.8f, -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Norte_Der",  spFarolAceite,    new Vector2(3.8f,  -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
+        // Faroles en las 4 esquinas del puente colonial limpio
+        ColocarDecoracion("Farol_Puente_Sur_Izq",   spFarolAceite, new Vector2(-3.8f, -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Sur_Der",   spFarolAceite, new Vector2(3.8f,  -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Norte_Izq", spFarolAceite, new Vector2(-3.8f, -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Norte_Der", spFarolAceite, new Vector2(3.8f,  -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
 
-        // 3. FORMACIONES DE ROCA NATURAL Y BOSQUES ESCALONADOS (CERO SPRITES ROTOS DE TILESETRELIEF)
+        // 3. REESTRUCTURACIÓN VISUAL DE LA LADERA, DESFILADERO Y CUMBRE (0 BLEED, ESPACIADO DE 3.5 A 4 UNIDADES)
         GameObject montanaRoot = new GameObject("Riscos_Escalonados_Y_Bosque_Coniferas");
         montanaRoot.transform.SetParent(root.transform);
 
-        // Formaciones rocosas naturales y árboles a lo largo del desfiladero (Y: -22..+12)
-        for (int y = -22; y <= 12; y += 2)
+        // A) Ladera y Desfiladero Montañoso (Y = -22 a +12, espaciado cada 3.8 unidades para que cada roca/árbol luzca íntegro)
+        Sprite[] rocasLinea1 = { spRocaMedianaGris, spPenascoAltoCafe, spRocaMedianaCafe, spPenascoAltoGris };
+        Vector2[] colLinea1  = { new Vector2(1.8f, 1.4f), new Vector2(1.8f, 2.2f), new Vector2(1.8f, 1.4f), new Vector2(1.8f, 2.2f) };
+
+        int stepIdx = 0;
+        for (float y = -22.0f; y <= 11.5f; y += 3.8f)
         {
-            float offsetCurva = Mathf.Sin(y * 0.2f) * 1.2f;
-            // Dejar espacio amplio para el Campamento del Ermitaño en el Poniente (Y: -8..+1)
-            float xRiscoIzq = (y >= -8 && y <= 1) ? -15.5f : (-12.5f + offsetCurva);
+            float offsetCurva = Mathf.Sin(y * 0.2f) * 1.1f;
+            // Dejar claro amplio para el Campamento del Ermitaño en el Poniente (Y: -8.5..+1.5)
+            float xRiscoIzq = (y >= -8.5f && y <= 1.5f) ? -16.0f : (-12.5f + offsetCurva);
             float xRiscoDer = 12.5f + offsetCurva;
 
-            // Capas escalonadas con rocas naturales limpias (spRocaMontana), ruinas de piedra (spRuinaPilar) y árboles
-            ColocarRisco(spRocaMontana, new Vector2(xRiscoIzq,        y),        montanaRoot.transform, true);
-            Sprite spCapaMediaIzq = (Mathf.Abs(y) % 4 == 0 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana;
-            ColocarRisco(spCapaMediaIzq, new Vector2(xRiscoIzq - 2.2f, y + 0.5f), montanaRoot.transform, false);
-            ColocarDecoracion($"Arbol_Ladera_Izq_{y}", (Mathf.Abs(y) % 4 == 0) ? spArbolDorado : spArbolVerde, new Vector2(xRiscoIzq - 4.4f, y), new Vector2(1.4f, 1.2f), false, montanaRoot.transform);
+            int rIdxIzq = stepIdx % rocasLinea1.Length;
+            int rIdxDer = (stepIdx + 2) % rocasLinea1.Length;
 
-            ColocarRisco(spRocaMontana, new Vector2(xRiscoDer,        y),        montanaRoot.transform, true);
-            Sprite spCapaMediaDer = (Mathf.Abs(y) % 4 == 0 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana;
-            ColocarRisco(spCapaMediaDer, new Vector2(xRiscoDer + 2.2f, y + 0.5f), montanaRoot.transform, false);
-            ColocarDecoracion($"Arbol_Ladera_Der_{y}", (Mathf.Abs(y) % 4 == 0) ? spArbolVerde : spArbolDorado, new Vector2(xRiscoDer + 4.4f, y), new Vector2(1.4f, 1.2f), false, montanaRoot.transform);
+            // Primera línea junto al valle: peñascos y rocas medianas con colisionador ajustado a su base
+            ColocarDecoracion($"Risco_Valle_Izq_{stepIdx}", rocasLinea1[rIdxIzq], new Vector2(xRiscoIzq, y), colLinea1[rIdxIzq], true, montanaRoot.transform);
+            ColocarDecoracion($"Risco_Valle_Der_{stepIdx}", rocasLinea1[rIdxDer], new Vector2(xRiscoDer, y), colLinea1[rIdxDer], true, montanaRoot.transform);
+
+            // Segunda línea (3.6 unidades más afuera): macizos de 3 peñascos (4x3) alternados con árboles verdes y dorados (3x3)
+            Sprite spSegundaIzq = (stepIdx % 2 == 0) ? ((stepIdx % 4 == 0) ? spMacizoRocaGris : spMacizoRocaCafe) : ((stepIdx % 3 == 0) ? spArbolDorado : spArbolVerde);
+            Sprite spSegundaDer = (stepIdx % 2 == 1) ? ((stepIdx % 4 == 1) ? spMacizoRocaCafe : spMacizoRocaGris) : ((stepIdx % 3 == 0) ? spArbolVerde : spArbolDorado);
+            ColocarDecoracion($"Macizo_Ladera_Izq_{stepIdx}", spSegundaIzq, new Vector2(xRiscoIzq - 3.6f, y + 0.6f), new Vector2(2.6f, 1.8f), true, montanaRoot.transform);
+            ColocarDecoracion($"Macizo_Ladera_Der_{stepIdx}", spSegundaDer, new Vector2(xRiscoDer + 3.6f, y + 0.6f), new Vector2(2.6f, 1.8f), true, montanaRoot.transform);
+
+            stepIdx++;
         }
 
-        // Peñascos naturales y muros de piedra antiguos que rodean la Explanada Circular de la Cumbre (Y: 13..42)
-        for (int y = 13; y <= 41; y += 2)
+        // B) Perímetro de la Explanada de la Cumbre (X = -16.5 y X = +16.5, Y = 13 a 41, paso de 3.5 unidades)
+        int cumbreIdx = 0;
+        for (float y = 13.5f; y <= 41.0f; y += 3.5f)
         {
-            ColocarRisco(spRocaMontana, new Vector2(-15.5f, y), montanaRoot.transform, true);
-            ColocarRisco((y % 4 == 1 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana, new Vector2(-18.0f, y + 0.5f), montanaRoot.transform, false);
+            Sprite spBordeCumbre;
+            Vector2 colSize;
+            if (cumbreIdx % 3 == 0)
+            {
+                spBordeCumbre = spMacizoRocaGris;
+                colSize = new Vector2(3.2f, 2.0f);
+            }
+            else if (cumbreIdx % 3 == 1)
+            {
+                spBordeCumbre = spPenascoAltoGris;
+                colSize = new Vector2(1.8f, 2.2f);
+            }
+            else
+            {
+                spBordeCumbre = spPinoChico;
+                colSize = new Vector2(1.6f, 1.4f);
+            }
 
-            ColocarRisco(spRocaMontana, new Vector2(15.5f,  y), montanaRoot.transform, true);
-            ColocarRisco((y % 4 == 1 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana, new Vector2(18.0f,  y + 0.5f), montanaRoot.transform, false);
+            ColocarDecoracion($"Cumbre_Borde_Izq_{cumbreIdx}", spBordeCumbre, new Vector2(-16.5f, y), colSize, true, montanaRoot.transform);
+            ColocarDecoracion($"Cumbre_Borde_Der_{cumbreIdx}", spBordeCumbre, new Vector2(16.5f,  y), colSize, true, montanaRoot.transform);
+            cumbreIdx++;
         }
-        for (int x = -15; x <= 15; x += 2)
+
+        // Borde Norte superior detrás de la explanada de la cumbre (Y = 42.0, X = -14 a +14, paso de 4.0 unidades)
+        int norteIdx = 0;
+        for (float x = -14.0f; x <= 14.0f; x += 4.0f)
         {
-            ColocarRisco(spRocaMontana, new Vector2(x, 41.5f), montanaRoot.transform, true);
-            ColocarRisco(spRocaMontana, new Vector2(x, 43.5f), montanaRoot.transform, false);
+            Sprite spNorte = (norteIdx % 2 == 0) ? spMacizoRocaGris : spPenascoAltoGris;
+            ColocarDecoracion($"Cumbre_Borde_Norte_{norteIdx}", spNorte, new Vector2(x, 42.0f), new Vector2(2.8f, 2.0f), true, montanaRoot.transform);
+            norteIdx++;
         }
 
-        // 4 Muros Colisionadores Perimetrales del Cerro del Fraile (Evitar salirse del mapa)
-        CrearMuroColision("Muro_Perimetral_Cerro_Norte", new Vector2(0f,  45.5f), new Vector2(70f, 2f), montanaRoot.transform);
-        CrearMuroColision("Muro_Perimetral_Cerro_Sur",   new Vector2(0f, -45.5f), new Vector2(70f, 2f), montanaRoot.transform);
-        CrearMuroColision("Muro_Perimetral_Cerro_Este",  new Vector2(20f,   0f),  new Vector2(2f, 95f), montanaRoot.transform);
-        CrearMuroColision("Muro_Perimetral_Cerro_Oeste", new Vector2(-20f,  0f),  new Vector2(2f, 95f), montanaRoot.transform);
-
-        // Densos Bosques Perimetrales de Pinos Gigantes y Coníferas (Cero vista al vacío negro)
-        for (int y = -44; y <= 44; y += 3)
+        // C) Tercera línea perimetral exterior: Bosques tupidos de spPinoGrande, spBosqueFrondoso y spBosqueOlivo (paso de 4.0 unidades)
+        Sprite[] bosquesPerimetro = { spPinoGrande, spBosqueFrondoso, spBosqueOlivo, spBosqueMusgo };
+        int bosqueIdx = 0;
+        for (float y = -44.0f; y <= 44.0f; y += 4.0f)
         {
-            // Bosques Poniente (3 hileras tupidas)
-            ColocarDecoracion($"Bosque_Oeste_1_{y}", spPinoGrande,  new Vector2(-20.5f, y),        new Vector2(2.0f, 1.8f), true,  montanaRoot.transform);
-            ColocarDecoracion($"Bosque_Oeste_2_{y}", spArbolVerde,  new Vector2(-24.5f, y + 1.2f), Vector2.zero,            false, montanaRoot.transform);
-            ColocarDecoracion($"Bosque_Oeste_3_{y}", spPinoGrande,  new Vector2(-28.5f, y),        Vector2.zero,            false, montanaRoot.transform);
+            Sprite b1 = bosquesPerimetro[bosqueIdx % 3];
+            Sprite b2 = bosquesPerimetro[(bosqueIdx + 1) % 3];
+            Sprite b3 = bosquesPerimetro[(bosqueIdx + 2) % 4];
 
-            // Bosques Oriente (3 hileras tupidas)
-            ColocarDecoracion($"Bosque_Este_1_{y}",  spPinoGrande,  new Vector2(20.5f,  y),        new Vector2(2.0f, 1.8f), true,  montanaRoot.transform);
-            ColocarDecoracion($"Bosque_Este_2_{y}",  spArbolVerde,  new Vector2(24.5f,  y + 1.2f), Vector2.zero,            false, montanaRoot.transform);
-            ColocarDecoracion($"Bosque_Este_3_{y}",  spPinoGrande,  new Vector2(28.5f,  y),        Vector2.zero,            false, montanaRoot.transform);
+            // Bosques Poniente
+            ColocarDecoracion($"Bosque_Oeste_1_{bosqueIdx}", b1, new Vector2(-21.5f, y),        new Vector2(2.8f, 2.0f), true,  montanaRoot.transform);
+            ColocarDecoracion($"Bosque_Oeste_2_{bosqueIdx}", b2, new Vector2(-26.0f, y + 1.5f), Vector2.zero,            false, montanaRoot.transform);
+            ColocarDecoracion($"Bosque_Oeste_3_{bosqueIdx}", b3, new Vector2(-30.0f, y),        Vector2.zero,            false, montanaRoot.transform);
+
+            // Bosques Oriente
+            ColocarDecoracion($"Bosque_Este_1_{bosqueIdx}",  b2, new Vector2(21.5f,  y),        new Vector2(2.8f, 2.0f), true,  montanaRoot.transform);
+            ColocarDecoracion($"Bosque_Este_2_{bosqueIdx}",  b1, new Vector2(26.0f,  y + 1.5f), Vector2.zero,            false, montanaRoot.transform);
+            ColocarDecoracion($"Bosque_Este_3_{bosqueIdx}",  b3, new Vector2(30.0f,  y),        Vector2.zero,            false, montanaRoot.transform);
+            bosqueIdx++;
         }
 
         // Cierre boscoso al Sur y al Norte
-        for (int x = -28; x <= 28; x += 4)
+        for (int x = -28; x <= 28; x += 5)
         {
-            ColocarDecoracion($"Bosque_Cumbre_Norte_{x}", spPinoGrande, new Vector2(x, 44.0f), new Vector2(2.2f, 1.8f), true, montanaRoot.transform);
-            if (Mathf.Abs(x) > 4)
+            Sprite spBosqueCierre = (Mathf.Abs(x) % 2 == 0) ? spPinoGrande : spBosqueFrondoso;
+            ColocarDecoracion($"Bosque_Cumbre_Norte_{x}", spBosqueCierre, new Vector2(x, 44.5f), new Vector2(2.8f, 2.0f), true, montanaRoot.transform);
+            if (Mathf.Abs(x) > 5)
             {
-                ColocarDecoracion($"Bosque_Base_Sur_{x}", spPinoGrande, new Vector2(x, -43.5f), new Vector2(2.2f, 1.8f), true, montanaRoot.transform);
+                ColocarDecoracion($"Bosque_Base_Sur_{x}", spBosqueCierre, new Vector2(x, -43.5f), new Vector2(2.8f, 2.0f), true, montanaRoot.transform);
             }
         }
 
+        // 4 Muros Colisionadores Perimetrales del Cerro del Fraile (Evitar salirse del mapa)
+        CrearMuroColision("Muro_Perimetral_Cerro_Norte", new Vector2(0f,  42.5f), new Vector2(70f, 2f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Sur",   new Vector2(0f, -45.5f), new Vector2(70f, 2f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Este",  new Vector2(18f,   0f),  new Vector2(2f, 95f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Oeste", new Vector2(-18f,  0f),  new Vector2(2f, 95f), montanaRoot.transform);
+
         // 4. ELEMENTOS DE LAS FALDAS Y PEREGRINACIÓN (Y = -43..-22)
-        ColocarDecoracion("Pino_Entrada_Izq", spPinoGrande,  new Vector2(-6.5f, -38.5f), new Vector2(1.6f, 1.4f), true, root.transform);
-        ColocarDecoracion("Pino_Entrada_Der", spPinoGrande,  new Vector2(6.5f,  -38.5f), new Vector2(1.6f, 1.4f), true, root.transform);
-        ColocarDecoracion("Roca_Arroyo_1",    spRocaMontana, new Vector2(-5.5f, -31.0f), new Vector2(1.6f, 1.2f), true, root.transform);
-        ColocarDecoracion("Roca_Arroyo_2",    spRocaMontana, new Vector2(5.5f,  -31.0f), new Vector2(1.6f, 1.2f), true, root.transform);
-        ColocarDecoracion("Arbol_Faldas_1",   spArbolDorado, new Vector2(-8.5f, -24.5f), new Vector2(1.5f, 1.2f), true, root.transform);
-        ColocarDecoracion("Arbol_Faldas_2",   spArbolVerde,  new Vector2(8.5f,  -24.5f), new Vector2(1.5f, 1.2f), true, root.transform);
+        ColocarDecoracion("Pino_Entrada_Izq",   spPinoGrande,      new Vector2(-7.5f, -38.5f), new Vector2(2.2f, 1.6f), true, root.transform);
+        ColocarDecoracion("Pino_Entrada_Der",   spPinoGrande,      new Vector2(7.5f,  -38.5f), new Vector2(2.2f, 1.6f), true, root.transform);
+        ColocarDecoracion("Arbusto_Sendero_1",  spArbustoRedondo,  new Vector2(-4.5f, -39.5f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Arbusto_Sendero_2",  spArbustoRedondo,  new Vector2(4.5f,  -39.5f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Roca_Arroyo_1",      spRocaMedianaGris, new Vector2(-6.0f, -30.5f), new Vector2(1.6f, 1.2f), true, root.transform);
+        ColocarDecoracion("Roca_Arroyo_2",      spRocaMedianaCafe, new Vector2(6.0f,  -30.5f), new Vector2(1.6f, 1.2f), true, root.transform);
+        ColocarDecoracion("Tocon_Faldas_Izq",   spToconOscuro,     new Vector2(-5.5f, -26.5f), new Vector2(1.2f, 1.0f), true, root.transform);
+        ColocarDecoracion("Arbol_Faldas_1",     spArbolDorado,     new Vector2(-8.8f, -24.5f), new Vector2(1.6f, 1.2f), true, root.transform);
+        ColocarDecoracion("Arbol_Faldas_2",     spArbolVerde,      new Vector2(8.8f,  -24.5f), new Vector2(1.6f, 1.2f), true, root.transform);
 
         // Letrero inicial al pie del cerro (al lado del camino en (2.0, -37.5), ANTES del puente)
         GameObject cartelInicio = ColocarDecoracion("Cartel_Pie_Cerro", spLetrero, new Vector2(2.0f, -37.5f), new Vector2(0.8f, 0.8f), true, root.transform);
@@ -368,14 +445,14 @@ public class CerroDelFraileBuilder : MonoBehaviour
 
         // 5. CAMPAMENTO ACOGEDOR DEL ERMITAÑO (Y = -4 en (-10.0, -4.0))
         Vector2 posCamp = new Vector2(-10.0f, -4.0f);
-        ColocarDecoracion("Carpa_Ermitano",     spTiendaGrande, posCamp + new Vector2(-1.2f, 1.8f),  new Vector2(2.8f, 2.0f), true, root.transform);
-        ColocarDecoracion("Fogata_Campamento",  spFogata,       posCamp + new Vector2(1.6f, -0.3f),  new Vector2(1.3f, 1.0f), true, root.transform);
-        ColocarDecoracion("Lenios_Sentarse_1",  spBancaMadera,  posCamp + new Vector2(-1.4f, -1.2f), new Vector2(2.2f, 0.7f), true, root.transform);
-        ColocarDecoracion("Lenios_Sentarse_2",  spBancaMadera,  posCamp + new Vector2(1.6f,  1.2f),  new Vector2(2.2f, 0.7f), true, root.transform);
-        ColocarDecoracion("Farol_Aceite_Camp1", spFarolAceite,  posCamp + new Vector2(-3.2f, 0.4f),  new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Aceite_Camp2", spFarolAceite,  posCamp + new Vector2(3.4f, -0.4f),  new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Cajas_Provisiones",  spCajasCamp,    posCamp + new Vector2(-3.2f, 2.0f),  new Vector2(1.3f, 1.2f), true, root.transform);
-        ColocarDecoracion("Barriles_Agua",      spBarrilesCamp, posCamp + new Vector2(2.2f,  2.2f),  new Vector2(1.3f, 1.2f), true, root.transform);
+        ColocarDecoracion("Carpa_Ermitano",     spTiendaGrande,  posCamp + new Vector2(-1.2f, 1.8f),  new Vector2(2.8f, 2.0f), true, root.transform);
+        ColocarDecoracion("Fogata_Campamento",  spFogata,        posCamp + new Vector2(1.6f, -0.3f),  new Vector2(1.3f, 1.0f), true, root.transform);
+        ColocarDecoracion("Lenios_Sentarse_1",  spBancaMadera,   posCamp + new Vector2(-1.4f, -1.2f), new Vector2(2.2f, 0.7f), true, root.transform);
+        ColocarDecoracion("Lenios_Sentarse_2",  spBancaMadera,   posCamp + new Vector2(1.6f,  1.2f),  new Vector2(2.2f, 0.7f), true, root.transform);
+        ColocarDecoracion("Farol_Aceite_Camp1", spFarolAceite,   posCamp + new Vector2(-3.2f, 0.4f),  new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Aceite_Camp2", spFarolAceite,   posCamp + new Vector2(3.4f, -0.4f),  new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Cajas_Provisiones",  spCajasCamp,     posCamp + new Vector2(-3.2f, 2.0f),  new Vector2(1.3f, 1.2f), true, root.transform);
+        ColocarDecoracion("Cajas_Madera_Extra", spCajasApiladas, posCamp + new Vector2(2.2f,  2.2f),  new Vector2(1.3f, 1.2f), true, root.transform);
 
         // Resplandor cálido de las brasas de la fogata
         GameObject brasasLuz = new GameObject("Brasas_Resplandor_Campamento");
@@ -404,16 +481,19 @@ public class CerroDelFraileBuilder : MonoBehaviour
             "«Usa tu Contraataque [K] (0.20s) para devolverle sus propios orbes y desata el Modo Asalto [L] para reclamar el Eco de la Memoria.»"
         };
 
-        // 6. ENTRADA MONUMENTAL A LA CUMBRE Y ESCALINATA (Y = 13..16)
-        ColocarDecoracion("Escalera_Acceso_Cumbre",  spEscaleraCumbre,    new Vector2(0f, 13.2f),    Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Columna_Cumbre_Izq",      spColumnaCeremonial, new Vector2(-4.5f, 14.5f), new Vector2(0.9f, 1.5f), true, root.transform);
-        ColocarDecoracion("Columna_Cumbre_Der",      spColumnaCeremonial, new Vector2(4.5f,  14.5f), new Vector2(0.9f, 1.5f), true, root.transform);
-        ColocarDecoracion("Estatua_Custodio_Izq",    spEstatuaMusgo,      new Vector2(-6.8f, 15.0f), new Vector2(1.5f, 1.8f), true, root.transform);
-        ColocarDecoracion("Estatua_Custodio_Der",    spEstatuaMusgo,      new Vector2(6.8f,  15.0f), new Vector2(1.5f, 1.8f), true, root.transform);
-        ColocarDecoracion("Estandarte_Cumbre_Izq",   spEstandarteAzul,    new Vector2(-4.5f, 16.2f), Vector2.zero, false, root.transform);
-        ColocarDecoracion("Estandarte_Cumbre_Der",   spEstandarteAzul,    new Vector2(4.5f,  16.2f), Vector2.zero, false, root.transform);
-        ColocarDecoracion("Arbol_Sagrado_Cumbre_NO", spArbolSagrado,      new Vector2(-11.5f,35.5f), new Vector2(1.5f, 1.4f), true, root.transform);
-        ColocarDecoracion("Arbol_Sagrado_Cumbre_NE", spArbolSagrado,      new Vector2(11.5f, 35.5f), new Vector2(1.5f, 1.4f), true, root.transform);
+        // 6. ENTRADA MONUMENTAL A LA CUMBRE (Y = 13..16, paso empedrado limpio flanqueado por columnas y custodios)
+        ColocarDecoracion("Arco_Acceso_Izq",         spArcoPiedra,      new Vector2(-4.5f, 13.8f), new Vector2(2.2f, 1.5f), true, root.transform);
+        ColocarDecoracion("Arco_Acceso_Der",         spArcoPiedra,      new Vector2(4.5f,  13.8f), new Vector2(2.2f, 1.5f), true, root.transform);
+        ColocarDecoracion("Columna_Cumbre_Izq",      spColumnaMusgo,    new Vector2(-3.0f, 14.5f), new Vector2(0.9f, 1.5f), true, root.transform);
+        ColocarDecoracion("Columna_Cumbre_Der",      spColumnaMusgo,    new Vector2(3.0f,  14.5f), new Vector2(0.9f, 1.5f), true, root.transform);
+        ColocarDecoracion("Estatua_Custodio_Izq",    spEstatuaCustodio, new Vector2(-6.8f, 15.0f), new Vector2(1.5f, 1.6f), true, root.transform);
+        ColocarDecoracion("Estatua_Custodio_Der",    spEstatuaCustodio, new Vector2(6.8f,  15.0f), new Vector2(1.5f, 1.6f), true, root.transform);
+        ColocarDecoracion("Estandarte_Cumbre_Izq",   spEstandarteAzul,  new Vector2(-3.0f, 16.2f), Vector2.zero, false, root.transform);
+        ColocarDecoracion("Estandarte_Cumbre_Der",   spEstandarteAzul,  new Vector2(3.0f,  16.2f), Vector2.zero, false, root.transform);
+        ColocarDecoracion("Arbol_Cerezo_Cumbre_NO",  spArbolCerezo,     new Vector2(-11.5f,35.5f), new Vector2(1.6f, 1.4f), true, root.transform);
+        ColocarDecoracion("Arbol_Cerezo_Cumbre_NE",  spArbolCerezo,     new Vector2(11.5f, 35.5f), new Vector2(1.6f, 1.4f), true, root.transform);
+        ColocarDecoracion("Arbol_Dorado_Cumbre_SO",  spArbolDorado,     new Vector2(-11.5f,19.5f), new Vector2(1.6f, 1.4f), true, root.transform);
+        ColocarDecoracion("Arbol_Dorado_Cumbre_SE",  spArbolDorado,     new Vector2(11.5f, 19.5f), new Vector2(1.6f, 1.4f), true, root.transform);
 
         // Estela con la pista del acertijo de la Cruz Azul
         GameObject estela = ColocarDecoracion("Estela_Mirador_CruzAzul", spLetrero, new Vector2(3.8f, 16.0f), new Vector2(0.9f, 0.9f), true, root.transform);
@@ -427,14 +507,10 @@ public class CerroDelFraileBuilder : MonoBehaviour
             "«Purifica los 3 pedestales sagrados con [E] o [J] para disipar el escudo de La Sombra Guardiana y liberar el Eco de la Memoria.»"
         };
 
-        // 7. MONUMENTAL GRAN CRUZ AZUL EN EL ALTAR NORTE (0, 36)
+        // 7. MONUMENTAL GRAN CRUZ AZUL EN EL ALTAR NORTE (0, 36) SIN TEXTURAS CORTADAS DETRÁS
         GameObject cruzRoot = new GameObject("Monumento_Gran_Cruz_Azul");
         cruzRoot.transform.SetParent(root.transform);
         cruzRoot.transform.position = new Vector3(0f, 36.0f, 0f);
-
-        // Pedestal escalonado de cantera y muros ceremoniales
-        ColocarDecoracion("Pedestal_Altar_Fondo",   spMuroAlmenas,    new Vector2(0f, 36.5f), new Vector2(3.2f, 1.4f), true, cruzRoot.transform, -440);
-        ColocarDecoracion("Escalera_Altar_Inferior",spEscaleraCumbre, new Vector2(0f, 34.2f), Vector2.zero,            false, cruzRoot.transform, -400);
 
         // Sprite procedural cristalino de la Cruz Azul (4.5 x 6.5 unidades)
         Sprite spCruzCristal = CrearSpriteCruzAzulCristalina();
@@ -480,13 +556,17 @@ public class CerroDelFraileBuilder : MonoBehaviour
             srP.sortingOrder = 16;
         }
 
-        // Columnas ceremoniales y estandartes dorados alrededor del altar
-        ColocarDecoracion("Columna_Cruz_NO",   spColumnaCeremonial, new Vector2(-3.8f, 38.2f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
-        ColocarDecoracion("Columna_Cruz_NE",   spColumnaCeremonial, new Vector2(3.8f,  38.2f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
-        ColocarDecoracion("Columna_Cruz_SO",   spColumnaCeremonial, new Vector2(-4.4f, 34.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
-        ColocarDecoracion("Columna_Cruz_SE",   spColumnaCeremonial, new Vector2(4.4f,  34.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
-        ColocarDecoracion("Estandarte_Cruz_I", spEstandarteOro,     new Vector2(-2.6f, 36.8f), Vector2.zero, false, cruzRoot.transform);
-        ColocarDecoracion("Estandarte_Cruz_D", spEstandarteOro,     new Vector2(2.6f,  36.8f), Vector2.zero, false, cruzRoot.transform);
+        // Flanqueo ceremonial del altar con spColumnaMusgo, spEstatuaDorada, spEstatuaGuerrero y spEstandarteOro
+        ColocarDecoracion("Columna_Cruz_NO",   spColumnaMusgo,    new Vector2(-3.8f, 38.2f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_NE",   spColumnaMusgo,    new Vector2(3.8f,  38.2f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_SO",   spColumnaMusgo,    new Vector2(-4.4f, 34.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Columna_Cruz_SE",   spColumnaMusgo,    new Vector2(4.4f,  34.5f), new Vector2(0.8f, 1.5f), true, cruzRoot.transform);
+        ColocarDecoracion("Estatua_Altar_Izq", spEstatuaDorada,   new Vector2(-2.8f, 37.8f), new Vector2(1.4f, 1.4f), true, cruzRoot.transform);
+        ColocarDecoracion("Estatua_Altar_Der", spEstatuaDorada,   new Vector2(2.8f,  37.8f), new Vector2(1.4f, 1.4f), true, cruzRoot.transform);
+        ColocarDecoracion("Guerrero_Altar_SO", spEstatuaGuerrero, new Vector2(-3.2f, 34.5f), new Vector2(1.4f, 1.4f), true, cruzRoot.transform);
+        ColocarDecoracion("Guerrero_Altar_SE", spEstatuaGuerrero, new Vector2(3.2f,  34.5f), new Vector2(1.4f, 1.4f), true, cruzRoot.transform);
+        ColocarDecoracion("Estandarte_Cruz_I", spEstandarteOro,   new Vector2(-2.0f, 36.8f), Vector2.zero, false, cruzRoot.transform);
+        ColocarDecoracion("Estandarte_Cruz_D", spEstandarteOro,   new Vector2(2.0f,  36.8f), Vector2.zero, false, cruzRoot.transform);
 
         // 8. JEFE FINAL: LA SOMBRA GUARDIANA en (0, 28)
         SombraGuardianaBossAI bossAI = ConstruirJefeSombraGuardiana(new Vector2(0f, 28.0f), root.transform, out GameObject escudoVisual);

@@ -916,10 +916,6 @@ public class PlayerMovement : MonoBehaviour
         float gap = UITheme.Px(5f);
 
         float panelH = pad * 2f + row1H + gap + barH + gap + row3H + gap + row4H;
-        if (avisoRecursoTimer > 0f)
-        {
-            panelH += UITheme.Px(22f);
-        }
 
         Rect panel = new Rect(panelX, panelY, panelW, panelH);
         UITheme.Panel(panel, UITheme.BordeDorado, 1.5f);
@@ -964,7 +960,7 @@ public class PlayerMovement : MonoBehaviour
             GUI.color = Color.white;
             UITheme.Borde(rRes, new Color(0.45f, 0.88f, 1f, 0.35f), 1f);
             UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
-                $"💧 Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
+                $"♦ Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
                 UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
         else if (arma.tipo == WeaponType.Bow)
@@ -976,7 +972,7 @@ public class PlayerMovement : MonoBehaviour
             GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * flechasPct, rRes.height - 3f), UITheme.Blanca);
             GUI.color = Color.white;
             UITheme.Borde(rRes, new Color(1f, 0.85f, 0.35f, 0.35f), 1f);
-            string txtF = flechas > 0 ? $"🏹 Flechas: {flechas}/{maxFlechas} (-1)" : "🏹 ¡Sin Flechas!";
+            string txtF = flechas > 0 ? $"» Flechas: {flechas}/{maxFlechas} (-1)" : "» ¡Sin Flechas!";
             UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
                 txtF, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
@@ -999,26 +995,28 @@ public class PlayerMovement : MonoBehaviour
         // Fila 4: Arma activa en una sola línea limpia: ⚔ Espada de San Felipe | ATQ 12 | Cambiar: [Q]
         float row4Y = row3Y + row3H + gap;
         float atkActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
-        string iconoArma = arma.tipo == WeaponType.Bow ? "🏹" : (arma.tipo == WeaponType.Staff ? "🔮" : "⚔");
+        string iconoArma = arma.tipo == WeaponType.Bow ? "»" : (arma.tipo == WeaponType.Staff ? "✦" : "⚔");
         GUI.Label(new Rect(panelX + pad, row4Y, barW, row4H),
             $"{iconoArma} <color=#FFE066>{arma.nombre}</color> | ATQ <b>{atkActual:0.#}</b> | Cambiar: <color=#00E5FF>[Q]</color>",
             UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
 
-        // Aviso temporal si falta maná/flechas o confirmación de contraataque
+        // Pequeño Menú Gráfico de Armas (debajo del panel de Ronan, dentro del área segura izquierda)
+        float menuY = panel.yMax + UITheme.Px(6f);
+        DibujarMenuGraficoArmas(panelX, menuY, panelW);
+
+        // Aviso temporal si falta maná/flechas o confirmación de contraataque (DEBAJO del menú de armas para que jamás se pisen)
         if (avisoRecursoTimer > 0f)
         {
-            float avY = row4Y + row4H + UITheme.Px(3f);
+            float avY = menuY + UITheme.Px(66f);
             bool esContraataque = avisoRecurso.Contains("CONTRAATAQUE") || avisoRecurso.Contains("Oro");
             GUI.color = esContraataque ? new Color(0.04f, 0.42f, 0.56f, 0.94f) : new Color(0.85f, 0.20f, 0.20f, 0.92f);
-            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)), UITheme.Blanca);
+            GUI.DrawTexture(new Rect(panelX, avY, panelW, UITheme.Px(22f)), UITheme.Blanca);
             GUI.color = Color.white;
-            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(18f)),
+            UITheme.Borde(new Rect(panelX, avY, panelW, UITheme.Px(22f)), UITheme.BordeDorado, 1f);
+            UITheme.EtiquetaConSombra(new Rect(panelX + UITheme.Px(6f), avY, panelW - UITheme.Px(12f), UITheme.Px(22f)),
                 avisoRecurso,
                 UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
-
-        // Pequeño Menú Gráfico de Armas (debajo del panel de Ronan, dentro del área segura izquierda)
-        DibujarMenuGraficoArmas(panelX, panel.yMax + UITheme.Px(6f), panelW);
 
         GUI.color = prevColor;
     }
@@ -1176,17 +1174,17 @@ public class PlayerMovement : MonoBehaviour
             Color colSub;
             if (!desbloqueada)
             {
-                subInfo = "🔒 Tienda [B]";
+                subInfo = "Tienda [B]";
                 colSub = new Color(0.68f, 0.62f, 0.52f, 0.90f);
             }
             else if (w.tipo == WeaponType.Bow)
             {
-                subInfo = $"🏹 {flechas} flechas";
+                subInfo = $"{flechas} flechas";
                 colSub = flechas > 0 ? new Color(1f, 0.88f, 0.45f) : UITheme.Alerta;
             }
             else if (w.tipo == WeaponType.Staff)
             {
-                subInfo = $"💧 -{w.costoMana:0} maná";
+                subInfo = $"-{w.costoMana:0} maná";
                 colSub = manaActual >= w.costoMana ? UITheme.Turquesa : UITheme.Alerta;
             }
             else
