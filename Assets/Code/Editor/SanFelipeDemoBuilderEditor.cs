@@ -27,6 +27,7 @@ public class SanFelipeSceneAutoSetup
 
             if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null ||
                 GameObject.Find("Zona_Parroquia_Exterior_Interactivos") == null ||
+                GameObject.Find("Barrera_Niebla_Impenetrable_Mercado") == null ||
                 missingRemoved > 0 ||
                 tieneCorazonSinScript)
             {
@@ -39,7 +40,7 @@ public class SanFelipeSceneAutoSetup
                     ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
                 }
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Escena verificada, scripts de corazones/pedestales enlazados y referencias faltantes limpiadas.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Escena verificada, barrera de Eco, scripts de corazones/pedestales enlazados y referencias faltantes limpiadas.</color>");
             }
         }
         else if (activeScene.name == "ParroquiaInterior")
@@ -57,20 +58,20 @@ public class SanFelipeSceneAutoSetup
         }
         else if (activeScene.name == "Nivel2_Mercado")
         {
-            if (GameObject.Find("Marca_Mercado_V3") == null || missingRemoved > 0)
+            if (GameObject.Find("Marca_Mercado_V4") == null || missingRemoved > 0)
             {
                 MercadoBuilder.ConstruirZonaMercado();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado V3]</b> Escena del Mercado Municipal (75x75) inicializada y verificada con éxito.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado V4]</b> Escena del Mercado Municipal (77x77) con arquitectura colonial, NPCs de trueque y Portón Gremial inicializada con éxito.</color>");
             }
         }
         else if (activeScene.name == "Nivel3_CerroDelFraile")
         {
-            if (GameObject.Find("Marca_Cerro_V3") == null || missingRemoved > 0)
+            if (GameObject.Find("Marca_Cerro_V4") == null || missingRemoved > 0)
             {
                 CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile V3]</b> Escena de la Cruz Azul (65x95) y La Sombra Guardiana inicializada y verificada con éxito.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile V4]</b> Escena de la Cruz Azul (65x95) con campamento del ermitaño, puente colonial y esplanada circular inicializada con éxito.</color>");
             }
         }
     }

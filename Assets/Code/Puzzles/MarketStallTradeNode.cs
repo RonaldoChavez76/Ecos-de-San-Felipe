@@ -182,22 +182,23 @@ public class MarketStallTradeNode : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.25f);
+        Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.55f);
         if (screenPos.z <= 0) return;
 
-        GUIStyle style = new GUIStyle(GUI.skin.box)
-        {
-            alignment = TextAnchor.MiddleCenter,
-            fontSize = 13,
-            fontStyle = FontStyle.Bold
-        };
-        style.normal.textColor = new Color(0.98f, 0.88f, 0.42f);
+        Color colBorde = new Color(0.98f, 0.88f, 0.42f);
+        float w = UITheme.Px(290f);
+        float h = UITheme.Px(34f);
+        float rx = screenPos.x - w * 0.5f;
+        float ry = Screen.height - screenPos.y - h * 0.5f;
 
-        float w = UITheme.Px(250f * 1.25f);
-        float h = UITheme.Px(36f);
-        Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        UITheme.Panel(r, style.normal.textColor, 2f);
-        GUI.Label(r, labelPrompt, UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
+        if (ZoneWaveSpawner.HordaActivaEnEscena != null && ry >= UITheme.Px(90f) && ry <= UITheme.Px(155f))
+        {
+            ry = UITheme.Px(160f);
+        }
+
+        Rect r = new Rect(rx, ry, w, h);
+        UITheme.Panel(r, colBorde, 2f);
+        GUI.Label(r, labelPrompt, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }
 

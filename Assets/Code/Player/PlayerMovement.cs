@@ -941,6 +941,184 @@ public class PlayerMovement : MonoBehaviour
                 UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         }
 
+        // 6. Selector Visual del Arma Equipada (Esquina Inferior Izquierda)
+        DibujarSelectorVisualArma(arma, atkActual);
+
         GUI.color = prevColor;
+    }
+
+    private static Texture2D texIconoEspada;
+    private static Texture2D texIconoArco;
+    private static Texture2D texIconoBaculo;
+
+    private static void AsegurarIconosArmas()
+    {
+        if (texIconoArco == null)
+        {
+            texIconoArco = ZoneWaveSpawner.LoadSpriteTexture("Arrow");
+        }
+        if (texIconoEspada == null)
+        {
+            texIconoEspada = CrearIconoArmaProcedural(WeaponType.Sword);
+        }
+        if (texIconoBaculo == null)
+        {
+            texIconoBaculo = CrearIconoArmaProcedural(WeaponType.Staff);
+        }
+        if (texIconoArco == null)
+        {
+            texIconoArco = CrearIconoArmaProcedural(WeaponType.Bow);
+        }
+    }
+
+    private static Texture2D CrearIconoArmaProcedural(WeaponType tipo)
+    {
+        int s = 24;
+        Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+
+        for (int y = 0; y < s; y++)
+            for (int x = 0; x < s; x++)
+                tex.SetPixel(x, y, Color.clear);
+
+        if (tipo == WeaponType.Sword)
+        {
+            // Hoja diagonal de acero reluciente y empuñadura dorada
+            for (int i = 6; i <= 20; i++)
+            {
+                tex.SetPixel(i, i, new Color(0.92f, 0.96f, 1f, 1f));
+                if (i < 20) tex.SetPixel(i - 1, i, new Color(0.68f, 0.78f, 0.90f, 1f));
+                if (i < 20) tex.SetPixel(i, i - 1, new Color(0.68f, 0.78f, 0.90f, 1f));
+            }
+            // Guarda dorada
+            for (int g = -3; g <= 3; g++)
+            {
+                tex.SetPixel(7 + g, 7 - g, new Color(1f, 0.85f, 0.25f, 1f));
+            }
+            // Empuñadura y pomo
+            for (int h = 3; h <= 6; h++)
+            {
+                tex.SetPixel(h, h, new Color(0.55f, 0.28f, 0.12f, 1f));
+            }
+            tex.SetPixel(2, 2, new Color(1f, 0.85f, 0.25f, 1f));
+        }
+        else if (tipo == WeaponType.Staff)
+        {
+            // Vara de madera ancestral con orbe arcano celeste en la punta
+            for (int i = 3; i <= 16; i++)
+            {
+                tex.SetPixel(i, i, new Color(0.62f, 0.36f, 0.16f, 1f));
+                tex.SetPixel(i - 1, i, new Color(0.45f, 0.24f, 0.10f, 1f));
+            }
+            Vector2 orbCenter = new Vector2(18f, 18f);
+            for (int y = 13; y < 23; y++)
+            {
+                for (int x = 13; x < 23; x++)
+                {
+                    float d = Vector2.Distance(new Vector2(x, y), orbCenter);
+                    if (d <= 4.2f)
+                    {
+                        Color c = d < 2.0f ? new Color(0.90f, 1f, 1f, 1f) : new Color(0f, 0.88f, 1f, 0.95f);
+                        tex.SetPixel(x, y, c);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Arco curvo con cuerda y flecha
+            for (int i = 4; i <= 19; i++)
+            {
+                tex.SetPixel(i, i, new Color(0.95f, 0.85f, 0.45f, 1f));
+            }
+        }
+
+        tex.Apply();
+        tex.hideFlags = HideFlags.HideAndDontSave;
+        return tex;
+    }
+
+    private void DibujarSelectorVisualArma(WeaponDefinition arma, float atkActual)
+    {
+        AsegurarIconosArmas();
+
+        float w = Mathf.Clamp(UITheme.Px(310f), 280f, 360f);
+        float h = UITheme.Px(68f);
+        float x = UITheme.Px(18f);
+        float y = Screen.height - h - UITheme.Px(16f);
+        float pad = UITheme.Px(8f);
+
+        Rect rPanel = new Rect(x, y, w, h);
+        UITheme.Panel(rPanel, UITheme.BordeDorado, 1.5f);
+
+        // Casilla cuadrada del icono del arma activa
+        float iconBoxSize = h - pad * 2f;
+        Rect rIconBox = new Rect(x + pad, y + pad, iconBoxSize, iconBoxSize);
+        GUI.color = new Color(0.05f, 0.07f, 0.12f, 0.95f);
+        GUI.DrawTexture(rIconBox, UITheme.Blanca);
+        UITheme.Borde(rIconBox, new Color(1f, 0.86f, 0.35f, 0.98f), 1.5f);
+
+        Texture2D texArma = arma.tipo == WeaponType.Bow
+            ? texIconoArco
+            : (arma.tipo == WeaponType.Staff ? texIconoBaculo : texIconoEspada);
+
+        if (texArma != null)
+        {
+            GUI.color = new Color(1f, 0.88f, 0.35f, 0.18f);
+            GUI.DrawTexture(new Rect(rIconBox.x + 2f, rIconBox.y + 2f, rIconBox.width - 4f, rIconBox.height - 4f), UITheme.Blanca);
+            GUI.color = Color.white;
+            float p = UITheme.Px(6f);
+            GUI.DrawTexture(new Rect(rIconBox.x + p, rIconBox.y + p, rIconBox.width - p * 2f, rIconBox.height - p * 2f), texArma, ScaleMode.ScaleToFit);
+        }
+
+        // Etiqueta [Q] en esquina de la casilla del icono
+        Rect rBadgeQ = new Rect(rIconBox.xMax - UITheme.Px(20f), rIconBox.yMax - UITheme.Px(15f), UITheme.Px(19f), UITheme.Px(14f));
+        GUI.color = new Color(0.08f, 0.12f, 0.18f, 0.95f);
+        GUI.DrawTexture(rBadgeQ, UITheme.Blanca);
+        GUI.color = Color.white;
+        GUI.Label(rBadgeQ, "[Q]", UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Dorado));
+
+        // Información derecha: Nombre, Daño y Munición/Maná gráfico
+        float infoX = rIconBox.xMax + UITheme.Px(10f);
+        float infoW = w - (infoX - x) - pad;
+
+        GUI.Label(new Rect(infoX, y + UITheme.Px(6f), infoW, UITheme.Px(18f)),
+            $"<b><color=#FFE066>{arma.nombre}</color></b>",
+            UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+
+        GUI.Label(new Rect(infoX, y + UITheme.Px(24f), infoW, UITheme.Px(16f)),
+            $"DAÑO: <b>{atkActual:0.#}</b>   |   Cambiar: <b><color=#00E5FF>[Q]</color></b>   Tienda: <b>[B]</b>",
+            UITheme.Estilo(10, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
+
+        // Barra / Indicador gráfico de munición o maná en la parte inferior del selector
+        Rect rBar = new Rect(infoX, y + UITheme.Px(44f), infoW, UITheme.Px(14f));
+        if (arma.tipo == WeaponType.Bow)
+        {
+            float pct = Mathf.Clamp01((float)flechas / Mathf.Max(1f, maxFlechas));
+            GUI.color = new Color(0.18f, 0.12f, 0.04f, 0.92f);
+            GUI.DrawTexture(rBar, UITheme.Blanca);
+            GUI.color = flechas > 0 ? new Color(1f, 0.80f, 0.25f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
+            GUI.DrawTexture(new Rect(rBar.x + 1.5f, rBar.y + 1.5f, (rBar.width - 3f) * pct, rBar.height - 3f), UITheme.Blanca);
+            GUI.color = Color.white;
+            UITheme.EtiquetaConSombra(rBar, $"🏹 Munición: {flechas}/{maxFlechas} Flechas", UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+        }
+        else if (arma.tipo == WeaponType.Staff)
+        {
+            float pct = Mathf.Clamp01(manaActual / Mathf.Max(1f, manaMaximo));
+            GUI.color = new Color(0.04f, 0.12f, 0.24f, 0.92f);
+            GUI.DrawTexture(rBar, UITheme.Blanca);
+            GUI.color = manaActual >= arma.costoMana ? new Color(0f, 0.85f, 1f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
+            GUI.DrawTexture(new Rect(rBar.x + 1.5f, rBar.y + 1.5f, (rBar.width - 3f) * pct, rBar.height - 3f), UITheme.Blanca);
+            GUI.color = Color.white;
+            UITheme.EtiquetaConSombra(rBar, $"💧 Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)}", UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+        }
+        else
+        {
+            bool tieneArco = TieneArmaDesbloqueada(WeaponType.Bow);
+            bool tieneBaculo = TieneArmaDesbloqueada(WeaponType.Staff);
+            string slots = $"<color=#7CFF8E>[1] Espada</color>  {(tieneArco ? "<color=#FFE066>[2] Arco</color>" : "<color=#667080>[2] Arco🔒</color>")}  {(tieneBaculo ? "<color=#00E5FF>[3] Báculo</color>" : "<color=#667080>[3] Báculo🔒</color>")}";
+            GUI.Label(rBar, slots, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+        }
     }
 }

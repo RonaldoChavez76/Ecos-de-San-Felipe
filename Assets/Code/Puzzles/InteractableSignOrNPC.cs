@@ -125,4 +125,35 @@ public class InteractableSignOrNPC : MonoBehaviour
         sr.sprite = Sprite.Create(tex, new Rect(0, 0, 16, 16), new Vector2(0.5f, 0.5f), 20f);
         promptBadge.SetActive(false);
     }
+
+    private void OnGUI()
+    {
+        if (Time.timeScale == 0f || playerTransform == null) return;
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive) return;
+
+        float dist = Vector2.Distance(transform.position, playerTransform.position);
+        if (dist > interactRadius) return;
+
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.45f);
+        if (screenPos.z <= 0) return;
+
+        float w = UITheme.Px(260f);
+        float h = UITheme.Px(32f);
+        float rx = screenPos.x - w * 0.5f;
+        float ry = Screen.height - screenPos.y - h * 0.5f;
+
+        // Evitar que se encime con el banner superior de oleadas (Y = UITheme.Px(110f))
+        if (ZoneWaveSpawner.HordaActivaEnEscena != null && ry >= UITheme.Px(90f) && ry <= UITheme.Px(155f))
+        {
+            ry = UITheme.Px(160f);
+        }
+
+        Color colBorde = new Color(0.98f, 0.88f, 0.42f, 1f);
+        Rect r = new Rect(rx, ry, w, h);
+        UITheme.Panel(r, colBorde, 1.5f);
+        GUI.Label(r, interactionPrompt, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
+    }
 }
