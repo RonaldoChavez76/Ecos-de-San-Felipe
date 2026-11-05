@@ -139,9 +139,22 @@ public class InventoryHUD : MonoBehaviour
 
         CargarTexturasSiEsNecesario();
 
-        // 1. Nombre de la Zona Activa
+        // 1. Nombre de la Zona Activa (basado en escena activa y LevelManager)
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         string zonaNombre = "Nivel 1: Atrio Parroquial";
-        if (LevelManager.Instance != null)
+        if (sceneName == "Nivel2_Mercado")
+        {
+            zonaNombre = "Nivel 2: Mercado Municipal";
+        }
+        else if (sceneName == "Nivel3_CerroDelFraile")
+        {
+            zonaNombre = "Nivel 3: Cerro del Fraile";
+        }
+        else if (sceneName == "ParroquiaInterior")
+        {
+            zonaNombre = "Nivel 1: Interior Parroquia";
+        }
+        else if (LevelManager.Instance != null)
         {
             switch (LevelManager.Instance.currentZone)
             {

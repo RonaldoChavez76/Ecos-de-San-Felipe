@@ -103,6 +103,7 @@ public class MercadoBuilder : MonoBehaviour
         PlayerMovement pm = Object.FindAnyObjectByType<PlayerMovement>();
         if (pm != null)
         {
+            pm.transform.position = posicionInicial;
             return pm.gameObject;
         }
 
@@ -146,14 +147,14 @@ public class MercadoBuilder : MonoBehaviour
         GameObject existente = GameObject.Find("Zona_Mercado_Municipal_Detallada");
         if (existente != null)
         {
-            if (GameObject.Find("Marca_Mercado_V4") != null) return existente;
+            if (GameObject.Find("Marca_Mercado_V5") != null) return existente;
             if (Application.isPlaying) Destroy(existente);
             else DestroyImmediate(existente);
         }
 
         GameObject root = new GameObject("Zona_Mercado_Municipal_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
-        GameObject marca = new GameObject("Marca_Mercado_V4");
+        GameObject marca = new GameObject("Marca_Mercado_V5");
         marca.transform.SetParent(root.transform);
 
         // 1. RECORTE DE SPRITES REALES VERIFICADOS (CERO tileset_bed)
@@ -214,9 +215,11 @@ public class MercadoBuilder : MonoBehaviour
         Sprite spArbolDorado     = CortarCelda("TilesetNature", 9, 18, 3, 3);
         Sprite spPinoGrande      = CortarCelda("TilesetNature", 0, 2, 4, 3);
 
+        // Sprites de cofres divididos en Frame 0 (Cerrado) y Frame 1 (Abierto) para evitar doble cofre
+        CargarCofreSprites("LittleTreasureChest", out Sprite spArconCerrado, out Sprite spArconAbierto);
+        CargarCofreSprites("BigTreasureChest", out Sprite spCofreCerrado, out Sprite spCofreAbierto);
+
         // Sprites de ítems completos para exhibición y trueque
-        Sprite spArconCobre      = CargarItemSprite("LittleTreasureChest");
-        Sprite spCofreGremio     = CargarItemSprite("BigTreasureChest");
         Sprite spLingoteCobre    = CargarItemSprite("BarCopper");
         Sprite spLingoteTemplado = CargarItemSprite("BarMithril");
         Sprite spLingoteOro      = CargarItemSprite("BarGold");
@@ -268,7 +271,7 @@ public class MercadoBuilder : MonoBehaviour
                 }
                 else if (enCallejonSur || enCallejonNorte || enCallejonEste || enCallejonOeste || esAvenidaCrucero)
                 {
-                    sr.sprite = ((x + y) % 3 == 0 && spAdoquinReal != null) ? spAdoquinReal : spCaminoPiedra;
+                    sr.sprite = spCaminoPiedra;
                 }
                 else if (esAnilloAdoquin)
                 {
@@ -370,27 +373,41 @@ public class MercadoBuilder : MonoBehaviour
         }
 
         // Cierres monumentales en los extremos de los callejones y colisionadores sólidos perimetrales
-        ColocarDecoracion("Muralla_Cierre_Sur",   spMuroAlmenas, new Vector2(0f, -36.5f),   new Vector2(9f, 2f), true, manzanasRoot.transform);
-        ColocarDecoracion("Muralla_Cierre_Oeste", spCasaAlta2Pisos, new Vector2(-36.5f, 0f), new Vector2(3.8f, 8f), true, manzanasRoot.transform);
+        ColocarDecoracion("Muralla_Cierre_Sur",   spMuroAlmenas, new Vector2(0f, -36.5f),   new Vector2(12f, 3f), true, manzanasRoot.transform);
+        ColocarDecoracion("Muralla_Cierre_Norte", spMuroAlmenas, new Vector2(0f,  36.5f),   new Vector2(12f, 3f), true, manzanasRoot.transform);
+        ColocarDecoracion("Muralla_Cierre_Oeste", spCasaAlta2Pisos, new Vector2(-36.5f, 0f), new Vector2(3.8f, 10f), true, manzanasRoot.transform);
+        ColocarDecoracion("Muralla_Cierre_Este",  spCasaAltaPiedra, new Vector2(36.5f,  0f), new Vector2(3.8f, 10f), true, manzanasRoot.transform);
 
-        // Colisionadores invisibles continuos para blindar los muros de la plaza y callejones
-        CrearMuroColision("Col_Plaza_Norte_Izq", new Vector2(-10.5f, 15.5f), new Vector2(12f, 1.5f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Norte_Der", new Vector2(10.5f,  15.5f), new Vector2(12f, 1.5f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Sur_Izq",   new Vector2(-10.5f, -15.5f),new Vector2(12f, 1.5f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Sur_Der",   new Vector2(10.5f,  -15.5f),new Vector2(12f, 1.5f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Oeste_Sup", new Vector2(-16.2f, 9.5f),  new Vector2(1.5f, 11f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Oeste_Inf", new Vector2(-16.2f, -9.5f), new Vector2(1.5f, 11f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Este_Sup",  new Vector2(16.2f,  9.5f),  new Vector2(1.5f, 11f), manzanasRoot.transform);
-        CrearMuroColision("Col_Plaza_Este_Inf",  new Vector2(16.2f,  -9.5f), new Vector2(1.5f, 11f), manzanasRoot.transform);
+        // Colisionadores invisibles continuos sin huecos para blindar los muros de la plaza y callejones
+        CrearMuroColision("Col_Plaza_Norte_Izq", new Vector2(-10.5f, 15.5f), new Vector2(13f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Norte_Der", new Vector2(10.5f,  15.5f), new Vector2(13f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Sur_Izq",   new Vector2(-10.5f, -15.5f),new Vector2(13f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Sur_Der",   new Vector2(10.5f,  -15.5f),new Vector2(13f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Oeste_Sup", new Vector2(-16.2f, 10.0f), new Vector2(2.0f, 12.5f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Oeste_Inf", new Vector2(-16.2f, -10.0f),new Vector2(2.0f, 12.5f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Este_Sup",  new Vector2(16.2f,  10.0f), new Vector2(2.0f, 12.5f), manzanasRoot.transform);
+        CrearMuroColision("Col_Plaza_Este_Inf",  new Vector2(16.2f,  -10.0f),new Vector2(2.0f, 12.5f), manzanasRoot.transform);
 
-        CrearMuroColision("Col_Callejon_Sur_Izq",   new Vector2(-4.8f, -26f), new Vector2(1.2f, 22f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Sur_Der",   new Vector2(4.8f,  -26f), new Vector2(1.2f, 22f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Norte_Izq", new Vector2(-4.8f, 26f),  new Vector2(1.2f, 22f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Norte_Der", new Vector2(4.8f,  26f),  new Vector2(1.2f, 22f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Este_Sup",  new Vector2(26f,   4.8f), new Vector2(22f, 1.2f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Este_Inf",  new Vector2(26f,  -4.8f), new Vector2(22f, 1.2f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Oeste_Sup", new Vector2(-26f,  4.8f), new Vector2(22f, 1.2f), manzanasRoot.transform);
-        CrearMuroColision("Col_Callejon_Oeste_Inf", new Vector2(-26f, -4.8f), new Vector2(22f, 1.2f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Sur_Izq",   new Vector2(-4.8f, -26.5f), new Vector2(1.6f, 24f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Sur_Der",   new Vector2(4.8f,  -26.5f), new Vector2(1.6f, 24f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Norte_Izq", new Vector2(-4.8f, 26.5f),  new Vector2(1.6f, 24f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Norte_Der", new Vector2(4.8f,  26.5f),  new Vector2(1.6f, 24f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Este_Sup",  new Vector2(26.5f,  4.8f),  new Vector2(24f, 1.6f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Este_Inf",  new Vector2(26.5f, -4.8f),  new Vector2(24f, 1.6f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Oeste_Sup", new Vector2(-26.5f, 4.8f),  new Vector2(24f, 1.6f), manzanasRoot.transform);
+        CrearMuroColision("Col_Callejon_Oeste_Inf", new Vector2(-26.5f,-4.8f),  new Vector2(24f, 1.6f), manzanasRoot.transform);
+
+        // Colisionadores de cierre en los extremos de los 4 callejones (antes de llegar al borde del mapa)
+        CrearMuroColision("Col_Cierre_Callejon_Sur",   new Vector2(0f, -35.8f),   new Vector2(14f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Cierre_Callejon_Norte", new Vector2(0f,  35.8f),   new Vector2(14f, 2.0f), manzanasRoot.transform);
+        CrearMuroColision("Col_Cierre_Callejon_Oeste", new Vector2(-35.8f, 0f),   new Vector2(2.0f, 14f), manzanasRoot.transform);
+        CrearMuroColision("Col_Cierre_Callejon_Este",  new Vector2(35.8f,  0f),   new Vector2(2.0f, 14f), manzanasRoot.transform);
+
+        // 4 Muros Colisionadores Invisibles Perimetrales (Evitar salirse al vacío verde/negro exterior)
+        CrearMuroColision("Muro_Perimetral_Norte", new Vector2(0f,  39f), new Vector2(85f, 2f), manzanasRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Sur",   new Vector2(0f, -39f), new Vector2(85f, 2f), manzanasRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Este",  new Vector2(39f,  0f), new Vector2(2f, 85f), manzanasRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Oeste", new Vector2(-39f, 0f), new Vector2(2f, 85f), manzanasRoot.transform);
 
         // Arcos monumentales de cantera en los 4 accesos de la Plaza
         ColocarDecoracion("Arco_Cantera_Norte", spArcoPiedra, new Vector2(0f, 15.2f),   Vector2.zero, false, root.transform);
@@ -597,14 +614,15 @@ public class MercadoBuilder : MonoBehaviour
 
         // 7. NODOS INTERACTIVOS DE TRUEQUE (MARKET STALL TRADE NODES)
         // Nodo 0: Arcón de Suministros de Cobre (Sur, callejón de entrada en (0, -18))
-        CrearPuestoTrueque(
+        MarketStallTradeNode nodoArcon = CrearPuestoTrueque(
             "Arcon_Suministros_Cobre",
-            spArconCobre,
+            spArconCerrado,
             new Vector2(0f, -18.0f),
             MarketStallTradeNode.NodeRole.SupplyCrateCopper,
             "[E] Abrir Arcón de la Fragua",
             tradePuzzle,
-            root.transform);
+            root.transform,
+            spArconAbierto);
 
         // Nodo 1: Herrería de Don Braulio (NW en (-13, 10))
         CrearPuestoTrueque(
@@ -637,14 +655,20 @@ public class MercadoBuilder : MonoBehaviour
             root.transform);
 
         // Nodo 4: Cofre Sagrado del Gremio (Centro en (0, 0))
-        CrearPuestoTrueque(
+        MarketStallTradeNode nodoCofreGremio = CrearPuestoTrueque(
             "Cofre_Sagrado_Del_Gremio",
-            spCofreGremio,
+            spCofreCerrado,
             posCentroGremio,
             MarketStallTradeNode.NodeRole.GuildTreasureChest,
             "[E] Abrir Cofre Sagrado del Gremio",
             tradePuzzle,
-            root.transform);
+            root.transform,
+            spCofreAbierto);
+        if (nodoCofreGremio != null)
+        {
+            tradePuzzle.cofreGremioRenderer = nodoCofreGremio.chestRenderer;
+            tradePuzzle.spriteCofreGremioAbierto = spCofreAbierto;
+        }
 
         // Tablón de pistas del Gremio (en el callejón sur junto al arcón)
         GameObject tablon = ColocarDecoracion("Tablon_Gremio_Artesanos", spLetrero, new Vector2(2.6f, -17.5f), new Vector2(0.9f, 0.9f), true, root.transform);
@@ -736,7 +760,7 @@ public class MercadoBuilder : MonoBehaviour
             new Vector2(3.0f, 1.8f),
             "Nivel3_CerroDelFraile",
             LevelManager.ZoneId.CerroDelFraile,
-            new Vector2(0.0f, -38.0f),
+            new Vector2(0.0f, -40.0f),
             new Color(0.20f, 0.85f, 1.0f, 0.85f),
             root.transform);
 
@@ -798,7 +822,8 @@ public class MercadoBuilder : MonoBehaviour
         MarketStallTradeNode.NodeRole role,
         string prompt,
         MarketTradePuzzle puzzle,
-        Transform parent)
+        Transform parent,
+        Sprite spriteAbierto = null)
     {
         GameObject go = new GameObject(nombre);
         go.transform.SetParent(parent);
@@ -817,7 +842,31 @@ public class MercadoBuilder : MonoBehaviour
         node.role = role;
         node.labelPrompt = prompt;
         node.puzzlePadre = puzzle;
+        node.chestRenderer = sr;
+        node.spriteCerrado = spriteItem;
+        node.spriteAbierto = spriteAbierto;
         return node;
+    }
+
+    public static void CargarCofreSprites(string assetName, out Sprite spCerrado, out Sprite spAbierto)
+    {
+        Texture2D tex = ZoneWaveSpawner.LoadSpriteTexture(assetName);
+        if (tex == null)
+        {
+#if UNITY_EDITOR
+            tex = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Sprites/{assetName}.png");
+#endif
+        }
+        if (tex != null && tex.width >= 32)
+        {
+            float halfW = tex.width * 0.5f;
+            spCerrado = Sprite.Create(tex, new Rect(0f, 0f, halfW, tex.height), new Vector2(0.5f, 0.5f), 16f);
+            spAbierto = Sprite.Create(tex, new Rect(halfW, 0f, halfW, tex.height), new Vector2(0.5f, 0.5f), 16f);
+            return;
+        }
+        Sprite fallback = CargarItemSprite(assetName);
+        spCerrado = fallback;
+        spAbierto = fallback;
     }
 
     private static GameObject CrearZonaHorda(
@@ -856,6 +905,11 @@ public class MercadoBuilder : MonoBehaviour
         }
         if (tex != null)
         {
+            // Si es un cofre de 2 fotogramas horizontales, devolver exclusivamente el fotograma izquierdo (Cerrado)
+            if (assetName != null && assetName.Contains("TreasureChest") && tex.width >= 32)
+            {
+                return Sprite.Create(tex, new Rect(0f, 0f, tex.width * 0.5f, tex.height), new Vector2(0.5f, 0.5f), 16f);
+            }
             return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 16f);
         }
         return ParroquiaExteriorBuilder.CrearSpriteRadial(new Color(1f, 0.85f, 0.2f, 1f));

@@ -74,8 +74,8 @@ public class CerroDelFraileBuilder : MonoBehaviour
             LevelManager.Instance.currentZone = LevelManager.ZoneId.CerroDelFraile;
         }
 
-        // 2. Asegurar a Ronan (Player) al pie de la montaña
-        GameObject playerObj = MercadoBuilder.AsegurarPlayer(new Vector2(0f, -38.0f));
+        // 2. Asegurar a Ronan (Player) al pie del sendero ANTES del puente y del letrero
+        GameObject playerObj = MercadoBuilder.AsegurarPlayer(new Vector2(0f, -40.0f));
         if (playerObj != null)
         {
             playerTransform = playerObj.transform;
@@ -103,17 +103,17 @@ public class CerroDelFraileBuilder : MonoBehaviour
         GameObject existente = GameObject.Find("Zona_Cerro_Del_Fraile_Detallada");
         if (existente != null)
         {
-            if (GameObject.Find("Marca_Cerro_V4") != null) return existente;
+            if (GameObject.Find("Marca_Cerro_V5") != null) return existente;
             if (Application.isPlaying) Destroy(existente);
             else DestroyImmediate(existente);
         }
 
         GameObject root = new GameObject("Zona_Cerro_Del_Fraile_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
-        GameObject marca = new GameObject("Marca_Cerro_V4");
+        GameObject marca = new GameObject("Marca_Cerro_V5");
         marca.transform.SetParent(root.transform);
 
-        // 1. RECORTE DE SPRITES REALES DE LOS TILESETS VERIFICADOS
+        // 1. RECORTE DE SPRITES REALES DE LOS TILESETS VERIFICADOS (CERO TilesetRelief ROTO)
         Sprite spPastoBase          = CortarCelda("TilesetFloor", 0, 12, 1, 1);
         Sprite spPastoClaro         = CortarCelda("TilesetFloor", 1, 12, 1, 1);
         Sprite spSenderoPiedra      = CortarCelda("TilesetFloor", 12, 15, 1, 1);
@@ -122,8 +122,6 @@ public class CerroDelFraileBuilder : MonoBehaviour
         Sprite spDetallePiedra      = CortarCelda("TilesetFloorDetail", 2, 1, 1, 1);
         Sprite spAlfombraAzul       = CortarCelda("TilesetInteriorFloor", 13, 1, 1, 1);
 
-        Sprite spMuroRisco          = CortarCelda("TilesetRelief", 0, 0, 2, 2);
-        Sprite spDetalleRisco       = CortarCelda("TilesetReliefDetail", 0, 0, 2, 2);
         Sprite spAguaArroyo         = CortarCelda("TilesetWater", 1, 1, 1, 1);
         Sprite spPuenteMadera       = CortarCelda("TilesetWater", 0, 12, 2, 4);
 
@@ -135,6 +133,7 @@ public class CerroDelFraileBuilder : MonoBehaviour
         Sprite spDetallePasto       = CortarCelda("TilesetNature", 2, 11, 1, 1);
 
         Sprite spColumnaCeremonial  = CortarCelda("TilesetVillageAbandoned", 2, 3, 1, 3);
+        Sprite spRuinaPilar         = CortarCelda("TilesetVillageAbandoned", 9, 5, 2, 2);
         Sprite spEstatuaMusgo       = CortarCelda("TilesetVillageAbandoned", 0, 3, 2, 3);
         Sprite spEscaleraCumbre     = CortarCelda("TilesetHouse", 10, 19, 3, 3);
         Sprite spEstatuaDorada      = CortarCelda("TilesetHouse", 3, 15, 2, 2);
@@ -164,8 +163,9 @@ public class CerroDelFraileBuilder : MonoBehaviour
         {
             for (int y = -45; y <= 45; y++)
             {
-                bool esArroyo = (y >= -34 && y <= -32) && (Mathf.Abs(x) > 3);
-                bool esPuente = (y >= -34 && y <= -32) && (Mathf.Abs(x) <= 3);
+                // Franja continua del río (y >= -34 && y <= -32): 100% agua sin tierra ni damero debajo del puente
+                bool enFranjaRio = (y >= -34 && y <= -32);
+                bool esOrillaRio = (y == -35 || y == -31) && (Mathf.Abs(x) > 3 && Mathf.Abs(x) <= 22);
 
                 float distCumbre = Vector2.Distance(new Vector2(x, y), centroCumbre);
                 bool esExplanadaCircular = (y >= 13 && distCumbre <= radioExplanadaCircular) || (y >= 13 && y <= 39 && Mathf.Abs(x) <= 13);
@@ -173,30 +173,27 @@ public class CerroDelFraileBuilder : MonoBehaviour
                 bool esCalzadaAltar      = (y >= 14 && y <= 36 && Mathf.Abs(x) <= 2);
 
                 float curvaDesfiladero = Mathf.Sin(y * 0.25f) * 3.5f;
-                bool esSendero = (Mathf.Abs(x) <= 3 && y < 14) ||
+                bool esSendero = !enFranjaRio && (
+                                 (Mathf.Abs(x) <= 3 && y < 14) ||
                                  (Mathf.Abs(x - curvaDesfiladero) <= 2.6f && y >= -22 && y < 14) ||
-                                 (x >= -12 && x <= -2 && y >= -6 && y <= -2); // ramal al campamento del ermitaño
+                                 (x >= -12 && x <= -2 && y >= -6 && y <= -2)); // ramal al campamento del ermitaño
 
                 GameObject tile = new GameObject($"Tile_{x}_{y}");
                 tile.transform.SetParent(pisoRoot.transform);
                 tile.transform.position = new Vector3(x, y, 0f);
                 SpriteRenderer sr = tile.AddComponent<SpriteRenderer>();
 
-                if (esArroyo)
+                if (enFranjaRio)
                 {
                     sr.sprite = spAguaArroyo;
                     sr.sortingOrder = -520;
-                    sr.color = new Color(0.78f, 0.94f, 1f, 0.95f);
-                    if (Mathf.Abs(x) <= 18)
+                    sr.color = new Color(0.75f, 0.92f, 1f, 0.98f);
+                    // Colisión de agua fuera del puente (Mathf.Abs(x) > 3)
+                    if (Mathf.Abs(x) > 3 && Mathf.Abs(x) <= 22)
                     {
                         BoxCollider2D colAgua = tile.AddComponent<BoxCollider2D>();
                         colAgua.size = Vector2.one;
                     }
-                }
-                else if (esPuente)
-                {
-                    sr.sprite = spSenderoPiedra;
-                    sr.sortingOrder = -400;
                 }
                 else if (esCalzadaAltar)
                 {
@@ -224,8 +221,15 @@ public class CerroDelFraileBuilder : MonoBehaviour
                 }
                 else if (esSendero)
                 {
-                    sr.sprite = ((x + y) % 4 == 0 && spAdoquinCumbre != null) ? spAdoquinCumbre : spSenderoPiedra;
+                    // Sendero empedrado uniforme sin patrón de damero (checkerboard)
+                    sr.sprite = spSenderoPiedra;
                     sr.sortingOrder = -490;
+                }
+                else if (esOrillaRio)
+                {
+                    // Borde de ribera empedrado que delimita limpiamente el río respecto a la tierra y el pasto
+                    sr.sprite = spAdoquinCumbre != null ? spAdoquinCumbre : spSenderoPiedra;
+                    sr.sortingOrder = -492;
                 }
                 else
                 {
@@ -244,20 +248,23 @@ public class CerroDelFraileBuilder : MonoBehaviour
             }
         }
 
-        // Puente colonial macizo sobre el arroyo (sortingOrder = -400 para que Ronan camine encima sin fallos)
-        ColocarDecoracion("Puente_Colonial_Izq",    spPuenteMadera, new Vector2(-2.0f, -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Puente_Colonial_Centro", spPuenteMadera, new Vector2(0.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Puente_Colonial_Der",    spPuenteMadera, new Vector2(2.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
-        ColocarDecoracion("Farol_Puente_Sur_Izq",   spFarolAceite,  new Vector2(-3.8f, -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Sur_Der",   spFarolAceite,  new Vector2(3.8f,  -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Norte_Izq", spFarolAceite,  new Vector2(-3.8f, -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
-        ColocarDecoracion("Farol_Puente_Norte_Der", spFarolAceite,  new Vector2(3.8f,  -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
+        // Puente colonial limpio y continuo sobre el arroyo (sortingOrder = -400 / -395 sobre el agua en sortingOrder = -520)
+        ColocarDecoracion("Puente_Base_Cantera_Izq", spEscaleraCumbre, new Vector2(-2.0f, -33.0f), Vector2.zero, false, root.transform, -405);
+        ColocarDecoracion("Puente_Base_Cantera_Cen", spEscaleraCumbre, new Vector2(0.0f,  -33.0f), Vector2.zero, false, root.transform, -405);
+        ColocarDecoracion("Puente_Base_Cantera_Der", spEscaleraCumbre, new Vector2(2.0f,  -33.0f), Vector2.zero, false, root.transform, -405);
+        ColocarDecoracion("Puente_Colonial_Izq",     spPuenteMadera,   new Vector2(-2.0f, -33.0f), Vector2.zero, false, root.transform, -400);
+        ColocarDecoracion("Puente_Colonial_Centro",  spPuenteMadera,   new Vector2(0.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
+        ColocarDecoracion("Puente_Colonial_Der",     spPuenteMadera,   new Vector2(2.0f,  -33.0f), Vector2.zero, false, root.transform, -400);
+        ColocarDecoracion("Farol_Puente_Sur_Izq",    spFarolAceite,    new Vector2(-3.8f, -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Sur_Der",    spFarolAceite,    new Vector2(3.8f,  -35.2f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Norte_Izq",  spFarolAceite,    new Vector2(-3.8f, -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
+        ColocarDecoracion("Farol_Puente_Norte_Der",  spFarolAceite,    new Vector2(3.8f,  -30.8f), new Vector2(0.7f, 0.9f), true, root.transform);
 
-        // 3. PAREDES DE ROCA ESCALONADAS CON RELIEVE NATURAL Y BOSQUES DENSOS DE CONÍFERAS
+        // 3. FORMACIONES DE ROCA NATURAL Y BOSQUES ESCALONADOS (CERO SPRITES ROTOS DE TILESETRELIEF)
         GameObject montanaRoot = new GameObject("Riscos_Escalonados_Y_Bosque_Coniferas");
         montanaRoot.transform.SetParent(root.transform);
 
-        // Terrazas escalonadas de roca a lo largo del desfiladero (Y: -22..+12)
+        // Formaciones rocosas naturales y árboles a lo largo del desfiladero (Y: -22..+12)
         for (int y = -22; y <= 12; y += 2)
         {
             float offsetCurva = Mathf.Sin(y * 0.2f) * 1.2f;
@@ -265,30 +272,38 @@ public class CerroDelFraileBuilder : MonoBehaviour
             float xRiscoIzq = (y >= -8 && y <= 1) ? -15.5f : (-12.5f + offsetCurva);
             float xRiscoDer = 12.5f + offsetCurva;
 
-            // Tres capas escalonadas de roca con relieve natural (TilesetRelief + Rocas)
-            ColocarRisco(spMuroRisco,    new Vector2(xRiscoIzq,        y),        montanaRoot.transform, true);
-            ColocarRisco(spDetalleRisco, new Vector2(xRiscoIzq - 2.2f, y + 0.5f), montanaRoot.transform, false);
-            ColocarRisco(spRocaMontana,  new Vector2(xRiscoIzq - 4.2f, y),        montanaRoot.transform, false);
+            // Capas escalonadas con rocas naturales limpias (spRocaMontana), ruinas de piedra (spRuinaPilar) y árboles
+            ColocarRisco(spRocaMontana, new Vector2(xRiscoIzq,        y),        montanaRoot.transform, true);
+            Sprite spCapaMediaIzq = (Mathf.Abs(y) % 4 == 0 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana;
+            ColocarRisco(spCapaMediaIzq, new Vector2(xRiscoIzq - 2.2f, y + 0.5f), montanaRoot.transform, false);
+            ColocarDecoracion($"Arbol_Ladera_Izq_{y}", (Mathf.Abs(y) % 4 == 0) ? spArbolDorado : spArbolVerde, new Vector2(xRiscoIzq - 4.4f, y), new Vector2(1.4f, 1.2f), false, montanaRoot.transform);
 
-            ColocarRisco(spMuroRisco,    new Vector2(xRiscoDer,        y),        montanaRoot.transform, true);
-            ColocarRisco(spDetalleRisco, new Vector2(xRiscoDer + 2.2f, y + 0.5f), montanaRoot.transform, false);
-            ColocarRisco(spRocaMontana,  new Vector2(xRiscoDer + 4.2f, y),        montanaRoot.transform, false);
+            ColocarRisco(spRocaMontana, new Vector2(xRiscoDer,        y),        montanaRoot.transform, true);
+            Sprite spCapaMediaDer = (Mathf.Abs(y) % 4 == 0 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana;
+            ColocarRisco(spCapaMediaDer, new Vector2(xRiscoDer + 2.2f, y + 0.5f), montanaRoot.transform, false);
+            ColocarDecoracion($"Arbol_Ladera_Der_{y}", (Mathf.Abs(y) % 4 == 0) ? spArbolVerde : spArbolDorado, new Vector2(xRiscoDer + 4.4f, y), new Vector2(1.4f, 1.2f), false, montanaRoot.transform);
         }
 
-        // Acantilados escalonados que rodean la Explanada Circular de la Cumbre (Y: 13..42)
+        // Peñascos naturales y muros de piedra antiguos que rodean la Explanada Circular de la Cumbre (Y: 13..42)
         for (int y = 13; y <= 41; y += 2)
         {
-            ColocarRisco(spMuroRisco,   new Vector2(-15.5f, y), montanaRoot.transform, true);
-            ColocarRisco(spRocaMontana, new Vector2(-18.0f, y + 0.5f), montanaRoot.transform, false);
+            ColocarRisco(spRocaMontana, new Vector2(-15.5f, y), montanaRoot.transform, true);
+            ColocarRisco((y % 4 == 1 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana, new Vector2(-18.0f, y + 0.5f), montanaRoot.transform, false);
 
-            ColocarRisco(spMuroRisco,   new Vector2(15.5f,  y), montanaRoot.transform, true);
-            ColocarRisco(spRocaMontana, new Vector2(18.0f,  y + 0.5f), montanaRoot.transform, false);
+            ColocarRisco(spRocaMontana, new Vector2(15.5f,  y), montanaRoot.transform, true);
+            ColocarRisco((y % 4 == 1 && spRuinaPilar != null) ? spRuinaPilar : spRocaMontana, new Vector2(18.0f,  y + 0.5f), montanaRoot.transform, false);
         }
         for (int x = -15; x <= 15; x += 2)
         {
-            ColocarRisco(spMuroRisco,   new Vector2(x, 41.5f), montanaRoot.transform, true);
+            ColocarRisco(spRocaMontana, new Vector2(x, 41.5f), montanaRoot.transform, true);
             ColocarRisco(spRocaMontana, new Vector2(x, 43.5f), montanaRoot.transform, false);
         }
+
+        // 4 Muros Colisionadores Perimetrales del Cerro del Fraile (Evitar salirse del mapa)
+        CrearMuroColision("Muro_Perimetral_Cerro_Norte", new Vector2(0f,  45.5f), new Vector2(70f, 2f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Sur",   new Vector2(0f, -45.5f), new Vector2(70f, 2f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Este",  new Vector2(20f,   0f),  new Vector2(2f, 95f), montanaRoot.transform);
+        CrearMuroColision("Muro_Perimetral_Cerro_Oeste", new Vector2(-20f,  0f),  new Vector2(2f, 95f), montanaRoot.transform);
 
         // Densos Bosques Perimetrales de Pinos Gigantes y Coníferas (Cero vista al vacío negro)
         for (int y = -44; y <= 44; y += 3)
@@ -322,8 +337,8 @@ public class CerroDelFraileBuilder : MonoBehaviour
         ColocarDecoracion("Arbol_Faldas_1",   spArbolDorado, new Vector2(-8.5f, -24.5f), new Vector2(1.5f, 1.2f), true, root.transform);
         ColocarDecoracion("Arbol_Faldas_2",   spArbolVerde,  new Vector2(8.5f,  -24.5f), new Vector2(1.5f, 1.2f), true, root.transform);
 
-        // Letrero inicial al pie del cerro
-        GameObject cartelInicio = ColocarDecoracion("Cartel_Pie_Cerro", spLetrero, new Vector2(3.2f, -38.0f), new Vector2(0.8f, 0.8f), true, root.transform);
+        // Letrero inicial al pie del cerro (al lado del camino en (2.0, -37.5), ANTES del puente)
+        GameObject cartelInicio = ColocarDecoracion("Cartel_Pie_Cerro", spLetrero, new Vector2(2.0f, -37.5f), new Vector2(0.8f, 0.8f), true, root.transform);
         InteractableSignOrNPC signInicio = cartelInicio.AddComponent<InteractableSignOrNPC>();
         signInicio.speakerTitle = "Sendero de Ascenso al Cerro del Fraile";
         signInicio.interactionPrompt = "[E] Leer Señal del Sendero";
@@ -529,10 +544,10 @@ public class CerroDelFraileBuilder : MonoBehaviour
         HeartPickup.SpawnHeart(new Vector3(-8.0f, 17.5f, 0f), 25f, root.transform); // Entrada poniente de la cumbre
         HeartPickup.SpawnHeart(new Vector3(8.0f,  17.5f, 0f), 25f, root.transform); // Entrada oriente de la cumbre
 
-        // 12. PORTAL DE REGRESO AL MERCADO MUNICIPAL (SUR en (0, -42.5))
+        // 12. PORTAL DE REGRESO AL MERCADO MUNICIPAL (SUR en (0, -43.5))
         ParroquiaExteriorBuilder.CrearPortalTransicionEscena(
             "Portal_Cerro_A_Mercado",
-            new Vector2(0.0f, -42.5f),
+            new Vector2(0.0f, -43.5f),
             new Vector2(3.0f, 1.8f),
             "Nivel2_Mercado",
             LevelManager.ZoneId.Mercado,
@@ -541,6 +556,15 @@ public class CerroDelFraileBuilder : MonoBehaviour
             root.transform);
 
         return root;
+    }
+
+    private static void CrearMuroColision(string nombre, Vector2 pos, Vector2 size, Transform parent)
+    {
+        GameObject go = new GameObject(nombre);
+        go.transform.SetParent(parent);
+        go.transform.position = pos;
+        BoxCollider2D col = go.AddComponent<BoxCollider2D>();
+        col.size = size;
     }
 
     private static SombraGuardianaBossAI ConstruirJefeSombraGuardiana(Vector2 pos, Transform parent, out GameObject escudoVisual)

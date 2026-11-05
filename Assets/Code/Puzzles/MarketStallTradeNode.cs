@@ -17,6 +17,9 @@ public class MarketStallTradeNode : MonoBehaviour
     public NodeRole role = NodeRole.SupplyCrateCopper;
     public string labelPrompt = "[E] Comerciar en Puesto";
     public MarketTradePuzzle puzzlePadre;
+    public SpriteRenderer chestRenderer;
+    public Sprite spriteCerrado;
+    public Sprite spriteAbierto;
 
     private Transform playerTransform;
     private bool completado = false;
@@ -52,6 +55,10 @@ public class MarketStallTradeNode : MonoBehaviour
             case NodeRole.SupplyCrateCopper:
                 if (completado || inv.HasItem(InventoryManager.ITEM_COPPER_BAR))
                 {
+                    if (chestRenderer != null && spriteAbierto != null)
+                    {
+                        chestRenderer.sprite = spriteAbierto;
+                    }
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Arcón de la Antigua Fragua",
                         new string[] { "Ya recogiste el Lingote de Cobre Antiguo. Llévaselo a Don Braulio en la Herrería del Noroeste." });
@@ -59,6 +66,11 @@ public class MarketStallTradeNode : MonoBehaviour
                 else
                 {
                     completado = true;
+                    if (chestRenderer != null && spriteAbierto != null)
+                    {
+                        chestRenderer.sprite = spriteAbierto;
+                    }
+                    AudioManager.Instance?.PlayItemPickupSound();
                     inv.AddItem(InventoryManager.ITEM_COPPER_BAR);
                     InventoryHUD.NotificarIntercambio("¡Obtuviste [Lingote de Cobre Antiguo]!");
                     ResourcePickup.SpawnDrops(transform.position + Vector3.down * 0.7f, 1f, 35, 60, 1f, 6, 0.8f, 30f, 0.8f, 30f);

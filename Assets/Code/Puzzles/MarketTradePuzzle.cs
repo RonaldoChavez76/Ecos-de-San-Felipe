@@ -12,6 +12,8 @@ public class MarketTradePuzzle : MonoBehaviour
     [Header("Referencias del Acertijo del Mercado")]
     public GameObject ecoDeLaTradicionObjeto;
     public GameObject barreraCofreGremio;
+    public SpriteRenderer cofreGremioRenderer;
+    public Sprite spriteCofreGremioAbierto;
     public bool acertijoResuelto = false;
 
     public void IntentarAbrirCofreDelGremio()
@@ -30,6 +32,12 @@ public class MarketTradePuzzle : MonoBehaviour
             acertijoResuelto = true;
             PuzzleManager.EnsureInstance().MarcarAcertijoResuelto(2);
             InventoryHUD.NotificarIntercambio("¡Cofre Abierto! [Eco de la Tradición] Liberado");
+
+            if (cofreGremioRenderer != null && spriteCofreGremioAbierto != null)
+            {
+                cofreGremioRenderer.sprite = spriteCofreGremioAbierto;
+            }
+            AudioManager.Instance?.PlayItemPickupSound();
 
             if (barreraCofreGremio != null) barreraCofreGremio.SetActive(false);
             if (ecoDeLaTradicionObjeto != null) ecoDeLaTradicionObjeto.SetActive(true);
