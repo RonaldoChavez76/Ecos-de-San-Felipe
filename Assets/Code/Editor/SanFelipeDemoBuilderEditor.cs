@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,6 +11,49 @@ public class SanFelipeSceneAutoSetup
     static SanFelipeSceneAutoSetup()
     {
         EditorApplication.delayCall += AutoActualizarEscenaNivel1;
+        EditorApplication.delayCall += NormalizarZoomGameView;
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+    }
+
+    private static void OnPlayModeStateChanged(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.EnteredPlayMode || state == PlayModeStateChange.ExitingEditMode)
+        {
+            NormalizarZoomGameView();
+            EditorApplication.delayCall += NormalizarZoomGameView;
+        }
+    }
+
+    /// <summary>
+    /// Asegura que la ventana Game del Editor esté en escala 1.0x (y no en 1.1x+) para no recortar bordes del HUD.
+    /// </summary>
+    private static void NormalizarZoomGameView()
+    {
+        try
+        {
+            System.Type gvType = typeof(Editor).Assembly.GetType("UnityEditor.GameView");
+            if (gvType == null) return;
+
+            UnityEngine.Object[] views = Resources.FindObjectsOfTypeAll(gvType);
+            MethodInfo snapMethod = gvType.GetMethod("SnapZoom", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            FieldInfo minScaleProp = gvType.GetField("m_defaultScale", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            foreach (UnityEngine.Object v in views)
+            {
+                if (v == null) continue;
+                float targetScale = 1.0f;
+                if (minScaleProp != null && minScaleProp.GetValue(v) is float defScale && defScale > 0.1f && defScale < 1.0f)
+                {
+                    targetScale = defScale;
+                }
+                snapMethod?.Invoke(v, new object[] { targetScale });
+                if (v is EditorWindow ew) ew.Repaint();
+            }
+        }
+        catch
+        {
+            // Ignorar si cambia la API interna del Editor
+        }
     }
 
     private static void AutoActualizarEscenaNivel1()

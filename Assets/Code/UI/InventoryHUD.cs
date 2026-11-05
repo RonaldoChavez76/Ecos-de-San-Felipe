@@ -177,39 +177,39 @@ public class InventoryHUD : MonoBehaviour
             oro = SaveStateManager.Instance.oro;
         }
 
-        // 1. Margen Seguro (Safe Area) contra bordes cortados y ancho proporcional
-        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
-        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
-        float pad = UITheme.Px(14f);
+        // 1. Margen Seguro (Safe Area) amplio contra bordes cortados y zoom de cámara/GameView
+        float safeMarginRight = Mathf.Max(UITheme.Px(96f), Screen.width * 0.095f);
+        float safeMarginY = Mathf.Max(UITheme.Px(28f), Screen.height * 0.04f);
+        float pad = UITheme.Px(12f);
 
-        float width = Mathf.Clamp(UITheme.Px(340f), 310f, Screen.width * 0.35f);
+        float width = Mathf.Clamp(UITheme.Px(305f), 270f, Screen.width * 0.30f);
         float innerW = width - pad * 2f;
 
         float row1H = UITheme.Px(18f);
-        float ecoBoxH = UITheme.Px(32f);
+        float ecoBoxH = UITheme.Px(30f);
         float bagTitleH = UITheme.Px(15f);
-        float slotGap = UITheme.Px(8f);
-        float slotSize = Mathf.Min(UITheme.Px(46f), (innerW - slotGap * 3f) / 4f);
-        float gapY = UITheme.Px(6f);
+        float slotGap = UITheme.Px(7f);
+        float slotSize = Mathf.Min(UITheme.Px(44f), (innerW - slotGap * 3f) / 4f);
+        float gapY = UITheme.Px(5f);
 
         float height = pad * 2f + row1H + gapY + ecoBoxH + gapY + bagTitleH + UITheme.Px(4f) + slotSize;
 
-        Rect rect = new Rect(Screen.width - width - safeMarginX, safeMarginY, width, height);
+        Rect rect = new Rect(Screen.width - width - safeMarginRight, safeMarginY, width, height);
         UITheme.Panel(rect, UITheme.BordeDorado, 1.5f);
 
         // Fila 1: Zona Activa y Recursos Rápidos (Oro y Flechas) dentro de innerW
         float row1Y = rect.y + pad;
-        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.60f, row1H),
+        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.62f, row1H),
             $"📍 <b><color=#FFE066>{zonaNombre}</color></b>",
-            UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+            UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
 
-        GUI.Label(new Rect(rect.x + pad + innerW * 0.56f, row1Y, innerW * 0.44f, row1H),
+        GUI.Label(new Rect(rect.x + pad + innerW * 0.58f, row1Y, innerW * 0.42f, row1H),
             $"🏹 <b>{flechas}</b>  💰 <b>{oro}</b>",
-            UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, new Color(1f, 0.92f, 0.55f)));
+            UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleRight, new Color(1f, 0.92f, 0.55f)));
 
         // Fila 2: Exhibidor Visual de los 3 ECOS SAGRADOS ([1. Fe] | [2. Tradición] | [3. Memoria])
         float ecosY = row1Y + row1H + gapY;
-        float ecoGap = UITheme.Px(5f);
+        float ecoGap = UITheme.Px(4f);
         float ecoBoxW = (innerW - ecoGap * 2f) / 3f;
 
         DibujarCasillaEco(new Rect(rect.x + pad, ecosY, ecoBoxW, ecoBoxH), 1, "1. Fe", eco1);
@@ -253,7 +253,7 @@ public class InventoryHUD : MonoBehaviour
         // 5. Notificación flotante de trueque (centro superior)
         if (notificacionTimer > 0f && !string.IsNullOrEmpty(notificacionTexto))
         {
-            float notifW = Mathf.Clamp(UITheme.Px(580f), 420f, Screen.width - safeMarginX * 2f);
+            float notifW = Mathf.Clamp(UITheme.Px(560f), 400f, Screen.width - safeMarginRight * 2f);
             float notifH = UITheme.Px(38f);
             float notifX = (Screen.width - notifW) * 0.5f;
             float notifY = UITheme.Px(58f);
@@ -277,8 +277,8 @@ public class InventoryHUD : MonoBehaviour
         UITheme.Borde(r, colBorde, 1.5f);
 
         // Orbe circular compacto a la izquierda para dejar amplio espacio al texto
-        float orbSize = Mathf.Min(r.height - UITheme.Px(10f), UITheme.Px(20f));
-        Rect rOrb = new Rect(r.x + UITheme.Px(4f), r.y + (r.height - orbSize) * 0.5f, orbSize, orbSize);
+        float orbSize = Mathf.Min(r.height - UITheme.Px(10f), UITheme.Px(17f));
+        Rect rOrb = new Rect(r.x + UITheme.Px(3f), r.y + (r.height - orbSize) * 0.5f, orbSize, orbSize);
         GUI.color = Color.white;
         Texture2D orbTex = recuperado ? texEcoActivo : texEcoInactivo;
         if (orbTex != null)
@@ -293,7 +293,7 @@ public class InventoryHUD : MonoBehaviour
         }
 
         // Texto del Eco a la derecha del orbe con margen suficiente para no cortarse
-        Rect rTxt = new Rect(rOrb.xMax + UITheme.Px(3f), r.y, r.xMax - rOrb.xMax - UITheme.Px(5f), r.height);
+        Rect rTxt = new Rect(rOrb.xMax + UITheme.Px(3f), r.y, r.xMax - rOrb.xMax - UITheme.Px(4f), r.height);
         Color txtColor = recuperado ? new Color(0f, 0.90f, 1f, 1f) : new Color(0.56f, 0.65f, 0.75f, 0.95f);
         GUI.Label(rTxt, etiqueta, UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleLeft, txtColor));
 

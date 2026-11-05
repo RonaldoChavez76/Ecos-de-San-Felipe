@@ -842,13 +842,13 @@ public class PlayerMovement : MonoBehaviour
         WeaponDefinition arma = ArmaActual;
 
         // 1. Margen seguro (Safe Area) contra bordes cortados
-        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
-        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
+        float safeMarginX = Mathf.Max(UITheme.Px(46f), Screen.width * 0.048f);
+        float safeMarginY = Mathf.Max(UITheme.Px(28f), Screen.height * 0.04f);
 
         float panelX = safeMarginX;
         float panelY = safeMarginY;
         float pad = UITheme.Px(14f);
-        float panelW = Mathf.Clamp(UITheme.Px(330f), 295f, Screen.width * 0.35f);
+        float panelW = Mathf.Clamp(UITheme.Px(310f), 275f, Screen.width * 0.32f);
         float barW = panelW - pad * 2f;
 
         float row1H = UITheme.Px(18f);
