@@ -155,10 +155,11 @@ public class ZoneWaveSpawner : MonoBehaviour
             rewardToEnableOnClear.SetActive(true);
         }
 
-        // Soltar un corazón sagrado de recompensa al purificar la zona
+        // Soltar botín abundante de oro, corazón sagrado y provisiones al purificar la zona
         HeartPickup.SpawnHeart(transform.position, 35f, transform);
+        ResourcePickup.SpawnDrops(transform.position, 1.0f, 35, 60, 1.0f, 8, 1.0f, 40f, 0.5f, 30f, transform);
 
-        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (+Corazón Sagrado) ★", 4.0f);
+        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (+Oro y Corazón Sagrado) ★", 4.0f);
     }
 
     private void MostrarBanner(string msg, float duration)
@@ -172,6 +173,8 @@ public class ZoneWaveSpawner : MonoBehaviour
         GameObject go = new GameObject($"Enemigo_{kind}_{ UnityEngine.Random.Range(100, 999) }");
         go.transform.SetParent(transform);
         go.transform.position = pos;
+        go.tag = "Enemy";
+        EnemyManager.EnsureInstance()?.RegisterEnemy(go);
 
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
         sr.sortingOrder = 5;
@@ -227,7 +230,8 @@ public class ZoneWaveSpawner : MonoBehaviour
                 forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Bow;
                 break;
             case EnemyKind.CorruptedGuard:
-                sheetName = "Human-Soldier-Cyan";
+                // Antes compartía la hoja Human-Soldier-Cyan con Ronan; ahora usa el Orco Soldado (misma rejilla Puny 24x8)
+                sheetName = "Orc-Soldier-Cyan";
                 forcedWeapon = EnemySpriteSheetAnimator.PunyWeaponType.Sword;
                 break;
         }
@@ -279,34 +283,15 @@ public class ZoneWaveSpawner : MonoBehaviour
     {
         if (Time.timeScale == 0f) return;
 
+        float y = UITheme.Px(180f);
         if (bannerTimer > 0f && !string.IsNullOrEmpty(bannerMessage))
         {
-            GUIStyle bannerStyle = new GUIStyle(GUI.skin.box)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 15,
-                fontStyle = FontStyle.Bold
-            };
-            bannerStyle.normal.textColor = new Color(1f, 0.92f, 0.45f);
-
-            float bw = 560f;
-            float bh = 36f;
-            GUI.Box(new Rect((Screen.width - bw) * 0.5f, 92f, bw, bh), bannerMessage, bannerStyle);
+            UITheme.Banner(y, bannerMessage, UITheme.Dorado, 760f, 18);
         }
         else if (encounterStarted && !encounterCompleted && activeEnemies.Count > 0)
         {
-            GUIStyle statusStyle = new GUIStyle(GUI.skin.box)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 13,
-                fontStyle = FontStyle.Bold
-            };
-            statusStyle.normal.textColor = new Color(0.45f, 0.95f, 1.0f);
-
-            float sw = 500f;
-            float sh = 28f;
-            string txt = $"{zoneTitle} — Oleada {currentWaveIndex + 1}/{waves.Count} (Enemigos restantes: {activeEnemies.Count})";
-            GUI.Box(new Rect((Screen.width - sw) * 0.5f, 92f, sw, sh), txt, statusStyle);
+            string txt = $"{zoneTitle} — Oleada {currentWaveIndex + 1}/{waves.Count}  ·  Enemigos restantes: {activeEnemies.Count}";
+            UITheme.Banner(y, txt, UITheme.Turquesa, 720f, 17);
         }
     }
 }

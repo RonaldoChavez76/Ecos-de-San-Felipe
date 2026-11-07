@@ -33,6 +33,9 @@ public class MarketTradePuzzle : MonoBehaviour
             if (barreraCofreGremio != null) barreraCofreGremio.SetActive(false);
             if (ecoDeLaTradicionObjeto != null) ecoDeLaTradicionObjeto.SetActive(true);
 
+            Vector3 spawnPos = barreraCofreGremio != null ? barreraCofreGremio.transform.position : transform.position;
+            ResourcePickup.SpawnDrops(spawnPos + Vector3.down * 0.8f, 1f, 60, 100, 1f, 10, 1f, 50f, 1f, 35f);
+
             DialogueManager.EnsureInstance().ShowDialogue(
                 "Gremio de Artesanos de San Felipe",
                 new string[]

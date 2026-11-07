@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -45,6 +46,36 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode blockKey = KeyCode.K;       // O Clic Derecho
     public KeyCode dodgeKey = KeyCode.Space;   // Esquivar
     public KeyCode assaultKey = KeyCode.L;     // Activar Modo Asalto
+    public KeyCode nextWeaponKey = KeyCode.Q;  // Cambiar al siguiente arma (también 1/2/3 y rueda del ratón)
+
+    [Header("Armas intercambiables")]
+    public List<WeaponDefinition> armas = new List<WeaponDefinition>();
+    public int armaActual = 0;
+    private float lastAttackTime = -10f;
+
+    [Header("Recursos de Combate (Maná y Flechas)")]
+    public int flechas = 12;
+    public int maxFlechas = 50;
+    public float manaActual = 60f;
+    public float manaMaximo = 100f;
+    public int oro = 50;
+
+    private string avisoRecurso = "";
+    private float avisoRecursoTimer = 0f;
+
+    /// <summary>Arma equipada actualmente (nunca nula).</summary>
+    public WeaponDefinition ArmaActual
+    {
+        get
+        {
+            if (armas == null || armas.Count == 0) armas = WeaponDefinition.CrearArmasPorDefecto();
+            armaActual = Mathf.Clamp(armaActual, 0, armas.Count - 1);
+            return armas[armaActual];
+        }
+    }
+
+    /// <summary>Se dispara cuando Ronan cambia de arma (para HUD, audio, etc.).</summary>
+    public event System.Action<WeaponDefinition> OnArmaCambiada;
 
     // Componentes internos
     private Rigidbody2D rb;
@@ -77,15 +108,30 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        if (sr != null) sr.sortingLayerName = "Default";
 
         combatSM = GetComponent<CombatStateMachine>();
         if (combatSM == null) combatSM = gameObject.AddComponent<CombatStateMachine>();
+
+        if (armas == null || armas.Count == 0) armas = WeaponDefinition.CrearArmasPorDefecto();
+
+        // Asegurar que solo la espada esté desbloqueada por defecto al comenzar
+        foreach (WeaponDefinition w in armas)
+        {
+            if (w.tipo == WeaponType.Sword) w.desbloqueada = true;
+            else w.desbloqueada = false;
+        }
 
         healthComp = GetComponent<HealthComponent>();
         if (healthComp == null)
         {
             healthComp = gameObject.AddComponent<HealthComponent>();
             healthComp.isPlayer = true;
+        }
+
+        if (!gameObject.CompareTag("Player"))
+        {
+            gameObject.tag = "Player";
         }
     }
 
@@ -101,15 +147,28 @@ public class PlayerMovement : MonoBehaviour
             rb.angularVelocity = 0f;
         }
 
-        // Sincronizar vida con el SaveStateManager (100 base + 25 por cada eco recuperado)
+        // Sincronizar vida y oro con el SaveStateManager (100 base + 25 por cada eco recuperado)
         if (SaveStateManager.Instance != null)
         {
+            oro = SaveStateManager.Instance.oro;
             maxHealth = SaveStateManager.Instance.ObtenerVidaMaximaTotal();
             currentHealth = Mathf.Clamp(SaveStateManager.Instance.currentHealth, 1f, maxHealth);
             if (healthComp != null)
             {
                 healthComp.maxHealth = maxHealth;
                 healthComp.currentHealth = currentHealth;
+            }
+
+            // Sincronizar armas compradas en la tienda
+            if (SaveStateManager.Instance.arcoComprado)
+            {
+                WeaponDefinition bow = armas.Find(x => x.tipo == WeaponType.Bow);
+                if (bow != null) bow.desbloqueada = true;
+            }
+            if (SaveStateManager.Instance.baculoComprado)
+            {
+                WeaponDefinition staff = armas.Find(x => x.tipo == WeaponType.Staff);
+                if (staff != null) staff.desbloqueada = true;
             }
         }
 
@@ -126,6 +185,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (avisoRecursoTimer > 0f) avisoRecursoTimer -= Time.deltaTime;
+
         if (currentHealth <= 0f)
         {
             movement = Vector2.zero;
@@ -216,11 +277,24 @@ public class PlayerMovement : MonoBehaviour
     {
         if (sr != null)
         {
-            // Orden de renderizado dinámico Top-Down según el eje Y
+            // Orden de renderizado dinámico Top-Down según el eje Y en capa Characters (por encima de puentes y suelo)
+            sr.sortingLayerName = "Default";
             sr.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10f);
-            if (effectSr != null) effectSr.sortingOrder = sr.sortingOrder + 1;
-            if (ecoEnManosSr != null) ecoEnManosSr.sortingOrder = sr.sortingOrder + 12;
-            if (ecoHaloSr != null) ecoHaloSr.sortingOrder = sr.sortingOrder + 11;
+            if (effectSr != null)
+            {
+                effectSr.sortingLayerName = "Default";
+                effectSr.sortingOrder = sr.sortingOrder + 1;
+            }
+            if (ecoEnManosSr != null)
+            {
+                ecoEnManosSr.sortingLayerName = "Default";
+                ecoEnManosSr.sortingOrder = sr.sortingOrder + 12;
+            }
+            if (ecoHaloSr != null)
+            {
+                ecoHaloSr.sortingLayerName = "Default";
+                ecoHaloSr.sortingOrder = sr.sortingOrder + 11;
+            }
         }
     }
 
@@ -247,8 +321,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void LeerEntradasDeCombate()
     {
-        // 1. Ataque cuerpo a cuerpo
-        if (Input.GetKeyDown(attackKey) || Input.GetMouseButtonDown(0))
+        // 0. Cambio de arma (Q = siguiente, 1/2/3 = directa, rueda del ratón)
+        LeerCambioDeArma();
+
+        // 1. Ataque con el arma equipada (espada, arco, báculo...)
+        if ((Input.GetKeyDown(attackKey) || Input.GetMouseButtonDown(0)) && Time.time >= lastAttackTime + ArmaActual.enfriamiento)
         {
             StartCoroutine(RutinaAtaque());
             return;
@@ -275,8 +352,144 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void LeerCambioDeArma()
+    {
+        if (armas == null || armas.Count < 2) return;
+
+        if (Input.GetKeyDown(nextWeaponKey)) SiguienteArma();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) CambiarArma(0);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) CambiarArma(1);
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) CambiarArma(2);
+
+        float rueda = Input.mouseScrollDelta.y;
+        if (rueda > 0.1f) SiguienteArma(-1);
+        else if (rueda < -0.1f) SiguienteArma(1);
+    }
+
+    /// <summary>Equipa la siguiente (dir = 1) o anterior (dir = -1) arma desbloqueada.</summary>
+    public void SiguienteArma(int dir = 1)
+    {
+        if (armas == null || armas.Count == 0) return;
+        for (int i = 1; i <= armas.Count; i++)
+        {
+            int idx = ((armaActual + dir * i) % armas.Count + armas.Count) % armas.Count;
+            if (armas[idx].desbloqueada)
+            {
+                CambiarArma(idx);
+                return;
+            }
+        }
+    }
+
+    /// <summary>Equipa el arma por índice (solo si existe y está desbloqueada).</summary>
+    public void CambiarArma(int indice)
+    {
+        if (armas == null || indice < 0 || indice >= armas.Count) return;
+        if (!armas[indice].desbloqueada || indice == armaActual) return;
+        if (currentState != CombatState.Idle) return;
+
+        armaActual = indice;
+        if (combatSM != null) combatSM.attackDuration = armas[indice].duracionAtaque;
+        AudioManager.Instance?.PlayDodgeSound();
+        OnArmaCambiada?.Invoke(armas[indice]);
+    }
+
+    public bool TieneArmaDesbloqueada(WeaponType tipo)
+    {
+        if (armas == null) return false;
+        WeaponDefinition w = armas.Find(x => x.tipo == tipo);
+        return w != null && w.desbloqueada;
+    }
+
+    public void DesbloquearArma(WeaponType tipo)
+    {
+        if (armas == null) return;
+        WeaponDefinition w = armas.Find(x => x.tipo == tipo);
+        if (w != null)
+        {
+            w.desbloqueada = true;
+            if (tipo == WeaponType.Bow && SaveStateManager.Instance != null) SaveStateManager.Instance.arcoComprado = true;
+            if (tipo == WeaponType.Staff && SaveStateManager.Instance != null) SaveStateManager.Instance.baculoComprado = true;
+            int idx = armas.IndexOf(w);
+            if (idx >= 0) CambiarArma(idx);
+        }
+    }
+
+    public void AgregarFlechas(int cant)
+    {
+        flechas = Mathf.Clamp(flechas + cant, 0, maxFlechas);
+    }
+
+    public void RestaurarMana(float cant)
+    {
+        manaActual = Mathf.Clamp(manaActual + cant, 0f, manaMaximo);
+    }
+
+    public void AgregarOro(int cant)
+    {
+        oro += cant;
+        if (SaveStateManager.Instance != null)
+        {
+            SaveStateManager.Instance.oro = oro;
+            SaveStateManager.Instance.GuardarProgreso();
+        }
+        MostrarAvisoRecurso($"💰 +{cant} Oro");
+        Debug.Log($"<color=#FFD700>[PlayerMovement] +{cant} Oro recogido! Total: {oro}</color>");
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        ProcesarTriggerRecurso(other);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        ProcesarTriggerRecurso(other);
+    }
+
+    private void ProcesarTriggerRecurso(Collider2D other)
+    {
+        if (other == null) return;
+        ResourcePickup rp = other.GetComponent<ResourcePickup>() ?? other.GetComponentInParent<ResourcePickup>();
+        if (rp != null)
+        {
+            rp.Recolectar(this);
+        }
+    }
+
+    public void MostrarAvisoRecurso(string msg)
+    {
+        avisoRecurso = msg;
+        avisoRecursoTimer = 2.5f;
+    }
+
     private IEnumerator RutinaAtaque()
     {
+        WeaponDefinition arma = ArmaActual;
+
+        // Comprobación de recursos para armas a distancia
+        if (arma.tipo == WeaponType.Bow)
+        {
+            if (flechas < arma.costoFlechas)
+            {
+                AudioManager.Instance?.PlayDodgeSound();
+                MostrarAvisoRecurso("¡SIN FLECHAS! Compra en la Tienda [B] o vence enemigos.");
+                yield break;
+            }
+            flechas -= arma.costoFlechas;
+        }
+        else if (arma.tipo == WeaponType.Staff)
+        {
+            if (manaActual < arma.costoMana)
+            {
+                AudioManager.Instance?.PlayDodgeSound();
+                MostrarAvisoRecurso("¡MANÁ INSUFICIENTE! Recoge cristales o visita la Tienda [B].");
+                yield break;
+            }
+            manaActual = Mathf.Max(0f, manaActual - arma.costoMana);
+        }
+
         SetState(CombatState.Attack);
         movement = Vector2.zero;
         if (rb != null)
@@ -287,37 +500,49 @@ public class PlayerMovement : MonoBehaviour
         if (anim != null) anim.SetFloat("Speed", 0f);
         if (visualEffectObj != null) visualEffectObj.SetActive(false);
 
+        lastAttackTime = Time.time;
+        if (combatSM != null) combatSM.attackDuration = arma.duracionAtaque;
+
         AudioManager.Instance?.PlaySlashSound();
 
-        float danioActual = isAssaultActive ? baseAttack * 1.60f : baseAttack;
-        Vector2 puntoAtaque = (Vector2)transform.position + lookDirection * (attackRange * 0.65f);
-        Collider2D[] impactados = Physics2D.OverlapCircleAll(puntoAtaque, attackRange * 0.60f);
+        float danioActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
 
-        bool conectoGolpe = false;
-        foreach (Collider2D col in impactados)
+        if (!arma.esADistancia)
         {
-            if (col.gameObject != gameObject && !col.isTrigger)
+            // Arma cuerpo a cuerpo: golpe inmediato en arco frente a Ronan
+            Vector2 puntoAtaque = (Vector2)transform.position + lookDirection * (arma.alcance * 0.65f);
+            Collider2D[] impactados = Physics2D.OverlapCircleAll(puntoAtaque, arma.alcance * 0.60f);
+
+            bool conectoGolpe = false;
+            foreach (Collider2D col in impactados)
             {
-                HealthComponent hc = col.GetComponent<HealthComponent>() ?? col.transform.root.GetComponent<HealthComponent>();
-                if (hc != null && !col.CompareTag("Player"))
+                if (col.gameObject != gameObject && !col.isTrigger)
                 {
-                    hc.TakeDamage(danioActual, lookDirection, 5f, gameObject);
-                    conectoGolpe = true;
-                }
-                else if (col.CompareTag("Enemy") || col.name.Contains("Sombra"))
-                {
-                    col.SendMessage("RecibirDanio", danioActual, SendMessageOptions.DontRequireReceiver);
-                    conectoGolpe = true;
+                    if (PlayerCombatUtil.AplicarDanio(col, danioActual, lookDirection, arma.empuje, gameObject))
+                    {
+                        conectoGolpe = true;
+                    }
                 }
             }
-        }
 
-        if (conectoGolpe)
+            if (conectoGolpe)
+            {
+                AñadirCargaAsalto(10f);
+            }
+
+            yield return new WaitForSeconds(arma.duracionAtaque);
+        }
+        else
         {
-            AñadirCargaAsalto(10f);
+            // Arma a distancia: el proyectil sale en el cuadro de "suelta" (~55 % de la animación)
+            yield return new WaitForSeconds(arma.duracionAtaque * 0.55f);
+            if (currentState == CombatState.Attack && currentHealth > 0f)
+            {
+                Vector2 origen = (Vector2)transform.position + lookDirection * 0.55f + Vector2.up * 0.05f;
+                PlayerProjectile.Disparar(arma, origen, lookDirection, danioActual, gameObject, sr != null ? sr.sortingOrder : 0);
+            }
+            yield return new WaitForSeconds(arma.duracionAtaque * 0.45f);
         }
-
-        yield return new WaitForSeconds(attackDuration);
         if (rb != null) rb.linearVelocity = Vector2.zero;
         SetState(CombatState.Idle);
     }
@@ -465,7 +690,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Activa la animación heroica de victoria levantando el Eco Sagrado por encima de su cabeza.
     /// </summary>
-    public void ActivarPoseDeVictoriaConEco(string nombreEco, int indiceEco)
+    public void ActivarPoseDeVictoriaConEco(string nombreEco, int indiceEco, bool mostrarEcoInmediato = true)
     {
         SetState(CombatState.Victory);
         movement = Vector2.zero;
@@ -480,7 +705,7 @@ public class PlayerMovement : MonoBehaviour
         if (anim != null) anim.SetFloat("Speed", 0f);
         if (visualEffectObj != null) visualEffectObj.SetActive(false);
 
-        CrearOMostrarEcoEnManos(indiceEco);
+        if (mostrarEcoInmediato) CrearOMostrarEcoEnManos(indiceEco);
     }
 
     /// <summary>
@@ -497,6 +722,15 @@ public class PlayerMovement : MonoBehaviour
         }
         isInvulnerable = false;
         SetState(CombatState.Idle);
+    }
+
+    /// <summary>Posición en el mundo sobre la cabeza/manos de Ronan donde se sostiene el Eco.</summary>
+    public Vector3 PosicionEcoEnManos => transform.position + new Vector3(0f, 0.78f, 0f);
+
+    /// <summary>Muestra el Eco brillante sostenido en alto (se llama al terminar de recogerlo).</summary>
+    public void MostrarEcoEnManos(int indiceEco)
+    {
+        if (currentState == CombatState.Victory) CrearOMostrarEcoEnManos(indiceEco);
     }
 
     private void CrearOMostrarEcoEnManos(int indiceEco)
@@ -593,8 +827,6 @@ public class PlayerMovement : MonoBehaviour
         if (effectSr != null) effectSr.color = color;
     }
 
-    private static Texture2D whiteBarTex;
-
     private void OnGUI()
     {
         if (Time.timeScale == 0f) return;
@@ -605,113 +837,107 @@ public class PlayerMovement : MonoBehaviour
             currentHealth = Mathf.Clamp(healthComp.currentHealth, 0f, maxHealth);
         }
 
-        if (whiteBarTex == null)
-        {
-            whiteBarTex = new Texture2D(1, 1);
-            whiteBarTex.SetPixel(0, 0, Color.white);
-            whiteBarTex.Apply();
-        }
-
-        float panelX = 16f;
-        float panelY = 16f;
-        float panelW = 350f;
-        float panelH = 112f;
-
         Color prevColor = GUI.color;
 
-        // Fondo oscuro semitransparente del HUD de Ronan
-        GUI.color = new Color(0.08f, 0.07f, 0.11f, 0.88f);
-        GUI.DrawTexture(new Rect(panelX, panelY, panelW, panelH), whiteBarTex);
+        WeaponDefinition arma = ArmaActual;
+        bool muestraRecurso = (arma.tipo == WeaponType.Staff || arma.tipo == WeaponType.Bow);
 
-        // Borde dorado colonial
-        GUI.color = new Color(0.85f, 0.68f, 0.28f, 0.95f);
-        GUI.DrawTexture(new Rect(panelX, panelY, panelW, 2f), whiteBarTex);
-        GUI.DrawTexture(new Rect(panelX, panelY + panelH - 2f, panelW, 2f), whiteBarTex);
-        GUI.DrawTexture(new Rect(panelX, panelY, 2f, panelH), whiteBarTex);
-        GUI.DrawTexture(new Rect(panelX + panelW - 2f, panelY, 2f, panelH), whiteBarTex);
+        // Anclado estrictamente a la esquina superior izquierda
+        float panelX = UITheme.Px(8f);
+        float panelY = UITheme.Px(8f);
+        float panelW = UITheme.Px(260f); // Reducido drásticamente de 430px a 260px
+        float pad = UITheme.Px(7f);
+        float barW = panelW - pad * 2f;
+        float barH = UITheme.Px(14f);    // Barras estilizadas y compactas
+        float panelH = UITheme.Px(muestraRecurso ? 98f : 82f);
+        if (avisoRecursoTimer > 0f) panelH += UITheme.Px(20f);
 
-        GUIStyle titleStyle = new GUIStyle(GUI.skin.label)
-        {
-            fontSize = 13,
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleLeft,
-            wordWrap = false,
-            clipping = TextClipping.Overflow,
-            padding = new RectOffset(0, 0, 0, 0)
-        };
-        titleStyle.normal.textColor = new Color(1f, 0.90f, 0.55f);
+        Rect panel = new Rect(panelX, panelY, panelW, panelH);
+        UITheme.Panel(panel, UITheme.BordeDorado, 1.5f);
 
-        GUIStyle textStyle = new GUIStyle(GUI.skin.label)
-        {
-            fontSize = 12,
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleLeft,
-            wordWrap = false,
-            clipping = TextClipping.Overflow,
-            padding = new RectOffset(0, 0, 0, 0)
-        };
-        textStyle.normal.textColor = new Color(0.95f, 0.95f, 0.95f);
-
-        GUI.color = Color.white;
         float hpPct = Mathf.Clamp01(currentHealth / Mathf.Max(1f, maxHealth));
         bool lowHp = hpPct <= 0.30f;
-        string headerAlert = lowHp ? "  <color=#FF4444>[¡VIDA BAJA!]</color>" : "";
-        GUI.Label(new Rect(panelX + 12f, panelY + 6f, panelW - 20f, 22f), $"⚔ RONAN — GUARDIÁN DE SAN FELIPE{headerAlert}", titleStyle);
 
-        // 1. Barra de Vida (HP)
-        float barX = panelX + 12f;
-        float hpBarY = panelY + 32f;
-        float barW = panelW - 24f;
-        float barH = 22f;
+        // Línea 1: Encabezado compacto (Nombre a la izquierda, Vida numérica a la derecha)
+        string alerta = lowHp ? " <color=#FF6B5E>¡BAJA!</color>" : "";
+        GUI.Label(new Rect(panelX + pad, panelY + UITheme.Px(2f), barW * 0.58f, UITheme.Px(16f)),
+            "<b>RONAN</b>" + alerta, UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
-        GUI.color = new Color(0.22f, 0.08f, 0.08f, 0.95f);
-        GUI.DrawTexture(new Rect(barX, hpBarY, barW, barH), whiteBarTex);
+        GUI.Label(new Rect(panelX + pad + barW * 0.58f, panelY + UITheme.Px(2f), barW * 0.42f, UITheme.Px(16f)),
+            $"♥ {Mathf.CeilToInt(currentHealth)}/{Mathf.CeilToInt(maxHealth)}",
+            UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, Color.white));
 
-        Color hpColor = hpPct > 0.5f
-            ? new Color(0.22f, 0.82f, 0.35f, 0.95f)
-            : (hpPct > 0.3f ? new Color(0.95f, 0.72f, 0.15f, 0.95f) : new Color(0.95f, 0.18f, 0.18f, 0.75f + Mathf.PingPong(Time.time * 2.5f, 0.25f)));
-        GUI.color = hpColor;
-        GUI.DrawTexture(new Rect(barX + 2f, hpBarY + 2f, (barW - 4f) * hpPct, barH - 4f), whiteBarTex);
-
+        // 1. Barra de Vida compacta
+        float hpY = panelY + UITheme.Px(18f);
+        GUI.color = new Color(0.20f, 0.05f, 0.05f, 0.85f);
+        GUI.DrawTexture(new Rect(panelX + pad, hpY, barW, barH), UITheme.Blanca);
+        GUI.color = hpPct > 0.5f
+            ? new Color(0.18f, 0.75f, 0.30f, 0.95f)
+            : (hpPct > 0.3f ? new Color(0.90f, 0.65f, 0.10f, 0.95f) : new Color(0.92f, 0.15f, 0.15f, 0.85f + Mathf.PingPong(Time.time * 2.5f, 0.15f)));
+        GUI.DrawTexture(new Rect(panelX + pad + 1f, hpY + 1f, (barW - 2f) * hpPct, barH - 2f), UITheme.Blanca);
         GUI.color = Color.white;
-        GUI.Label(new Rect(barX + 8f, hpBarY, barW - 12f, barH), $"♥ VIDA: {Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth)} HP", textStyle);
 
-        // 2. Barra de Modo Asalto
-        float assaultBarY = panelY + 58f;
-        float assaultPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
+        float currY = hpY + barH + UITheme.Px(3f);
 
-        GUI.color = new Color(0.08f, 0.14f, 0.24f, 0.95f);
-        GUI.DrawTexture(new Rect(barX, assaultBarY, barW, 20f), whiteBarTex);
-
-        GUI.color = isAssaultActive
-            ? new Color(0.20f, 0.95f, 1f, 0.8f + Mathf.PingPong(Time.time * 3f, 0.2f))
-            : (assaultPct >= 1f ? new Color(0.15f, 0.85f, 1f, 0.95f) : new Color(0.18f, 0.52f, 0.88f, 0.95f));
-        GUI.DrawTexture(new Rect(barX + 2f, assaultBarY + 2f, (barW - 4f) * assaultPct, 16f), whiteBarTex);
-
-        GUI.color = Color.white;
-        string estadoAsalto = isAssaultActive
-            ? "¡MODO ASALTO ACTIVO! (+60% ATQ / +30% VEL)"
-            : (assaultPct >= 1f ? "⚡ MODO ASALTO: 100% (¡LISTO!)" : $"⚡ MODO ASALTO: {assaultCharge:0}%");
-        GUI.Label(new Rect(barX + 8f, assaultBarY, barW - 12f, 20f), estadoAsalto, textStyle);
-
-        // 3. Estadísticas de Ronan (Ataque, Velocidad, Ventana Parry y Estado) sin cortarse
-        float atkActual = isAssaultActive ? baseAttack * 1.60f : baseAttack;
-        float spdActual = isAssaultActive ? moveSpeed * 1.30f : moveSpeed;
-
-        GUIStyle statStyle = new GUIStyle(GUI.skin.label)
+        // 2. Barra de Recurso (Maná si es báculo, Flechas si es arco)
+        if (arma.tipo == WeaponType.Staff)
         {
-            fontSize = 12,
-            alignment = TextAnchor.MiddleLeft,
-            richText = true,
-            wordWrap = false,
-            clipping = TextClipping.Overflow,
-            padding = new RectOffset(0, 0, 0, 0)
-        };
-        statStyle.normal.textColor = new Color(0.92f, 0.94f, 0.98f);
+            float manaPct = Mathf.Clamp01(manaActual / Mathf.Max(1f, manaMaximo));
+            float rH = UITheme.Px(12f);
+            GUI.color = new Color(0.04f, 0.12f, 0.25f, 0.85f);
+            GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
+            GUI.color = manaActual >= arma.costoMana ? new Color(0f, 0.85f, 1f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
+            GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * manaPct, rH - 2f), UITheme.Blanca);
+            GUI.color = Color.white;
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(4f), currY, barW, rH),
+                $"💧 {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
+                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+            currY += rH + UITheme.Px(3f);
+        }
+        else if (arma.tipo == WeaponType.Bow)
+        {
+            float flechasPct = Mathf.Clamp01((float)flechas / Mathf.Max(1f, maxFlechas));
+            float rH = UITheme.Px(12f);
+            GUI.color = new Color(0.20f, 0.15f, 0.05f, 0.85f);
+            GUI.DrawTexture(new Rect(panelX + pad, currY, barW, rH), UITheme.Blanca);
+            GUI.color = flechas > 0 ? new Color(1f, 0.80f, 0.25f, 0.95f) : new Color(0.85f, 0.20f, 0.20f, 0.95f);
+            GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * flechasPct, rH - 2f), UITheme.Blanca);
+            GUI.color = Color.white;
+            string txtF = flechas > 0 ? $"🏹 {flechas}/{maxFlechas} (-1)" : "🏹 ¡Sin Flechas!";
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad + UITheme.Px(4f), currY, barW, rH),
+                txtF, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
+            currY += rH + UITheme.Px(3f);
+        }
 
-        GUI.Label(new Rect(barX + 2f, panelY + 82f, barW, 24f),
-            $"<b>ATQ:</b> {atkActual:0.#}   |   <b>VEL:</b> {spdActual:0.#} u/s   |   <b>PARRY:</b> {counterWindow:0.00}s   |   <b>ESTADO:</b> {currentState}",
-            statStyle);
+        // 3. Barra delgada de Modo Asalto (7px)
+        float asH = UITheme.Px(7f);
+        float asaltoPct = isAssaultActive ? 1f : Mathf.Clamp01(assaultCharge / Mathf.Max(1f, maxAssaultCharge));
+        GUI.color = new Color(0.05f, 0.10f, 0.20f, 0.85f);
+        GUI.DrawTexture(new Rect(panelX + pad, currY, barW, asH), UITheme.Blanca);
+        GUI.color = isAssaultActive
+            ? new Color(0.20f, 0.90f, 1f, 0.85f + Mathf.PingPong(Time.time * 3f, 0.15f))
+            : (asaltoPct >= 1f ? new Color(0.15f, 0.80f, 1f, 1f) : new Color(0.16f, 0.45f, 0.82f, 0.9f));
+        GUI.DrawTexture(new Rect(panelX + pad + 1f, currY + 1f, (barW - 2f) * asaltoPct, asH - 2f), UITheme.Blanca);
+        GUI.color = Color.white;
+        currY += asH + UITheme.Px(3f);
+
+        // 4. Arma y estadísticas en 1 línea compacta
+        float atkActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
+        GUI.Label(new Rect(panelX + pad, currY, barW, UITheme.Px(16f)),
+            $"⚔ <color=#FFE066>{arma.nombre}</color>  ATQ <b>{atkActual:0.#}</b>  <color=#9AA6B8>[Q][B]</color>",
+            UITheme.Estilo(11, FontStyle.Normal, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
+
+        // 5. Aviso flotante de recurso insuficiente
+        if (avisoRecursoTimer > 0f)
+        {
+            float avY = currY + UITheme.Px(17f);
+            GUI.color = new Color(0.85f, 0.20f, 0.20f, 0.90f);
+            GUI.DrawTexture(new Rect(panelX + pad, avY, barW, UITheme.Px(17f)), UITheme.Blanca);
+            GUI.color = Color.white;
+            UITheme.EtiquetaConSombra(new Rect(panelX + pad, avY, barW, UITheme.Px(17f)),
+                avisoRecurso,
+                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
+        }
 
         GUI.color = prevColor;
     }

@@ -86,7 +86,7 @@ public class BossHealthBarUI : MonoBehaviour
         GUIStyle titleStyle = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = 14,
+            fontSize = UITheme.Fuente(16),
             fontStyle = FontStyle.Bold
         };
         titleStyle.normal.textColor = new Color(0.95f, 0.85f, 1.0f);
@@ -94,19 +94,19 @@ public class BossHealthBarUI : MonoBehaviour
         GUIStyle subStyle = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = 12,
+            fontSize = UITheme.Fuente(14),
             fontStyle = FontStyle.Bold
         };
         subStyle.normal.textColor = bossAI.isShieldedBySeals
-            ? new Color(0.35f, 0.92f, 1.0f)
+            ? new Color(0.55f, 0.97f, 1.0f)
             : new Color(1.0f, 0.85f, 0.35f);
 
         // Fondo oscuro del panel del Jefe
-        GUI.color = new Color(0.06f, 0.03f, 0.10f, 0.90f);
-        GUI.DrawTexture(new Rect(x - 14f, y - 6f, barWidth + 28f, 76f), whiteTex);
+        GUI.color = new Color(0.04f, 0.02f, 0.08f, 0.97f);
+        GUI.DrawTexture(new Rect(x - 14f, y - 6f, barWidth + 28f, 92f), whiteTex);
 
         GUI.color = Color.white;
-        GUI.Label(new Rect(x, y - 2f, barWidth, 20f), $"LA SOMBRA GUARDIANA — {faseTexto}", titleStyle);
+        GUI.Label(new Rect(x, y - 4f, barWidth, 26f), $"LA SOMBRA GUARDIANA — {faseTexto}", titleStyle);
 
         // Barra de vida
         float ratio = Mathf.Clamp01(bossHealth.currentHealth / Mathf.Max(1f, bossHealth.maxHealth));
@@ -122,7 +122,7 @@ public class BossHealthBarUI : MonoBehaviour
         string estadoSellos = bossAI.isShieldedBySeals
             ? "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]"
             : "¡ESCUDO DESTRUIDO! Contraataca sus orbes con [K] (0.20s)";
-        GUI.Label(new Rect(x, y + 46f, barWidth, 20f), estadoSellos, subStyle);
+        GUI.Label(new Rect(x, y + 52f, barWidth, 26f), estadoSellos, subStyle);
     }
 }
 

@@ -123,11 +123,13 @@ public class PunyCharacterAnimator : MonoBehaviour
 
             if (player.currentState == PlayerMovement.CombatState.Attack)
             {
-                // Sincroniza exactamente los 4 cuadros de espada (columnas 4, 5, 6 y 7) con la duración del ataque
+                // Reproduce los cuadros del arma equipada (espada 4-7, arco 8-11, báculo 12-14) sincronizados con su duración
+                WeaponDefinition arma = player.ArmaActual;
+                int cuadros = Mathf.Max(1, arma.cuadros);
                 animTimer += Time.deltaTime;
-                float progreso = Mathf.Clamp01(animTimer / Mathf.Max(0.01f, player.attackDuration));
-                int frameAtaque = Mathf.Clamp(Mathf.FloorToInt(progreso * 4f), 0, 3);
-                columnaElegida = 4 + frameAtaque;
+                float progreso = Mathf.Clamp01(animTimer / Mathf.Max(0.01f, arma.duracionAtaque));
+                int frameAtaque = Mathf.Clamp(Mathf.FloorToInt(progreso * cuadros), 0, cuadros - 1);
+                columnaElegida = Mathf.Clamp(arma.columnaInicial + frameAtaque, 0, 23);
             }
             else if (player.currentState == PlayerMovement.CombatState.Block || player.currentState == PlayerMovement.CombatState.Counter)
             {

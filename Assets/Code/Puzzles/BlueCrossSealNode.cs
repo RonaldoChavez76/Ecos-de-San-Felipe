@@ -98,10 +98,11 @@ public class BlueCrossSealNode : MonoBehaviour
         };
         style.normal.textColor = new Color(0.35f, 0.95f, 1.0f);
 
-        float w = 240f;
-        float h = 28f;
+        float w = UITheme.Px(240f * 1.25f);
+        float h = UITheme.Px(36f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        GUI.Box(r, $"[E / J] Purificar {nombreSello}", style);
+        UITheme.Panel(r, style.normal.textColor, 2f);
+        GUI.Label(r, $"[E / J] Purificar {nombreSello}", UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
     }
 }
 

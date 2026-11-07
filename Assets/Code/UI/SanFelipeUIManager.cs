@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -400,11 +400,11 @@ public class SanFelipeUIManager : MonoBehaviour
         CrearBoton(panelMenuInicio.transform, "VOLVER AL MENÚ PRINCIPAL", new Vector2(0, -100), new Vector2(360, 48), new Color(0.20f, 0.38f, 0.50f), fuente, VolverAlMenuPrincipal);
         CrearBoton(panelMenuInicio.transform, "SALIR DEL JUEGO", new Vector2(0, -165), new Vector2(360, 45), new Color(0.45f, 0.15f, 0.15f), fuente, SalirDelJuego);
 
-        CrearTexto(panelMenuInicio.transform, "UTNG — Creación de Videojuegos | Desarrollado por Santiago Ronaldo Chávez Piñón", 16, new Color(0.6f, 0.55f, 0.5f), new Vector2(0, -290), new Vector2(900, 30), fuente);
+        CrearTexto(panelMenuInicio.transform, "UTNG — Creación de Videojuegos | Desarrollado por Santiago Ronaldo Chávez Piñón", 16, new Color(0.82f, 0.78f, 0.72f), new Vector2(0, -290), new Vector2(900, 30), fuente);
 
         // Subpanel de Controles (Tabla 11 del documento)
-        panelControles = CrearPanel(panelMenuInicio.transform, "Subpanel_Controles", new Color(0.06f, 0.05f, 0.08f, 0.98f), new Vector2(410, -40), new Vector2(380, 260));
-        CrearTexto(panelControles.transform, "CONTROLES DE RONAN:\n\n[W, A, S, D] : Mover en 8 direcciones\n[J] o [Clic Izq] : Espadazo\n[K] o [Clic Der] : Bloqueo / Contraataque (0.20s)\n[ESPACIO] : Esquive con invulnerabilidad\n[L] : Activar Modo Asalto\n[E] : Hablar / Leer Pistas\n[ESC] : Pausa", 17, Color.white, Vector2.zero, new Vector2(340, 240), fuente);
+        panelControles = CrearPanel(panelMenuInicio.transform, "Subpanel_Controles", new Color(0.06f, 0.05f, 0.08f, 0.98f), new Vector2(440, -40), new Vector2(540, 350));
+        CrearTexto(panelControles.transform, "CONTROLES DE RONAN:\n\n[W, A, S, D] : Mover en 8 direcciones\n[J] o [Clic Izq] : Atacar con el arma equipada\n[Q] / [1-2-3] / Rueda : Cambiar arma\n[K] o [Clic Der] : Bloqueo / Contraataque (0.20s)\n[ESPACIO] : Esquive con invulnerabilidad\n[L] : Activar Modo Asalto\n[E] : Hablar / Leer Pistas\n[ESC] : Pausa", 17, Color.white, Vector2.zero, new Vector2(500, 330), fuente);
         panelControles.SetActive(false);
 
         // ---------------------------------------------------------------------
@@ -531,7 +531,10 @@ public class SanFelipeUIManager : MonoBehaviour
         Text t = txtObj.AddComponent<Text>();
         t.font = fuente;
         t.text = contenido;
-        t.fontSize = fontSize;
+        t.fontSize = Mathf.Max(fontSize, 18);
+        Outline contorno = txtObj.AddComponent<Outline>();
+        contorno.effectColor = new Color(0f, 0f, 0f, 0.9f);
+        contorno.effectDistance = new Vector2(1.5f, -1.5f);
         t.color = colorTexto;
         t.alignment = TextAnchor.MiddleCenter;
         RectTransform rt = t.GetComponent<RectTransform>();

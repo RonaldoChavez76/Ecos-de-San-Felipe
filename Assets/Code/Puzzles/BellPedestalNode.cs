@@ -96,10 +96,11 @@ public class BellPedestalNode : MonoBehaviour
         };
         style.normal.textColor = new Color(1f, 0.95f, 0.55f);
 
-        float w = 230f;
-        float h = 28f;
+        float w = UITheme.Px(230f * 1.25f);
+        float h = UITheme.Px(36f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        GUI.Box(r, $"[E / J] Tocar {nombreCampana}", style);
+        UITheme.Panel(r, style.normal.textColor, 2f);
+        GUI.Label(r, $"[E / J] Tocar {nombreCampana}", UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
     }
 }
 
