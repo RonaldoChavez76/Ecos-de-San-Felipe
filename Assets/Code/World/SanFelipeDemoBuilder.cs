@@ -965,25 +965,28 @@ public class SombraLanzadoraAI : MonoBehaviour
             GameObject proj = new GameObject("Proyectil_Sombra");
             proj.transform.position = transform.position;
 
-            Sprite fallback = builderRef != null ? builderRef.CrearSpriteCircular(new Color(0.1f, 0.02f, 0.08f)) : null;
             SpriteRenderer sr = proj.AddComponent<SpriteRenderer>();
-            if (fallback != null) sr.sprite = fallback;
-            sr.sortingOrder = 5;
-            proj.transform.localScale = new Vector3(0.55f, 0.55f, 1f);
+            sr.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(new Color(1f, 0.13f, 0f, 1f), new Color(1f, 0.67f, 0f, 1f));
+            sr.sortingOrder = 15;
+            proj.transform.localScale = Vector3.one * 0.95f;
 
-            GameObject nucleo = new GameObject("NucleoCarmesi");
-            nucleo.transform.SetParent(proj.transform);
-            nucleo.transform.localPosition = Vector3.zero;
-            nucleo.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-            SpriteRenderer srNucleo = nucleo.AddComponent<SpriteRenderer>();
-            if (builderRef != null) srNucleo.sprite = builderRef.CrearSpriteCircular(new Color(1f, 0.1f, 0.25f));
-            srNucleo.sortingOrder = 6;
+            GameObject halo = new GameObject("Halo_Fuego");
+            halo.transform.SetParent(proj.transform);
+            halo.transform.localPosition = Vector3.zero;
+            halo.transform.localScale = Vector3.one * 1.35f;
+            SpriteRenderer srHalo = halo.AddComponent<SpriteRenderer>();
+            srHalo.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(new Color(1f, 0.15f, 0.05f, 0.75f), new Color(1f, 0.85f, 0.2f, 0.95f));
+            srHalo.sortingOrder = 16;
 
             CircleCollider2D col = proj.AddComponent<CircleCollider2D>();
             col.isTrigger = true;
+            col.radius = 0.42f;
 
             ProjectileBehaviour pb = proj.AddComponent<ProjectileBehaviour>();
-            pb.Inicializar((objetivo.position - transform.position).normalized, this, builderRef);
+            pb.speed = 6.2f;
+            pb.damage = 16f;
+            pb.haloFuego = halo.transform;
+            pb.Launch((objetivo.position - transform.position).normalized, gameObject, 16f);
         }
 
         yield return new WaitForSeconds(0.36f);

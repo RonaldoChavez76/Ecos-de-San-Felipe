@@ -17,6 +17,9 @@ public class MarketStallTradeNode : MonoBehaviour
     public NodeRole role = NodeRole.SupplyCrateCopper;
     public string labelPrompt = "[E] Comerciar en Puesto";
     public MarketTradePuzzle puzzlePadre;
+    public SpriteRenderer chestRenderer;
+    public Sprite spriteCerrado;
+    public Sprite spriteAbierto;
 
     private Transform playerTransform;
     private bool completado = false;
@@ -52,6 +55,10 @@ public class MarketStallTradeNode : MonoBehaviour
             case NodeRole.SupplyCrateCopper:
                 if (completado || inv.HasItem(InventoryManager.ITEM_COPPER_BAR))
                 {
+                    if (chestRenderer != null && spriteAbierto != null)
+                    {
+                        chestRenderer.sprite = spriteAbierto;
+                    }
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Arcón de la Antigua Fragua",
                         new string[] { "Ya recogiste el Lingote de Cobre Antiguo. Llévaselo a Don Braulio en la Herrería del Noroeste." });
@@ -59,7 +66,13 @@ public class MarketStallTradeNode : MonoBehaviour
                 else
                 {
                     completado = true;
+                    if (chestRenderer != null && spriteAbierto != null)
+                    {
+                        chestRenderer.sprite = spriteAbierto;
+                    }
+                    AudioManager.Instance?.PlayItemPickupSound();
                     inv.AddItem(InventoryManager.ITEM_COPPER_BAR);
+                    InventoryHUD.NotificarIntercambio("¡Obtuviste [Lingote de Cobre Antiguo]!");
                     ResourcePickup.SpawnDrops(transform.position + Vector3.down * 0.7f, 1f, 35, 60, 1f, 6, 0.8f, 30f, 0.8f, 30f);
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Arcón de la Antigua Fragua",
@@ -82,6 +95,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_MITHRIL_BAR);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Lingote de Cobre -> [Lingote Templado]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Don Braulio, Herrero de Cantera",
                         new string[]
@@ -112,6 +126,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_GREEN_GEM);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Lingote Templado -> [Esmeralda de San Felipe]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Doña Remedios, Maestra Alfarera",
                         new string[]
@@ -142,6 +157,7 @@ public class MarketStallTradeNode : MonoBehaviour
                 {
                     completado = true;
                     inv.AddItem(InventoryManager.ITEM_GOLD_KEY);
+                    InventoryHUD.NotificarIntercambio("¡Intercambio: Esmeralda -> [Llave Dorada del Gremio]!");
                     DialogueManager.EnsureInstance().ShowDialogue(
                         "Don Teodoro, Joyero del Callejón",
                         new string[]
@@ -178,22 +194,25 @@ public class MarketStallTradeNode : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.25f);
+        Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.55f);
         if (screenPos.z <= 0) return;
 
-        GUIStyle style = new GUIStyle(GUI.skin.box)
-        {
-            alignment = TextAnchor.MiddleCenter,
-            fontSize = 13,
-            fontStyle = FontStyle.Bold
-        };
-        style.normal.textColor = new Color(0.98f, 0.88f, 0.42f);
+        Color colBorde = new Color(0.98f, 0.88f, 0.42f);
+        float safeMarginX = Mathf.Max(UITheme.Px(26f), Screen.width * 0.03f);
+        float safeMarginY = Mathf.Max(UITheme.Px(22f), Screen.height * 0.03f);
+        float w = UITheme.Px(290f);
+        float h = UITheme.Px(34f);
+        float rx = Mathf.Clamp(screenPos.x - w * 0.5f, safeMarginX, Screen.width - w - safeMarginX);
+        float ry = Mathf.Clamp(Screen.height - screenPos.y - h * 0.5f, safeMarginY, Screen.height - h - safeMarginY);
 
-        float w = UITheme.Px(250f * 1.25f);
-        float h = UITheme.Px(36f);
-        Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        UITheme.Panel(r, style.normal.textColor, 2f);
-        GUI.Label(r, labelPrompt, UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
+        if (ZoneWaveSpawner.HordaActivaEnEscena != null && ry >= UITheme.Px(85f) && ry <= UITheme.Px(150f))
+        {
+            ry = UITheme.Px(155f);
+        }
+
+        Rect r = new Rect(rx, ry, w, h);
+        UITheme.Panel(r, colBorde, 2f);
+        GUI.Label(r, labelPrompt, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }
 

@@ -99,39 +99,33 @@ public class ResourcePickup : MonoBehaviour
 
     /// <summary>
     /// Drop Table balanceada para la muerte de enemigos comunes y sombríos.
-    /// Incorpora probabilidad de no soltar nada (25%) y porcentajes moderados
-    /// para oro, flechas, maná y salud, expulsados con salto físico disperso.
+    /// Incorpora 75% de probabilidad garantizada de corazón curativo para sostener a Ronan entre oleadas,
+    /// además de probabilidades equilibradas de oro, flechas y maná, expulsados con salto físico disperso.
     /// </summary>
     public static void SpawnEnemyLoot(Vector3 pos, Transform parent = null)
     {
-        // 25% de probabilidad: No suelta botín
-        if (Random.value < 0.25f)
+        // 1. Corazón Curativo: 75% de probabilidad garantizada para sostener la vida entre oleadas
+        if (Random.value < 0.75f)
         {
-            return;
+            SpawnHealth(pos, 25f, parent);
         }
 
-        // 1. Oro: 52% de probabilidad (cantidad moderada: 4 a 12 de oro)
-        if (Random.value < 0.52f)
+        // 2. Oro: 60% de probabilidad (cantidad moderada: 5 a 14 de oro)
+        if (Random.value < 0.60f)
         {
-            SpawnGold(pos, Random.Range(4, 13), parent);
+            SpawnGold(pos, Random.Range(5, 15), parent);
         }
 
-        // 2. Flechas: 22% de probabilidad (2 a 4 flechas)
-        if (Random.value < 0.22f)
+        // 3. Flechas: 35% de probabilidad (2 a 5 flechas)
+        if (Random.value < 0.35f)
         {
-            SpawnArrows(pos, Random.Range(2, 5), parent);
+            SpawnArrows(pos, Random.Range(2, 6), parent);
         }
 
-        // 3. Maná: 20% de probabilidad (15 a 25 puntos)
-        if (Random.value < 0.20f)
+        // 4. Maná: 35% de probabilidad (20 a 35 puntos)
+        if (Random.value < 0.35f)
         {
-            SpawnMana(pos, Random.Range(15f, 26f), parent);
-        }
-
-        // 4. Corazón Curativo: 15% de probabilidad (restaura 20 HP)
-        if (Random.value < 0.15f)
-        {
-            SpawnHealth(pos, 20f, parent);
+            SpawnMana(pos, Random.Range(20f, 36f), parent);
         }
     }
 

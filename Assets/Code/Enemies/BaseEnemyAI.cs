@@ -340,23 +340,24 @@ public abstract class BaseEnemyAI : MonoBehaviour
         proj.transform.localScale = new Vector3(scale, scale, 1f);
 
         SpriteRenderer projSr = proj.AddComponent<SpriteRenderer>();
-        projSr.sprite = CreateCircleSprite(outerColor);
-        projSr.sortingOrder = (sr != null ? sr.sortingOrder : 4) + 2;
+        projSr.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(outerColor, coreColor);
+        projSr.sortingOrder = 15;
 
-        GameObject core = new GameObject("Nucleo");
-        core.transform.SetParent(proj.transform);
-        core.transform.localPosition = Vector3.zero;
-        core.transform.localScale = new Vector3(0.55f, 0.55f, 1f);
-        SpriteRenderer coreSr = core.AddComponent<SpriteRenderer>();
-        coreSr.sprite = CreateCircleSprite(coreColor);
-        coreSr.sortingOrder = projSr.sortingOrder + 1;
+        GameObject halo = new GameObject("Halo_Fuego");
+        halo.transform.SetParent(proj.transform);
+        halo.transform.localPosition = Vector3.zero;
+        halo.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
+        SpriteRenderer haloSr = halo.AddComponent<SpriteRenderer>();
+        haloSr.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(new Color(outerColor.r, outerColor.g, outerColor.b, 0.75f), coreColor);
+        haloSr.sortingOrder = 16;
 
         CircleCollider2D col = proj.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
-        col.radius = 0.38f;
+        col.radius = 0.40f;
 
         ProjectileBehaviour pb = proj.AddComponent<ProjectileBehaviour>();
         pb.speed = speed;
+        pb.haloFuego = halo.transform;
         pb.Launch(direction.normalized, gameObject, damage);
         return proj;
     }

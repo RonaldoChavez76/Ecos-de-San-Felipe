@@ -39,7 +39,7 @@ public static class UITheme
     }
 
     /// <summary>Factor de escala según la altura de la pantalla (720p = 1.0).</summary>
-    public static float Escala => Mathf.Clamp(Screen.height / 720f, 1f, 2.5f);
+    public static float Escala => Mathf.Clamp(Screen.height / 720f, 0.78f, 2.5f);
 
     /// <summary>Tamaño de fuente escalado (mínimo 10 px para admitir etiquetas compactas y legibles).</summary>
     public static int Fuente(int basePx) => Mathf.Max(10, Mathf.RoundToInt(basePx * Escala));
@@ -102,10 +102,23 @@ public static class UITheme
         GUI.color = previo;
     }
 
+    /// <summary>Dibuja únicamente el marco o contorno de un rectángulo con el grosor especificado.</summary>
+    public static void Borde(Rect r, Color color, float grosor = 1.5f)
+    {
+        Color previo = GUI.color;
+        GUI.color = color;
+        GUI.DrawTexture(new Rect(r.x, r.y, r.width, grosor), Blanca);
+        GUI.DrawTexture(new Rect(r.x, r.yMax - grosor, r.width, grosor), Blanca);
+        GUI.DrawTexture(new Rect(r.x, r.y, grosor, r.height), Blanca);
+        GUI.DrawTexture(new Rect(r.xMax - grosor, r.y, grosor, r.height), Blanca);
+        GUI.color = previo;
+    }
+
     /// <summary>Banner de una línea centrado horizontalmente (avisos de zona, puertas, hordas).</summary>
     public static void Banner(float y, string texto, Color colorTexto, float anchoBase = 620f, int fuenteBase = 16)
     {
-        float w = Mathf.Min(Px(anchoBase), Screen.width - 24f);
+        float safeMarginX = Mathf.Max(Px(26f), Screen.width * 0.03f);
+        float w = Mathf.Min(Px(anchoBase), Screen.width - safeMarginX * 2f);
         float h = Px(fuenteBase + 16f);
         Rect r = new Rect((Screen.width - w) * 0.5f, y, w, h);
         Panel(r, colorTexto, 1.5f);

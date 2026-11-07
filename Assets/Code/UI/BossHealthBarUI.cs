@@ -64,10 +64,15 @@ public class BossHealthBarUI : MonoBehaviour
         float dist = Vector2.Distance(playerTransform.position, bossAI.transform.position);
         if (dist > 17.5f) return;
 
-        float barWidth = 480f;
-        float barHeight = 22f;
-        float x = (Screen.width - barWidth) * 0.5f;
-        float y = 22f;
+        float barWidth  = Mathf.Min(UITheme.Px(620f), Screen.width * 0.58f);
+        float barHeight = UITheme.Px(24f);
+        float titleH    = UITheme.Px(28f);
+        float subH      = UITheme.Px(26f);
+        float padX      = UITheme.Px(18f);
+        float padY      = UITheme.Px(10f);
+        float totalH    = padY + titleH + UITheme.Px(4f) + barHeight + UITheme.Px(6f) + subH + padY;
+        float x         = (Screen.width - barWidth) * 0.5f;
+        float y         = Mathf.Max(UITheme.Px(16f), Screen.height * 0.02f);
 
         string faseTexto = "FASE I: DESPERTAR DEL OLVIDO";
         Color fillColor = new Color(0.68f, 0.18f, 0.92f, 0.95f);
@@ -86,43 +91,66 @@ public class BossHealthBarUI : MonoBehaviour
         GUIStyle titleStyle = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = UITheme.Fuente(16),
-            fontStyle = FontStyle.Bold
+            fontSize = UITheme.Fuente(13),
+            fontStyle = FontStyle.Bold,
+            wordWrap = false
         };
         titleStyle.normal.textColor = new Color(0.95f, 0.85f, 1.0f);
+
+        GUIStyle hpStyle = new GUIStyle(GUI.skin.label)
+        {
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = UITheme.Fuente(12),
+            fontStyle = FontStyle.Bold,
+            wordWrap = false
+        };
+        hpStyle.normal.textColor = Color.white;
 
         GUIStyle subStyle = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.MiddleCenter,
-            fontSize = UITheme.Fuente(14),
-            fontStyle = FontStyle.Bold
+            fontSize = UITheme.Fuente(12),
+            fontStyle = FontStyle.Bold,
+            wordWrap = false
         };
         subStyle.normal.textColor = bossAI.isShieldedBySeals
             ? new Color(0.55f, 0.97f, 1.0f)
             : new Color(1.0f, 0.85f, 0.35f);
 
-        // Fondo oscuro del panel del Jefe
-        GUI.color = new Color(0.04f, 0.02f, 0.08f, 0.97f);
-        GUI.DrawTexture(new Rect(x - 14f, y - 6f, barWidth + 28f, 92f), whiteTex);
+        // Panel contenedor oscuro con borde dorado/púrpura
+        Rect panelRect = new Rect(x - padX, y, barWidth + padX * 2f, totalH);
+        UITheme.Panel(panelRect, new Color(0.82f, 0.58f, 0.98f, 0.92f), 1.5f);
 
         GUI.color = Color.white;
-        GUI.Label(new Rect(x, y - 4f, barWidth, 26f), $"LA SOMBRA GUARDIANA — {faseTexto}", titleStyle);
+        GUI.Label(
+            new Rect(x - padX + 6f, y + padY, barWidth + (padX - 6f) * 2f, titleH),
+            $"LA SOMBRA GUARDIANA — {faseTexto}",
+            titleStyle);
 
         // Barra de vida
+        float barY = y + padY + titleH + UITheme.Px(4f);
         float ratio = Mathf.Clamp01(bossHealth.currentHealth / Mathf.Max(1f, bossHealth.maxHealth));
         GUI.color = new Color(0.18f, 0.08f, 0.22f, 1f);
-        GUI.DrawTexture(new Rect(x, y + 22f, barWidth, barHeight), whiteTex);
+        GUI.DrawTexture(new Rect(x, barY, barWidth, barHeight), whiteTex);
 
         GUI.color = fillColor;
-        GUI.DrawTexture(new Rect(x + 2f, y + 24f, (barWidth - 4f) * ratio, barHeight - 4f), whiteTex);
+        GUI.DrawTexture(new Rect(x + 2f, barY + 2f, (barWidth - 4f) * ratio, barHeight - 4f), whiteTex);
+        UITheme.Borde(new Rect(x, barY, barWidth, barHeight), new Color(1f, 1f, 1f, 0.28f), 1f);
 
         GUI.color = Color.white;
-        GUI.Label(new Rect(x, y + 22f, barWidth, barHeight), $"{Mathf.CeilToInt(bossHealth.currentHealth)} / {Mathf.CeilToInt(bossHealth.maxHealth)} HP", titleStyle);
+        GUI.Label(
+            new Rect(x, barY, barWidth, barHeight),
+            $"{Mathf.CeilToInt(bossHealth.currentHealth)} / {Mathf.CeilToInt(bossHealth.maxHealth)} HP",
+            hpStyle);
 
+        float subY = barY + barHeight + UITheme.Px(6f);
         string estadoSellos = bossAI.isShieldedBySeals
             ? "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]"
             : "¡ESCUDO DESTRUIDO! Contraataca sus orbes con [K] (0.20s)";
-        GUI.Label(new Rect(x, y + 52f, barWidth, 26f), estadoSellos, subStyle);
+        GUI.Label(
+            new Rect(x - padX + 6f, subY, barWidth + (padX - 6f) * 2f, subH),
+            estadoSellos,
+            subStyle);
     }
 }
 

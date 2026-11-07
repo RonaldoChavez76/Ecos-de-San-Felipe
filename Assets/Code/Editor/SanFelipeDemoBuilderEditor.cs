@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,6 +11,49 @@ public class SanFelipeSceneAutoSetup
     static SanFelipeSceneAutoSetup()
     {
         EditorApplication.delayCall += AutoActualizarEscenaNivel1;
+        EditorApplication.delayCall += NormalizarZoomGameView;
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+    }
+
+    private static void OnPlayModeStateChanged(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.EnteredPlayMode || state == PlayModeStateChange.ExitingEditMode)
+        {
+            NormalizarZoomGameView();
+            EditorApplication.delayCall += NormalizarZoomGameView;
+        }
+    }
+
+    /// <summary>
+    /// Asegura que la ventana Game del Editor esté en escala 1.0x (y no en 1.1x+) para no recortar bordes del HUD.
+    /// </summary>
+    private static void NormalizarZoomGameView()
+    {
+        try
+        {
+            System.Type gvType = typeof(Editor).Assembly.GetType("UnityEditor.GameView");
+            if (gvType == null) return;
+
+            UnityEngine.Object[] views = Resources.FindObjectsOfTypeAll(gvType);
+            MethodInfo snapMethod = gvType.GetMethod("SnapZoom", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            FieldInfo minScaleProp = gvType.GetField("m_defaultScale", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            foreach (UnityEngine.Object v in views)
+            {
+                if (v == null) continue;
+                float targetScale = 1.0f;
+                if (minScaleProp != null && minScaleProp.GetValue(v) is float defScale && defScale > 0.1f && defScale < 1.0f)
+                {
+                    targetScale = defScale;
+                }
+                snapMethod?.Invoke(v, new object[] { targetScale });
+                if (v is EditorWindow ew) ew.Repaint();
+            }
+        }
+        catch
+        {
+            // Ignorar si cambia la API interna del Editor
+        }
     }
 
     private static void AutoActualizarEscenaNivel1()
@@ -27,6 +71,7 @@ public class SanFelipeSceneAutoSetup
 
             if (GameObject.Find("Marca_GranMapa_SanFelipe_V4") == null ||
                 GameObject.Find("Zona_Parroquia_Exterior_Interactivos") == null ||
+                GameObject.Find("Barrera_Niebla_Impenetrable_Mercado") == null ||
                 missingRemoved > 0 ||
                 tieneCorazonSinScript)
             {
@@ -39,7 +84,7 @@ public class SanFelipeSceneAutoSetup
                     ParroquiaExteriorBuilder.ConstruirElementosExteriorParroquia();
                 }
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Escena verificada, scripts de corazones/pedestales enlazados y referencias faltantes limpiadas.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 1]</b> Escena verificada, barrera de Eco, scripts de corazones/pedestales enlazados y referencias faltantes limpiadas.</color>");
             }
         }
         else if (activeScene.name == "ParroquiaInterior")
@@ -57,11 +102,22 @@ public class SanFelipeSceneAutoSetup
         }
         else if (activeScene.name == "Nivel2_Mercado")
         {
-            if (GameObject.Find("Marca_Mercado_V2") == null || missingRemoved > 0)
+            if (GameObject.Find("Marca_Mercado_V5") == null || missingRemoved > 0)
             {
                 MercadoBuilder.ConstruirZonaMercado();
+                MercadoBuilder.AsegurarPlayer(new Vector2(0f, -32f));
                 EditorSceneManager.MarkSceneDirty(activeScene);
-                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado]</b> Escena del Mercado Municipal inicializada y verificada con éxito.</color>");
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 2: El Mercado V5]</b> Escena del Mercado Municipal (77x77) con cofres individuales (cerrado/abierto), muros perimetrales y NPCs actualizada con éxito.</color>");
+            }
+        }
+        else if (activeScene.name == "Nivel3_CerroDelFraile")
+        {
+            if (GameObject.Find("Marca_Cerro_V6") == null || missingRemoved > 0)
+            {
+                CerroDelFraileBuilder.ConstruirZonaCerroDelFraile();
+                MercadoBuilder.AsegurarPlayer(new Vector2(0f, -40.0f));
+                EditorSceneManager.MarkSceneDirty(activeScene);
+                Debug.Log("<color=cyan><b>[San Felipe - Nivel 3: Cerro del Fraile V6]</b> Escena de la Cruz Azul (65x95) con coordenadas de sprites 100% libres de cortes (0 bleed), puente limpio y altar ceremonial actualizada con éxito.</color>");
             }
         }
     }
@@ -210,6 +266,15 @@ public class SanFelipeDemoBuilderEditor : Editor
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
             EditorSceneManager.OpenScene("Assets/Scenes/Nivel2_Mercado.unity");
+        }
+    }
+
+    [MenuItem("San Felipe/⛰️ Abrir Escena: Nivel 3 (Cerro del Fraile y Cruz Azul)")]
+    public static void AbrirEscenaCerroDelFraile()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/Nivel3_CerroDelFraile.unity");
         }
     }
 }

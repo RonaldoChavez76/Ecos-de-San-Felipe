@@ -41,8 +41,14 @@ public class ZoneWaveSpawner : MonoBehaviour
 
     [Header("Configuración de la Zona de Horda")]
     public string zoneTitle = "Atrio de la Parroquia";
-    public float activationRadius = 8.5f;
+    public float activationRadius = 5.5f;
     public List<WaveDefinition> waves = new List<WaveDefinition>();
+
+    /// <summary>
+    /// Spawner de horda actualmente activo en la escena.
+    /// Garantiza exclusión mutua para evitar que Ronan active múltiples hordas simultáneas al esquivar o retroceder.
+    /// </summary>
+    public static ZoneWaveSpawner HordaActivaEnEscena { get; private set; }
 
     [Header("Objetos Bloqueados / Recompensas al Limpiar la Zona")]
     public GameObject barrierToDisableOnClear;
@@ -72,6 +78,11 @@ public class ZoneWaveSpawner : MonoBehaviour
 
         if (!encounterStarted)
         {
+            if (HordaActivaEnEscena != null && HordaActivaEnEscena != this && !HordaActivaEnEscena.encounterCompleted)
+            {
+                return; // Exclusión mutua: no activar si otra horda ya está en combate
+            }
+
             float dist = Vector2.Distance(transform.position, playerTransform.position);
             if (dist <= activationRadius)
             {
@@ -101,6 +112,9 @@ public class ZoneWaveSpawner : MonoBehaviour
     public void IniciarEncuentroPorOleadas()
     {
         if (encounterStarted || encounterCompleted) return;
+        if (HordaActivaEnEscena != null && HordaActivaEnEscena != this && !HordaActivaEnEscena.encounterCompleted) return;
+
+        HordaActivaEnEscena = this;
         encounterStarted = true;
         StartCoroutine(RutinaOleadas());
     }
@@ -143,6 +157,11 @@ public class ZoneWaveSpawner : MonoBehaviour
     private void CompletarEncuentro()
     {
         encounterCompleted = true;
+        if (HordaActivaEnEscena == this)
+        {
+            HordaActivaEnEscena = null;
+        }
+
         AudioManager.Instance?.PlaySecretSound();
 
         if (barrierToDisableOnClear != null)
@@ -160,6 +179,16 @@ public class ZoneWaveSpawner : MonoBehaviour
         ResourcePickup.SpawnDrops(transform.position, 1.0f, 35, 60, 1.0f, 8, 1.0f, 40f, 0.5f, 30f, transform);
 
         MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (+Oro y Corazón Sagrado) ★", 4.0f);
+    }
+
+    private void OnDisable()
+    {
+        if (HordaActivaEnEscena == this) HordaActivaEnEscena = null;
+    }
+
+    private void OnDestroy()
+    {
+        if (HordaActivaEnEscena == this) HordaActivaEnEscena = null;
     }
 
     private void MostrarBanner(string msg, float duration)
@@ -283,7 +312,7 @@ public class ZoneWaveSpawner : MonoBehaviour
     {
         if (Time.timeScale == 0f) return;
 
-        float y = UITheme.Px(180f);
+        float y = UITheme.Px(105f);
         if (bannerTimer > 0f && !string.IsNullOrEmpty(bannerMessage))
         {
             UITheme.Banner(y, bannerMessage, UITheme.Dorado, 760f, 18);

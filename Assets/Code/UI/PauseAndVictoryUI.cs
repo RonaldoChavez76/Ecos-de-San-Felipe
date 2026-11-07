@@ -53,7 +53,8 @@ public class PauseAndVictoryUI : MonoBehaviour
     {
         if (victoriaYaActivada || mostrarVictoriaNivel || SecuenciaEcoEnCurso) return;
 
-        if (SaveStateManager.Instance != null && SaveStateManager.Instance.TotalEcosRecuperados() >= 3)
+        if (SaveStateManager.Instance != null &&
+            (SaveStateManager.Instance.TotalEcosRecuperados() >= 3 || SaveStateManager.Instance.ecoMemoriaRecuperado))
         {
             victoriaYaActivada = true;
             mostrarPantallaVictoria = true;
@@ -65,15 +66,19 @@ public class PauseAndVictoryUI : MonoBehaviour
 
     /// <summary>
     /// Muestra la pantalla de nivel completado con detalles del Eco recuperado y recompensas.
-    /// Si ya se tienen los 3 Ecos, el flujo continúa con la pantalla de Victoria Final.
+    /// Si se recupera el 3er Eco (Eco de la Memoria) o ya se tienen los 3 Ecos, activa la pantalla de Victoria Final.
     /// </summary>
     public void MostrarVictoriaDeNivel(int indiceNivel, string nombreEco, PlayerMovement player = null)
     {
         ronanRef = player != null ? player : FindAnyObjectByType<PlayerMovement>();
 
-        if (SaveStateManager.Instance != null && SaveStateManager.Instance.TotalEcosRecuperados() >= 3)
+        if (indiceNivel >= 3 ||
+            (SaveStateManager.Instance != null && (SaveStateManager.Instance.TotalEcosRecuperados() >= 3 || SaveStateManager.Instance.ecoMemoriaRecuperado)))
         {
-            // Update() activará la victoria final ahora que la secuencia del Eco terminó
+            victoriaYaActivada = true;
+            mostrarPantallaVictoria = true;
+            Time.timeScale = 0f;
+            AudioManager.Instance?.PlayEchoSound();
             return;
         }
 

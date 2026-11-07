@@ -62,15 +62,46 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         }
 
         // Portal al Poniente hacia el Nivel 2: El Mercado Municipal
-        CrearPortalTransicionEscena(
+        GameObject portalMercado = CrearPortalTransicionEscena(
             "Portal_A_Nivel2_Mercado",
             new Vector2(-15.0f, 0.0f),
             new Vector2(1.8f, 3.0f),
             "Nivel2_Mercado",
             LevelManager.ZoneId.Mercado,
-            new Vector2(18.5f, 0.0f),
+            new Vector2(32.0f, 0.0f),
             new Color(0.95f, 0.65f, 0.20f, 0.85f),
             root.transform);
+
+        ZoneTransition ztMercado = portalMercado.GetComponent<ZoneTransition>();
+        if (ztMercado != null)
+        {
+            ztMercado.ecoRequeridoParaCruzar = 1;
+            ztMercado.tituloBloqueoEco = "Barrera de Niebla Impenetrable";
+            ztMercado.mensajeBloqueoEco = "Una densa niebla mágica bloquea el camino hacia el Mercado Municipal. Debes entrar a la Parroquia y recuperar primero el Eco de la Fe.";
+        }
+
+        // Barrera física de Niebla Impenetrable (solo desaparece cuando SaveStateManager.Instance.ecoFeRecuperado == true)
+        GameObject barreraNiebla = new GameObject("Barrera_Niebla_Impenetrable_Mercado");
+        barreraNiebla.transform.SetParent(root.transform);
+        barreraNiebla.transform.position = new Vector3(-14.2f, 0.0f, 0f);
+        barreraNiebla.transform.localScale = new Vector3(1.8f, 3.6f, 1f);
+        SpriteRenderer srNiebla = barreraNiebla.AddComponent<SpriteRenderer>();
+        srNiebla.sprite = CrearSpriteRadial(new Color(0.45f, 0.22f, 0.78f, 0.88f));
+        srNiebla.sortingOrder = 22;
+        BoxCollider2D colNiebla = barreraNiebla.AddComponent<BoxCollider2D>();
+        colNiebla.size = new Vector2(0.85f, 1.0f);
+        colNiebla.isTrigger = false;
+
+        EchoProgressionBarrier progNiebla = barreraNiebla.AddComponent<EchoProgressionBarrier>();
+        progNiebla.requiredEchoIndex = 1;
+        progNiebla.barrierTitle = "Barrera de Niebla Impenetrable";
+        progNiebla.promptLabel = "[E] Barrera de Niebla (Eco de la Fe requerido)";
+        progNiebla.blockedMessage = "Una densa niebla mágica bloquea el camino hacia el Mercado Municipal. Debes entrar a la Parroquia y recuperar primero el Eco de la Fe.";
+
+        if (SaveStateManager.Instance != null && SaveStateManager.Instance.ecoFeRecuperado)
+        {
+            barreraNiebla.SetActive(false);
+        }
 
         // Letrero del Mercado al Poniente
         GameObject letreroMercado = CrearNPCConSpriteExacto(
