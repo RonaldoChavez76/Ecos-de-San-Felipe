@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -63,7 +64,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
         if (healthComp == null) return;
         float ratio = healthComp.currentHealth / Mathf.Max(1f, healthComp.maxHealth);
 
-        if (ratio <= 0.25f && currentPhase != BossPhase.Phase3_AbyssalFury)
+        if (ratio <= 0.30f && currentPhase != BossPhase.Phase3_AbyssalFury)
         {
             currentPhase = BossPhase.Phase3_AbyssalFury;
             moveSpeed = 3.9f;
@@ -73,9 +74,11 @@ public class SombraGuardianaBossAI : BaseEnemyAI
             {
                 phase3Announced = true;
                 StartCoroutine(PhaseTransitionBurst(new Color(1f, 0.15f, 0.45f, 1f)));
+                // Fase 3: despliega onda de choque + corrompe todos los sellos
+                StartCoroutine(IniciarFase3Berserker());
             }
         }
-        else if (ratio <= 0.60f && ratio > 0.25f && currentPhase == BossPhase.Phase1_Awakened)
+        else if (ratio <= 0.65f && ratio > 0.30f && currentPhase == BossPhase.Phase1_Awakened)
         {
             currentPhase = BossPhase.Phase2_Tempest;
             moveSpeed = 3.3f;
@@ -85,8 +88,79 @@ public class SombraGuardianaBossAI : BaseEnemyAI
             {
                 phase2Announced = true;
                 StartCoroutine(PhaseTransitionBurst(new Color(0.75f, 0.25f, 1f, 1f)));
+                // Fase 2: corrompe 2 sellos aleatorios y activa escudo de regeneración
+                StartCoroutine(IniciarFase2Escudo());
             }
         }
+    }
+
+    // ─── Fase 2: Escudo de regeneración + sellos corrompidos ──────────────────
+    private IEnumerator IniciarFase2Escudo()
+    {
+        // Corromper 2 sellos aleatorios de la Cruz Azul
+        BlueCrossSealNode[] sellos = FindObjectsByType<BlueCrossSealNode>(FindObjectsSortMode.None);
+        List<BlueCrossSealNode> disponibles = new List<BlueCrossSealNode>(sellos);
+        int corrompidos = 0;
+        while (corrompidos < 2 && disponibles.Count > 0)
+        {
+            int idx = UnityEngine.Random.Range(0, disponibles.Count);
+            if (!disponibles[idx].purificado)
+            {
+                disponibles[idx].Corromper();
+                corrompidos++;
+            }
+            disponibles.RemoveAt(idx);
+        }
+
+        isShieldedBySeals = true;
+        yield return null;
+    }
+
+    // ─── Fase 3: Bersérker — cada 12 s lanza la Gran Esfera del Juicio ───────
+    private IEnumerator IniciarFase3Berserker()
+    {
+        // Corromper todos los sellos restantes
+        foreach (BlueCrossSealNode s in FindObjectsByType<BlueCrossSealNode>(FindObjectsSortMode.None))
+            if (!s.purificado) s.Corromper();
+
+        while (currentState != AIState.Dead)
+        {
+            yield return new WaitForSeconds(12f);
+            if (currentState == AIState.Dead) yield break;
+            if (playerTarget == null) continue;
+
+            // Spawnear la Gran Esfera del Juicio de la Sombra (Boss_Mega_Orb)
+            Vector2 toPlayer = (playerTarget.position - transform.position).normalized;
+            SpawnReflectableProjectile(toPlayer, 4.5f, attackDamage * 2.5f,
+                new Color(0.10f, 0f, 0.20f), new Color(1f, 0.1f, 0.3f), 1.1f,
+                ProjectileBehaviour.ProjectileType.Boss_Mega_Orb);
+
+            BossHealthBarUI.Instance?.MostrarBannerOvercarga("¡JUICIO DE LA SOMBRA! Contraataca la Gran Esfera con [K]");
+        }
+    }
+
+    // ─── Aturdimiento por contraataque de la Gran Esfera ─────────────────────
+    /// <summary>
+    /// Llamado por ProjectileBehaviour cuando Ronan devuelve la Boss_Mega_Orb.
+    /// Aplica daño directo y aturde al jefe durante 3.5 s.
+    /// </summary>
+    public void AturdirPorContraataqueMegaEsfera(float dmg)
+    {
+        if (healthComp != null)
+            healthComp.TakeDamage(dmg, Vector2.zero, 8f, null);
+        StartCoroutine(EstadoAturdido(3.5f));
+        BossHealthBarUI.Instance?.MostrarBannerOvercarga("¡JEFE ATURDIDO! ¡Ataca con Modo Asalto [L]!");
+    }
+
+    private IEnumerator EstadoAturdido(float duracion)
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color colorBase = sr != null ? sr.color : Color.white;
+        ChangeState(AIState.Hurt);
+        if (sr != null) sr.color = new Color(0.4f, 0.9f, 1f, 1f);
+        yield return new WaitForSeconds(duracion);
+        if (sr != null) sr.color = colorBase;
+        if (currentState != AIState.Dead) ChangeState(AIState.Chase);
     }
 
     private IEnumerator PhaseTransitionBurst(Color burstColor)

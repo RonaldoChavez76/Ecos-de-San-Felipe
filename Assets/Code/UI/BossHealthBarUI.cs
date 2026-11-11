@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Interfaz de Barra de Vida y Fases del Jefe Final: La Sombra Guardiana en el Cerro del Fraile.
 /// Se muestra automáticamente cuando Ronan entra en la cumbre del Mirador de la Cruz Azul.
+/// Incluye sistema de banners de sobrecarga/aturdimiento.
 /// </summary>
 public class BossHealthBarUI : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class BossHealthBarUI : MonoBehaviour
     private HealthComponent bossHealth;
     private Transform playerTransform;
     private Texture2D whiteTex;
+
+    // ── Sistema de Banner de Sobrecarga ───────────────────────────────────────
+    private string bannerMessage = "";
+    private float bannerTimer   = 0f;
 
     private void Awake()
     {
@@ -54,6 +59,19 @@ public class BossHealthBarUI : MonoBehaviour
             PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
             if (pm != null) playerTransform = pm.transform;
         }
+
+        // Cuenta regresiva del banner
+        if (bannerTimer > 0f)
+            bannerTimer -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Muestra un banner de aviso prominente (p. ej. "¡JEFE ATURDIDO!") durante 4 segundos.
+    /// </summary>
+    public void MostrarBannerOvercarga(string msg)
+    {
+        bannerMessage = msg;
+        bannerTimer   = 4f;
     }
 
     private void OnGUI()
@@ -143,14 +161,46 @@ public class BossHealthBarUI : MonoBehaviour
             $"{Mathf.CeilToInt(bossHealth.currentHealth)} / {Mathf.CeilToInt(bossHealth.maxHealth)} HP",
             hpStyle);
 
+
         float subY = barY + barHeight + UITheme.Px(6f);
-        string estadoSellos = bossAI.isShieldedBySeals
-            ? "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]"
-            : "¡ESCUDO DESTRUIDO! Contraataca sus orbes con [K] (0.20s)";
+
+        // Texto de estado de sellos dinamico segun fase y escudo
+        string estadoSellos;
+        if (bossAI.isShieldedBySeals)
+            estadoSellos = "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]";
+        else if (bossAI.currentPhase == SombraGuardianaBossAI.BossPhase.Phase3_AbyssalFury)
+            estadoSellos = "SOBRECARGA! Contraataca la Gran Esfera con [K] | Modo Asalto [L]";
+        else
+            estadoSellos = "ESCUDO ROTO! Ataca con Modo Asalto [L]";
+
         GUI.Label(
             new Rect(x - padX + 6f, subY, barWidth + (padX - 6f) * 2f, subH),
             estadoSellos,
             subStyle);
+
+        // Banner de Sobrecarga / Aturdimiento
+        if (bannerTimer > 0f && !string.IsNullOrEmpty(bannerMessage))
+        {
+            float alpha = Mathf.Clamp01(bannerTimer);
+            float bW    = Mathf.Min(UITheme.Px(700f), Screen.width * 0.68f);
+            float bH    = UITheme.Px(42f);
+            float bX    = (Screen.width - bW) * 0.5f;
+            float bY2   = y + totalH + UITheme.Px(8f);
+
+            GUIStyle bannerStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize  = UITheme.Fuente(14),
+                fontStyle = FontStyle.Bold,
+                wordWrap  = false
+            };
+            bannerStyle.normal.textColor = new Color(1f, 0.95f, 0.2f, alpha);
+
+            GUI.color = new Color(0.80f, 0.08f, 0.08f, 0.92f * alpha);
+            GUI.DrawTexture(new Rect(bX, bY2, bW, bH), whiteTex);
+            UITheme.Borde(new Rect(bX, bY2, bW, bH), new Color(1f, 0.85f, 0f, alpha), 2f);
+            GUI.color = Color.white;
+            GUI.Label(new Rect(bX, bY2, bW, bH), bannerMessage, bannerStyle);
+        }
     }
 }
-

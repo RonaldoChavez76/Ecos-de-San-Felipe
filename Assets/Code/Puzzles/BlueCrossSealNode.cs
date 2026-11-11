@@ -2,6 +2,8 @@ using UnityEngine;
 
 /// <summary>
 /// Nodo individual de Sello de la Cruz Azul en la cima del Cerro del Fraile.
+/// Puede ser purificado por Ronan [E / J] o corrompido por La Sombra Guardiana en Fase 2.
+/// Cuando está corrupto, ejerce un suave vórtice gravitacional sobre Ronan y emite pulsos radiales.
 /// </summary>
 public class BlueCrossSealNode : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class BlueCrossSealNode : MonoBehaviour
 
     private SpriteRenderer baseRenderer;
     private Transform playerTransform;
+    private float ultimoPulsoTiempo = 0f;
 
     private void Start()
     {
@@ -21,21 +24,43 @@ public class BlueCrossSealNode : MonoBehaviour
 
     private void Update()
     {
-        if (purificado) return;
-
         if (playerTransform == null)
         {
             PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
             if (pm != null) playerTransform = pm.transform;
-            return;
         }
 
-        float dist = Vector2.Distance(transform.position, playerTransform.position);
-        if (dist <= 2.0f)
+        if (purificado) return;
+
+        if (playerTransform != null)
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
+            float dist = Vector2.Distance(transform.position, playerTransform.position);
+
+            // Vórtice gravitacional en Fase 2 (cuando está corrupto)
+            if (dist > 1.2f && dist <= 7.5f)
             {
-                Purificar();
+                Vector2 dirHaciaSello = ((Vector2)transform.position - (Vector2)playerTransform.position).normalized;
+                playerTransform.position += (Vector3)(dirHaciaSello * 1.35f * Time.deltaTime);
+            }
+
+            // Pulso de advertencia de la corrupción cada 3.5 segundos
+            if (dist <= 2.2f && Time.time - ultimoPulsoTiempo > 3.5f)
+            {
+                ultimoPulsoTiempo = Time.time;
+                PlayerMovement pm = playerTransform.GetComponent<PlayerMovement>();
+                if (pm != null)
+                {
+                    pm.RecibirDanio(4f);
+                }
+            }
+
+            // Interacción de purificación
+            if (dist <= 2.2f)
+            {
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
+                {
+                    Purificar();
+                }
             }
         }
     }
@@ -60,6 +85,13 @@ public class BlueCrossSealNode : MonoBehaviour
         puzzlePadre?.NotificarSelloPurificado(this);
     }
 
+    public void Corromper()
+    {
+        purificado = false;
+        ActualizarVisual(false);
+        ultimoPulsoTiempo = Time.time;
+    }
+
     private void ActualizarVisual(bool limpio)
     {
         if (baseRenderer != null)
@@ -73,7 +105,7 @@ public class BlueCrossSealNode : MonoBehaviour
         {
             flamaRenderer.color = limpio
                 ? new Color(0.15f, 0.95f, 1.0f, 0.85f)
-                : new Color(0.65f, 0.10f, 0.75f, 0.75f);
+                : new Color(0.75f, 0.12f, 0.85f, 0.85f);
         }
     }
 
@@ -83,7 +115,7 @@ public class BlueCrossSealNode : MonoBehaviour
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive) return;
 
         float dist = Vector2.Distance(transform.position, playerTransform.position);
-        if (dist > 2.0f) return;
+        if (dist > 2.2f) return;
 
         Camera cam = Camera.main;
         if (cam == null) return;
@@ -91,21 +123,13 @@ public class BlueCrossSealNode : MonoBehaviour
         Vector3 screenPos = cam.WorldToScreenPoint(transform.position + Vector3.up * 1.25f);
         if (screenPos.z <= 0) return;
 
-        GUIStyle style = new GUIStyle(GUI.skin.box)
-        {
-            alignment = TextAnchor.MiddleCenter,
-            fontSize = 13,
-            fontStyle = FontStyle.Bold
-        };
-        style.normal.textColor = new Color(0.35f, 0.95f, 1.0f);
-
         float w = UITheme.Px(340f);
         float h = UITheme.Px(34f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
-        UITheme.Panel(r, style.normal.textColor, 2f);
-        GUIStyle lblStyle = UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor);
+        Color bordeColor = new Color(0.85f, 0.25f, 1.0f, 0.95f);
+        UITheme.Panel(r, bordeColor, 2f);
+        GUIStyle lblStyle = UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
         lblStyle.wordWrap = false;
         GUI.Label(r, $"[E / J] Purificar {nombreSello}", lblStyle);
     }
 }
-
