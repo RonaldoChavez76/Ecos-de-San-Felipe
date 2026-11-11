@@ -187,9 +187,9 @@ public class PlayerProjectile : MonoBehaviour
         float angulo = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         go.transform.rotation = Quaternion.Euler(0f, 0f, apuntaDiagonal ? angulo - 45f : 0f);
 
-        // Escala reducida para las flechas del arco para que se vean proporcionadas y estilizadas
+        // Escala reducida y compacta para las flechas del arco para que luzcan estilizadas y proporcionadas
         float escalaFinal = arma.tipo == WeaponType.Bow
-            ? Mathf.Min(arma.escalaProyectil, 0.48f)
+            ? Mathf.Min(arma.escalaProyectil, 0.35f)
             : arma.escalaProyectil;
         go.transform.localScale = Vector3.one * escalaFinal;
 

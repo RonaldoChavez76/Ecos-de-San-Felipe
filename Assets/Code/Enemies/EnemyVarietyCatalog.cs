@@ -580,7 +580,14 @@ public class SporeMushroomEnemyAI : BaseEnemyAI
         if (playerTarget != null)
         {
             Vector2 mainDir = (playerTarget.position - transform.position).normalized;
-            SpawnReflectableProjectile(mainDir, 5.6f, attackDamage, new Color(0.35f, 0.08f, 0.45f), new Color(0.85f, 0.35f, 1f), 0.48f);
+            SpawnReflectableProjectile(
+                mainDir,
+                4.5f,
+                attackDamage,
+                new Color(0.20f, 0.75f, 0.22f),
+                new Color(0.85f, 0.98f, 0.25f),
+                0.55f,
+                ProjectileBehaviour.ProjectileType.Spore_Ball);
         }
         yield return new WaitForSeconds(0.25f);
     }
@@ -701,7 +708,14 @@ public class OblivionMageAI : BaseEnemyAI
             {
                 float rad = (baseAngle + off) * Mathf.Deg2Rad;
                 Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-                SpawnReflectableProjectile(dir, 6.4f, attackDamage, new Color(0.12f, 0.08f, 0.42f), new Color(0.25f, 0.92f, 1f), 0.50f);
+                SpawnReflectableProjectile(
+                    dir,
+                    6.5f,
+                    attackDamage,
+                    new Color(0.25f, 0.05f, 0.45f),
+                    new Color(0.10f, 0.85f, 0.95f),
+                    0.54f,
+                    ProjectileBehaviour.ProjectileType.Abyssal_Orb);
             }
         }
         yield return new WaitForSeconds(0.32f);
@@ -747,11 +761,12 @@ public class CorruptedArcherAI : BaseEnemyAI
             Vector2 dir = (playerTarget.position - transform.position).normalized;
             SpawnReflectableProjectile(
                 dir,
-                7.2f,
+                11.5f,
                 attackDamage,
-                new Color(0.35f, 0.22f, 0.08f, 1f),
-                new Color(0.95f, 0.85f, 0.35f, 1f),
-                0.46f
+                new Color(0.18f, 0.12f, 0.22f, 1f),
+                new Color(0.95f, 0.25f, 0.35f, 1f),
+                0.46f,
+                ProjectileBehaviour.ProjectileType.Shadow_Arrow
             );
         }
         yield return new WaitForSeconds(0.28f);
