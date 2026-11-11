@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         if (armas == null || armas.Count == 0) armas = WeaponDefinition.CrearArmasPorDefecto();
         counterWindow = Mathf.Max(counterWindow, 0.55f);
 
-        // Asegurar que solo la espada esté desbloqueada por defecto al comenzar y que la flecha tenga escala compacta
+        // Asegurar que solo la espada esté desbloqueada por defecto y ajustar la flecha visible
         foreach (WeaponDefinition w in armas)
         {
             if (w.tipo == WeaponType.Sword) w.desbloqueada = true;
@@ -124,8 +124,8 @@ public class PlayerMovement : MonoBehaviour
 
             if (w.tipo == WeaponType.Bow)
             {
-                w.escalaProyectil = 0.45f;
-                w.radioProyectil = 0.14f;
+                w.escalaProyectil = 0.85f;
+                w.radioProyectil = 0.20f;
             }
         }
 
