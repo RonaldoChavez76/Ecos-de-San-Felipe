@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class CheckpointSnapshot
@@ -43,6 +45,8 @@ public class SaveStateManager : MonoBehaviour
     private CheckpointSnapshot snapshotActivo;
     private readonly List<string> itemsInventarioGuardados = new List<string>();
     private int llavesInventarioGuardadas;
+    private bool respawnPendiente;
+    private bool restaurarCheckpointPendiente;
 
     public CheckpointSnapshot SnapshotActivo => snapshotActivo;
 
@@ -128,7 +132,17 @@ public class SaveStateManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += AlCargarEscena;
         CargarProgreso();
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            SceneManager.sceneLoaded -= AlCargarEscena;
+            _instance = null;
+        }
     }
 
     private void Update()
@@ -301,6 +315,79 @@ public class SaveStateManager : MonoBehaviour
         TeletransportarJugador(player, snapshotActivo.posicion);
 
         return true;
+    }
+
+    public void RecargarEscenaParaRespawn(bool desdeCheckpoint)
+    {
+        Scene escenaActual = SceneManager.GetActiveScene();
+        if (!escenaActual.IsValid() || string.IsNullOrEmpty(escenaActual.name))
+        {
+            Debug.LogError("[SaveStateManager] No se puede recargar una escena inválida para el respawn.");
+            return;
+        }
+
+        respawnPendiente = true;
+        restaurarCheckpointPendiente = desdeCheckpoint;
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        SceneManager.LoadScene(escenaActual.name);
+    }
+
+    private void AlCargarEscena(Scene escena, LoadSceneMode modo)
+    {
+        if (respawnPendiente)
+        {
+            StartCoroutine(RutinaRestaurarRespawn(escena.name));
+        }
+    }
+
+    private IEnumerator RutinaRestaurarRespawn(string nombreEscena)
+    {
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        respawnPendiente = false;
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
+        if (player == null)
+        {
+            Debug.LogError("[SaveStateManager] No se encontró a Ronan después de recargar la escena para el respawn.");
+            yield break;
+        }
+
+        LevelManager levelManager = LevelManager.EnsureInstance();
+        levelManager.currentZone = LevelManager.ObtenerZonaDeEscena(nombreEscena);
+
+        if (restaurarCheckpointPendiente)
+        {
+            if (!RestaurarJugadorDesdeCheckpoint(player))
+            {
+                Debug.LogWarning("[SaveStateManager] El checkpoint no coincide con la escena recargada; se usará el inicio del nivel.");
+                RestaurarJugadorInicioNivel(player, levelManager.currentZone);
+            }
+        }
+        else
+        {
+            RestaurarJugadorInicioNivel(player, levelManager.currentZone);
+        }
+
+        player.gameObject.SetActive(true);
+        player.enabled = true;
+        player.RestablecerEstadoTrasDerrota(player.transform.position);
+
+        HealthComponent health = player.GetComponent<HealthComponent>();
+        if (health != null)
+        {
+            health.RestablecerTrasDerrota(player.maxHealth, player.currentHealth);
+            health.ActivarInvulnerabilidadTemporal(1.5f);
+        }
+        player.ActivarInvulnerabilidadTrasRespawn(1.5f);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetState(GameManager.GameState.Exploring);
+        }
     }
 
     public void RestaurarJugadorInicioNivel(PlayerMovement player, LevelManager.ZoneId zona)
