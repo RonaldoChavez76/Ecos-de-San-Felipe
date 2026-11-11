@@ -27,6 +27,16 @@ public class SaveStateManager : MonoBehaviour
     public bool ecoTradicionRecuperado = false;  // Nivel 2: Mercado
     public bool ecoMemoriaRecuperado = false;    // Nivel 3: Cerro del Fraile (Cruz Azul)
 
+    public enum GameDifficulty
+    {
+        Facil = 0,
+        Normal = 1,
+        Dificil = 2
+    }
+
+    [Header("Dificultad de Juego")]
+    public GameDifficulty dificultadActual = GameDifficulty.Normal;
+
     [Header("Progreso y Estadísticas de Ronan")]
     public float baseMaxHealth = 100f;
     public float currentHealth = 100f;
@@ -221,9 +231,59 @@ public class SaveStateManager : MonoBehaviour
         ultimaZonaId = "ParroquiaExterior";
         ultimoCheckpoint = Vector2.zero;
 
-        // Limpiar cualquier rastro previo en PlayerPrefs
-        try { PlayerPrefs.DeleteAll(); } catch { }
+        // Cargar dificultad persistida en PlayerPrefs
+        dificultadActual = (GameDifficulty)PlayerPrefs.GetInt("GameDifficulty", 1);
     }
+
+    public void EstablecerDificultad(GameDifficulty dif)
+    {
+        dificultadActual = dif;
+        PlayerPrefs.SetInt("GameDifficulty", (int)dif);
+        PlayerPrefs.Save();
+        Debug.Log($"<color=#00E5FF>[SaveStateManager] Dificultad actualizada a: {dif}</color>");
+    }
+
+    // Modificadores de Dificultad en Tiempo Real
+    public float MultiplicadorDanioRecibidoRonan => dificultadActual switch
+    {
+        GameDifficulty.Facil => 0.70f,
+        GameDifficulty.Dificil => 1.40f,
+        _ => 1.0f
+    };
+
+    public float MultiplicadorSaludEnemigo => dificultadActual switch
+    {
+        GameDifficulty.Facil => 0.80f,
+        GameDifficulty.Dificil => 1.30f,
+        _ => 1.0f
+    };
+
+    public float MultiplicadorVelocidadEnemigo => dificultadActual switch
+    {
+        GameDifficulty.Facil => 0.85f,
+        GameDifficulty.Dificil => 1.25f,
+        _ => 1.0f
+    };
+
+    public float VentanaContraataqueSegundos => dificultadActual switch
+    {
+        GameDifficulty.Facil => 0.28f,
+        GameDifficulty.Dificil => 0.16f,
+        _ => 0.20f
+    };
+
+    public float MultiplicadorDropCorazones => dificultadActual switch
+    {
+        GameDifficulty.Facil => 1.50f,
+        GameDifficulty.Dificil => 0.60f,
+        _ => 1.0f
+    };
+
+    public float MultiplicadorDropOro => dificultadActual switch
+    {
+        GameDifficulty.Dificil => 1.50f,
+        _ => 1.0f
+    };
 
     public void ReiniciarProgreso()
     {

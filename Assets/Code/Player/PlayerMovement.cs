@@ -606,7 +606,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool EstaEnVentanaDeContraataque()
     {
-        return currentState == CombatState.Block && (Time.time - blockStartTime) <= counterWindow;
+        float ventana = SaveStateManager.Instance != null ? SaveStateManager.Instance.VentanaContraataqueSegundos : counterWindow;
+        return currentState == CombatState.Block && (Time.time - blockStartTime) <= ventana;
     }
 
     public bool IntentarContraataqueProyectil()
@@ -686,8 +687,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentState == CombatState.Block)
         {
+            float ventana = SaveStateManager.Instance != null ? SaveStateManager.Instance.VentanaContraataqueSegundos : counterWindow;
             float tiempoDesdeBloqueo = Time.time - blockStartTime;
-            if (tiempoDesdeBloqueo <= counterWindow)
+            if (tiempoDesdeBloqueo <= ventana)
             {
                 // Contraataque perfecto: 0 daño recibido y 200% de daño devuelto al enemigo
                 EjecutarContraataque(null, 2.0f);
@@ -697,6 +699,10 @@ public class PlayerMovement : MonoBehaviour
             cantidad *= 0.25f;
             EjecutarContraataque(null, 1.25f);
         }
+
+        // Aplicar multiplicador de dificultad al daño recibido por Ronan
+        float multDmg = SaveStateManager.Instance != null ? SaveStateManager.Instance.MultiplicadorDanioRecibidoRonan : 1f;
+        cantidad *= multDmg;
 
         currentHealth = Mathf.Clamp(currentHealth - cantidad, 0f, maxHealth);
         if (healthComp != null) healthComp.currentHealth = currentHealth;

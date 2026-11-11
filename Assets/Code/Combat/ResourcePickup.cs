@@ -104,16 +104,20 @@ public class ResourcePickup : MonoBehaviour
     /// </summary>
     public static void SpawnEnemyLoot(Vector3 pos, Transform parent = null)
     {
-        // 1. Corazón Curativo: 75% de probabilidad garantizada para sostener la vida entre oleadas
-        if (Random.value < 0.75f)
+        float multCorazones = SaveStateManager.Instance != null ? SaveStateManager.Instance.MultiplicadorDropCorazones : 1f;
+        float multOro = SaveStateManager.Instance != null ? SaveStateManager.Instance.MultiplicadorDropOro : 1f;
+
+        // 1. Corazón Curativo: 75% base escalado por dificultad
+        if (Random.value < Mathf.Clamp01(0.75f * multCorazones))
         {
             SpawnHealth(pos, 25f, parent);
         }
 
-        // 2. Oro: 60% de probabilidad (cantidad moderada: 5 a 14 de oro)
+        // 2. Oro: cantidad escalada por dificultad (en difícil hay +50% oro para incentivar el riesgo)
         if (Random.value < 0.60f)
         {
-            SpawnGold(pos, Random.Range(5, 15), parent);
+            int cantOro = Mathf.RoundToInt(Random.Range(5, 15) * multOro);
+            SpawnGold(pos, Mathf.Max(1, cantOro), parent);
         }
 
         // 3. Flechas: 35% de probabilidad (2 a 5 flechas)
@@ -140,9 +144,13 @@ public class ResourcePickup : MonoBehaviour
         float chanceVida = 0.25f, float cantidadVida = 25f,
         Transform parent = null)
     {
+        float multCorazones = SaveStateManager.Instance != null ? SaveStateManager.Instance.MultiplicadorDropCorazones : 1f;
+        float multOro = SaveStateManager.Instance != null ? SaveStateManager.Instance.MultiplicadorDropOro : 1f;
+
         if (Random.value <= chanceOro)
         {
-            SpawnGold(pos, Random.Range(minOro, maxOro + 1), parent);
+            int cantOro = Mathf.RoundToInt(Random.Range(minOro, maxOro + 1) * multOro);
+            SpawnGold(pos, Mathf.Max(1, cantOro), parent);
         }
 
         if (Random.value <= chanceFlechas)
@@ -155,7 +163,7 @@ public class ResourcePickup : MonoBehaviour
             SpawnMana(pos, cantidadMana, parent);
         }
 
-        if (Random.value <= chanceVida)
+        if (Random.value <= Mathf.Clamp01(chanceVida * multCorazones))
         {
             SpawnHealth(pos, cantidadVida, parent);
         }
