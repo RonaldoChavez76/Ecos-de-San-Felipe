@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -46,6 +46,11 @@ public class PantallaInicioManager : MonoBehaviour
     public RawImage imgSlideActual;
     public Text txtSlideDialogo;
     public Text txtIndicadorSlide;
+
+    public void AbrirMenuOpciones()
+    {
+        OptionsModalUI.EnsureInstance()?.AbrirModal();
+    }
 
     private int indiceSlideActual = 0;
     private Texture2D[] slidesGeneradas = new Texture2D[4];
@@ -298,6 +303,7 @@ public class PantallaInicioManager : MonoBehaviour
             Transform t = panelMenuInicio.transform;
             AsignarListenerBoton(t, "Boton_IniciarAventura", ComenzarHistoriaCuatroImagenes);
             AsignarListenerBoton(t, "Boton_JugarDirecto", CargarEscenaJuego);
+            AsignarListenerBoton(t, "Boton_Opciones", AbrirMenuOpciones);
             AsignarListenerBoton(t, "Boton_Controles", AlternarPanelControles);
             AsignarListenerBoton(t, "Boton_Salir", SalirDelJuego);
         }
@@ -370,10 +376,11 @@ public class PantallaInicioManager : MonoBehaviour
         CrearTexto(panelMenuInicio.transform, "Titulo_EcosDeSanFelipe", "ECOS DE SAN FELIPE", 56, new Color(0f, 0.92f, 1f), new Vector2(0, 170), new Vector2(900, 80), fuente);
         CrearTexto(panelMenuInicio.transform, "Subtitulo_SanFelipe", "Aventura y Acción RPG 2D — San Felipe, Guanajuato", 22, new Color(0.88f, 0.78f, 0.65f), new Vector2(0, 110), new Vector2(800, 40), fuente);
 
-        CrearBoton(panelMenuInicio.transform, "Boton_IniciarAventura", "INICIAR AVENTURA (HISTORIA)", new Vector2(0, 20), new Vector2(380, 55), new Color(0.15f, 0.55f, 0.68f), fuente, ComenzarHistoriaCuatroImagenes);
-        CrearBoton(panelMenuInicio.transform, "Boton_JugarDirecto", "JUGAR DIRECTO AL NIVEL 1", new Vector2(0, -45), new Vector2(380, 50), new Color(0.20f, 0.50f, 0.30f), fuente, CargarEscenaJuego);
-        CrearBoton(panelMenuInicio.transform, "Boton_Controles", "MAPA DE TECLAS / CONTROLES", new Vector2(0, -110), new Vector2(380, 50), new Color(0.38f, 0.25f, 0.18f), fuente, AlternarPanelControles);
-        CrearBoton(panelMenuInicio.transform, "Boton_Salir", "SALIR DEL JUEGO", new Vector2(0, -175), new Vector2(380, 50), new Color(0.45f, 0.15f, 0.15f), fuente, SalirDelJuego);
+        CrearBoton(panelMenuInicio.transform, "Boton_IniciarAventura", "INICIAR AVENTURA (HISTORIA)", new Vector2(0, 35), new Vector2(380, 50), new Color(0.15f, 0.55f, 0.68f), fuente, ComenzarHistoriaCuatroImagenes);
+        CrearBoton(panelMenuInicio.transform, "Boton_JugarDirecto", "JUGAR DIRECTO AL NIVEL 1", new Vector2(0, -25), new Vector2(380, 46), new Color(0.20f, 0.50f, 0.30f), fuente, CargarEscenaJuego);
+        CrearBoton(panelMenuInicio.transform, "Boton_Opciones", "AJUSTES Y OPCIONES", new Vector2(0, -80), new Vector2(380, 46), new Color(0.65f, 0.45f, 0.15f), fuente, AbrirMenuOpciones);
+        CrearBoton(panelMenuInicio.transform, "Boton_Controles", "MAPA DE TECLAS / CONTROLES", new Vector2(0, -135), new Vector2(380, 46), new Color(0.38f, 0.25f, 0.18f), fuente, AlternarPanelControles);
+        CrearBoton(panelMenuInicio.transform, "Boton_Salir", "SALIR DEL JUEGO", new Vector2(0, -190), new Vector2(380, 46), new Color(0.45f, 0.15f, 0.15f), fuente, SalirDelJuego);
 
         CrearTexto(panelMenuInicio.transform, "Texto_Creditos", "UTNG — Creación de Videojuegos | Desarrollado por Santiago Ronaldo Chávez Piñón", 16, new Color(0.6f, 0.55f, 0.5f), new Vector2(0, -300), new Vector2(900, 30), fuente);
 

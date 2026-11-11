@@ -27,6 +27,16 @@ public class AudioManager : MonoBehaviour
     public AudioClip sfxAssault;
     public AudioClip sfxBell;
     public AudioClip sfxSecret;
+    public AudioClip sfxVictoryFanfare;
+
+    [Header("Volúmenes Maestros")]
+    public float masterVolume = 1.0f;
+    public float musicVolume = 0.5f;
+    public float sfxVolume = 0.7f;
+
+    private const string PREF_VOL_MASTER = "VolMaster";
+    private const string PREF_VOL_MUSIC = "VolMusic";
+    private const string PREF_VOL_SFX = "VolSFX";
 
     private void Awake()
     {
@@ -39,8 +49,46 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        CargarAjustesVolumen();
         AsegurarAudioSources();
         GenerarClipsProceduralesSiFaltan();
+    }
+
+    public void CargarAjustesVolumen()
+    {
+        masterVolume = PlayerPrefs.GetFloat(PREF_VOL_MASTER, 1.0f);
+        musicVolume = PlayerPrefs.GetFloat(PREF_VOL_MUSIC, 0.75f);
+        sfxVolume = PlayerPrefs.GetFloat(PREF_VOL_SFX, 0.85f);
+        ActualizarVolumenes();
+    }
+
+    public void SetMasterVolume(float vol)
+    {
+        masterVolume = Mathf.Clamp01(vol);
+        PlayerPrefs.SetFloat(PREF_VOL_MASTER, masterVolume);
+        ActualizarVolumenes();
+    }
+
+    public void SetMusicVolume(float vol)
+    {
+        musicVolume = Mathf.Clamp01(vol);
+        PlayerPrefs.SetFloat(PREF_VOL_MUSIC, musicVolume);
+        ActualizarVolumenes();
+    }
+
+    public void SetSFXVolume(float vol)
+    {
+        sfxVolume = Mathf.Clamp01(vol);
+        PlayerPrefs.SetFloat(PREF_VOL_SFX, sfxVolume);
+        ActualizarVolumenes();
+    }
+
+    private void ActualizarVolumenes()
+    {
+        if (musicSource != null)
+        {
+            musicSource.volume = musicVolume * masterVolume;
+        }
     }
 
     private void Start()
@@ -55,7 +103,7 @@ public class AudioManager : MonoBehaviour
     {
         if (musicSource == null || clip == null) return;
         musicSource.clip = clip;
-        musicSource.volume = volume;
+        musicSource.volume = volume * musicVolume * masterVolume;
         musicSource.loop = true;
         musicSource.Play();
     }
@@ -64,7 +112,7 @@ public class AudioManager : MonoBehaviour
     {
         if (sfxSource != null && clip != null)
         {
-            sfxSource.PlayOneShot(clip, volume);
+            sfxSource.PlayOneShot(clip, volume * sfxVolume * masterVolume);
         }
     }
 
@@ -77,6 +125,8 @@ public class AudioManager : MonoBehaviour
     public void PlayBellSound() => PlaySFX(sfxBell, 0.9f);
     public void PlaySecretSound() => PlaySFX(sfxSecret, 0.85f);
     public void PlayItemPickupSound() => PlaySFX(sfxSecret, 0.85f);
+    public void PlayVictoryFanfare() => PlaySFX(sfxVictoryFanfare ?? sfxSecret, 1.0f);
+    public void PlayButtonHover()   => PlaySFX(sfxDodge, 0.35f); // sonido suave de hover UI
 
     private void AsegurarAudioSources()
     {
@@ -105,6 +155,39 @@ public class AudioManager : MonoBehaviour
         if (sfxAssault == null) sfxAssault = SintetizarAssaultPowerUp("SFX_Assault");
         if (sfxBell == null) sfxBell = SintetizarCampanaMagica("SFX_Bell", 1.8f, 330f);
         if (sfxSecret == null) sfxSecret = SintetizarSecuenciaZelda("SFX_Secret");
+        if (sfxVictoryFanfare == null) sfxVictoryFanfare = SintetizarFanfarriaVictoria("SFX_VictoryFanfare");
+    }
+
+    private AudioClip SintetizarFanfarriaVictoria(string nombre)
+    {
+        int sampleRate = 44100;
+        float duracion = 1.4f;
+        int count = Mathf.RoundToInt(sampleRate * duracion);
+        float[] samples = new float[count];
+
+        // Notas de fanfarria triunfal en C Mayor: C5 (523Hz), E5 (659Hz), G5 (784Hz), C6 (1046Hz)
+        float[] melodía = { 523.25f, 659.25f, 783.99f, 1046.50f };
+        float[] duraciones = { 0.22f, 0.22f, 0.22f, 0.74f };
+
+        int sampleIndex = 0;
+        for (int n = 0; n < melodía.Length; n++)
+        {
+            int noteSamples = Mathf.RoundToInt(duraciones[n] * sampleRate);
+            float freq = melodía[n];
+            for (int i = 0; i < noteSamples && sampleIndex < count; i++, sampleIndex++)
+            {
+                float t = (float)i / sampleRate;
+                float env = Mathf.Exp(-3.2f * (t / duraciones[n]));
+                float onda1 = Mathf.Sin(2f * Mathf.PI * freq * t);
+                float onda2 = Mathf.Sin(2f * Mathf.PI * freq * 2f * t) * 0.35f;
+                float onda3 = Mathf.Sin(2f * Mathf.PI * freq * 0.5f * t) * 0.25f;
+                samples[sampleIndex] = (onda1 + onda2 + onda3) * env * 0.45f;
+            }
+        }
+
+        AudioClip clip = AudioClip.Create(nombre, count, 1, sampleRate, false);
+        clip.SetData(samples, 0);
+        return clip;
     }
 
     // =========================================================================
