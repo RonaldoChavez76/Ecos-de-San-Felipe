@@ -225,7 +225,8 @@ public class BlackCloverDemonRenderer : MonoBehaviour
                 {
                     float t = (py - 28f) / 21f;
                     float hornX = 8f + t * 9f - t * t * 3f;
-                    if (Mathf.Abs(ax - hornX) < 2.1f)
+                    float hornExteriorX = 14f + t * 10f - t * t * 3f;
+                    if (Mathf.Abs(ax - hornX) < 2.1f || Mathf.Abs(ax - hornExteriorX) < 1.8f)
                         pixel = py > 44f ? runa : (py > 38f ? violeta : carbon);
                 }
 
