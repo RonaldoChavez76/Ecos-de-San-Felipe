@@ -50,6 +50,8 @@ public class SanFelipeUIManager : MonoBehaviour
     private GameObject panelHistoriaCuatroImagenes;
     private GameObject panelDialogoInGame;
     private GameObject panelGameOver;
+    private Button botonReaparecerCheckpoint;
+    private Text textoBotonCheckpoint;
 
     // Elementos de la Historia de 4 Imágenes
     private RawImage imgSlideActual;
@@ -71,7 +73,7 @@ public class SanFelipeUIManager : MonoBehaviour
 
     void Start()
     {
-        player = FindAnyObjectByType<PlayerMovement>();
+        player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
 
         // Generar las 4 ilustraciones de respaldo por si el usuario aún no arrastra las suyas
         for (int i = 0; i < 4; i++)
@@ -95,10 +97,18 @@ public class SanFelipeUIManager : MonoBehaviour
 
     void Update()
     {
-        if (player == null) player = FindAnyObjectByType<PlayerMovement>();
+        if (player == null) player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
 
         // 1. Detectar si Ronan murió (Vida <= 0) para activar la secuencia de Muerte en Cámara Lenta
-        if (!enMenuOIntro && player != null && player.currentHealth <= 0f && !gameOverMostrado)
+        HealthComponent health = player != null ? player.GetComponent<HealthComponent>() : null;
+        if (panelGameOver != null && panelGameOver.activeSelf)
+        {
+            ActualizarDisponibilidadCheckpoint();
+        }
+
+        if (!enMenuOIntro && player != null &&
+            (player.currentHealth <= 0f || (health != null && health.isDead)) &&
+            !gameOverMostrado)
         {
             IniciarSecuenciaMuerte();
         }
@@ -187,6 +197,7 @@ public class SanFelipeUIManager : MonoBehaviour
 
     public void VolverAlMenuPrincipal()
     {
+        SaveStateManager.EnsureInstance().GuardarProgreso();
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         Debug.Log("<color=cyan>Regresando al Menú Principal: " + nombreEscenaMenuPrincipal + "...</color>");
@@ -329,23 +340,82 @@ public class SanFelipeUIManager : MonoBehaviour
 
     public void ReintentarPartida()
     {
-        // 1. Restaurar el tiempo normal
+        ReaparecerEnCheckpoint();
+    }
+
+    public void ReaparecerEnCheckpoint()
+    {
+        player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
+        if (player == null)
+        {
+            Debug.LogError("[SanFelipeUIManager] No se encontró a Ronan para reaparecer en el checkpoint.");
+            return;
+        }
+
+        LevelManager.EnsureInstance();
+        SaveStateManager save = SaveStateManager.EnsureInstance();
+        if (!save.RestaurarJugadorDesdeCheckpoint(player))
+        {
+            ReiniciarDesdeInicioNivel();
+            return;
+        }
+
+        FinalizarRespawn();
+    }
+
+    public void ReiniciarDesdeInicioNivel()
+    {
+        player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
+        if (player == null)
+        {
+            Debug.LogError("[SanFelipeUIManager] No se encontró a Ronan para reiniciar el nivel.");
+            return;
+        }
+
+        LevelManager levelManager = LevelManager.EnsureInstance();
+        SaveStateManager.EnsureInstance().RestaurarJugadorInicioNivel(player, levelManager.currentZone);
+        ZoneWaveSpawner.ReiniciarEncuentrosDeEscena();
+        FinalizarRespawn();
+    }
+
+    private void FinalizarRespawn()
+    {
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
         if (player != null)
         {
-            // Restaurar vida y regresar al punto de retorno en la Plaza Principal (Sección 2.2)
-            player.currentHealth = player.maxHealth;
-            player.currentState = PlayerMovement.CombatState.Idle;
-            player.transform.position = Vector3.zero;
-
-            SpriteRenderer sr = player.GetComponent<SpriteRenderer>();
-            if (sr != null) sr.color = Color.white;
+            player.gameObject.SetActive(true);
+            player.enabled = true;
+            player.RestablecerEstadoTrasDerrota(player.transform.position);
+            HealthComponent health = player.GetComponent<HealthComponent>();
+            if (health != null)
+            {
+                health.isDead = false;
+                health.RestablecerTrasDerrota(player.maxHealth, player.currentHealth);
+                health.ActivarInvulnerabilidadTemporal(1.5f);
+            }
+            player.ActivarInvulnerabilidadTrasRespawn(1.5f);
         }
 
         gameOverMostrado = false;
         if (panelGameOver != null) panelGameOver.SetActive(false);
+        if (GameManager.Instance != null) GameManager.Instance.SetState(GameManager.GameState.Exploring);
+    }
+
+    private void ActualizarDisponibilidadCheckpoint()
+    {
+        if (botonReaparecerCheckpoint == null) return;
+
+        bool disponible = SaveStateManager.EnsureInstance()
+            .HayCheckpointParaZona(LevelManager.EnsureInstance().currentZone.ToString());
+        botonReaparecerCheckpoint.interactable = disponible;
+        if (textoBotonCheckpoint != null)
+        {
+            textoBotonCheckpoint.text = disponible
+                ? "REAPARECER EN EL ÚLTIMO CHECKPOINT"
+                : "CHECKPOINT NO DISPONIBLE EN ESTA ZONA";
+        }
     }
 
     public void SalirDelJuego()
@@ -451,12 +521,29 @@ public class SanFelipeUIManager : MonoBehaviour
         // ---------------------------------------------------------------------
         // 4. PANTALLA DE GAME OVER (CUANDO RONAN CAE DERROTADO)
         // ---------------------------------------------------------------------
-        panelGameOver = CrearPanel(canvasObj.transform, "Panel_GameOver", new Color(0.08f, 0.01f, 0.02f, 0.94f), Vector2.zero, new Vector2(1280, 720));
-        CrearTexto(panelGameOver.transform, "HAS CAÍDO EN LAS SOMBRAS", 52, new Color(1f, 0.18f, 0.22f), new Vector2(0, 110), new Vector2(900, 75), fuente);
-        CrearTexto(panelGameOver.transform, "Los ecos de San Felipe siguen esperando ser liberados...", 22, new Color(0.85f, 0.8f, 0.8f), new Vector2(0, 45), new Vector2(800, 40), fuente);
+        panelGameOver = CrearPanel(canvasObj.transform, "Panel_GameOver", new Color(0.035f, 0.02f, 0.025f, 0.94f), Vector2.zero, new Vector2(1280, 720));
+        GameObject pergaminoDerrota = CrearPanel(panelGameOver.transform, "Pergamino_Derrota", new Color(0.13f, 0.09f, 0.055f, 0.98f), Vector2.zero, new Vector2(700, 500));
+        Outline marcoDerrota = pergaminoDerrota.AddComponent<Outline>();
+        marcoDerrota.effectColor = new Color(0.88f, 0.68f, 0.28f, 1f);
+        marcoDerrota.effectDistance = new Vector2(4f, -4f);
+        Font fuenteColonial = Font.CreateDynamicFontFromOSFont("Georgia", 20);
+        if (fuenteColonial == null) fuenteColonial = fuente;
 
-        CrearBoton(panelGameOver.transform, "REINTENTAR EN LA PLAZA PRINCIPAL", new Vector2(0, -40), new Vector2(390, 55), new Color(0.15f, 0.55f, 0.68f), fuente, ReintentarPartida);
-        CrearBoton(panelGameOver.transform, "VOLVER AL MENÚ PRINCIPAL", new Vector2(0, -115), new Vector2(390, 50), new Color(0.35f, 0.20f, 0.20f), fuente, VolverAlMenuPrincipal);
+        CrearTexto(pergaminoDerrota.transform, "HAS CAÍDO EN LAS SOMBRAS", 42, new Color(0.95f, 0.75f, 0.34f), new Vector2(0, 172), new Vector2(650, 66), fuenteColonial);
+        CrearTexto(pergaminoDerrota.transform, "Los ecos de San Felipe aún esperan ser liberados.", 20, new Color(0.9f, 0.85f, 0.75f), new Vector2(0, 116), new Vector2(620, 38), fuenteColonial);
+
+        botonReaparecerCheckpoint = CrearBotonInteractivo(
+            pergaminoDerrota.transform,
+            "REAPARECER EN EL ÚLTIMO CHECKPOINT",
+            new Vector2(0, 48),
+            new Vector2(560, 56),
+            new Color(0.48f, 0.32f, 0.12f),
+            fuenteColonial,
+            ReaparecerEnCheckpoint,
+            out textoBotonCheckpoint);
+        CrearBoton(pergaminoDerrota.transform, "REINICIAR DESDE EL INICIO DEL NIVEL", new Vector2(0, -28), new Vector2(560, 56), new Color(0.18f, 0.42f, 0.38f), fuenteColonial, ReiniciarDesdeInicioNivel);
+        CrearBoton(pergaminoDerrota.transform, "VOLVER AL MENÚ PRINCIPAL", new Vector2(0, -104), new Vector2(560, 56), new Color(0.38f, 0.18f, 0.18f), fuenteColonial, VolverAlMenuPrincipal);
+        ActualizarDisponibilidadCheckpoint();
     }
 
     // =========================================================================
@@ -556,9 +643,23 @@ public class SanFelipeUIManager : MonoBehaviour
 
     private void CrearBoton(Transform parent, string etiqueta, Vector2 pos, Vector2 size, Color colorBtn, Font fuente, UnityEngine.Events.UnityAction accion)
     {
+        CrearBotonInteractivo(parent, etiqueta, pos, size, colorBtn, fuente, accion, out _);
+    }
+
+    private Button CrearBotonInteractivo(
+        Transform parent,
+        string etiqueta,
+        Vector2 pos,
+        Vector2 size,
+        Color colorBtn,
+        Font fuente,
+        UnityEngine.Events.UnityAction accion,
+        out Text texto)
+    {
         GameObject btnObj = CrearPanel(parent, "Boton_" + etiqueta, colorBtn, pos, size);
         Button btn = btnObj.AddComponent<Button>();
         btn.onClick.AddListener(accion);
-        CrearTexto(btnObj.transform, etiqueta, 20, Color.white, Vector2.zero, size, fuente);
+        texto = CrearTexto(btnObj.transform, etiqueta, 20, Color.white, Vector2.zero, size, fuente);
+        return btn;
     }
 }
