@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Nodo individual de Sello de la Cruz Azul en la cima del Cerro del Fraile.
 /// Puede ser purificado por Ronan [E / J] o corrompido por La Sombra Guardiana en Fase 2.
-/// Cuando está corrupto, ejerce un suave vórtice gravitacional sobre Ronan y emite pulsos radiales.
+/// Los sellos corruptos emiten chispas y orbes espectrales sin alterar el movimiento de Ronan.
 /// </summary>
 public class BlueCrossSealNode : MonoBehaviour
 {
@@ -14,12 +15,20 @@ public class BlueCrossSealNode : MonoBehaviour
 
     private SpriteRenderer baseRenderer;
     private Transform playerTransform;
-    private float ultimoPulsoTiempo = 0f;
+    private ParticleSystem chispas;
+    private readonly List<GameObject> orbesDefensivos = new List<GameObject>();
+    private readonly List<float> nacimientoOrbes = new List<float>();
+    private float siguientePulsoTiempo;
+    private float siguienteOrbeTiempo;
+    private bool jugadorEnRango;
 
     private void Start()
     {
         baseRenderer = GetComponent<SpriteRenderer>();
-        ActualizarVisual(false);
+        CrearChispas();
+        ActualizarVisual(purificado);
+        siguientePulsoTiempo = Time.time + 4f;
+        siguienteOrbeTiempo = Time.time + 4f;
     }
 
     private void Update()
@@ -30,29 +39,38 @@ public class BlueCrossSealNode : MonoBehaviour
             if (pm != null) playerTransform = pm.transform;
         }
 
-        if (purificado) return;
+        if (purificado)
+        {
+            ActualizarOrbesDefensivos();
+            return;
+        }
+
+        if (Time.time >= siguienteOrbeTiempo)
+        {
+            CrearOrbeDefensivo();
+            siguienteOrbeTiempo = Time.time + 4f;
+        }
+        ActualizarOrbesDefensivos();
 
         if (playerTransform != null)
         {
             float dist = Vector2.Distance(transform.position, playerTransform.position);
 
-            // Vórtice gravitacional en Fase 2 (cuando está corrupto)
-            if (dist > 1.2f && dist <= 7.5f)
+            if (dist <= 2.2f)
             {
-                Vector2 dirHaciaSello = ((Vector2)transform.position - (Vector2)playerTransform.position).normalized;
-                playerTransform.position += (Vector3)(dirHaciaSello * 1.35f * Time.deltaTime);
-            }
-
-            // Pulso de advertencia de la corrupción cada 3.5 segundos
-            if (dist <= 2.2f && Time.time - ultimoPulsoTiempo > 3.5f)
-            {
-                ultimoPulsoTiempo = Time.time;
-                PlayerMovement pm = playerTransform.GetComponent<PlayerMovement>();
-                if (pm != null)
+                if (!jugadorEnRango)
                 {
-                    pm.RecibirDanio(4f);
+                    jugadorEnRango = true;
+                    siguientePulsoTiempo = Time.time + 4f;
+                }
+                else if (Time.time >= siguientePulsoTiempo)
+                {
+                    siguientePulsoTiempo = Time.time + 4f;
+                    PlayerMovement pm = playerTransform.GetComponent<PlayerMovement>();
+                    if (pm != null) pm.RecibirDanio(4f);
                 }
             }
+            else jugadorEnRango = false;
 
             // Interacción de purificación
             if (dist <= 2.2f)
@@ -69,9 +87,9 @@ public class BlueCrossSealNode : MonoBehaviour
     {
         if (purificado) return;
 
-        ProjectileBehaviour proj = other.GetComponent<ProjectileBehaviour>();
+        ProjectileBehaviour proj = other.GetComponent<ProjectileBehaviour>() ?? other.GetComponentInParent<ProjectileBehaviour>();
         PlayerProjectile playerProj = other.GetComponent<PlayerProjectile>();
-        if (proj != null || playerProj != null)
+        if ((proj != null && proj.IsDeflected) || playerProj != null)
         {
             Purificar();
         }
@@ -81,15 +99,25 @@ public class BlueCrossSealNode : MonoBehaviour
     {
         if (purificado) return;
         purificado = true;
+        foreach (GameObject orb in orbesDefensivos)
+        {
+            if (orb != null) Destroy(orb);
+        }
+        orbesDefensivos.Clear();
+        nacimientoOrbes.Clear();
+        if (chispas != null) chispas.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         ActualizarVisual(true);
         puzzlePadre?.NotificarSelloPurificado(this);
     }
 
     public void Corromper()
     {
+        if (puzzlePadre != null && puzzlePadre.acertijoResuelto) return;
         purificado = false;
         ActualizarVisual(false);
-        ultimoPulsoTiempo = Time.time;
+        siguientePulsoTiempo = Time.time + 4f;
+        siguienteOrbeTiempo = Time.time + 4f;
+        puzzlePadre?.NotificarSelloCorrompido(this);
     }
 
     private void ActualizarVisual(bool limpio)
@@ -104,8 +132,68 @@ public class BlueCrossSealNode : MonoBehaviour
         if (flamaRenderer != null)
         {
             flamaRenderer.color = limpio
-                ? new Color(0.15f, 0.95f, 1.0f, 0.85f)
-                : new Color(0.75f, 0.12f, 0.85f, 0.85f);
+                ? new Color(0f, 0.9f, 1f, 0.95f)
+                : new Color(0.62f, 0.08f, 0.9f, 0.95f);
+            flamaRenderer.transform.localScale = Vector3.one * (limpio ? 1.9f : 2.6f);
+        }
+
+        if (chispas != null)
+        {
+            var main = chispas.main;
+            main.startColor = limpio ? new Color(0f, 0.9f, 1f, 0.9f) : new Color(0.7f, 0.15f, 1f, 0.9f);
+            if (limpio) chispas.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            else if (!chispas.isPlaying) chispas.Play();
+        }
+    }
+
+    private void CrearChispas()
+    {
+        GameObject sparks = new GameObject("Chispas_Sello_Corrompido");
+        sparks.transform.SetParent(transform, false);
+        sparks.transform.localPosition = new Vector3(0f, 0.9f, 0f);
+        chispas = sparks.AddComponent<ParticleSystem>();
+        var main = chispas.main;
+        main.loop = true;
+        main.startLifetime = 0.65f;
+        main.startSpeed = 0.65f;
+        main.startSize = 0.07f;
+        main.startColor = new Color(0.7f, 0.15f, 1f, 0.9f);
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+        var emission = chispas.emission;
+        emission.rateOverTime = 6f;
+        var shape = chispas.shape;
+        shape.shapeType = ParticleSystemShapeType.Circle;
+        shape.radius = 0.18f;
+    }
+
+    private void CrearOrbeDefensivo()
+    {
+        GameObject orb = new GameObject("Orbe_Espectral_Defensivo");
+        orb.transform.SetParent(transform, false);
+        SpriteRenderer rendererOrb = orb.AddComponent<SpriteRenderer>();
+        rendererOrb.sprite = ProjectileBehaviour.ObtenerSpriteOrbeAbisal();
+        rendererOrb.color = new Color(0.65f, 0.2f, 1f, 0.9f);
+        rendererOrb.sortingOrder = baseRenderer != null ? baseRenderer.sortingOrder + 5 : 10;
+        orb.transform.localScale = Vector3.one * 0.24f;
+        orbesDefensivos.Add(orb);
+        nacimientoOrbes.Add(Time.time);
+    }
+
+    private void ActualizarOrbesDefensivos()
+    {
+        for (int i = orbesDefensivos.Count - 1; i >= 0; i--)
+        {
+            GameObject orb = orbesDefensivos[i];
+            if (orb == null || purificado || Time.time - nacimientoOrbes[i] >= 3.8f)
+            {
+                if (orb != null) Destroy(orb);
+                orbesDefensivos.RemoveAt(i);
+                nacimientoOrbes.RemoveAt(i);
+                continue;
+            }
+
+            float angulo = Time.time * 2.4f + i * Mathf.PI * 2f / Mathf.Max(1, orbesDefensivos.Count);
+            orb.transform.localPosition = new Vector3(Mathf.Cos(angulo) * 0.72f, 0.7f + Mathf.Sin(angulo) * 0.3f, 0f);
         }
     }
 

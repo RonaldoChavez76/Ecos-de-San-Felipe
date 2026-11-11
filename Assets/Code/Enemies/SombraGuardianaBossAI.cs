@@ -143,7 +143,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
             disponibles.RemoveAt(idx);
         }
 
-        isShieldedBySeals = true;
+        isShieldedBySeals = corrompidos > 0;
         yield return null;
     }
 
