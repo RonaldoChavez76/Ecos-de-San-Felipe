@@ -81,7 +81,9 @@ public class SanFelipeUIManager : MonoBehaviour
 
         ConstruirTodaLaInterfazPorCodigo();
 
-        if (iniciarDirectoEnJuego)
+        // Si el sistema nuevo de pausa/UI está presente, este manager solo gestiona Game Over.
+        // Siempre inicia directo al juego y deja el ESC al nuevo sistema.
+        if (PauseAndVictoryUI.Instance != null || iniciarDirectoEnJuego)
         {
             IniciarJuegoDirecto();
         }
@@ -132,15 +134,18 @@ public class SanFelipeUIManager : MonoBehaviour
             }
         }
 
-        // 4. Pausar / Reanudar juego con Escape (Menú de pausa en Nivel 1)
-        if (!gameOverMostrado && (panelHistoriaCuatroImagenes == null || !panelHistoriaCuatroImagenes.activeSelf) && !dialogoInGameActivo)
+        // 4. Pausar / Reanudar juego con Escape
+        // NOTA: Si PauseAndVictoryUI (sistema nuevo de pausa) está presente,
+        //       él gestiona el ESC — SanFelipeUIManager NO debe interferir.
+        bool nuevoSistemaPausaActivo = PauseAndVictoryUI.Instance != null;
+        if (!nuevoSistemaPausaActivo && !gameOverMostrado &&
+            (panelHistoriaCuatroImagenes == null || !panelHistoriaCuatroImagenes.activeSelf) && !dialogoInGameActivo)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 AlternarPausa();
             }
-        }
-    }
+        }    }
 
     // =========================================================================
     // FLUJO DE PANTALLAS: MENÚ -> 4 IMÁGENES DE HISTORIA -> JUEGO -> GAME OVER
@@ -157,8 +162,12 @@ public class SanFelipeUIManager : MonoBehaviour
         if (panelDialogoInGame != null) panelDialogoInGame.SetActive(false);
         if (panelGameOver != null) panelGameOver.SetActive(false);
         if (avisoInteractuarUI != null) avisoInteractuarUI.SetActive(false);
-    }
 
+        // Si el nuevo sistema de Pausa/Victoria esta presente, ocultar el Canvas raiz
+        // para evitar que el overlay de este manager interfiera con PauseAndVictoryUI.
+        if (PauseAndVictoryUI.Instance != null && mainCanvas != null)
+            mainCanvas.gameObject.SetActive(false);
+    }
     public void AlternarPausa()
     {
         if (panelMenuInicio == null) return;
@@ -298,6 +307,8 @@ public class SanFelipeUIManager : MonoBehaviour
 
         if (panelGameOver != null)
         {
+            // Reactivar el Canvas si fue ocultado por IniciarJuegoDirecto
+            if (mainCanvas != null) mainCanvas.gameObject.SetActive(true);
             panelGameOver.SetActive(true);
 
             CanvasGroup cg = panelGameOver.GetComponent<CanvasGroup>();

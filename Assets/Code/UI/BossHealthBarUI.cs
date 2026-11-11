@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Interfaz de Barra de Vida y Fases del Jefe Final: La Sombra Guardiana en el Cerro del Fraile.

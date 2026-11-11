@@ -152,6 +152,10 @@ public class PauseAndVictoryUI : MonoBehaviour
 
     private void OnGUI()
     {
+        // Si el modal de Opciones está abierto, NO dibujar nada (el modal tiene su propio OnGUI encima)
+        if (OptionsModalUI.Instance != null && OptionsModalUI.Instance.isOptionsOpen)
+            return;
+
         if (menuPausaAbierto)
         {
             DibujarMenuPausa();
