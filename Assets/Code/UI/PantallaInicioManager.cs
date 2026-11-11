@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -9,6 +10,22 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
+/// <summary>
+/// Controlador y Diseñador Visual de la Pantalla de Inicio de «Ecos de San Felipe».
+/// Presenta:
+///  • Fondo panorámico Pixel-Art colonial de San Felipe de noche: cielo estrellado, luna llena,
+///    silueta de la Parroquia de las Torres Mochas, atrio de cantera, faroles coloniales cálidos y niebla.
+///  • 5 Orbes luminosos de los Ecos (Fe, Tradición, Memoria, Naturaleza, Coraje) con animación flotante viva.
+///  • Marco Central Colonial Sacro con doble ribete de oro y cantera novohispana.
+///  • Indicador dinámico de Dificultad sincronizado con SaveStateManager y OptionsModalUI.
+///  • 5 Botones estilizados con relieve colonial, biseles 9-slice y efectos hover/sonido:
+///      1. [▶ INICIAR AVENTURA (HISTORIA)]
+///      2. [⚔ JUGAR DIRECTO AL NIVEL 1]
+///      3. [⚙ AJUSTES Y OPCIONES] -> Abre modal OptionsModalUI
+///      4. [📜 MAPA DE TECLAS Y CONTROLES]
+///      5. [✕ SALIR DEL JUEGO]
+///  • Subpanel de Controles colonial ampliado y Panel de Historia de 4 imágenes sacras.
+/// </summary>
 public class PantallaInicioManager : MonoBehaviour
 {
     [Header("1. Las 4 Imágenes de la Historia Inicial (Opcionales)")]
@@ -19,12 +36,12 @@ public class PantallaInicioManager : MonoBehaviour
     public string nombreEscenaNivel1 = "SampleScene";
 
     [Header("3. Música y Sonido del Menú")]
-    [Tooltip("Arrastra aquí tu archivo de música (WAV, MP3, OGG). Si lo dejas vacío, el juego genera una melodía ambiental mística de fondo automáticamente")]
+    [Tooltip("Arrastra aquí tu archivo de música. Si lo dejas vacío, genera una melodía mística de fondo en Re menor automáticamente")]
     public AudioClip musicaMenu;
 
     [Range(0f, 1f)]
     [Tooltip("Volumen de la música de fondo")]
-    public float volumenMusica = 0.35f;
+    public float volumenMusica = 0.38f;
 
     [Tooltip("Efecto de sonido al presionar botones (opcional, se genera uno automáticamente si está vacío)")]
     public AudioClip sfxClick;
@@ -39,7 +56,7 @@ public class PantallaInicioManager : MonoBehaviour
         "4/4 — EL DEBER DE RONAN:\nArmado con su espada corta y el brazal capaz de devolver los ataques enemigos, Ronan debe recuperar los Ecos antes de que San Felipe se borre por completo."
     };
 
-    [Header("5. Referencias a la UI en Escena (Generadas en Hierarchy)")]
+    [Header("5. Referencias a la UI en Escena")]
     public GameObject panelMenuInicio;
     public GameObject panelControles;
     public GameObject panelHistoriaCuatroImagenes;
@@ -47,10 +64,11 @@ public class PantallaInicioManager : MonoBehaviour
     public Text txtSlideDialogo;
     public Text txtIndicadorSlide;
 
-    public void AbrirMenuOpciones()
-    {
-        OptionsModalUI.EnsureInstance()?.AbrirModal();
-    }
+    [Header("6. Referencias del Nuevo Diseño Colonial")]
+    public RawImage fondoAtmosphere;
+    public Text txtPlacaDificultad;
+    public List<RectTransform> orbesEcosTransforms = new List<RectTransform>();
+    public List<Vector2> orbesEcosBasePos = new List<Vector2>();
 
     private int indiceSlideActual = 0;
     private Texture2D[] slidesGeneradas = new Texture2D[4];
@@ -63,46 +81,31 @@ public class PantallaInicioManager : MonoBehaviour
 
     void Awake()
     {
-        if (panelMenuInicio == null)
-        {
-            BuscarOConectarReferenciasExistentes();
-        }
+        VerificarYActualizarUI();
+        BuscarOConectarReferenciasExistentes();
         VincularBotonesYListeners();
     }
 
     void Start()
     {
-        // 1. Asegurar que el tiempo esté corriendo normalmente
         Time.timeScale = 1f;
 
-        // 2. Generar ilustraciones de respaldo si no hay asignadas
         for (int i = 0; i < 4; i++)
         {
             slidesGeneradas[i] = GenerarIlustracionHistoria(i);
         }
 
-        // 3. Inicializar Música
         InicializarAudio();
-
-        // 4. Si no estaban conectadas las referencias, conectarlas o construirlas
-        if (panelMenuInicio == null)
-        {
-            BuscarOConectarReferenciasExistentes();
-        }
-
-        if (panelMenuInicio == null)
-        {
-            GenerarUIEnEscena();
-        }
-
-        // 5. Vincular listeners y mostrar menú
+        VerificarYActualizarUI();
+        BuscarOConectarReferenciasExistentes();
         VincularBotonesYListeners();
+        ActualizarEtiquetaDificultad();
         MostrarMenuPrincipal();
     }
 
     void Update()
     {
-        // Permitir avanzar o completar la historia con Espacio, Enter o tecla E
+        // 1. Avanzar la historia de 4 imágenes
         if (panelHistoriaCuatroImagenes != null && panelHistoriaCuatroImagenes.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.E))
@@ -110,6 +113,18 @@ public class PantallaInicioManager : MonoBehaviour
                 SiguienteImagenHistoria();
             }
         }
+
+        // 2. Animar orbes de los Ecos en vivo
+        AnimarEcosFlotantes();
+
+        // 3. Mantener actualizada la placa de dificultad
+        ActualizarEtiquetaDificultad();
+    }
+
+    public void AbrirMenuOpciones()
+    {
+        ReproducirSonidoClick();
+        OptionsModalUI.EnsureInstance()?.AbrirModal();
     }
 
     public void MostrarMenuPrincipal()
@@ -129,7 +144,6 @@ public class PantallaInicioManager : MonoBehaviour
 
     public void SiguienteImagenHistoria()
     {
-        // Si aún está escribiendo letra por letra, completar el texto al primer clic o pulsación
         if (escribiendoTexto)
         {
             if (corrutinaEscritura != null) StopCoroutine(corrutinaEscritura);
@@ -152,13 +166,13 @@ public class PantallaInicioManager : MonoBehaviour
     public void CargarEscenaJuego()
     {
         Time.timeScale = 1f;
-        Debug.Log("<color=cyan>Cargando nivel de juego: " + nombreEscenaNivel1 + "...</color>");
+        Debug.Log("<color=cyan>[Ecos de San Felipe] Cargando nivel de juego: " + nombreEscenaNivel1 + "...</color>");
         SceneManager.LoadScene(nombreEscenaNivel1);
     }
 
     public void SalirDelJuego()
     {
-        Debug.Log("Saliendo de Ecos de San Felipe...");
+        Debug.Log("[Ecos de San Felipe] Saliendo del juego...");
         Application.Quit();
     }
 
@@ -168,6 +182,65 @@ public class PantallaInicioManager : MonoBehaviour
         {
             panelControles.SetActive(!panelControles.activeSelf);
         }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ANIMACIÓN Y ACTUALIZACIÓN DINÁMICA
+    // ─────────────────────────────────────────────────────────────────────────
+    private void AnimarEcosFlotantes()
+    {
+        if (orbesEcosTransforms == null || orbesEcosTransforms.Count == 0) return;
+
+        float t = Time.time;
+        for (int i = 0; i < orbesEcosTransforms.Count; i++)
+        {
+            RectTransform rt = orbesEcosTransforms[i];
+            if (rt == null) continue;
+
+            Vector2 basePos = (orbesEcosBasePos != null && i < orbesEcosBasePos.Count) ? orbesEcosBasePos[i] : Vector2.zero;
+            float offY = Mathf.Sin(t * 1.8f + i * 1.25f) * 12f;
+            float offX = Mathf.Cos(t * 1.1f + i * 0.95f) * 6f;
+            rt.anchoredPosition = new Vector2(basePos.x + offX, basePos.y + offY);
+
+            float scale = 1f + Mathf.Sin(t * 2.4f + i * 1.15f) * 0.10f;
+            rt.localScale = new Vector3(scale, scale, 1f);
+        }
+    }
+
+    public void ActualizarEtiquetaDificultad()
+    {
+        if (txtPlacaDificultad == null) return;
+
+        string difNombre = "NORMAL";
+        Color colDif = new Color(0.95f, 0.85f, 0.40f);
+
+        if (SaveStateManager.Instance != null)
+        {
+            switch (SaveStateManager.Instance.dificultadActual)
+            {
+                case SaveStateManager.GameDifficulty.Facil:
+                    difNombre = "FÁCIL";
+                    colDif = new Color(0.40f, 0.95f, 0.55f);
+                    break;
+                case SaveStateManager.GameDifficulty.Normal:
+                    difNombre = "NORMAL";
+                    colDif = new Color(0.95f, 0.85f, 0.40f);
+                    break;
+                case SaveStateManager.GameDifficulty.Dificil:
+                    difNombre = "DIFÍCIL";
+                    colDif = new Color(1.0f, 0.35f, 0.40f);
+                    break;
+            }
+        }
+        else
+        {
+            int savedDif = PlayerPrefs.GetInt("GameDifficulty", 1);
+            if (savedDif == 0) { difNombre = "FÁCIL"; colDif = new Color(0.40f, 0.95f, 0.55f); }
+            else if (savedDif == 2) { difNombre = "DIFÍCIL"; colDif = new Color(1.0f, 0.35f, 0.40f); }
+        }
+
+        string hexCol = ColorUtility.ToHtmlStringRGB(colDif);
+        txtPlacaDificultad.text = $"⚔  DIFICULTAD: <color=#{hexCol}><b>[ {difNombre} ]</b></color>  ⚔";
     }
 
     private void ActualizarSlideHistoria()
@@ -181,7 +254,7 @@ public class PantallaInicioManager : MonoBehaviour
         if (imgSlideActual != null) imgSlideActual.texture = texMostrar;
         if (txtIndicadorSlide != null)
         {
-            txtIndicadorSlide.text = $"Imagen {indiceSlideActual + 1} de 4 — Presiona [ESPACIO] o clic en 'Siguiente'";
+            txtIndicadorSlide.text = $"Crónica {indiceSlideActual + 1} de 4 — Presiona [ESPACIO] o clic en 'Siguiente'";
         }
 
         if (txtSlideDialogo != null && dialogosIntro != null && indiceSlideActual < dialogosIntro.Length)
@@ -232,7 +305,6 @@ public class PantallaInicioManager : MonoBehaviour
         audioSource.volume = volumenMusica;
         audioSource.playOnAwake = false;
 
-        // Si el usuario asignó una canción la reproduce; si no, sintetiza la música ambiental de San Felipe
         if (musicaMenu != null)
         {
             audioSource.clip = musicaMenu;
@@ -244,7 +316,6 @@ public class PantallaInicioManager : MonoBehaviour
 
         audioSource.Play();
 
-        // Generar SFX de clic si no hay asignado
         if (sfxClick == null)
         {
             sfxClick = GenerarSonidoClick();
@@ -258,13 +329,44 @@ public class PantallaInicioManager : MonoBehaviour
     {
         if (sfxSource != null && sfxClick != null)
         {
-            sfxSource.PlayOneShot(sfxClick, 0.65f);
+            sfxSource.PlayOneShot(sfxClick, 0.70f);
         }
     }
 
-    // =========================================================================
-    // CONEXIÓN Y VINCULACIÓN DE ELEMENTOS DE UI
-    // =========================================================================
+    // ─────────────────────────────────────────────────────────────────────────
+    // CONEXIÓN Y DETECCIÓN AUTOMÁTICA DE UI VIEJA VS NUEVA
+    // ─────────────────────────────────────────────────────────────────────────
+    public void VerificarYActualizarUI()
+    {
+        GameObject canvasObj = GameObject.Find("Canvas_PantallaInicio");
+        bool esIncompleto = false;
+
+        if (canvasObj != null)
+        {
+            Transform fondo = canvasObj.transform.Find("Fondo_SanFelipe_Atmosphere");
+            Button[] btns = canvasObj.GetComponentsInChildren<Button>(true);
+            bool tieneOpciones = false;
+            foreach (var b in btns)
+            {
+                if (b.gameObject.name == "Boton_Opciones") { tieneOpciones = true; break; }
+            }
+
+            if (fondo == null || !tieneOpciones)
+            {
+                esIncompleto = true;
+            }
+        }
+        else
+        {
+            esIncompleto = true;
+        }
+
+        if (esIncompleto)
+        {
+            GenerarUIEnEscena();
+        }
+    }
+
     public void BuscarOConectarReferenciasExistentes()
     {
         GameObject canvasObj = GameObject.Find("Canvas_PantallaInicio");
@@ -272,12 +374,35 @@ public class PantallaInicioManager : MonoBehaviour
 
         Transform tCanvas = canvasObj.transform;
 
+        Transform tFondo = tCanvas.Find("Fondo_SanFelipe_Atmosphere");
+        if (tFondo != null) fondoAtmosphere = tFondo.GetComponent<RawImage>();
+
         Transform tMenu = tCanvas.Find("Panel_MenuInicio");
         if (tMenu != null)
         {
             panelMenuInicio = tMenu.gameObject;
             Transform tCtrl = tMenu.Find("Subpanel_Controles");
             if (tCtrl != null) panelControles = tCtrl.gameObject;
+
+            Transform tPlaca = tMenu.Find("Marco_Central_Colonial/Placa_Dificultad/Texto_Dificultad");
+            if (tPlaca == null) tPlaca = tMenu.Find("Placa_Dificultad/Texto_Dificultad");
+            if (tPlaca != null) txtPlacaDificultad = tPlaca.GetComponent<Text>();
+        }
+
+        Transform tContEcos = tCanvas.Find("Contenedor_Ecos_Flotantes");
+        if (tContEcos != null)
+        {
+            orbesEcosTransforms.Clear();
+            orbesEcosBasePos.Clear();
+            for (int i = 0; i < tContEcos.childCount; i++)
+            {
+                RectTransform rt = tContEcos.GetChild(i) as RectTransform;
+                if (rt != null)
+                {
+                    orbesEcosTransforms.Add(rt);
+                    orbesEcosBasePos.Add(rt.anchoredPosition);
+                }
+            }
         }
 
         Transform tHist = tCanvas.Find("Panel_Historia4Imagenes");
@@ -306,6 +431,8 @@ public class PantallaInicioManager : MonoBehaviour
             AsignarListenerBoton(t, "Boton_Opciones", AbrirMenuOpciones);
             AsignarListenerBoton(t, "Boton_Controles", AlternarPanelControles);
             AsignarListenerBoton(t, "Boton_Salir", SalirDelJuego);
+            AsignarListenerBoton(t, "Placa_Dificultad", AbrirMenuOpciones);
+            AsignarListenerBoton(t, "Boton_CerrarControles", () => { if (panelControles != null) panelControles.SetActive(false); });
         }
 
         if (panelHistoriaCuatroImagenes != null)
@@ -318,22 +445,22 @@ public class PantallaInicioManager : MonoBehaviour
 
     private void AsignarListenerBoton(Transform parent, string nombreBoton, UnityEngine.Events.UnityAction accion)
     {
-        Transform btnTr = parent.Find(nombreBoton);
-        if (btnTr != null)
+        Button[] btns = parent.GetComponentsInChildren<Button>(true);
+        foreach (Button btn in btns)
         {
-            Button btn = btnTr.GetComponent<Button>();
-            if (btn != null)
+            if (btn.gameObject.name == nombreBoton)
             {
                 btn.onClick.RemoveAllListeners();
                 btn.onClick.AddListener(ReproducirSonidoClick);
                 btn.onClick.AddListener(accion);
+                return;
             }
         }
     }
 
-    // =========================================================================
-    // GENERADOR EN ESCENA (HIERARCHY) PARA MODO EDICIÓN
-    // =========================================================================
+    // ─────────────────────────────────────────────────────────────────────────
+    // GENERADOR VISUAL EN ESCENA (DISEÑO COLONIAL COMPLETO)
+    // ─────────────────────────────────────────────────────────────────────────
     [ContextMenu("Generar UI en Escena (Hierarchy)")]
     public void GenerarUIEnEscena()
     {
@@ -344,7 +471,7 @@ public class PantallaInicioManager : MonoBehaviour
             DestroyImmediate(canvasViejo);
         }
 
-        // 2. Asegurar EventSystem
+        // 2. EventSystem
         if (FindAnyObjectByType<EventSystem>() == null)
         {
             GameObject es = new GameObject("EventSystem");
@@ -364,55 +491,232 @@ public class PantallaInicioManager : MonoBehaviour
         CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1280, 720);
+        scaler.matchWidthOrHeight = 0.5f;
 
         canvasObj.AddComponent<GraphicRaycaster>();
 
         Font fuente = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         if (fuente == null) fuente = Font.CreateDynamicFontFromOSFont("Arial", 18);
 
-        // 4. Panel Menú de Inicio
-        panelMenuInicio = CrearPanel(canvasObj.transform, "Panel_MenuInicio", new Color(0.08f, 0.06f, 0.05f, 0.98f), Vector2.zero, new Vector2(1280, 720));
+        // Sprites Procedurales de Oro y Cantera
+        Sprite spPanel = GenerarSpritePanelColonial(64, 64);
+        Sprite spBotonAzul = GenerarSpriteBotonColonial(new Color(0.10f, 0.38f, 0.52f), new Color(0.95f, 0.78f, 0.30f), 64, 32);
+        Sprite spBotonVerde = GenerarSpriteBotonColonial(new Color(0.12f, 0.40f, 0.24f), new Color(0.95f, 0.78f, 0.30f), 64, 32);
+        Sprite spBotonDorado = GenerarSpriteBotonColonial(new Color(0.50f, 0.36f, 0.12f), new Color(1f, 0.88f, 0.42f), 64, 32);
+        Sprite spBotonMarron = GenerarSpriteBotonColonial(new Color(0.34f, 0.22f, 0.18f), new Color(0.90f, 0.72f, 0.30f), 64, 32);
+        Sprite spBotonRojo = GenerarSpriteBotonColonial(new Color(0.42f, 0.12f, 0.14f), new Color(0.95f, 0.65f, 0.30f), 64, 32);
 
-        CrearTexto(panelMenuInicio.transform, "Titulo_EcosDeSanFelipe", "ECOS DE SAN FELIPE", 56, new Color(0f, 0.92f, 1f), new Vector2(0, 170), new Vector2(900, 80), fuente);
-        CrearTexto(panelMenuInicio.transform, "Subtitulo_SanFelipe", "Aventura y Acción RPG 2D — San Felipe, Guanajuato", 22, new Color(0.88f, 0.78f, 0.65f), new Vector2(0, 110), new Vector2(800, 40), fuente);
+        // 4. FONDO PANORÁMICO COLONIAL DE SAN FELIPE
+        GameObject fondoObj = new GameObject("Fondo_SanFelipe_Atmosphere");
+        fondoObj.transform.SetParent(canvasObj.transform, false);
+        fondoAtmosphere = fondoObj.AddComponent<RawImage>();
+        fondoAtmosphere.texture = GenerarFondoSanFelipeNocturno(640, 360);
+        RectTransform rtFondo = fondoObj.GetComponent<RectTransform>();
+        rtFondo.anchorMin = Vector2.zero;
+        rtFondo.anchorMax = Vector2.one;
+        rtFondo.offsetMin = Vector2.zero;
+        rtFondo.offsetMax = Vector2.zero;
 
-        CrearBoton(panelMenuInicio.transform, "Boton_IniciarAventura", "INICIAR AVENTURA (HISTORIA)", new Vector2(0, 35), new Vector2(380, 50), new Color(0.15f, 0.55f, 0.68f), fuente, ComenzarHistoriaCuatroImagenes);
-        CrearBoton(panelMenuInicio.transform, "Boton_JugarDirecto", "JUGAR DIRECTO AL NIVEL 1", new Vector2(0, -25), new Vector2(380, 46), new Color(0.20f, 0.50f, 0.30f), fuente, CargarEscenaJuego);
-        CrearBoton(panelMenuInicio.transform, "Boton_Opciones", "AJUSTES Y OPCIONES", new Vector2(0, -80), new Vector2(380, 46), new Color(0.65f, 0.45f, 0.15f), fuente, AbrirMenuOpciones);
-        CrearBoton(panelMenuInicio.transform, "Boton_Controles", "MAPA DE TECLAS / CONTROLES", new Vector2(0, -135), new Vector2(380, 46), new Color(0.38f, 0.25f, 0.18f), fuente, AlternarPanelControles);
-        CrearBoton(panelMenuInicio.transform, "Boton_Salir", "SALIR DEL JUEGO", new Vector2(0, -190), new Vector2(380, 46), new Color(0.45f, 0.15f, 0.15f), fuente, SalirDelJuego);
+        // 5. ORBES LUMINOSOS FLOTANTES DE LOS 5 ECOS
+        GameObject contEcos = new GameObject("Contenedor_Ecos_Flotantes");
+        contEcos.transform.SetParent(canvasObj.transform, false);
+        orbesEcosTransforms.Clear();
+        orbesEcosBasePos.Clear();
 
-        CrearTexto(panelMenuInicio.transform, "Texto_Creditos", "UTNG — Creación de Videojuegos | Desarrollado por Santiago Ronaldo Chávez Piñón", 16, new Color(0.6f, 0.55f, 0.5f), new Vector2(0, -300), new Vector2(900, 30), fuente);
+        Color[] coloresEcos = {
+            new Color(0f, 0.90f, 1f, 0.95f),     // 1. Fe (Cyan místico)
+            new Color(1f, 0.85f, 0.30f, 0.95f),   // 2. Tradición (Dorado)
+            new Color(0.80f, 0.55f, 0.95f, 0.95f), // 3. Memoria (Amatista)
+            new Color(0.35f, 0.95f, 0.65f, 0.95f), // 4. Naturaleza (Esmeralda)
+            new Color(1f, 0.30f, 0.35f, 0.95f)    // 5. Coraje (Rubí)
+        };
 
-        // Subpanel Controles
-        panelControles = CrearPanel(panelMenuInicio.transform, "Subpanel_Controles", new Color(0.06f, 0.05f, 0.08f, 0.98f), new Vector2(420, -50), new Vector2(380, 280));
-        CrearTexto(panelControles.transform, "Texto_Controles", "CONTROLES DE RONAN:\n\n[W, A, S, D] : Mover en 8 direcciones\n[J] o [Clic Izq] : Espadazo\n[K] o [Clic Der] : Bloqueo / Contraataque (0.20s)\n[ESPACIO] : Esquive con invulnerabilidad\n[L] : Activar Modo Asalto\n[E] : Hablar / Leer Pistas", 18, Color.white, Vector2.zero, new Vector2(340, 250), fuente);
+        Vector2[] posEcos = {
+            new Vector2(-380f, 120f),
+            new Vector2(380f, 140f),
+            new Vector2(-430f, -70f),
+            new Vector2(420f, -90f),
+            new Vector2(0f, 250f)
+        };
+
+        for (int i = 0; i < coloresEcos.Length; i++)
+        {
+            GameObject orbe = new GameObject($"Eco_Flotante_{i + 1}");
+            orbe.transform.SetParent(contEcos.transform, false);
+            Image imgOrbe = orbe.AddComponent<Image>();
+            imgOrbe.sprite = GenerarSpriteOrbe(coloresEcos[i], 32);
+            RectTransform rtOrbe = orbe.GetComponent<RectTransform>();
+            rtOrbe.sizeDelta = new Vector2(34f, 34f);
+            rtOrbe.anchoredPosition = posEcos[i];
+            orbesEcosTransforms.Add(rtOrbe);
+            orbesEcosBasePos.Add(posEcos[i]);
+        }
+
+        // 6. PANEL MENÚ DE INICIO
+        panelMenuInicio = new GameObject("Panel_MenuInicio");
+        panelMenuInicio.transform.SetParent(canvasObj.transform, false);
+        RectTransform rtMenu = panelMenuInicio.AddComponent<RectTransform>();
+        rtMenu.anchorMin = Vector2.zero;
+        rtMenu.anchorMax = Vector2.one;
+        rtMenu.offsetMin = Vector2.zero;
+        rtMenu.offsetMax = Vector2.zero;
+
+        // MARCO CENTRAL COLONIAL SACRO (Cantera y Ribete de Oro)
+        GameObject marcoCentral = new GameObject("Marco_Central_Colonial");
+        marcoCentral.transform.SetParent(panelMenuInicio.transform, false);
+        Image imgMarco = marcoCentral.AddComponent<Image>();
+        imgMarco.sprite = spPanel;
+        imgMarco.type = Image.Type.Sliced;
+        RectTransform rtMarco = marcoCentral.GetComponent<RectTransform>();
+        rtMarco.sizeDelta = new Vector2(530f, 620f);
+        rtMarco.anchoredPosition = new Vector2(0f, 0f);
+
+        Shadow shadowMarco = marcoCentral.AddComponent<Shadow>();
+        shadowMarco.effectColor = new Color(0f, 0f, 0f, 0.75f);
+        shadowMarco.effectDistance = new Vector2(4f, -4f);
+
+        // TÍTULO: ★ ECOS DE SAN FELIPE ★
+        Text tTitulo = CrearTexto(marcoCentral.transform, "Titulo_EcosDeSanFelipe", "★  ECOS DE SAN FELIPE  ★", 34, new Color(1f, 0.88f, 0.42f), new Vector2(0, 238), new Vector2(500, 48), fuente);
+        tTitulo.fontStyle = FontStyle.Bold;
+        Outline outTitulo = tTitulo.gameObject.AddComponent<Outline>();
+        outTitulo.effectColor = new Color(0.20f, 0.12f, 0.04f, 0.95f);
+        outTitulo.effectDistance = new Vector2(2f, -2f);
+
+        // SUBTÍTULO
+        Text tSub = CrearTexto(marcoCentral.transform, "Subtitulo_SanFelipe", "Torres Mochas — San Felipe, Guanajuato", 16, new Color(0.55f, 0.95f, 1f), new Vector2(0, 198), new Vector2(480, 28), fuente);
+        tSub.fontStyle = FontStyle.Italic;
+        Outline outSub = tSub.gameObject.AddComponent<Outline>();
+        outSub.effectColor = new Color(0.04f, 0.08f, 0.14f, 0.95f);
+        outSub.effectDistance = new Vector2(1.5f, -1.5f);
+
+        // DIVISOR DORADO
+        CrearPanel(marcoCentral.transform, "Divisor_Dorado", new Color(0.92f, 0.74f, 0.28f, 0.65f), new Vector2(0, 172), new Vector2(380, 2));
+
+        // PLACA DE DIFICULTAD INTERACTIVA
+        GameObject placaDifObj = CrearBotonConSprite(marcoCentral.transform, "Placa_Dificultad", "", new Vector2(0, 142), new Vector2(390, 36), spBotonDorado, fuente, AbrirMenuOpciones);
+        txtPlacaDificultad = CrearTexto(placaDifObj.transform, "Texto_Dificultad", "⚔  DIFICULTAD: [ NORMAL ]  ⚔", 15, Color.white, Vector2.zero, new Vector2(380, 34), fuente);
+        txtPlacaDificultad.fontStyle = FontStyle.Bold;
+        Outline outDif = txtPlacaDificultad.gameObject.AddComponent<Outline>();
+        outDif.effectColor = new Color(0.15f, 0.08f, 0.02f, 0.9f);
+        outDif.effectDistance = new Vector2(1.2f, -1.2f);
+
+        // LOS 5 BOTONES ESTILIZADOS
+        CrearBotonConSprite(marcoCentral.transform, "Boton_IniciarAventura", "▶  INICIAR AVENTURA (HISTORIA)", new Vector2(0, 78), new Vector2(400, 48), spBotonAzul, fuente, ComenzarHistoriaCuatroImagenes);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_JugarDirecto", "⚔  JUGAR DIRECTO AL NIVEL 1", new Vector2(0, 22), new Vector2(400, 46), spBotonVerde, fuente, CargarEscenaJuego);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Opciones", "⚙  AJUSTES Y OPCIONES", new Vector2(0, -34), new Vector2(400, 46), spBotonDorado, fuente, AbrirMenuOpciones);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Controles", "📜  MAPA DE TECLAS Y CONTROLES", new Vector2(0, -90), new Vector2(400, 46), spBotonMarron, fuente, AlternarPanelControles);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Salir", "✕  SALIR DEL JUEGO", new Vector2(0, -146), new Vector2(400, 44), spBotonRojo, fuente, SalirDelJuego);
+
+        // PIE DEL MARCO (CRÉDITOS Y VERSIÓN)
+        Text tCred = CrearTexto(marcoCentral.transform, "Texto_Creditos", "UTNG — Creación de Videojuegos | Santiago Ronaldo Chávez Piñón", 13, new Color(0.85f, 0.82f, 0.78f), new Vector2(0, -222), new Vector2(490, 24), fuente);
+        Outline outCred = tCred.gameObject.AddComponent<Outline>();
+        outCred.effectColor = new Color(0f, 0f, 0f, 0.8f);
+        outCred.effectDistance = new Vector2(1f, -1f);
+
+        Text tVers = CrearTexto(marcoCentral.transform, "Texto_Version", "★ Edición Expandida — San Felipe, Guanajuato ★", 12, new Color(0.95f, 0.78f, 0.35f, 0.90f), new Vector2(0, -246), new Vector2(490, 22), fuente);
+        tVers.fontStyle = FontStyle.Italic;
+
+        // 7. SUBPANEL DE CONTROLES COLONIAL
+        panelControles = new GameObject("Subpanel_Controles");
+        panelControles.transform.SetParent(panelMenuInicio.transform, false);
+        Image imgCtrl = panelControles.AddComponent<Image>();
+        imgCtrl.sprite = spPanel;
+        imgCtrl.type = Image.Type.Sliced;
+        RectTransform rtCtrl = panelControles.GetComponent<RectTransform>();
+        rtCtrl.sizeDelta = new Vector2(640f, 480f);
+        rtCtrl.anchoredPosition = new Vector2(0f, 0f);
+
+        Shadow shadowCtrl = panelControles.AddComponent<Shadow>();
+        shadowCtrl.effectColor = new Color(0f, 0f, 0f, 0.85f);
+        shadowCtrl.effectDistance = new Vector2(5f, -5f);
+
+        Text tCtrlTitle = CrearTexto(panelControles.transform, "Titulo_Controles", "★ CONTROLES DE COMBATE Y AVENTURA ★", 22, new Color(1f, 0.88f, 0.42f), new Vector2(0, 205), new Vector2(580, 36), fuente);
+        tCtrlTitle.fontStyle = FontStyle.Bold;
+        Outline outCtrlT = tCtrlTitle.gameObject.AddComponent<Outline>();
+        outCtrlT.effectColor = new Color(0.18f, 0.10f, 0.02f, 0.95f);
+        outCtrlT.effectDistance = new Vector2(1.5f, -1.5f);
+
+        CrearPanel(panelControles.transform, "Divisor_Controles", new Color(0.92f, 0.74f, 0.28f, 0.60f), new Vector2(0, 182), new Vector2(520, 2));
+
+        string controlesDetalle =
+            "<b>[W, A, S, D]</b> : Moverse en 8 direcciones\n" +
+            "<b>[J] / [Clic Izq]</b> : Atacar con el arma activa (Espada, Flechas, Magia)\n" +
+            "<b>[Q] / [1, 2, 3]</b> : Selector de arma activa (Espada / Arco / Báculo)\n" +
+            "<b>[K] / [Clic Der]</b> : Bloqueo y <b>Contraataque instantáneo (0.20s)</b>\n" +
+            "<b>[ESPACIO]</b> : Rodar / Esquivar con invulnerabilidad temporal\n" +
+            "<b>[L]</b> : Desatar <b>Modo Asalto</b> con la energía al máximo\n" +
+            "<b>[E]</b> : Hablar con habitantes / Leer inscripciones sagradas\n" +
+            "<b>[ESC]</b> : Pausar la partida y abrir Ajustes / Opciones";
+
+        Text tCtrlBody = CrearTexto(panelControles.transform, "Texto_Controles_Detallado", controlesDetalle, 15, new Color(0.95f, 0.93f, 0.88f), new Vector2(0, 35), new Vector2(580, 260), fuente);
+        tCtrlBody.alignment = TextAnchor.MiddleLeft;
+        tCtrlBody.lineSpacing = 1.25f;
+        Outline outCtrlB = tCtrlBody.gameObject.AddComponent<Outline>();
+        outCtrlB.effectColor = new Color(0f, 0f, 0f, 0.8f);
+        outCtrlB.effectDistance = new Vector2(1f, -1f);
+
+        CrearBotonConSprite(panelControles.transform, "Boton_CerrarControles", "ENTENDIDO / VOLVER AL MENÚ", new Vector2(0, -188), new Vector2(360, 44), spBotonDorado, fuente, () => panelControles.SetActive(false));
         panelControles.SetActive(false);
 
-        // 5. Panel Historia 4 Imágenes
-        panelHistoriaCuatroImagenes = CrearPanel(canvasObj.transform, "Panel_Historia4Imagenes", new Color(0.05f, 0.04f, 0.07f, 1f), Vector2.zero, new Vector2(1280, 720));
+        // 8. PANEL HISTORIA 4 IMÁGENES
+        panelHistoriaCuatroImagenes = new GameObject("Panel_Historia4Imagenes");
+        panelHistoriaCuatroImagenes.transform.SetParent(canvasObj.transform, false);
+        Image imgHist = panelHistoriaCuatroImagenes.AddComponent<Image>();
+        imgHist.color = new Color(0.04f, 0.03f, 0.06f, 0.98f);
+        RectTransform rtHist = panelHistoriaCuatroImagenes.GetComponent<RectTransform>();
+        rtHist.anchorMin = Vector2.zero;
+        rtHist.anchorMax = Vector2.one;
+        rtHist.offsetMin = Vector2.zero;
+        rtHist.offsetMax = Vector2.zero;
 
-        GameObject marcoImg = CrearPanel(panelHistoriaCuatroImagenes.transform, "Marco_Imagen", new Color(0f, 0.85f, 1f, 0.8f), new Vector2(0, 85), new Vector2(650, 370));
+        // Marco Imagen
+        GameObject marcoImg = new GameObject("Marco_Imagen");
+        marcoImg.transform.SetParent(panelHistoriaCuatroImagenes.transform, false);
+        Image imgMarcoHist = marcoImg.AddComponent<Image>();
+        imgMarcoHist.sprite = spPanel;
+        imgMarcoHist.type = Image.Type.Sliced;
+        RectTransform rtMarcoImg = marcoImg.GetComponent<RectTransform>();
+        rtMarcoImg.sizeDelta = new Vector2(660f, 380f);
+        rtMarcoImg.anchoredPosition = new Vector2(0f, 90f);
+
         GameObject objRaw = new GameObject("Imagen_Historia_Actual");
         objRaw.transform.SetParent(marcoImg.transform, false);
         imgSlideActual = objRaw.AddComponent<RawImage>();
-        imgSlideActual.rectTransform.sizeDelta = new Vector2(640, 360);
+        RectTransform rtImgRaw = objRaw.GetComponent<RectTransform>();
+        rtImgRaw.sizeDelta = new Vector2(640f, 360f);
+        rtImgRaw.anchoredPosition = Vector2.zero;
 
-        GameObject cajaTextoIntro = CrearPanel(panelHistoriaCuatroImagenes.transform, "Caja_Dialogo_Intro", new Color(0.14f, 0.10f, 0.08f, 0.95f), new Vector2(0, -185), new Vector2(920, 145));
-        txtSlideDialogo = CrearTexto(cajaTextoIntro.transform, "Texto_Dialogo", "", 22, new Color(0.96f, 0.93f, 0.88f), new Vector2(0, 5), new Vector2(870, 115), fuente);
-        txtIndicadorSlide = CrearTexto(panelHistoriaCuatroImagenes.transform, "Texto_Indicador_Slide", "Imagen 1 de 4", 18, new Color(0f, 0.9f, 1f), new Vector2(-240, -295), new Vector2(520, 35), fuente);
+        // Caja Diálogo
+        GameObject cajaTextoIntro = new GameObject("Caja_Dialogo_Intro");
+        cajaTextoIntro.transform.SetParent(panelHistoriaCuatroImagenes.transform, false);
+        Image imgCaja = cajaTextoIntro.AddComponent<Image>();
+        imgCaja.sprite = spPanel;
+        imgCaja.type = Image.Type.Sliced;
+        RectTransform rtCaja = cajaTextoIntro.GetComponent<RectTransform>();
+        rtCaja.sizeDelta = new Vector2(940f, 150f);
+        rtCaja.anchoredPosition = new Vector2(0f, -185f);
 
-        CrearBoton(panelHistoriaCuatroImagenes.transform, "Boton_OmitirHistoria", "OMITIR HISTORIA >>", new Vector2(-420, 300), new Vector2(220, 42), new Color(0.35f, 0.25f, 0.20f), fuente, CargarEscenaJuego);
-        CrearBoton(panelHistoriaCuatroImagenes.transform, "Boton_SiguienteImagen", "SIGUIENTE >>", new Vector2(340, -295), new Vector2(220, 45), new Color(0.15f, 0.55f, 0.68f), fuente, SiguienteImagenHistoria);
+        txtSlideDialogo = CrearTexto(cajaTextoIntro.transform, "Texto_Dialogo", "", 21, new Color(0.96f, 0.94f, 0.90f), new Vector2(0, 5), new Vector2(880, 120), fuente);
+        txtSlideDialogo.alignment = TextAnchor.MiddleLeft;
+
+        txtIndicadorSlide = CrearTexto(panelHistoriaCuatroImagenes.transform, "Texto_Indicador_Slide", "Crónica 1 de 4", 17, new Color(0.55f, 0.95f, 1f), new Vector2(-240, -295), new Vector2(520, 35), fuente);
+
+        CrearBotonConSprite(panelHistoriaCuatroImagenes.transform, "Boton_OmitirHistoria", "OMITIR HISTORIA >>", new Vector2(-420, 305), new Vector2(230, 42), spBotonMarron, fuente, CargarEscenaJuego);
+        CrearBotonConSprite(panelHistoriaCuatroImagenes.transform, "Boton_SiguienteImagen", "SIGUIENTE >>", new Vector2(340, -295), new Vector2(230, 45), spBotonAzul, fuente, SiguienteImagenHistoria);
 
         panelHistoriaCuatroImagenes.SetActive(false);
 
+        // Vincular referencias y listeners
+        BuscarOConectarReferenciasExistentes();
+        VincularBotonesYListeners();
+        ActualizarEtiquetaDificultad();
+
 #if UNITY_EDITOR
-        Undo.RegisterCreatedObjectUndo(canvasObj, "Generar UI Pantalla Inicio");
+        Undo.RegisterCreatedObjectUndo(canvasObj, "Generar UI Pantalla Inicio Colonial");
         EditorUtility.SetDirty(this);
         EditorSceneManager.MarkSceneDirty(gameObject.scene);
 #endif
-        Debug.Log("<color=cyan>[Ecos de San Felipe] ¡UI generada exitosamente en la ventana Hierarchy!</color>");
+        Debug.Log("<color=cyan>[Ecos de San Felipe] ¡Nueva UI Colonial Sacra generada exitosamente en la Hierarchy!</color>");
     }
 
     [ContextMenu("Limpiar UI de la Escena")]
@@ -430,12 +734,307 @@ public class PantallaInicioManager : MonoBehaviour
         imgSlideActual = null;
         txtSlideDialogo = null;
         txtIndicadorSlide = null;
+        fondoAtmosphere = null;
+        txtPlacaDificultad = null;
+        orbesEcosTransforms.Clear();
+        orbesEcosBasePos.Clear();
 
 #if UNITY_EDITOR
         EditorUtility.SetDirty(this);
         EditorSceneManager.MarkSceneDirty(gameObject.scene);
 #endif
         Debug.Log("<color=yellow>[Ecos de San Felipe] UI de Pantalla de Inicio limpiada de la Hierarchy.</color>");
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // GENERADORES PROCEDURALES DE TEXTURAS Y SPRITES COLONIALES
+    // ─────────────────────────────────────────────────────────────────────────
+    public static Texture2D GenerarFondoSanFelipeNocturno(int w = 640, int h = 360)
+    {
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear;
+        tex.wrapMode = TextureWrapMode.Clamp;
+
+        Color[] pixels = new Color[w * h];
+
+        Vector2 lunaPos = new Vector2(w * 0.82f, h * 0.80f);
+        float radioLuna = 18f;
+
+        Vector2 farolIzq = new Vector2(75f, 75f);
+        Vector2 farolDer = new Vector2(w - 75f, 75f);
+
+        for (int y = 0; y < h; y++)
+        {
+            float ny = (float)y / h;
+            for (int x = 0; x < w; x++)
+            {
+                float nx = (float)x / w;
+                Color col;
+
+                // Cielo Nocturno
+                if (ny > 0.16f)
+                {
+                    float tCielo = Mathf.Clamp01((ny - 0.16f) / 0.84f);
+                    col = Color.Lerp(
+                        new Color(0.12f, 0.14f, 0.26f),
+                        new Color(0.03f, 0.04f, 0.10f),
+                        Mathf.Pow(tCielo, 0.75f)
+                    );
+
+                    int hash = (x * 7919 + y * 6271 + (x ^ y) * 104729) & 0x7FFFFFFF;
+                    if (hash % 650 == 0)
+                    {
+                        float brillo = 0.5f + (hash % 100) / 200f;
+                        Color starCol = (hash % 3 == 0) ? new Color(1f, 0.95f, 0.8f, brillo) : new Color(0.8f, 0.9f, 1f, brillo);
+                        col = Color.Lerp(col, starCol, brillo);
+                    }
+                    else if (hash % 3800 == 0)
+                    {
+                        col = Color.Lerp(col, new Color(1f, 1f, 0.9f), 0.95f);
+                    }
+
+                    float distLuna = Vector2.Distance(new Vector2(x, y), lunaPos);
+                    if (distLuna <= radioLuna)
+                    {
+                        float crater = ((x * 13 + y * 17) % 7) / 40f;
+                        col = new Color(0.96f - crater, 0.95f - crater, 0.88f - crater, 1f);
+                    }
+                    else if (distLuna < radioLuna * 2.8f)
+                    {
+                        float tHalo = 1f - (distLuna - radioLuna) / (radioLuna * 1.8f);
+                        Color haloCol = new Color(0.45f, 0.65f, 0.95f, tHalo * 0.35f);
+                        col = Color.Lerp(col, haloCol, tHalo * 0.45f);
+                    }
+                }
+                else
+                {
+                    float tSuelo = ny / 0.16f;
+                    col = Color.Lerp(new Color(0.07f, 0.05f, 0.08f), new Color(0.14f, 0.10f, 0.13f), tSuelo);
+                    if (y % 8 == 0 || (x + (y / 8) * 12) % 24 == 0)
+                    {
+                        col *= 0.85f;
+                    }
+                }
+
+                // Sierra del Fraile lejana
+                float montaniaY = 55f + Mathf.Sin(nx * 5.2f) * 16f + Mathf.Cos(nx * 11.5f) * 8f;
+                if (y < montaniaY && ny >= 0.14f)
+                {
+                    col = Color.Lerp(col, new Color(0.06f, 0.07f, 0.15f), 0.88f);
+                }
+
+                // Parroquia de San Felipe (Torres Mochas)
+                bool esParroquia = false;
+                Color colCantera = new Color(0.14f, 0.10f, 0.13f);
+                Color colDetalle = new Color(0.22f, 0.16f, 0.20f);
+
+                if (x >= 195 && x <= 250 && y >= 45 && y <= 185)
+                {
+                    esParroquia = true;
+                    if (x >= 210 && x <= 235 && y >= 125 && y <= 165)
+                        colCantera = new Color(0.05f, 0.04f, 0.06f);
+                    if (y >= 180 || y == 120 || y == 75)
+                        colCantera = colDetalle;
+                }
+                else if (x >= 390 && x <= 445 && y >= 45 && y <= 185)
+                {
+                    esParroquia = true;
+                    if (x >= 405 && x <= 430 && y >= 125 && y <= 165)
+                        colCantera = new Color(0.05f, 0.04f, 0.06f);
+                    if (y >= 180 || y == 120 || y == 75)
+                        colCantera = colDetalle;
+                }
+                else if (x > 250 && x < 390 && y >= 45 && y <= 155)
+                {
+                    float distCentroX = Mathf.Abs(x - 320);
+                    float frontonY = 155f - (distCentroX / 70f) * 25f;
+                    if (y <= frontonY)
+                    {
+                        esParroquia = true;
+                        float distRoseton = Vector2.Distance(new Vector2(x, y), new Vector2(320, 115));
+                        if (distRoseton <= 15f)
+                        {
+                            float tRos = distRoseton / 15f;
+                            colCantera = Color.Lerp(new Color(0.15f, 0.90f, 1f, 0.95f), new Color(0.05f, 0.35f, 0.55f), tRos);
+                        }
+                        else if (x >= 295 && x <= 345 && y <= 90)
+                        {
+                            colCantera = (distCentroX < 20 && y < 80) ? new Color(0.04f, 0.03f, 0.05f) : colDetalle;
+                        }
+                        else if (y == 135 || y == 95)
+                        {
+                            colCantera = colDetalle;
+                        }
+                    }
+                }
+                else if (Mathf.Abs(x - 320) <= 2 && y >= 155 && y <= 170)
+                {
+                    esParroquia = true;
+                    colCantera = colDetalle;
+                }
+                else if (y >= 163 && y <= 166 && Mathf.Abs(x - 320) <= 7)
+                {
+                    esParroquia = true;
+                    colCantera = colDetalle;
+                }
+
+                if (esParroquia)
+                {
+                    col = colCantera;
+                }
+
+                // Halos de Faroles
+                float dFarol1 = Vector2.Distance(new Vector2(x, y), farolIzq);
+                if (dFarol1 < 60f)
+                {
+                    float tFarol = 1f - (dFarol1 / 60f);
+                    col = Color.Lerp(col, new Color(1f, 0.72f, 0.22f), tFarol * 0.38f);
+                }
+                float dFarol2 = Vector2.Distance(new Vector2(x, y), farolDer);
+                if (dFarol2 < 60f)
+                {
+                    float tFarol = 1f - (dFarol2 / 60f);
+                    col = Color.Lerp(col, new Color(1f, 0.72f, 0.22f), tFarol * 0.38f);
+                }
+
+                if ((Mathf.Abs(x - farolIzq.x) <= 2 || Mathf.Abs(x - farolDer.x) <= 2) && y >= 25 && y <= 80)
+                {
+                    col = new Color(0.05f, 0.04f, 0.05f);
+                }
+                if (dFarol1 <= 4f || dFarol2 <= 4f)
+                {
+                    col = new Color(1f, 0.90f, 0.45f);
+                }
+
+                // Bruma mística
+                if (y >= 35 && y <= 80)
+                {
+                    float tBruma = Mathf.Sin((y - 35) / 45f * Mathf.PI);
+                    float ondulacion = Mathf.Sin(x * 0.035f + y * 0.05f) * 0.5f + 0.5f;
+                    Color brumaCol = new Color(0.10f, 0.50f, 0.75f, 0.18f * tBruma * ondulacion);
+                    col = Color.Lerp(col, brumaCol, tBruma * 0.22f);
+                }
+
+                pixels[y * w + x] = col;
+            }
+        }
+
+        tex.SetPixels(pixels);
+        tex.Apply();
+        return tex;
+    }
+
+    public static Sprite GenerarSpriteBotonColonial(Color baseColor, Color bordeColor, int w = 64, int h = 32)
+    {
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        Color[] px = new Color[w * h];
+
+        for (int y = 0; y < h; y++)
+        {
+            float ny = (float)y / (h - 1);
+            for (int x = 0; x < w; x++)
+            {
+                bool esBordeExt = (x == 0 || x == w - 1 || y == 0 || y == h - 1);
+                bool esBordeInt = (x == 1 || x == w - 2 || y == 1 || y == h - 2);
+
+                if (esBordeExt)
+                {
+                    if ((x == 0 || x == w - 1) && (y == 0 || y == h - 1))
+                        px[y * w + x] = Color.clear;
+                    else
+                        px[y * w + x] = bordeColor;
+                }
+                else if (esBordeInt)
+                {
+                    px[y * w + x] = Color.Lerp(bordeColor, baseColor, 0.45f);
+                }
+                else
+                {
+                    Color colGrad = Color.Lerp(baseColor * 0.78f, baseColor * 1.22f, ny);
+                    if (y == h - 3) colGrad = Color.Lerp(colGrad, Color.white, 0.28f);
+                    px[y * w + x] = colGrad;
+                }
+            }
+        }
+        tex.SetPixels(px);
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, new Vector4(6, 6, 6, 6));
+    }
+
+    public static Sprite GenerarSpritePanelColonial(int w = 64, int h = 64)
+    {
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        Color[] px = new Color[w * h];
+        Color bordeOroExt = new Color(0.92f, 0.74f, 0.28f, 0.95f);
+        Color bordeOroInt = new Color(0.68f, 0.52f, 0.18f, 0.85f);
+        Color fondoOscuro = new Color(0.06f, 0.05f, 0.08f, 0.94f);
+
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int distBorde = Mathf.Min(Mathf.Min(x, w - 1 - x), Mathf.Min(y, h - 1 - y));
+                if (distBorde == 0)
+                {
+                    if ((x == 0 || x == w - 1) && (y == 0 || y == h - 1))
+                        px[y * w + x] = Color.clear;
+                    else
+                        px[y * w + x] = bordeOroExt;
+                }
+                else if (distBorde == 1)
+                {
+                    px[y * w + x] = bordeOroExt;
+                }
+                else if (distBorde == 2)
+                {
+                    px[y * w + x] = new Color(0.03f, 0.02f, 0.04f, 0.95f);
+                }
+                else if (distBorde == 3)
+                {
+                    px[y * w + x] = bordeOroInt;
+                }
+                else
+                {
+                    px[y * w + x] = fondoOscuro;
+                }
+            }
+        }
+        tex.SetPixels(px);
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, new Vector4(10, 10, 10, 10));
+    }
+
+    public static Sprite GenerarSpriteOrbe(Color col, int size = 32)
+    {
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Bilinear;
+        Color[] px = new Color[size * size];
+        Vector2 centro = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        float radio = size * 0.45f;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float d = Vector2.Distance(new Vector2(x, y), centro);
+                if (d <= radio)
+                {
+                    float t = d / radio;
+                    Color c = Color.Lerp(Color.white, col, t * t);
+                    c.a = Mathf.Clamp01(1f - t * 0.85f);
+                    px[y * size + x] = c;
+                }
+                else
+                {
+                    px[y * size + x] = Color.clear;
+                }
+            }
+        }
+        tex.SetPixels(px);
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
     }
 
     private Texture2D GenerarIlustracionHistoria(int indice)
@@ -520,18 +1119,48 @@ public class PantallaInicioManager : MonoBehaviour
         return t;
     }
 
-    private void CrearBoton(Transform parent, string nombre, string etiqueta, Vector2 pos, Vector2 size, Color colorBtn, Font fuente, UnityEngine.Events.UnityAction accion)
+    private GameObject CrearBotonConSprite(Transform parent, string nombre, string etiqueta, Vector2 pos, Vector2 size, Sprite spBoton, Font fuente, UnityEngine.Events.UnityAction accion)
     {
-        GameObject btnObj = CrearPanel(parent, nombre, colorBtn, pos, size);
+        GameObject btnObj = new GameObject(nombre);
+        btnObj.transform.SetParent(parent, false);
+
+        Image img = btnObj.AddComponent<Image>();
+        img.sprite = spBoton;
+        img.type = Image.Type.Sliced;
+
         Button btn = btnObj.AddComponent<Button>();
+        ColorBlock cb = btn.colors;
+        cb.normalColor = Color.white;
+        cb.highlightedColor = new Color(1.18f, 1.15f, 1.05f, 1f);
+        cb.pressedColor = new Color(0.82f, 0.80f, 0.75f, 1f);
+        btn.colors = cb;
+
         btn.onClick.AddListener(ReproducirSonidoClick);
         btn.onClick.AddListener(accion);
-        CrearTexto(btnObj.transform, "Texto", etiqueta, 20, Color.white, Vector2.zero, size, fuente);
+
+        RectTransform rt = btnObj.GetComponent<RectTransform>();
+        rt.anchoredPosition = pos;
+        rt.sizeDelta = size;
+
+        Shadow sh = btnObj.AddComponent<Shadow>();
+        sh.effectColor = new Color(0f, 0f, 0f, 0.65f);
+        sh.effectDistance = new Vector2(2f, -2f);
+
+        if (!string.IsNullOrEmpty(etiqueta))
+        {
+            Text txt = CrearTexto(btnObj.transform, "Texto", etiqueta, 17, Color.white, Vector2.zero, size, fuente);
+            txt.fontStyle = FontStyle.Bold;
+            Outline outTxt = txt.gameObject.AddComponent<Outline>();
+            outTxt.effectColor = new Color(0f, 0f, 0f, 0.85f);
+            outTxt.effectDistance = new Vector2(1.2f, -1.2f);
+        }
+
+        return btnObj;
     }
 
-    // =========================================================================
-    // SÍNTESIS PROCEDURAL DE MÚSICA Y SFX (CALIDAD RPG FANTASY)
-    // =========================================================================
+    // ─────────────────────────────────────────────────────────────────────────
+    // SÍNTESIS PROCEDURAL DE MÚSICA Y SFX
+    // ─────────────────────────────────────────────────────────────────────────
     private AudioClip GenerarMusicaMenuProcedural()
     {
         int sampleRate = 44100;
@@ -539,7 +1168,6 @@ public class PantallaInicioManager : MonoBehaviour
         int totalSamples = Mathf.RoundToInt(sampleRate * duracion);
         float[] samples = new float[totalSamples];
 
-        // Progresión ambiental en Re menor: Dm -> Bb -> C -> Am
         float[] notasMelodia = {
             293.66f, 349.23f, 440.00f, 587.33f,
             466.16f, 440.00f, 349.23f, 293.66f,
@@ -564,13 +1192,11 @@ public class PantallaInicioManager : MonoBehaviour
             float tGlobal = i / (float)sampleRate;
             float tNota = (i % samplesPorNota) / (float)sampleRate;
 
-            // Melodía principal tipo campana / arpa
             float env = Mathf.Exp(-2.5f * tNota);
             float m = (Mathf.Sin(2f * Mathf.PI * freqM * tNota) + 
                        0.35f * Mathf.Sin(4f * Mathf.PI * freqM * tNota) + 
                        0.12f * Mathf.Sin(6f * Mathf.PI * freqM * tNota)) * env;
 
-            // Eco armónico místico ("Ecos")
             if (tNota > 0.22f)
             {
                 float tEcho = tNota - 0.22f;
@@ -578,7 +1204,6 @@ public class PantallaInicioManager : MonoBehaviour
                 m += 0.25f * Mathf.Sin(2f * Mathf.PI * (freqM * 1.5f) * tEcho) * echoEnv;
             }
 
-            // Colchón ambiental de bajo
             float b = 0.2f * Mathf.Sin(2f * Mathf.PI * freqB * tGlobal) + 
                       0.1f * Mathf.Sin(2f * Mathf.PI * (freqB * 1.5f) * tGlobal);
 
@@ -628,15 +1253,15 @@ public class PantallaInicioManagerEditor : Editor
 
         if (tieneUI)
         {
-            EditorGUILayout.HelpBox("✅ Los elementos de la UI (Canvas, Paneles, Botones) están presentes en la Hierarchy y visibles en Scene.", MessageType.Info);
+            EditorGUILayout.HelpBox("✅ Los elementos de la UI (Canvas, Fondo Panorámico, Marco Central, 5 Botones) están presentes en la Hierarchy.", MessageType.Info);
         }
         else
         {
-            EditorGUILayout.HelpBox("⚠️ La UI no está en Hierarchy (solo se generaría al dar Play). Haz clic en el botón de abajo para generarla permanentemente.", MessageType.Warning);
+            EditorGUILayout.HelpBox("⚠️ La UI no está en Hierarchy. Haz clic en el botón de abajo para generarla con el nuevo diseño colonial.", MessageType.Warning);
         }
 
         GUI.backgroundColor = new Color(0.2f, 0.85f, 1f);
-        if (GUILayout.Button(tieneUI ? "🔄 Regenerar / Actualizar UI en Hierarchy" : "🎨 Generar Todos los Elementos de UI en Hierarchy", GUILayout.Height(40)))
+        if (GUILayout.Button(tieneUI ? "🔄 Regenerar / Actualizar UI Colonial en Hierarchy" : "🎨 Generar UI Colonial en Hierarchy", GUILayout.Height(40)))
         {
             manager.GenerarUIEnEscena();
         }
@@ -676,7 +1301,30 @@ public static class PantallaInicioAutoSetup
         Scene activeScene = EditorSceneManager.GetActiveScene();
         if (activeScene.name == "PantallaInicio")
         {
-            if (GameObject.Find("Canvas_PantallaInicio") == null)
+            GameObject canvas = GameObject.Find("Canvas_PantallaInicio");
+            bool necesitaRegenerar = false;
+
+            if (canvas != null)
+            {
+                Transform fondo = canvas.transform.Find("Fondo_SanFelipe_Atmosphere");
+                Button[] btns = canvas.GetComponentsInChildren<Button>(true);
+                bool tieneOpciones = false;
+                foreach (var b in btns)
+                {
+                    if (b.gameObject.name == "Boton_Opciones") { tieneOpciones = true; break; }
+                }
+
+                if (fondo == null || !tieneOpciones)
+                {
+                    necesitaRegenerar = true;
+                }
+            }
+            else
+            {
+                necesitaRegenerar = true;
+            }
+
+            if (necesitaRegenerar)
             {
                 PantallaInicioManager mgr = Object.FindAnyObjectByType<PantallaInicioManager>();
                 if (mgr != null)
