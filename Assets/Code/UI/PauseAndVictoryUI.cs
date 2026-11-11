@@ -16,7 +16,6 @@ public class PauseAndVictoryUI : MonoBehaviour
 
     [Header("Menú de Pausa In-Game")]
     public bool menuPausaAbierto = false;
-    private bool estabaOpcionesAbierto = false;
 
     [Header("Pantalla de Victoria de Nivel")]
     public bool mostrarVictoriaNivel = false;
