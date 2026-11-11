@@ -5,6 +5,8 @@ using UnityEngine;
 public class BlackCloverDemonRenderer : MonoBehaviour
 {
     public enum DemonType { SombraLanzadora, SombraErrante, SombraGuardianaJefe }
+    private static Sprite[] spritesIdleJefe;
+    private static Sprite[] spritesAtaqueJefe;
 
     [Header("Imagen de tu Demonio")]
     public Texture2D customDemonImage;
@@ -67,6 +69,13 @@ public class BlackCloverDemonRenderer : MonoBehaviour
 
         if (tipoDemonio == DemonType.SombraGuardianaJefe)
         {
+            if (spritesIdleJefe != null && spritesAtaqueJefe != null)
+            {
+                animatedFrames = spritesIdleJefe;
+                attackFrames = spritesAtaqueJefe;
+                if (sr != null) sr.sprite = animatedFrames[0];
+                return;
+            }
             GenerarSpriteDemonioImponente();
             return;
         }
@@ -140,6 +149,8 @@ public class BlackCloverDemonRenderer : MonoBehaviour
             CrearFrameDemonioImponente(size, pixelsPerUnit, 1, true, false),
             CrearFrameDemonioImponente(size, pixelsPerUnit, 4, false, true)
         };
+        spritesIdleJefe = animatedFrames;
+        spritesAtaqueJefe = attackFrames;
         animTimer = 0f;
         if (sr != null) sr.sprite = animatedFrames[0];
     }
