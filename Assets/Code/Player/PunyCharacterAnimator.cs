@@ -123,7 +123,7 @@ public class PunyCharacterAnimator : MonoBehaviour
 
             if (player.currentState == PlayerMovement.CombatState.Attack)
             {
-                // Reproduce los cuadros del arma equipada (espada 4-7, arco 8-11, báculo 12-14) sincronizados con su duración
+                // Reproduce los cuadros del arma equipada (espada 4-7, arco 8-12, báculo 13-15) sincronizados con su duración
                 WeaponDefinition arma = player.ArmaActual;
                 int cuadros = Mathf.Max(1, arma.cuadros);
                 animTimer += Time.deltaTime;
