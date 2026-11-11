@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -205,7 +205,11 @@ public class InventoryHUD : MonoBehaviour
         float slotSize = Mathf.Min(UITheme.Px(44f), (innerW - slotGap * 3f) / 4f);
         float gapY = UITheme.Px(5f);
 
-        float height = pad * 2f + row1H + gapY + ecoBoxH + gapY + bagTitleH + UITheme.Px(4f) + slotSize;
+        // Solo mostrar la Mochila de Trueque en el Nivel 2 (Mercado)
+        bool esMercado = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Nivel2_Mercado";
+        float height = esMercado
+            ? pad * 2f + row1H + gapY + ecoBoxH + gapY + bagTitleH + UITheme.Px(4f) + slotSize
+            : pad * 2f + row1H + gapY + ecoBoxH + UITheme.Px(4f); // Sin mochila fuera del Mercado
 
         Rect rect = new Rect(Screen.width - width - safeMarginRight, safeMarginY, width, height);
         UITheme.Panel(rect, UITheme.BordeDorado, 1.5f);
@@ -229,41 +233,45 @@ public class InventoryHUD : MonoBehaviour
         DibujarCasillaEco(new Rect(rect.x + pad + ecoBoxW + ecoGap, ecosY, ecoBoxW, ecoBoxH), 2, "2. Tradición", eco2);
         DibujarCasillaEco(new Rect(rect.x + pad + (ecoBoxW + ecoGap) * 2f, ecosY, ecoBoxW, ecoBoxH), 3, "3. Memoria", eco3);
 
-        // Fila 3: Encabezado de Mochila Gráfica
-        float bagTitleY = ecosY + ecoBoxH + gapY;
-        GUI.Label(new Rect(rect.x + pad, bagTitleY, innerW, bagTitleH),
-            "🎒 <b>MOCHILA DE OBJETOS CLAVE:</b>",
-            UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
+        if (esMercado)
+        {
+            // Fila 3: Encabezado de Mochila Gráfica
+            float bagTitleY = ecosY + ecoBoxH + gapY;
+            GUI.Label(new Rect(rect.x + pad, bagTitleY, innerW, bagTitleH),
+                "🎒 <b>MOCHILA DE OBJETOS CLAVE:</b>",
+                UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
-        // Fila 4: 4 Ranuras cuadradas tipo Zelda distribuidas equitativamente dentro de innerW
-        float eqGap = (innerW - slotSize * 4f) / 3f;
-        float slotY = bagTitleY + bagTitleH + UITheme.Px(4f);
+            // Fila 4: 4 Ranuras cuadradas tipo Zelda distribuidas equitativamente dentro de innerW
+            float eqGap = (innerW - slotSize * 4f) / 3f;
+            float slotY = bagTitleY + bagTitleH + UITheme.Px(4f);
 
-        InventoryManager inv = InventoryManager.Instance;
-        bool hasCopper = inv != null && inv.HasItem(InventoryManager.ITEM_COPPER_BAR);
-        bool hasMithril = inv != null && inv.HasItem(InventoryManager.ITEM_MITHRIL_BAR);
-        bool hasGreenGem = inv != null && inv.HasItem(InventoryManager.ITEM_GREEN_GEM);
-        bool hasGoldKey = (inv != null && inv.HasItem(InventoryManager.ITEM_GOLD_KEY)) || (inv != null && inv.goldKeysCount > 0);
+            InventoryManager inv = InventoryManager.Instance;
+            bool hasCopper = inv != null && inv.HasItem(InventoryManager.ITEM_COPPER_BAR);
+            bool hasMithril = inv != null && inv.HasItem(InventoryManager.ITEM_MITHRIL_BAR);
+            bool hasGreenGem = inv != null && inv.HasItem(InventoryManager.ITEM_GREEN_GEM);
+            bool hasGoldKey = (inv != null && inv.HasItem(InventoryManager.ITEM_GOLD_KEY)) || (inv != null && inv.goldKeysCount > 0);
 
-        // Slot 1: BarCopper.png o BarMithril.png
-        Texture2D t1 = hasMithril ? texMithril : texCopper;
-        string lbl1 = hasMithril ? "Lingote Templado" : (hasCopper ? "Lingote de Cobre" : "Vacío: Lingote");
-        string sub1 = hasMithril ? "Templado" : "Cobre";
-        DibujarSlotMochila(new Rect(rect.x + pad, slotY, slotSize, slotSize), t1, hasCopper || hasMithril, lbl1, sub1);
+            // Slot 1: BarCopper.png o BarMithril.png
+            Texture2D t1 = hasMithril ? texMithril : texCopper;
+            string lbl1 = hasMithril ? "Lingote Templado" : (hasCopper ? "Lingote de Cobre" : "Vacío: Lingote");
+            string sub1 = hasMithril ? "Templado" : "Cobre";
+            DibujarSlotMochila(new Rect(rect.x + pad, slotY, slotSize, slotSize), t1, hasCopper || hasMithril, lbl1, sub1);
 
-        // Slot 2: GemGreen.png
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap), slotY, slotSize, slotSize), texGreenGem, hasGreenGem, "Esmeralda de San Felipe", "Esmeralda");
+            // Slot 2: GemGreen.png
+            DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap), slotY, slotSize, slotSize), texGreenGem, hasGreenGem, "Esmeralda de San Felipe", "Esmeralda");
 
-        // Slot 3: GoldKey.png
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 2f, slotY, slotSize, slotSize), texGoldKey, hasGoldKey, "Llave Dorada del Gremio", "Llave Oro");
+            // Slot 3: GoldKey.png
+            DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 2f, slotY, slotSize, slotSize), texGoldKey, hasGoldKey, "Llave Dorada del Gremio", "Llave Oro");
 
-        // Slot 4: BarGold.png o Heart.png
-        bool tieneReservaOro = oro > 0;
-        Texture2D t4 = texGoldBar != null ? texGoldBar : texHeart;
-        string lbl4 = $"Reserva: {oro} Oro / Salud";
-        DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 3f, slotY, slotSize, slotSize), t4, tieneReservaOro, lbl4, $"{oro} Oro");
+            // Slot 4: BarGold.png o Heart.png
+            bool tieneReservaOro = oro > 0;
+            Texture2D t4 = texGoldBar != null ? texGoldBar : texHeart;
+            string lbl4 = $"Reserva: {oro} Oro / Salud";
+            DibujarSlotMochila(new Rect(rect.x + pad + (slotSize + eqGap) * 3f, slotY, slotSize, slotSize), t4, tieneReservaOro, lbl4, $"{oro} Oro");
 
-        // 5. Notificación flotante de trueque (centro superior)
+        }
+
+                // 5. Notificación flotante de trueque (centro superior)
         if (notificacionTimer > 0f && !string.IsNullOrEmpty(notificacionTexto))
         {
             float notifW = Mathf.Clamp(UITheme.Px(560f), 400f, Screen.width - safeMarginRight * 2f);

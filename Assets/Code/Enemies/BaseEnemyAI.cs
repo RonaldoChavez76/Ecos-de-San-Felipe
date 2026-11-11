@@ -59,6 +59,17 @@ public abstract class BaseEnemyAI : MonoBehaviour
         if (sr != null) baseColor = sr.color;
         sheetAnimator = GetComponent<EnemySpriteSheetAnimator>();
 
+        // Balanceo dinámico según la dificultad elegida
+        if (SaveStateManager.Instance != null)
+        {
+            maxHealth *= SaveStateManager.Instance.MultiplicadorSaludEnemigo;
+            moveSpeed *= SaveStateManager.Instance.MultiplicadorVelocidadEnemigo;
+            if (SaveStateManager.Instance.dificultadActual == SaveStateManager.GameDifficulty.Dificil)
+            {
+                attackCooldown *= 0.80f;
+            }
+        }
+
         healthComp = GetComponent<HealthComponent>();
         if (healthComp == null)
         {
@@ -266,6 +277,18 @@ public abstract class BaseEnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Recibe daño de contraataque directo (sin knockback). Llamado por ProjectileBehaviour
+    /// cuando Ronan devuelve un proyectil reflectable al enemigo que lo lanzó.
+    /// </summary>
+    public virtual void TakeCounterDamage(float dmg)
+    {
+        if (healthComp != null)
+            healthComp.TakeDamage(dmg, Vector2.zero, 6f, null);
+        else
+            HandleDamaged(dmg, Vector2.zero);
+    }
+
     protected virtual void HandleDamaged(float dmg, Vector2 knockbackDir)
     {
         if (currentState == AIState.Dead) return;
@@ -333,14 +356,40 @@ public abstract class BaseEnemyAI : MonoBehaviour
         stateTimer = 0f;
     }
 
-    protected GameObject SpawnReflectableProjectile(Vector2 direction, float speed, float damage, Color outerColor, Color coreColor, float scale = 0.52f)
+    protected GameObject SpawnReflectableProjectile(
+        Vector2 direction,
+        float speed,
+        float damage,
+        Color outerColor,
+        Color coreColor,
+        float scale = 0.52f,
+        ProjectileBehaviour.ProjectileType projType = ProjectileBehaviour.ProjectileType.Fireball_Curse)
     {
         GameObject proj = new GameObject("Proyectil_Enemigo");
         proj.transform.position = transform.position + (Vector3)(direction.normalized * 0.45f);
         proj.transform.localScale = new Vector3(scale, scale, 1f);
 
         SpriteRenderer projSr = proj.AddComponent<SpriteRenderer>();
-        projSr.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(outerColor, coreColor);
+        Sprite spriteBase;
+        switch (projType)
+        {
+            case ProjectileBehaviour.ProjectileType.Abyssal_Orb:
+                spriteBase = ProjectileBehaviour.ObtenerSpriteOrbeAbisal();
+                break;
+            case ProjectileBehaviour.ProjectileType.Shadow_Arrow:
+                spriteBase = ProjectileBehaviour.ObtenerSpriteFlechaSombra();
+                break;
+            case ProjectileBehaviour.ProjectileType.Spore_Ball:
+                spriteBase = ProjectileBehaviour.ObtenerSpriteEsporaVeneno();
+                break;
+            case ProjectileBehaviour.ProjectileType.Boss_Mega_Orb:
+                spriteBase = ProjectileBehaviour.ObtenerSpriteMegaEsfera();
+                break;
+            default:
+                spriteBase = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(outerColor, coreColor);
+                break;
+        }
+        projSr.sprite = spriteBase;
         projSr.sortingOrder = 15;
 
         GameObject halo = new GameObject("Halo_Fuego");
@@ -348,17 +397,18 @@ public abstract class BaseEnemyAI : MonoBehaviour
         halo.transform.localPosition = Vector3.zero;
         halo.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
         SpriteRenderer haloSr = halo.AddComponent<SpriteRenderer>();
-        haloSr.sprite = ProjectileBehaviour.ObtenerSpriteBolaDeFuegoSombra(new Color(outerColor.r, outerColor.g, outerColor.b, 0.75f), coreColor);
+        haloSr.sprite = spriteBase;
+        haloSr.color = new Color(outerColor.r, outerColor.g, outerColor.b, 0.75f);
         haloSr.sortingOrder = 16;
 
         CircleCollider2D col = proj.AddComponent<CircleCollider2D>();
         col.isTrigger = true;
-        col.radius = 0.40f;
+        col.radius = projType == ProjectileBehaviour.ProjectileType.Boss_Mega_Orb ? 0.70f : 0.40f;
 
         ProjectileBehaviour pb = proj.AddComponent<ProjectileBehaviour>();
         pb.speed = speed;
         pb.haloFuego = halo.transform;
-        pb.Launch(direction.normalized, gameObject, damage);
+        pb.Launch(direction.normalized, gameObject, damage, projType);
         return proj;
     }
 
