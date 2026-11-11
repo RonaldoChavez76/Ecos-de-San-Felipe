@@ -69,10 +69,7 @@ public class CerroDelFraileBuilder : MonoBehaviour
             am.AddComponent<AudioManager>();
         }
 
-        if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.currentZone = LevelManager.ZoneId.CerroDelFraile;
-        }
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.CerroDelFraile;
 
         // 2. Asegurar a Ronan (Player) al pie del sendero ANTES del puente y del letrero
         GameObject playerObj = MercadoBuilder.AsegurarPlayer(new Vector2(0f, -40.0f));
@@ -110,6 +107,8 @@ public class CerroDelFraileBuilder : MonoBehaviour
 
         GameObject root = new GameObject("Zona_Cerro_Del_Fraile_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
+        CheckpointTrigger.Crear("Checkpoint_Campamento_Peregrinos", new Vector2(-10f, -4f), LevelManager.ZoneId.CerroDelFraile, root.transform);
+        CheckpointTrigger.Crear("Checkpoint_Mirador_Cumbre", new Vector2(0f, 15f), LevelManager.ZoneId.CerroDelFraile, root.transform);
         GameObject marca = new GameObject("Marca_Cerro_V6");
         marca.transform.SetParent(root.transform);
 

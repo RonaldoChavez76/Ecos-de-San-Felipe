@@ -39,11 +39,14 @@ public class SanFelipeDemoBuilder : MonoBehaviour
 
     void Start()
     {
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.ParroquiaExterior;
+
         // 1. Buscar a Ronan
         PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
         if (player != null)
         {
             playerTransform = player.transform;
+            player.transform.position = new Vector2(0f, -8f);
             if (player.GetComponent<Collider2D>() == null)
             {
                 BoxCollider2D col = player.gameObject.AddComponent<BoxCollider2D>();

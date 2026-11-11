@@ -98,7 +98,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     private IEnumerator IniciarFase2Escudo()
     {
         // Corromper 2 sellos aleatorios de la Cruz Azul
-        BlueCrossSealNode[] sellos = FindObjectsByType<BlueCrossSealNode>(FindObjectsSortMode.None);
+        BlueCrossSealNode[] sellos = FindObjectsByType<BlueCrossSealNode>();
         List<BlueCrossSealNode> disponibles = new List<BlueCrossSealNode>(sellos);
         int corrompidos = 0;
         while (corrompidos < 2 && disponibles.Count > 0)
@@ -120,7 +120,7 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     private IEnumerator IniciarFase3Berserker()
     {
         // Corromper todos los sellos restantes
-        foreach (BlueCrossSealNode s in FindObjectsByType<BlueCrossSealNode>(FindObjectsSortMode.None))
+        foreach (BlueCrossSealNode s in FindObjectsByType<BlueCrossSealNode>())
             if (!s.purificado) s.Corromper();
 
         while (currentState != AIState.Dead)

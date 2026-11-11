@@ -12,6 +12,8 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
 
     public static GameObject ConstruirElementosExteriorParroquia(Transform parentRoot = null)
     {
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.ParroquiaExterior;
+
         string[] nombresPrevios = { "Zona_Parroquia_Exterior_Interactivos", "Parroquia_Exterior_Elementos" };
         foreach (string nombrePrevio in nombresPrevios)
         {
@@ -30,6 +32,7 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
 
         GameObject root = new GameObject("Zona_Parroquia_Exterior_Interactivos");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
+        CheckpointTrigger.Crear("Checkpoint_Atrio_Parroquia", new Vector2(0f, 0f), LevelManager.ZoneId.ParroquiaExterior, root.transform);
 
         // 1. PUERTA PRINCIPAL DE ENTRADA AL INTERIOR DE LA PARROQUIA (CAMBIO A ESCENA "ParroquiaInterior")
         GameObject puertaParroquia = CrearPortalTransicionEscena(
@@ -38,7 +41,7 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
             new Vector2(2.4f, 1.5f),
             "ParroquiaInterior",
             LevelManager.ZoneId.ParroquiaInterior,
-            new Vector2(0f, -14.0f),
+            new Vector2(0f, -15.0f),
             new Color(1f, 0.92f, 0.42f, 0.85f),
             root.transform);
 

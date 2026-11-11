@@ -119,6 +119,36 @@ public class ZoneWaveSpawner : MonoBehaviour
         StartCoroutine(RutinaOleadas());
     }
 
+    public static void ReiniciarEncuentrosDeEscena()
+    {
+        ZoneWaveSpawner[] spawners = FindObjectsByType<ZoneWaveSpawner>(FindObjectsInactive.Include);
+        foreach (ZoneWaveSpawner spawner in spawners)
+        {
+            spawner.ReiniciarEncuentro();
+        }
+    }
+
+    private void ReiniciarEncuentro()
+    {
+        StopAllCoroutines();
+        foreach (GameObject enemy in activeEnemies)
+        {
+            if (enemy != null) Destroy(enemy);
+        }
+
+        activeEnemies.Clear();
+        encounterStarted = false;
+        encounterCompleted = false;
+        currentWaveIndex = -1;
+        bannerMessage = "";
+        bannerTimer = 0f;
+        playerTransform = null;
+
+        if (HordaActivaEnEscena == this) HordaActivaEnEscena = null;
+        if (barrierToDisableOnClear != null) barrierToDisableOnClear.SetActive(true);
+        if (rewardToEnableOnClear != null) rewardToEnableOnClear.SetActive(false);
+    }
+
     private IEnumerator RutinaOleadas()
     {
         for (int w = 0; w < waves.Count; w++)

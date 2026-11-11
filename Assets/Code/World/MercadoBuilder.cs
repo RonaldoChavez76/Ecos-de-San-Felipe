@@ -69,10 +69,7 @@ public class MercadoBuilder : MonoBehaviour
             am.AddComponent<AudioManager>();
         }
 
-        if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.currentZone = LevelManager.ZoneId.Mercado;
-        }
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.Mercado;
 
         // 2. Asegurar a Ronan (Player) en la entrada sur del callejón
         GameObject playerObj = AsegurarPlayer(new Vector2(0f, -32f));
@@ -154,6 +151,8 @@ public class MercadoBuilder : MonoBehaviour
 
         GameObject root = new GameObject("Zona_Mercado_Municipal_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
+        CheckpointTrigger.Crear("Checkpoint_Plaza_Trueque", new Vector2(0f, 0f), LevelManager.ZoneId.Mercado, root.transform);
+        CheckpointTrigger.Crear("Checkpoint_Santuario_Gremial", new Vector2(0f, 20f), LevelManager.ZoneId.Mercado, root.transform);
         GameObject marca = new GameObject("Marca_Mercado_V5");
         marca.transform.SetParent(root.transform);
 

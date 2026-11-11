@@ -49,10 +49,7 @@ public class ParroquiaInteriorBuilder : MonoBehaviour
         InventoryHUD.EnsureInstance();
         PauseAndVictoryUI.EnsureInstance();
 
-        if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.currentZone = LevelManager.ZoneId.ParroquiaInterior;
-        }
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.ParroquiaInterior;
 
         ConstruirInteriorParroquia();
 
@@ -90,6 +87,7 @@ public class ParroquiaInteriorBuilder : MonoBehaviour
 
         GameObject root = new GameObject("Zona_Parroquia_Interior_Detallada");
         if (parentRoot != null) root.transform.SetParent(parentRoot);
+        CheckpointTrigger.Crear("Checkpoint_Parroquia_Interior", new Vector2(0f, -15f), LevelManager.ZoneId.ParroquiaInterior, root.transform);
         GameObject marca = new GameObject("Marca_Parroquia_Interior_V4");
         marca.transform.SetParent(root.transform);
 

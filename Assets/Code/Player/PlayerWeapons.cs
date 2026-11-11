@@ -6,8 +6,8 @@ using UnityEngine;
 public enum WeaponType
 {
     Sword,  // Cuerpo a cuerpo   — columnas 4-7  (4 cuadros)
-    Bow,    // A distancia       — columnas 8-11 (4 cuadros)
-    Staff   // Mágica a distancia — columnas 12-14 (3 cuadros)
+    Bow,    // A distancia       — columnas 8-12 (5 cuadros)
+    Staff   // Mágica a distancia — columnas 13-15 (3 cuadros)
 }
 
 /// <summary>
@@ -68,7 +68,7 @@ public class WeaponDefinition
                 tipo = WeaponType.Bow,
                 descripcion = "Flecha a distancia, daño moderado. Consume 1 flecha.",
                 desbloqueada = false, // Bloqueada inicialmente; se compra en la Tienda con oro
-                columnaInicial = 8, cuadros = 4,
+                columnaInicial = 8, cuadros = 5,
                 multiplicadorDanio = 0.85f, duracionAtaque = 0.36f, enfriamiento = 0.20f, empuje = 2.5f,
                 costoFlechas = 1, costoMana = 0f,
                 esADistancia = true, velocidadProyectil = 13f, distanciaMaxima = 11f, radioProyectil = 0.14f,
@@ -80,7 +80,7 @@ public class WeaponDefinition
                 tipo = WeaponType.Staff,
                 descripcion = "Orbe arcano de gran daño. Consume 15 de Maná.",
                 desbloqueada = false, // Bloqueada inicialmente; se compra en la Tienda con oro
-                columnaInicial = 12, cuadros = 3,
+                columnaInicial = 13, cuadros = 3,
                 multiplicadorDanio = 1.40f, duracionAtaque = 0.42f, enfriamiento = 0.35f, empuje = 4f,
                 costoFlechas = 0, costoMana = 15f,
                 esADistancia = true, velocidadProyectil = 8.5f, distanciaMaxima = 9f, radioProyectil = 0.30f,

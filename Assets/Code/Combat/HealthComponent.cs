@@ -16,7 +16,10 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Invulnerabilidad tras daño")]
     public float invulnerabilityDuration = 0.5f;
+    [HideInInspector] public float invulnerableTimer;
+    [HideInInspector] public bool isDead;
     private bool isInvulnerable = false;
+    private Coroutine invulnerabilityCoroutine;
 
     [Header("Efecto de Parpadeo")]
     public SpriteRenderer spriteRenderer;
@@ -54,13 +57,15 @@ public class HealthComponent : MonoBehaviour
         onHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
+    public bool IsInvulnerable => isInvulnerable || invulnerableTimer > 0f;
+
     /// <summary>
     /// Aplica daño a la entidad considerando bloqueo, ventana de contraataque y knockback.
     /// Retorna true si el daño fue aplicado o false si fue evitado/desviado.
     /// </summary>
     public bool TakeDamage(float damage, Vector2 knockbackDir, float knockbackForce = 5f, GameObject attacker = null)
     {
-        if (currentHealth <= 0f || isInvulnerable) return false;
+        if (isDead || currentHealth <= 0f || IsInvulnerable) return false;
 
         // Comprobación de combate para Ronan
         if (isPlayer)
@@ -108,6 +113,12 @@ public class HealthComponent : MonoBehaviour
         }
 
         currentHealth = Mathf.Max(0f, currentHealth - damage);
+        if (isPlayer)
+        {
+            PlayerMovement player = GetComponent<PlayerMovement>();
+            if (player != null) player.currentHealth = currentHealth;
+            if (SaveStateManager.Instance != null) SaveStateManager.Instance.currentHealth = currentHealth;
+        }
         onDamaged?.Invoke(damage);
         onHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -120,11 +131,11 @@ public class HealthComponent : MonoBehaviour
         // Efecto visual de daño
         if (currentHealth > 0f)
         {
-            StartCoroutine(EfectoParpadeoInvulnerabilidad());
+            invulnerabilityCoroutine = StartCoroutine(EfectoParpadeoInvulnerabilidad());
         }
         else
         {
-            Morir();
+            HandleDeath();
         }
 
         return true;
@@ -134,6 +145,11 @@ public class HealthComponent : MonoBehaviour
     {
         if (currentHealth <= 0f) return;
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        if (isPlayer)
+        {
+            PlayerMovement player = GetComponent<PlayerMovement>();
+            if (player != null) player.currentHealth = currentHealth;
+        }
         onHealed?.Invoke(amount);
         onHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -148,6 +164,42 @@ public class HealthComponent : MonoBehaviour
         maxHealth = nuevaVidaMax;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
         onHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void RestablecerTrasDerrota(float nuevaVidaMaxima, float nuevaVidaActual)
+    {
+        if (invulnerabilityCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityCoroutine);
+            invulnerabilityCoroutine = null;
+        }
+
+        isDead = false;
+        isInvulnerable = false;
+        invulnerableTimer = 0f;
+        maxHealth = nuevaVidaMaxima;
+        currentHealth = Mathf.Clamp(nuevaVidaActual, 0f, maxHealth);
+        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+        onHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void SincronizarVida(float nuevaVidaActual)
+    {
+        currentHealth = Mathf.Clamp(nuevaVidaActual, 0f, maxHealth);
+        onHealthChanged?.Invoke(currentHealth, maxHealth);
+        if (currentHealth <= 0f) HandleDeath();
+    }
+
+    public void ActivarInvulnerabilidadTemporal(float duracion)
+    {
+        if (invulnerabilityCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityCoroutine);
+        }
+
+        invulnerableTimer = Mathf.Max(0f, duracion);
+        isInvulnerable = invulnerableTimer > 0f;
+        invulnerabilityCoroutine = StartCoroutine(EfectoParpadeoRespawn());
     }
 
     private IEnumerator EfectoParpadeoInvulnerabilidad()
@@ -175,12 +227,45 @@ public class HealthComponent : MonoBehaviour
 
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
         isInvulnerable = false;
+        invulnerabilityCoroutine = null;
     }
 
-    private void Morir()
+    private IEnumerator EfectoParpadeoRespawn()
     {
+        bool visible = true;
+        while (invulnerableTimer > 0f)
+        {
+            invulnerableTimer -= Time.unscaledDeltaTime;
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = visible ? new Color(1f, 0.88f, 0.35f, 0.65f) : Color.white;
+            }
+            visible = !visible;
+            yield return null;
+        }
+
+        if (spriteRenderer != null) spriteRenderer.color = Color.white;
+        isInvulnerable = false;
+        invulnerabilityCoroutine = null;
+    }
+
+    public void HandleDeath()
+    {
+        if (isDead) return;
+        isDead = true;
+        isInvulnerable = false;
+        invulnerableTimer = 0f;
+        if (invulnerabilityCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityCoroutine);
+            invulnerabilityCoroutine = null;
+        }
+
         if (isPlayer)
         {
+            PlayerMovement player = GetComponent<PlayerMovement>();
+            if (player != null) player.currentHealth = 0f;
+            if (SaveStateManager.Instance != null) SaveStateManager.Instance.currentHealth = 0f;
             if (playerCombatState != null) playerCombatState.TriggerDeath();
             GameManager.Instance?.ActivarGameOver();
         }

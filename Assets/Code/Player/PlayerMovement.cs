@@ -402,6 +402,60 @@ public class PlayerMovement : MonoBehaviour
         OnArmaCambiada?.Invoke(armas[indice]);
     }
 
+    public void RestablecerEstadoTrasDerrota(Vector2 posicion)
+    {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+        StopAllCoroutines();
+
+        transform.position = posicion;
+        if (rb != null)
+        {
+            rb.position = posicion;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        movement = Vector2.zero;
+        lookDirection = Vector2.down;
+        isInvulnerable = false;
+        isAssaultActive = false;
+        SetState(CombatState.Idle);
+
+        if (anim != null)
+        {
+            anim.SetFloat("X", 0f);
+            anim.SetFloat("Y", -1f);
+            anim.SetFloat("Speed", 0f);
+        }
+        if (visualEffectObj != null) visualEffectObj.SetActive(false);
+        if (sr != null) sr.color = Color.white;
+        if (healthComp != null) healthComp.RestablecerTrasDerrota(maxHealth, currentHealth);
+
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            mainCamera.transform.position = new Vector3(posicion.x, posicion.y, mainCamera.transform.position.z);
+        }
+    }
+
+    public void ActivarInvulnerabilidadTrasRespawn(float duracion)
+    {
+        StopCoroutine(nameof(RutinaInvulnerabilidadTrasRespawn));
+        StartCoroutine(RutinaInvulnerabilidadTrasRespawn(duracion));
+    }
+
+    private IEnumerator RutinaInvulnerabilidadTrasRespawn(float duracion)
+    {
+        isInvulnerable = true;
+        float restante = Mathf.Max(0f, duracion);
+        while (restante > 0f)
+        {
+            restante -= Time.unscaledDeltaTime;
+            yield return null;
+        }
+        isInvulnerable = false;
+    }
+
     public bool TieneArmaDesbloqueada(WeaponType tipo)
     {
         if (armas == null) return false;
@@ -683,7 +737,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void RecibirDanio(float cantidad)
     {
-        if (isInvulnerable || currentState == CombatState.Victory || currentState == CombatState.Counter) return;
+        if (isInvulnerable || (healthComp != null && healthComp.IsInvulnerable) ||
+            currentState == CombatState.Victory || currentState == CombatState.Counter) return;
 
         if (currentState == CombatState.Block)
         {
@@ -705,8 +760,14 @@ public class PlayerMovement : MonoBehaviour
         cantidad *= multDmg;
 
         currentHealth = Mathf.Clamp(currentHealth - cantidad, 0f, maxHealth);
-        if (healthComp != null) healthComp.currentHealth = currentHealth;
+        if (healthComp != null) healthComp.SincronizarVida(currentHealth);
         if (SaveStateManager.Instance != null) SaveStateManager.Instance.currentHealth = currentHealth;
+
+        if (currentHealth <= 0f)
+        {
+            if (healthComp != null) healthComp.HandleDeath();
+            return;
+        }
 
         StartCoroutine(ParpadeoDanio());
     }
@@ -715,7 +776,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentHealth <= 0f) return;
         currentHealth = Mathf.Clamp(currentHealth + cantidad, 0f, maxHealth);
-        if (healthComp != null) healthComp.currentHealth = currentHealth;
+        if (healthComp != null) healthComp.SincronizarVida(currentHealth);
         if (SaveStateManager.Instance != null) SaveStateManager.Instance.currentHealth = currentHealth;
 
         StartCoroutine(ParpadeoCuracion());
