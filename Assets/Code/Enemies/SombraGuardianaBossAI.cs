@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class SombraGuardianaBossAI : BaseEnemyAI
 {
+    private static Material attackLineMaterial;
+    private static Sprite dashSmokeSprite;
     public enum BossPhase { Phase1_Awakened = 1, Phase2_Tempest = 2, Phase3_AbyssalFury = 3 }
 
     [Header("Configuración del Jefe Final")]
@@ -22,6 +24,9 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     private int attackCycleCounter = 0;
     private bool phase2Announced = false;
     private bool phase3Announced = false;
+    private float bobOffset;
+    private Vector3 bossBaseScale;
+    private float stunnedUntil;
 
     protected override void Awake()
     {
@@ -39,8 +44,35 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     protected override void Start()
     {
         base.Start();
-        transform.localScale = new Vector3(1.35f, 1.35f, 1f);
+        bossBaseScale = new Vector3(2.4f, 2.4f, 1f);
+        transform.localScale = bossBaseScale;
         OnBossHealthChanged?.Invoke(healthComp.currentHealth, healthComp.maxHealth, currentPhase);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (currentState != AIState.Dead && Time.time < stunnedUntil)
+        {
+            ChangeState(AIState.Hurt);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (currentState == AIState.Dead) return;
+
+        float nextBob = currentState == AIState.ChargeAttack || currentState == AIState.ExecuteAttack
+            ? 0f
+            : Mathf.Sin(Time.time * 2.5f) * 0.08f;
+        transform.position += Vector3.up * (nextBob - bobOffset);
+        bobOffset = nextBob;
+
+        if (currentState != AIState.ChargeAttack && currentState != AIState.ExecuteAttack)
+        {
+            float pulse = 1f + Mathf.Sin(Time.time * 2.5f) * 0.025f;
+            transform.localScale = bossBaseScale * pulse;
+        }
     }
 
     protected override void HandleDamaged(float dmg, Vector2 knockbackDir)
@@ -74,7 +106,6 @@ public class SombraGuardianaBossAI : BaseEnemyAI
             {
                 phase3Announced = true;
                 StartCoroutine(PhaseTransitionBurst(new Color(1f, 0.15f, 0.45f, 1f)));
-                // Fase 3: despliega onda de choque + corrompe todos los sellos
                 StartCoroutine(IniciarFase3Berserker());
             }
         }
@@ -116,27 +147,12 @@ public class SombraGuardianaBossAI : BaseEnemyAI
         yield return null;
     }
 
-    // ─── Fase 3: Bersérker — cada 12 s lanza la Gran Esfera del Juicio ───────
+    // ─── Fase 3: Bersérker — corrompe los sellos que aún no estén purificados ─
     private IEnumerator IniciarFase3Berserker()
     {
-        // Corromper todos los sellos restantes
         foreach (BlueCrossSealNode s in FindObjectsByType<BlueCrossSealNode>())
             if (!s.purificado) s.Corromper();
-
-        while (currentState != AIState.Dead)
-        {
-            yield return new WaitForSeconds(12f);
-            if (currentState == AIState.Dead) yield break;
-            if (playerTarget == null) continue;
-
-            // Spawnear la Gran Esfera del Juicio de la Sombra (Boss_Mega_Orb)
-            Vector2 toPlayer = (playerTarget.position - transform.position).normalized;
-            SpawnReflectableProjectile(toPlayer, 4.5f, attackDamage * 2.5f,
-                new Color(0.10f, 0f, 0.20f), new Color(1f, 0.1f, 0.3f), 1.1f,
-                ProjectileBehaviour.ProjectileType.Boss_Mega_Orb);
-
-            BossHealthBarUI.Instance?.MostrarBannerOvercarga("¡JUICIO DE LA SOMBRA! Contraataca la Gran Esfera con [K]");
-        }
+        yield return null;
     }
 
     // ─── Aturdimiento por contraataque de la Gran Esfera ─────────────────────
@@ -148,6 +164,8 @@ public class SombraGuardianaBossAI : BaseEnemyAI
     {
         if (healthComp != null)
             healthComp.TakeDamage(dmg, Vector2.zero, 8f, null);
+        if (currentState == AIState.Dead) return;
+        stunnedUntil = Time.time + 3.5f;
         StartCoroutine(EstadoAturdido(3.5f));
         BossHealthBarUI.Instance?.MostrarBannerOvercarga("¡JEFE ATURDIDO! ¡Ataca con Modo Asalto [L]!");
     }
@@ -179,76 +197,292 @@ public class SombraGuardianaBossAI : BaseEnemyAI
         if (playerTarget == null) yield break;
 
         attackCycleCounter++;
-        Vector2 toPlayer = (playerTarget.position - transform.position).normalized;
-        float baseAngle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
-
-        BlackCloverDemonRenderer demonRend = GetComponent<BlackCloverDemonRenderer>();
-        if (demonRend != null) demonRend.ActivarPoseDeAtaque(0.65f);
-
-        if (currentPhase == BossPhase.Phase1_Awakened)
+        if (attackCycleCounter % 4 == 0)
         {
-            if (attackCycleCounter % 2 == 1)
+            yield return StartCoroutine(LanzarJuicioAbismal());
+            yield break;
+        }
+
+        float distancia = Vector2.Distance(transform.position, playerTarget.position);
+        if (distancia < 3.5f)
+        {
+            switch (attackCycleCounter % 3)
             {
-                // Ataque 1: Orbe abismal directo (ideal para Contraataque de Ronan en 0.20s)
-                SpawnReflectableProjectile(toPlayer, 6.8f, attackDamage, new Color(0.15f, 0.02f, 0.25f), new Color(0.85f, 0.25f, 1f), 0.65f);
-            }
-            else
-            {
-                // Ataque 2: Estocada sombría cuerpo a cuerpo
-                yield return StartCoroutine(BossLungeSlash(toPlayer, 1.8f));
+                case 0:
+                    yield return StartCoroutine(PisotonProfano());
+                    break;
+                case 1:
+                    yield return StartCoroutine(ZarpazoDoble());
+                    break;
+                default:
+                    yield return StartCoroutine(EmbestidaDeSombras());
+                    break;
             }
         }
-        else if (currentPhase == BossPhase.Phase2_Tempest)
+        else if (attackCycleCounter % 3 == 1)
         {
-            if (attackCycleCounter % 2 == 1)
-            {
-                // Ráfaga triple en abanico
-                float[] fan = { -18f, 0f, 18f };
-                foreach (float a in fan)
-                {
-                    float rad = (baseAngle + a) * Mathf.Deg2Rad;
-                    Vector2 d = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-                    SpawnReflectableProjectile(d, 7.2f, attackDamage, new Color(0.18f, 0.02f, 0.28f), new Color(1f, 0.20f, 0.65f), 0.60f);
-                }
-            }
-            else
-            {
-                yield return StartCoroutine(BossLungeSlash(toPlayer, 2.3f));
-            }
+            yield return StartCoroutine(RafagaMeteoros());
+        }
+        else if (attackCycleCounter % 3 == 2)
+        {
+            yield return StartCoroutine(RayoDeVacio());
         }
         else
         {
-            // Fase 3: Furia Abismal (abanico de 5 orbes + estocada veloz)
-            float[] fan5 = { -28f, -14f, 0f, 14f, 28f };
-            foreach (float a in fan5)
-            {
-                float rad = (baseAngle + a) * Mathf.Deg2Rad;
-                Vector2 d = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-                SpawnReflectableProjectile(d, 7.6f, attackDamage * 1.1f, new Color(0.22f, 0.02f, 0.15f), new Color(1f, 0.15f, 0.35f), 0.62f);
-            }
-            yield return new WaitForSeconds(0.18f);
-            yield return StartCoroutine(BossLungeSlash(toPlayer, 2.6f));
+            yield return StartCoroutine(EmbestidaDeSombras());
         }
-
-        yield return new WaitForSeconds(0.25f);
     }
 
-    private IEnumerator BossLungeSlash(Vector2 dir, float lungeDistance)
+    private IEnumerator ZarpazoDoble()
     {
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = startPos + (Vector3)(dir * lungeDistance);
-        float t = 0f;
-        while (t < 0.20f)
+        Color colorBase = sr != null ? sr.color : Color.white;
+        float carga = 0f;
+        while (carga < 0.4f)
         {
-            t += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, targetPos, t / 0.20f);
+            carga += Time.deltaTime;
+            if (sr != null) sr.color = Mathf.PingPong(carga * 8f, 1f) > 0.5f
+                ? new Color(0.75f, 0.2f, 1f)
+                : colorBase;
             yield return null;
         }
 
-        if (playerTarget != null && Vector2.Distance(transform.position, playerTarget.position) <= 1.85f)
+        if (playerTarget == null) yield break;
+        Vector2 haciaRonan = (playerTarget.position - transform.position).normalized;
+        AplicarGolpe(haciaRonan, 2.1f, attackDamage);
+        yield return new WaitForSeconds(0.22f);
+        AplicarGolpe(Quaternion.Euler(0f, 0f, -55f) * haciaRonan, 2.2f, attackDamage * 1.15f);
+        if (sr != null) sr.color = colorBase;
+    }
+
+    private IEnumerator EmbestidaDeSombras()
+    {
+        if (playerTarget == null) yield break;
+        Vector2 inicio = transform.position;
+        Vector2 direccion = ((Vector2)playerTarget.position - inicio).normalized;
+        float distanciaObjetivo = Mathf.Min(7f, Vector2.Distance(inicio, playerTarget.position));
+        float carga = 0f;
+        Vector3 escalaInicial = transform.localScale;
+
+        while (carga < 0.35f)
         {
-            playerMovement?.RecibirDanio(attackDamage * 1.15f);
+            carga += Time.deltaTime;
+            transform.localScale = new Vector3(escalaInicial.x * 0.82f, escalaInicial.y * 0.88f, escalaInicial.z);
+            yield return null;
         }
+
+        transform.localScale = escalaInicial;
+        Vector2 origenRay = inicio + direccion * 1.2f;
+        RaycastHit2D obstaculo = Physics2D.Raycast(origenRay, direccion, Mathf.Max(0f, distanciaObjetivo - 1.2f), LayerMask.GetMask("Default"));
+        bool chocoConBorde = obstaculo.collider != null && !obstaculo.collider.isTrigger &&
+                             obstaculo.collider.GetComponent<PlayerMovement>() == null &&
+                             obstaculo.collider.GetComponent<BaseEnemyAI>() == null;
+        if (chocoConBorde)
+        {
+            distanciaObjetivo = Mathf.Min(distanciaObjetivo, Mathf.Max(0.25f, obstaculo.distance - 0.8f));
+        }
+
+        Vector2 destino = inicio + direccion * distanciaObjetivo;
+        float duracion = Mathf.Max(0.15f, distanciaObjetivo / 18f);
+        float transcurrido = 0f;
+        bool impactoAplicado = false;
+        while (transcurrido < duracion)
+        {
+            transcurrido += Time.deltaTime;
+            transform.position = Vector2.Lerp(inicio, destino, Mathf.Clamp01(transcurrido / duracion));
+            if (!impactoAplicado && playerTarget != null &&
+                Vector2.Distance(transform.position, playerTarget.position) < 1.8f)
+            {
+                AplicarDanioDirecto(attackDamage * 1.4f, (Vector2)playerTarget.position - inicio, 9f);
+                impactoAplicado = true;
+            }
+            if (Time.frameCount % 3 == 0) CrearHumoDeEmbestida(transform.position);
+            yield return null;
+        }
+
+        if (chocoConBorde)
+        {
+            stunnedUntil = Time.time + 1.2f;
+            ChangeState(AIState.Hurt);
+            if (sr != null) sr.color = new Color(0.45f, 0.85f, 1f);
+            yield return new WaitForSeconds(1.2f);
+            if (sr != null) sr.color = baseColor;
+        }
+    }
+
+    private IEnumerator RafagaMeteoros()
+    {
+        if (playerTarget == null) yield break;
+        Vector2 haciaRonan = ((Vector2)playerTarget.position - (Vector2)transform.position).normalized;
+        float angulo = Mathf.Atan2(haciaRonan.y, haciaRonan.x) * Mathf.Rad2Deg;
+        for (int i = 0; i < 5; i++)
+        {
+            float offset = -30f + i * 15f;
+            float rad = (angulo + offset) * Mathf.Deg2Rad;
+            Vector2 direccion = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+            SpawnReflectableProjectile(direccion, 4.2f, attackDamage * 0.85f,
+                new Color(0.06f, 0.015f, 0.12f), new Color(0.75f, 0.2f, 1f), 0.85f,
+                ProjectileBehaviour.ProjectileType.Boss_Shadow_Meteor);
+        }
+        yield return new WaitForSeconds(0.3f);
+    }
+
+    private IEnumerator RayoDeVacio()
+    {
+        if (playerTarget == null) yield break;
+        Vector2 origen = transform.position;
+        Vector2 objetivo = playerTarget.position;
+        Vector2 direccion = (objetivo - origen).normalized;
+        float anguloInicial = Mathf.Atan2(direccion.y, direccion.x) * Mathf.Rad2Deg;
+        GameObject aviso = CrearLineaJefe("Aviso_Rayo_Vacio", new Color(0.95f, 0.08f, 0.28f, 0.85f), 0.12f);
+        LineRenderer linea = aviso.GetComponent<LineRenderer>();
+        float longitud = Mathf.Min(14f, Vector2.Distance(origen, objetivo) + 2f);
+
+        float carga = 0f;
+        while (carga < 0.8f)
+        {
+            carga += Time.deltaTime;
+            ActualizarLinea(linea, origen, anguloInicial, longitud);
+            yield return null;
+        }
+
+        linea.startColor = new Color(0.75f, 0.1f, 1f, 0.95f);
+        linea.endColor = Color.cyan;
+        linea.startWidth = 0.48f;
+        linea.endWidth = 0.18f;
+        HashSet<PlayerMovement> impactados = new HashSet<PlayerMovement>();
+        float tiempo = 0f;
+        while (tiempo < 0.6f)
+        {
+            tiempo += Time.deltaTime;
+            float angulo = anguloInicial + Mathf.Lerp(-7.5f, 7.5f, tiempo / 0.6f);
+            ActualizarLinea(linea, origen, angulo, longitud);
+            Vector2 dir = new Vector2(Mathf.Cos(angulo * Mathf.Deg2Rad), Mathf.Sin(angulo * Mathf.Deg2Rad));
+            Vector2 centro = origen + dir * (longitud * 0.5f);
+            foreach (Collider2D col in Physics2D.OverlapBoxAll(centro, new Vector2(longitud, 0.6f), angulo))
+            {
+                PlayerMovement target = col.GetComponent<PlayerMovement>() ?? col.GetComponentInParent<PlayerMovement>();
+                if (target != null && impactados.Add(target))
+                    target.RecibirDanio(attackDamage * 1.4f);
+            }
+            yield return null;
+        }
+        Destroy(aviso);
+    }
+
+    private IEnumerator PisotonProfano()
+    {
+        Vector3 suelo = transform.position;
+        Vector3 escala = transform.localScale;
+        float carga = 0f;
+        while (carga < 0.45f)
+        {
+            carga += Time.deltaTime;
+            transform.position = suelo + Vector3.up * Mathf.Sin(Mathf.Clamp01(carga / 0.45f) * Mathf.PI) * 1f;
+            yield return null;
+        }
+        transform.position = suelo;
+        CrearOndaExpansiva(suelo, attackDamage, 5.5f);
+        AplicarGolpe(Vector2.zero, 1.1f, attackDamage * 0.8f);
+        yield return new WaitForSeconds(0.45f);
+        transform.localScale = escala;
+    }
+
+    private IEnumerator LanzarJuicioAbismal()
+    {
+        if (playerTarget == null) yield break;
+        BlackCloverDemonRenderer render = GetComponent<BlackCloverDemonRenderer>();
+        render?.ActivarPoseDeAtaque(1.1f);
+        BossHealthBarUI.Instance?.MostrarBannerOvercarga("¡JUICIO ABISMAL! Devuelve la esfera con [K]");
+        yield return new WaitForSeconds(0.65f);
+
+        if (playerTarget == null) yield break;
+        Vector2 haciaRonan = ((Vector2)playerTarget.position - (Vector2)transform.position).normalized;
+        SpawnReflectableProjectile(haciaRonan, 4.2f, attackDamage * 2f,
+            new Color(0.20f, 0.04f, 0.30f), new Color(1f, 0.78f, 0.25f), 2f,
+            ProjectileBehaviour.ProjectileType.Boss_Mega_Orb);
+        yield return new WaitForSeconds(0.25f);
+    }
+
+    private void AplicarGolpe(Vector2 direccion, float distancia, float dano)
+    {
+        Vector2 centro = (Vector2)transform.position + direccion.normalized * distancia;
+        foreach (Collider2D col in Physics2D.OverlapCircleAll(centro, 1.25f))
+        {
+            PlayerMovement target = col.GetComponent<PlayerMovement>() ?? col.GetComponentInParent<PlayerMovement>();
+            if (target != null)
+                AplicarDanioDirecto(dano, (Vector2)target.transform.position - (Vector2)transform.position, 7f);
+        }
+    }
+
+    private void AplicarDanioDirecto(float dano, Vector2 direccion, float empuje)
+    {
+        if (playerMovement == null) LocatePlayer();
+        if (playerMovement == null) return;
+        playerMovement.RecibirDanio(dano);
+        Rigidbody2D rbJugador = playerMovement.GetComponent<Rigidbody2D>();
+        if (rbJugador != null && direccion.sqrMagnitude > 0.01f)
+            rbJugador.AddForce(direccion.normalized * empuje, ForceMode2D.Impulse);
+    }
+
+    private void CrearHumoDeEmbestida(Vector2 posicion)
+    {
+        GameObject humo = new GameObject("Humo_Embestida_Abismal");
+        humo.transform.position = posicion;
+        humo.transform.localScale = Vector3.one * 0.48f;
+        SpriteRenderer rendererHumo = humo.AddComponent<SpriteRenderer>();
+        if (dashSmokeSprite == null)
+            dashSmokeSprite = CreateCircleSprite(new Color(0.20f, 0.04f, 0.32f, 0.55f));
+        rendererHumo.sprite = dashSmokeSprite;
+        rendererHumo.sortingOrder = 4;
+        Destroy(humo, 0.45f);
+    }
+
+    private GameObject CrearLineaJefe(string nombre, Color color, float ancho)
+    {
+        GameObject go = new GameObject(nombre);
+        go.transform.SetParent(transform, true);
+        LineRenderer line = go.AddComponent<LineRenderer>();
+        line.positionCount = 2;
+        line.useWorldSpace = true;
+        line.startWidth = ancho;
+        line.endWidth = ancho * 0.6f;
+        line.startColor = color;
+        line.endColor = new Color(color.r, color.g, color.b, 0.2f);
+        line.sharedMaterial = ObtenerMaterialDeAtaque();
+        line.sortingOrder = 30;
+        return go;
+    }
+
+    private static void ActualizarLinea(LineRenderer linea, Vector2 origen, float angulo, float longitud)
+    {
+        float rad = angulo * Mathf.Deg2Rad;
+        Vector3 fin = origen + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * longitud;
+        linea.SetPosition(0, origen);
+        linea.SetPosition(1, fin);
+    }
+
+    private void CrearOndaExpansiva(Vector2 centro, float dano, float radio)
+    {
+        GameObject onda = new GameObject("Onda_Profana");
+        LineRenderer linea = onda.AddComponent<LineRenderer>();
+        linea.positionCount = 49;
+        linea.useWorldSpace = true;
+        linea.loop = true;
+        linea.startWidth = 0.18f;
+        linea.endWidth = 0.18f;
+        linea.startColor = new Color(1f, 0.35f, 0.85f, 0.95f);
+        linea.endColor = new Color(0.25f, 0.8f, 1f, 0.85f);
+        linea.sharedMaterial = ObtenerMaterialDeAtaque();
+        linea.sortingOrder = 18;
+        BossShockwaveEffect effect = onda.AddComponent<BossShockwaveEffect>();
+        effect.Iniciar(centro, dano, radio, linea);
+    }
+
+    private static Material ObtenerMaterialDeAtaque()
+    {
+        if (attackLineMaterial == null)
+            attackLineMaterial = new Material(Shader.Find("Sprites/Default"));
+        return attackLineMaterial;
     }
 
     protected override void HandleDeath()
@@ -267,5 +501,60 @@ public class SombraGuardianaBossAI : BaseEnemyAI
         echo.indiceEco = echoIndexOnDefeat;
         echo.nombreEco = "Eco de la Memoria";
         Destroy(gameObject, 0.25f);
+    }
+}
+
+public class BossShockwaveEffect : MonoBehaviour
+{
+    private readonly HashSet<PlayerMovement> impactados = new HashSet<PlayerMovement>();
+    private Vector2 centro;
+    private float dano;
+    private float radioMaximo;
+    private float tiempo;
+    private float radioAnterior;
+    private LineRenderer linea;
+
+    public void Iniciar(Vector2 posicion, float cantidadDanio, float radio, LineRenderer rendererLinea)
+    {
+        centro = posicion;
+        dano = cantidadDanio;
+        radioMaximo = radio;
+        linea = rendererLinea;
+    }
+
+    private void Update()
+    {
+        tiempo += Time.deltaTime;
+        float progreso = Mathf.Clamp01(tiempo / 1.15f);
+        float radioActual = Mathf.Lerp(0.35f, radioMaximo, progreso);
+
+        for (int i = 0; i < linea.positionCount; i++)
+        {
+            float angulo = i / (float)(linea.positionCount - 1) * Mathf.PI * 2f;
+            linea.SetPosition(i, centro + new Vector2(Mathf.Cos(angulo), Mathf.Sin(angulo)) * radioActual);
+        }
+
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(centro, radioActual))
+        {
+            PlayerMovement player = collider.GetComponent<PlayerMovement>() ?? collider.GetComponentInParent<PlayerMovement>();
+            if (player == null || impactados.Contains(player)) continue;
+
+            float distancia = Vector2.Distance(centro, player.transform.position);
+            if (distancia <= radioActual && distancia >= radioAnterior - 0.45f)
+            {
+                impactados.Add(player);
+                player.RecibirDanio(dano);
+                Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                    rb.AddForce(((Vector2)player.transform.position - centro).normalized * 7f, ForceMode2D.Impulse);
+            }
+        }
+
+        radioAnterior = radioActual;
+        if (progreso >= 1f)
+        {
+            enabled = false;
+            Destroy(gameObject, 0.15f);
+        }
     }
 }

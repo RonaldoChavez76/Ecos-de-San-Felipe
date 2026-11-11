@@ -19,7 +19,8 @@ public class ProjectileBehaviour : MonoBehaviour
         Abyssal_Orb,
         Shadow_Arrow,
         Spore_Ball,
-        Boss_Mega_Orb
+        Boss_Mega_Orb,
+        Boss_Shadow_Meteor
     }
 
     [Header("Tipo y Parámetros del Proyectil")]
@@ -233,7 +234,7 @@ public class ProjectileBehaviour : MonoBehaviour
         Vector2 center = new Vector2(15.5f, 15.5f);
         float radius = 15.5f;
 
-        Color cosmicCyan = new Color(0.35f, 0.95f, 1.0f, 1f);
+        Color cosmicGold = new Color(1f, 0.72f, 0.22f, 1f);
         Color deepViolet = new Color(0.30f, 0.05f, 0.55f, 1f);
         Color darkCrimson = new Color(0.85f, 0.10f, 0.35f, 0.9f);
 
@@ -248,11 +249,11 @@ public class ProjectileBehaviour : MonoBehaviour
                 }
                 else if (dist < 0.30f)
                 {
-                    tex.SetPixel(x, y, Color.Lerp(Color.white, cosmicCyan, dist / 0.30f));
+                    tex.SetPixel(x, y, Color.Lerp(Color.white, cosmicGold, dist / 0.30f));
                 }
                 else if (dist < 0.70f)
                 {
-                    tex.SetPixel(x, y, Color.Lerp(cosmicCyan, deepViolet, (dist - 0.30f) / 0.40f));
+                    tex.SetPixel(x, y, Color.Lerp(cosmicGold, deepViolet, (dist - 0.30f) / 0.40f));
                 }
                 else
                 {
@@ -275,6 +276,7 @@ public class ProjectileBehaviour : MonoBehaviour
     private GameObject originalShooter;
     private GameObject deflectedBy;
     private SanFelipeDemoBuilder builderRef;
+    public bool IsDeflected => isDeflected;
 
     private void Awake()
     {
@@ -334,6 +336,9 @@ public class ProjectileBehaviour : MonoBehaviour
                 lifeTime = 8f;
                 isCounterable = true;
                 break;
+            case ProjectileType.Boss_Shadow_Meteor:
+                speed = 4.2f;
+                break;
         }
     }
 
@@ -360,6 +365,11 @@ public class ProjectileBehaviour : MonoBehaviour
     private void Update()
     {
         if (hasImpacted) return;
+
+        if (!isDeflected && projectileType == ProjectileType.Boss_Shadow_Meteor)
+        {
+            speed = Mathf.Lerp(4.2f, 9.5f, Mathf.Clamp01((Time.time - spawnTime) / 1.1f));
+        }
 
         // Comportamiento de trayectoria según tipo
         if (!isDeflected && projectileType == ProjectileType.Abyssal_Orb)
@@ -427,11 +437,15 @@ public class ProjectileBehaviour : MonoBehaviour
             CombatStateMachine csm = collision.GetComponent<CombatStateMachine>() ?? collision.GetComponentInParent<CombatStateMachine>();
 
             bool contraataco = false;
-            if (pm != null && pm.IntentarContraataqueProyectil())
+            bool dentroVentanaJuicio = projectileType != ProjectileType.Boss_Mega_Orb ||
+                                       (pm != null && pm.EstaEnVentanaDeContraataque());
+            if (pm != null && dentroVentanaJuicio && pm.IntentarContraataqueProyectil())
             {
                 contraataco = true;
             }
-            else if (isCounterable && csm != null && (csm.IsInCounterWindow || csm.CurrentState == CombatStateMachine.State.Block))
+            else if (isCounterable && csm != null &&
+                     (csm.IsInCounterWindow ||
+                      (projectileType != ProjectileType.Boss_Mega_Orb && csm.CurrentState == CombatStateMachine.State.Block)))
             {
                 csm.TriggerCounter();
                 if (pm != null) pm.AñadirCargaAsalto(35f);
