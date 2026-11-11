@@ -43,7 +43,7 @@ public class WeaponDefinition
     public float velocidadProyectil = 11f;
     public float distanciaMaxima = 9f;
     public float radioProyectil = 0.18f;
-    [Tooltip("Nombre (sin extensión) de un PNG en Assets/Sprites. Vacío = orbe procedural (placeholder).")]
+    [Tooltip("Nombre (sin extensión) de un PNG en Assets/Sprites. El báculo usa su orbe arcano procedural.")]
     public string spriteProyectil = "";
     public Color colorProyectil = Color.white;
     public float escalaProyectil = 1f;
@@ -71,8 +71,8 @@ public class WeaponDefinition
                 columnaInicial = 8, cuadros = 5,
                 multiplicadorDanio = 0.85f, duracionAtaque = 0.36f, enfriamiento = 0.20f, empuje = 2.5f,
                 costoFlechas = 1, costoMana = 0f,
-                esADistancia = true, velocidadProyectil = 13f, distanciaMaxima = 11f, radioProyectil = 0.14f,
-                spriteProyectil = "Arrow", colorProyectil = Color.white, escalaProyectil = 0.45f
+                esADistancia = true, velocidadProyectil = 13f, distanciaMaxima = 11f, radioProyectil = 0.20f,
+                spriteProyectil = "Arrow", colorProyectil = Color.white, escalaProyectil = 0.85f
             },
             new WeaponDefinition
             {
@@ -151,6 +151,9 @@ public class PlayerProjectile : MonoBehaviour
     private float radio;
     private GameObject origen;
     private static readonly Dictionary<string, Sprite> cacheSprites = new Dictionary<string, Sprite>();
+    private static Sprite spriteOrbeArcano;
+    private static Material materialEstela;
+    private WeaponType tipoArma;
 
     public static PlayerProjectile Disparar(WeaponDefinition arma, Vector2 posicion, Vector2 dir, float danio, GameObject origen, int ordenBase)
     {
@@ -163,7 +166,11 @@ public class PlayerProjectile : MonoBehaviour
 
         Sprite sprite = null;
         bool apuntaDiagonal = false;
-        if (!string.IsNullOrEmpty(arma.spriteProyectil))
+        if (arma.tipo == WeaponType.Staff)
+        {
+            sprite = ObtenerSpriteOrbeArcano();
+        }
+        else if (!string.IsNullOrEmpty(arma.spriteProyectil))
         {
             if (!cacheSprites.TryGetValue(arma.spriteProyectil, out sprite) || sprite == null)
             {
@@ -179,19 +186,19 @@ public class PlayerProjectile : MonoBehaviour
         }
         if (sprite == null)
         {
-            // Placeholder procedural: orbe con núcleo brillante
             sprite = BaseEnemyAI.CreateCircleSprite(Color.white);
         }
         sr.sprite = sprite;
 
         float angulo = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        go.transform.rotation = Quaternion.Euler(0f, 0f, apuntaDiagonal ? angulo - 45f : 0f);
+        go.transform.rotation = Quaternion.Euler(0f, 0f, arma.tipo == WeaponType.Staff ? 0f : (apuntaDiagonal ? angulo - 45f : angulo));
 
-        // Escala reducida y compacta para las flechas del arco para que luzcan estilizadas y proporcionadas
         float escalaFinal = arma.tipo == WeaponType.Bow
-            ? Mathf.Min(arma.escalaProyectil, 0.35f)
-            : arma.escalaProyectil;
+            ? 0.85f
+            : (arma.tipo == WeaponType.Staff ? 1f : arma.escalaProyectil);
         go.transform.localScale = Vector3.one * escalaFinal;
+
+        CrearEstela(go, arma, sr.sortingOrder);
 
         PlayerProjectile p = go.AddComponent<PlayerProjectile>();
         p.direccion = dir.normalized;
@@ -201,11 +208,19 @@ public class PlayerProjectile : MonoBehaviour
         p.distanciaRestante = arma.distanciaMaxima;
         p.radio = arma.radioProyectil;
         p.origen = origen;
+        p.tipoArma = arma.tipo;
         return p;
     }
 
     private void Update()
     {
+        if (tipoArma == WeaponType.Staff)
+        {
+            transform.Rotate(0f, 0f, 360f * Time.deltaTime);
+            float pulso = 1f + Mathf.PingPong(Time.time * 6f, 0.25f);
+            transform.localScale = Vector3.one * pulso;
+        }
+
         float paso = velocidad * Time.deltaTime;
         transform.position += (Vector3)(direccion * paso);
         distanciaRestante -= paso;
@@ -217,9 +232,19 @@ public class PlayerProjectile : MonoBehaviour
             if (c == null || c.gameObject == origen || c.transform.IsChildOf(origen.transform)) continue;
             if (c.CompareTag("Player")) continue;
 
+            BlueCrossSealNode sello = c.GetComponent<BlueCrossSealNode>() ?? c.GetComponentInParent<BlueCrossSealNode>();
+            if (sello != null && tipoArma != WeaponType.Sword)
+            {
+                sello.Purificar();
+                if (tipoArma == WeaponType.Staff) CrearEstallidoArcano(transform.position);
+                Destroy(gameObject);
+                return;
+            }
+
             if (PlayerCombatUtil.AplicarDanio(c, danio, direccion, empuje, origen))
             {
                 origen.GetComponent<PlayerMovement>()?.AñadirCargaAsalto(8f);
+                if (tipoArma == WeaponType.Staff) CrearEstallidoArcano(transform.position);
                 Destroy(gameObject);
                 return;
             }
@@ -227,11 +252,115 @@ public class PlayerProjectile : MonoBehaviour
             // Muros y decorados sólidos detienen el proyectil (los triggers y pickups no)
             if (!c.isTrigger && c.GetComponent<HealthComponent>() == null)
             {
+                if (tipoArma == WeaponType.Staff) CrearEstallidoArcano(transform.position);
                 Destroy(gameObject);
                 return;
             }
         }
 
         if (distanciaRestante <= 0f) Destroy(gameObject);
+    }
+
+    private static Sprite ObtenerSpriteOrbeArcano()
+    {
+        if (spriteOrbeArcano != null) return spriteOrbeArcano;
+
+        const int size = 32;
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            name = "Orbe_Arcano_Celestial",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        Vector2 centro = new Vector2(15.5f, 15.5f);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dx = x - centro.x;
+                float dy = y - centro.y;
+                float distancia = Mathf.Sqrt(dx * dx + dy * dy);
+                Color pixel = Color.clear;
+
+                if (Mathf.Abs(distancia - 14f) < 1.3f)
+                    pixel = new Color(0f, 0.35f, 1f, 1f);
+                if (Mathf.Abs(distancia - 10f) < 1.2f)
+                    pixel = new Color(0f, 0.9f, 1f, 1f);
+
+                float elipseCian = Mathf.Abs(dy * 0.78f - dx * 0.62f);
+                float elipseTurquesa = Mathf.Abs(dy * 0.78f + dx * 0.62f);
+                if (Mathf.Abs(elipseCian - 8f) < 0.9f && distancia < 13f)
+                    pixel = new Color(0f, 0.95f, 1f, 1f);
+                if (Mathf.Abs(elipseTurquesa - 5f) < 0.8f && distancia < 10f)
+                    pixel = new Color(0.1f, 0.65f, 1f, 1f);
+
+                if (distancia <= 4.5f)
+                    pixel = Color.Lerp(Color.white, new Color(0.55f, 1f, 1f), distancia / 4.5f);
+                texture.SetPixel(x, y, pixel);
+            }
+        }
+        texture.Apply();
+        spriteOrbeArcano = Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.5f), 24f);
+        return spriteOrbeArcano;
+    }
+
+    private static void CrearEstela(GameObject proyectil, WeaponDefinition arma, int sortingOrder)
+    {
+        TrailRenderer trail = proyectil.AddComponent<TrailRenderer>();
+        trail.time = arma.tipo == WeaponType.Bow ? 0.12f : 0.22f;
+        trail.startWidth = arma.tipo == WeaponType.Bow ? 0.08f : 0.14f;
+        trail.endWidth = 0f;
+        trail.minVertexDistance = 0.04f;
+        trail.numCapVertices = 2;
+        trail.sortingOrder = sortingOrder - 1;
+        if (materialEstela == null)
+            materialEstela = new Material(Shader.Find("Sprites/Default"));
+        trail.sharedMaterial = materialEstela;
+        Gradient gradient = new Gradient();
+        Color estela = arma.tipo == WeaponType.Staff
+            ? new Color(0f, 0.85f, 1f, 0.9f)
+            : new Color(0.75f, 0.88f, 1f, 0.55f);
+        gradient.SetKeys(
+            new[] { new GradientColorKey(estela, 0f), new GradientColorKey(estela, 1f) },
+            new[] { new GradientAlphaKey(estela.a, 0f), new GradientAlphaKey(0f, 1f) });
+        trail.colorGradient = gradient;
+    }
+
+    private static void CrearEstallidoArcano(Vector2 posicion)
+    {
+        GameObject efecto = new GameObject("Estallido_Arcano_Celestial");
+        efecto.transform.position = posicion;
+        SpriteRenderer rendererEfecto = efecto.AddComponent<SpriteRenderer>();
+        rendererEfecto.sprite = ObtenerSpriteOrbeArcano();
+        rendererEfecto.sortingOrder = 20;
+        PlayerArcaneImpactEffect impacto = efecto.AddComponent<PlayerArcaneImpactEffect>();
+        impacto.Iniciar(rendererEfecto);
+        AudioManager.Instance?.PlayEchoSound();
+    }
+}
+
+public class PlayerArcaneImpactEffect : MonoBehaviour
+{
+    private SpriteRenderer spriteRenderer;
+    private float elapsed;
+
+    public void Iniciar(SpriteRenderer renderer)
+    {
+        spriteRenderer = renderer;
+        transform.localScale = Vector3.one * 0.3f;
+    }
+
+    private void Update()
+    {
+        elapsed += Time.deltaTime;
+        float progress = Mathf.Clamp01(elapsed / 0.24f);
+        transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 1.4f, progress);
+        if (spriteRenderer != null)
+        {
+            Color color = spriteRenderer.color;
+            color.a = 1f - progress;
+            spriteRenderer.color = color;
+        }
+        if (progress >= 1f) Destroy(gameObject);
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class BlackCloverDemonRenderer : MonoBehaviour
 {
     public enum DemonType { SombraLanzadora, SombraErrante, SombraGuardianaJefe }
+    private static Sprite[] spritesIdleJefe;
+    private static Sprite[] spritesAtaqueJefe;
 
     [Header("Imagen de tu Demonio")]
     public Texture2D customDemonImage;
@@ -65,6 +67,19 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         if (sr == null) sr = GetComponent<SpriteRenderer>();
         if (animator == null) animator = GetComponent<Animator>();
 
+        if (tipoDemonio == DemonType.SombraGuardianaJefe)
+        {
+            if (spritesIdleJefe != null && spritesAtaqueJefe != null)
+            {
+                animatedFrames = spritesIdleJefe;
+                attackFrames = spritesAtaqueJefe;
+                if (sr != null) sr.sprite = animatedFrames[0];
+                return;
+            }
+            GenerarSpriteDemonioImponente();
+            return;
+        }
+
         bool hasAnimatorController = animator != null && animator.runtimeAnimatorController != null;
         if (hasAnimatorController) return;
 
@@ -119,6 +134,128 @@ public class BlackCloverDemonRenderer : MonoBehaviour
         {
             sr.sprite = animatedFrames[0];
         }
+    }
+
+    private void GenerarSpriteDemonioImponente()
+    {
+        const int size = 96;
+        const float pixelsPerUnit = 48f;
+        animatedFrames = new Sprite[6];
+        for (int frame = 0; frame < animatedFrames.Length; frame++)
+            animatedFrames[frame] = CrearFrameDemonioImponente(size, pixelsPerUnit, frame);
+
+        attackFrames = new[]
+        {
+            CrearFrameDemonioImponente(size, pixelsPerUnit, 1, true, false),
+            CrearFrameDemonioImponente(size, pixelsPerUnit, 4, false, true)
+        };
+        spritesIdleJefe = animatedFrames;
+        spritesAtaqueJefe = attackFrames;
+        animTimer = 0f;
+        if (sr != null) sr.sprite = animatedFrames[0];
+    }
+
+    private static Sprite CrearFrameDemonioImponente(int size, float pixelsPerUnit, int frame, bool poseCarga = false, bool poseAtaque = false)
+    {
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            name = $"SombraGuardiana_Imponente_{frame}",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        Color carbon = new Color(0.05f, 0.03f, 0.08f, 1f);
+        Color abismo = new Color(0.16f, 0.03f, 0.27f, 1f);
+        Color violeta = new Color(0.39f, 0.08f, 0.60f, 1f);
+        Color runa = new Color(0.72f, 0.20f, 0.95f, 1f);
+        Color cian = new Color(0f, 0.85f, 1f, 1f);
+        float wingPulse = Mathf.Sin(frame * Mathf.PI / 3f) * 3f;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float px = x - 47.5f;
+                float py = y - 43f;
+                float ax = Mathf.Abs(px);
+                Color pixel = Color.clear;
+                float wingSpan = ax - 15f;
+                if (wingSpan >= 0f && wingSpan <= 32f)
+                {
+                    float wingTop = 25f + wingSpan * 0.78f + wingPulse * (wingSpan / 32f);
+                    float tear = ((int)(wingSpan / 5f) % 2) * 3f;
+                    float wingBottom = -8f - wingSpan * 0.30f + tear;
+                    if (py >= wingBottom && py <= wingTop)
+                    {
+                        pixel = abismo;
+                        if (Mathf.Abs(py - wingTop) < 1.5f || Mathf.Abs(py - wingBottom) < 1.5f)
+                            pixel = carbon;
+                        else if (Mathf.Abs(py - (wingBottom + (wingTop - wingBottom) * 0.48f)) < 1.2f)
+                            pixel = violeta;
+                    }
+                }
+
+                if (ax <= 15f && py >= -29f && py <= 18f &&
+                    (px * px / 225f + (py - 1f) * (py - 1f) / 650f <= 1f))
+                {
+                    pixel = carbon;
+                    if (ax > 10f || py < -18f) pixel = abismo;
+                    if (py > 4f && py < 10f && ax < 5f) pixel = violeta;
+                    if (py > 0f && py < 5f && ax < 2f) pixel = runa;
+                }
+
+                if (ax <= 9f && py >= 15f && py <= 31f &&
+                    (px * px / 81f + (py - 23f) * (py - 23f) / 100f <= 1f))
+                    pixel = ax > 7f || py < 18f ? carbon : abismo;
+
+                if (py >= -44f && py < -25f && ax < 12f)
+                {
+                    float legCenter = ax < 6f ? 4f : 9f;
+                    if (ax > legCenter - 3.5f && ax < legCenter + 2.5f)
+                        pixel = py < -40f ? carbon : abismo;
+                }
+
+                if (ax >= 11f && ax <= 25f && py >= -12f && py <= 13f &&
+                    Mathf.Abs(py - (7f - (ax - 11f) * 1.25f)) < 4.5f)
+                {
+                    pixel = ax > 22f ? carbon : abismo;
+                    if (Mathf.Abs(py - (7f - (ax - 11f) * 1.25f)) < 1.4f) pixel = violeta;
+                }
+
+                if (py >= 28f && py <= 49f)
+                {
+                    float t = (py - 28f) / 21f;
+                    float hornX = 8f + t * 9f - t * t * 3f;
+                    float hornExteriorX = 14f + t * 10f - t * t * 3f;
+                    if (Mathf.Abs(ax - hornX) < 2.1f || Mathf.Abs(ax - hornExteriorX) < 1.8f)
+                        pixel = py > 44f ? runa : (py > 38f ? violeta : carbon);
+                }
+
+                if (poseAtaque && ax > 19f && ax < 34f && py > -4f && py < 5f)
+                    pixel = (x + y) % 3 == 0 ? runa : carbon;
+                if (poseCarga && ax < 8f && py > 0f && py < 13f)
+                    pixel = (x + y) % 2 == 0 ? cian : violeta;
+
+                bool ojo = (Mathf.Abs(px + 6f) < 2f && Mathf.Abs(py - 24f) < 1.5f) ||
+                           (Mathf.Abs(px) < 2f && Mathf.Abs(py - 27f) < 1.5f) ||
+                           (Mathf.Abs(px - 6f) < 2f && Mathf.Abs(py - 30f) < 1.5f);
+                if (ojo) pixel = Color.white;
+                else if ((Mathf.Abs(px + 6f) < 3f && Mathf.Abs(py - 24f) < 2.5f) ||
+                         (Mathf.Abs(px) < 3f && Mathf.Abs(py - 27f) < 2.5f) ||
+                         (Mathf.Abs(px - 6f) < 3f && Mathf.Abs(py - 30f) < 2.5f))
+                    pixel = cian;
+
+                if (ax > 19f && ax < 31f && py > -15f && py < -8f &&
+                    Mathf.Abs(py - (-10f - (ax - 20f) * 0.55f)) < 1.4f)
+                    pixel = ax > 27f ? Color.white : carbon;
+
+                if (pixel.a > 0f && pixel == abismo && (x * 17 + y * 31 + frame * 13) % 37 == 0)
+                    pixel = violeta;
+                texture.SetPixel(x, y, pixel);
+            }
+        }
+
+        texture.Apply();
+        return Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.42f), pixelsPerUnit);
     }
 
     private void CargarFotogramasDesdeHoja8Columnas(Texture2D sheetTex)
@@ -372,7 +509,8 @@ public class BlackCloverDemonRenderer : MonoBehaviour
 
     void Update()
     {
-        bool hasAnimatorController = animator != null && animator.enabled && animator.runtimeAnimatorController != null;
+        bool hasAnimatorController = tipoDemonio != DemonType.SombraGuardianaJefe &&
+                                     animator != null && animator.enabled && animator.runtimeAnimatorController != null;
 
         // 1. Si no hay Animator activo, usar el motor de fotogramas de hoja de sprites / procedural
         if (!hasAnimatorController)
@@ -430,6 +568,18 @@ public class BlackCloverDemonRenderer : MonoBehaviour
             SpriteRenderer srShadow = shadowTransform != null ? shadowTransform.GetComponent<SpriteRenderer>() : null;
             if (srShadow != null) srShadow.sortingOrder = sr.sortingOrder - 1;
             if (attackVfxSr != null) attackVfxSr.sortingOrder = sr.sortingOrder + 2;
+
+            ParticleSystemRenderer auraRenderer = darkAuraParticles != null
+                ? darkAuraParticles.GetComponent<ParticleSystemRenderer>()
+                : null;
+            if (auraRenderer != null)
+            {
+                SpriteRenderer playerRenderer = playerTarget != null ? playerTarget.GetComponent<SpriteRenderer>() : null;
+                bool jefeDetrasDeRonan = playerTarget != null && transform.position.y < playerTarget.position.y;
+                auraRenderer.sortingOrder = jefeDetrasDeRonan && playerRenderer != null
+                    ? playerRenderer.sortingOrder + 1
+                    : sr.sortingOrder + 1;
+            }
         }
     }
 

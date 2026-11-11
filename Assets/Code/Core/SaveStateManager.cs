@@ -415,6 +415,7 @@ public class SaveStateManager : MonoBehaviour
             ? Mathf.Max(15, player.flechas)
             : player.flechas;
         player.oro = oro;
+        SincronizarComponenteSalud(player);
 
         TeletransportarJugador(player, spawn);
         currentHealth = player.currentHealth;
@@ -574,6 +575,15 @@ public class SaveStateManager : MonoBehaviour
         {
             player.armaActual = 0;
         }
+
+        SincronizarComponenteSalud(player);
+    }
+
+    private static void SincronizarComponenteSalud(PlayerMovement player)
+    {
+        HealthComponent health = player.GetComponent<HealthComponent>();
+        if (health != null)
+            health.RestablecerTrasDerrota(player.maxHealth, player.currentHealth);
     }
 
     private static void AplicarArmasDesbloqueadas(PlayerMovement player, bool arcoComprado, bool baculoComprado)

@@ -56,6 +56,27 @@ public class BlueCrossShrinePuzzle : MonoBehaviour
         }
     }
 
+    public void NotificarSelloCorrompido(BlueCrossSealNode sello)
+    {
+        if (sello == null || acertijoResuelto) return;
+
+        sellosPurificados = 0;
+        foreach (BlueCrossSealNode nodo in sellos)
+        {
+            if (nodo != null && nodo.purificado) sellosPurificados++;
+        }
+
+        if (jefeSombraGuardiana != null)
+            jefeSombraGuardiana.isShieldedBySeals = true;
+        if (escudoVisualJefe != null)
+            escudoVisualJefe.SetActive(true);
+        if (cruzAzulHaloRenderer != null)
+        {
+            cruzAzulHaloRenderer.color = new Color(0.55f, 0.12f, 0.82f, 0.85f);
+            cruzAzulHaloRenderer.transform.localScale = Vector3.one * 3.8f;
+        }
+    }
+
     private void CompletarPurificacionCruzAzul()
     {
         acertijoResuelto = true;

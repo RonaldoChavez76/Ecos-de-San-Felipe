@@ -651,6 +651,7 @@ public class CerroDelFraileBuilder : MonoBehaviour
         GameObject bossGO = new GameObject("JefeFinal_La_Sombra_Guardiana");
         bossGO.transform.SetParent(parent);
         bossGO.transform.position = pos;
+        bossGO.transform.localScale = new Vector3(2.4f, 2.4f, 1f);
         bossGO.tag = "Enemy";
         EnemyManager.EnsureInstance()?.RegisterEnemy(bossGO);
 
@@ -662,7 +663,6 @@ public class CerroDelFraileBuilder : MonoBehaviour
 
         BlackCloverDemonRenderer demonRend = bossGO.AddComponent<BlackCloverDemonRenderer>();
         demonRend.tipoDemonio = BlackCloverDemonRenderer.DemonType.SombraGuardianaJefe;
-        demonRend.customDemonImage = ZoneWaveSpawner.LoadSpriteTexture("SombraGuardiana_SpriteSheet");
         demonRend.InicializarSpritesDemonio();
 
         SombraGuardianaBossAI bossAI = bossGO.AddComponent<SombraGuardianaBossAI>();
