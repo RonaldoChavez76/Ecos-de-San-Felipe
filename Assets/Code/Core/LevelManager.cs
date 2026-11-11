@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Gestiona la zona activa actual (Parroquia Exterior, Parroquia Interior,
@@ -45,10 +46,38 @@ public class LevelManager : MonoBehaviour
         Instance = this;
     }
 
+    public static LevelManager EnsureInstance()
+    {
+        if (Instance != null) return Instance;
+
+        LevelManager existing = FindAnyObjectByType<LevelManager>();
+        if (existing != null)
+        {
+            Instance = existing;
+            return existing;
+        }
+
+        GameObject go = new GameObject("LevelManager");
+        DontDestroyOnLoad(go);
+        LevelManager manager = go.AddComponent<LevelManager>();
+        manager.currentZone = ObtenerZonaDeEscena(SceneManager.GetActiveScene().name);
+        return manager;
+    }
+
+    public static ZoneId ObtenerZonaDeEscena(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "ParroquiaInterior": return ZoneId.ParroquiaInterior;
+            case "Nivel2_Mercado": return ZoneId.Mercado;
+            case "Nivel3_CerroDelFraile": return ZoneId.CerroDelFraile;
+            default: return ZoneId.ParroquiaExterior;
+        }
+    }
+
     public void CambiarZona(ZoneId nuevaZona, Vector2? puntoSpawnManual = null)
     {
         currentZone = nuevaZona;
-        SaveStateManager.Instance?.GuardarCheckpoint(nuevaZona.ToString(), puntoSpawnManual ?? ObtenerSpawnPointPorDefecto(nuevaZona));
 
         PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
         if (player != null)
@@ -56,7 +85,12 @@ public class LevelManager : MonoBehaviour
             Vector2 destino = puntoSpawnManual ?? ObtenerSpawnPointPorDefecto(nuevaZona);
             player.transform.position = destino;
             var rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.position = destino;
+            if (rb != null)
+            {
+                rb.position = destino;
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
         }
 
         AjustarLimitesCamara(nuevaZona);
@@ -70,13 +104,13 @@ public class LevelManager : MonoBehaviour
         switch (zona)
         {
             case ZoneId.ParroquiaExterior:
-                return spawnParroquiaExterior != null ? (Vector2)spawnParroquiaExterior.position : Vector2.zero;
+                return spawnParroquiaExterior != null ? (Vector2)spawnParroquiaExterior.position : new Vector2(0f, -8f);
             case ZoneId.ParroquiaInterior:
-                return spawnParroquiaInterior != null ? (Vector2)spawnParroquiaInterior.position : new Vector2(0f, 60f);
+                return spawnParroquiaInterior != null ? (Vector2)spawnParroquiaInterior.position : new Vector2(0f, -15f);
             case ZoneId.Mercado:
-                return spawnMercado != null ? (Vector2)spawnMercado.position : new Vector2(35f, 0f);
+                return spawnMercado != null ? (Vector2)spawnMercado.position : new Vector2(0f, -32f);
             case ZoneId.CerroDelFraile:
-                return spawnCerroDelFraile != null ? (Vector2)spawnCerroDelFraile.position : new Vector2(0f, 40f);
+                return spawnCerroDelFraile != null ? (Vector2)spawnCerroDelFraile.position : new Vector2(0f, -40f);
             default:
                 return Vector2.zero;
         }

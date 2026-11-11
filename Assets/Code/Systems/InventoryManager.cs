@@ -30,6 +30,7 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         Instance = this;
+        SaveStateManager.EnsureInstance().RestaurarInventario(this);
     }
 
     public static InventoryManager EnsureInstance()
@@ -90,5 +91,22 @@ public class InventoryManager : MonoBehaviour
     {
         return itemsPoseidos;
     }
-}
 
+    public void RestaurarInventario(IEnumerable<string> items, int llavesOro)
+    {
+        itemsPoseidos.Clear();
+        if (items != null)
+        {
+            foreach (string item in items)
+            {
+                if (!string.IsNullOrEmpty(item) && !itemsPoseidos.Contains(item))
+                {
+                    itemsPoseidos.Add(item);
+                }
+            }
+        }
+
+        goldKeysCount = Mathf.Max(0, llavesOro);
+        OnInventoryChanged?.Invoke();
+    }
+}
