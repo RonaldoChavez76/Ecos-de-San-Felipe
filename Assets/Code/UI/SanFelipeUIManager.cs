@@ -345,62 +345,20 @@ public class SanFelipeUIManager : MonoBehaviour
 
     public void ReaparecerEnCheckpoint()
     {
-        player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
-        if (player == null)
-        {
-            Debug.LogError("[SanFelipeUIManager] No se encontró a Ronan para reaparecer en el checkpoint.");
-            return;
-        }
-
-        LevelManager.EnsureInstance();
+        LevelManager levelManager = LevelManager.EnsureInstance();
         SaveStateManager save = SaveStateManager.EnsureInstance();
-        if (!save.RestaurarJugadorDesdeCheckpoint(player))
+        if (!save.HayCheckpointParaZona(levelManager.currentZone.ToString()))
         {
             ReiniciarDesdeInicioNivel();
             return;
         }
 
-        FinalizarRespawn();
+        save.RecargarEscenaParaRespawn(true);
     }
 
     public void ReiniciarDesdeInicioNivel()
     {
-        player = FindAnyObjectByType<PlayerMovement>(FindObjectsInactive.Include);
-        if (player == null)
-        {
-            Debug.LogError("[SanFelipeUIManager] No se encontró a Ronan para reiniciar el nivel.");
-            return;
-        }
-
-        LevelManager levelManager = LevelManager.EnsureInstance();
-        SaveStateManager.EnsureInstance().RestaurarJugadorInicioNivel(player, levelManager.currentZone);
-        ZoneWaveSpawner.ReiniciarEncuentrosDeEscena();
-        FinalizarRespawn();
-    }
-
-    private void FinalizarRespawn()
-    {
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;
-
-        if (player != null)
-        {
-            player.gameObject.SetActive(true);
-            player.enabled = true;
-            player.RestablecerEstadoTrasDerrota(player.transform.position);
-            HealthComponent health = player.GetComponent<HealthComponent>();
-            if (health != null)
-            {
-                health.isDead = false;
-                health.RestablecerTrasDerrota(player.maxHealth, player.currentHealth);
-                health.ActivarInvulnerabilidadTemporal(1.5f);
-            }
-            player.ActivarInvulnerabilidadTrasRespawn(1.5f);
-        }
-
-        gameOverMostrado = false;
-        if (panelGameOver != null) panelGameOver.SetActive(false);
-        if (GameManager.Instance != null) GameManager.Instance.SetState(GameManager.GameState.Exploring);
+        SaveStateManager.EnsureInstance().RecargarEscenaParaRespawn(false);
     }
 
     private void ActualizarDisponibilidadCheckpoint()
