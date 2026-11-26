@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -6,13 +7,25 @@ using UnityEngine.UI;
 
 /// <summary>
 /// HUD táctil multi-touch en uGUI para Android / iOS (y modo de prueba en PC).
-/// Incluye joystick virtual izquierdo, botones coloniales de combate (Atacar, Escudo/Contraataque,
-/// Esquive, Modo Asalto, Cambiar Arma), botón contextual de Interacción y accesos de Pausa y Tienda.
-/// Respeta Screen.safeArea en todo momento.
+/// Incluye joystick virtual izquierdo, botones coloniales con iconos pixel-art procedurales
+/// (Atacar, Escudo/Contraataque, Esquive, Modo Asalto, Cambiar Arma), botón contextual de
+/// Interacción y accesos de Pausa y Tienda. Respeta Screen.safeArea en todo momento.
 /// </summary>
 public class MobileControlsUI : MonoBehaviour
 {
     public static MobileControlsUI Instance { get; private set; }
+
+    private enum TouchIcon
+    {
+        Pause,
+        Shop,
+        Attack,
+        Shield,
+        Dodge,
+        Assault,
+        Weapon,
+        Interact
+    }
 
     private Canvas canvas;
     private RectTransform safeAreaRoot;
@@ -24,7 +37,6 @@ public class MobileControlsUI : MonoBehaviour
     private GameObject interactButtonObj;
     private Text interactLabel;
 
-    private GameObject assaultButtonObj;
     private Image assaultBg;
     private Text assaultLabel;
 
@@ -33,6 +45,8 @@ public class MobileControlsUI : MonoBehaviour
     private float lastScale = -1f;
     private bool wasVisible = false;
     private PlayerMovement cachedPlayer;
+
+    private static readonly Dictionary<TouchIcon, Sprite> iconCache = new Dictionary<TouchIcon, Sprite>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void AutoInit()
@@ -117,7 +131,7 @@ public class MobileControlsUI : MonoBehaviour
 
         if (!visible) return;
 
-        // Botón contextual de interacción
+        // Botón contextual de interacción (sin emojis para compatibilidad total con Android)
         bool hasInteractable = MobileInput.HasNearbyInteractable;
         if (interactButtonObj != null)
         {
@@ -125,7 +139,7 @@ public class MobileControlsUI : MonoBehaviour
                 interactButtonObj.SetActive(hasInteractable);
 
             if (hasInteractable && interactLabel != null)
-                interactLabel.text = $"✋\n{MobileInput.NearbyInteractableLabel.ToUpperInvariant()}";
+                interactLabel.text = MobileInput.NearbyInteractableLabel.ToUpperInvariant();
         }
 
         // Estado visual del Modo Asalto
@@ -141,12 +155,12 @@ public class MobileControlsUI : MonoBehaviour
             {
                 float pulse = 0.85f + Mathf.PingPong(Time.unscaledTime * 2.2f, 0.15f);
                 assaultBg.color = new Color(1f, 0.92f, 0.48f, pulse);
-                assaultLabel.text = cachedPlayer.isAssaultActive ? "★\nACTIVO" : "★\nASALTO";
+                assaultLabel.text = cachedPlayer.isAssaultActive ? "ACTIVO" : "ASALTO";
             }
             else
             {
-                assaultBg.color = new Color(0.55f, 0.60f, 0.70f, 0.38f);
-                assaultLabel.text = $"★\n{Mathf.RoundToInt(pct * 100f)}%";
+                assaultBg.color = new Color(0.55f, 0.60f, 0.70f, 0.42f);
+                assaultLabel.text = $"{Mathf.RoundToInt(pct * 100f)}%";
             }
         }
     }
@@ -253,43 +267,42 @@ public class MobileControlsUI : MonoBehaviour
         rightCluster.anchoredPosition = Vector2.zero;
 
         // Botón Atacar (principal)
-        CrearBotonTactil(rightCluster, "Btn_Attack", "⚔\nATACAR",
-            new Vector2(-88f, 92f), 114f, 18,
-            new Color(0.28f, 0.08f, 0.08f, 0.85f), new Color(0.98f, 0.72f, 0.25f, 0.95f),
+        CrearBotonTactil(rightCluster, "Btn_Attack", "ATACAR", TouchIcon.Attack, false,
+            new Vector2(-88f, 92f), 116f, 16,
+            new Color(0.28f, 0.08f, 0.08f, 0.88f), new Color(0.98f, 0.72f, 0.25f, 0.95f),
             font, MobileInput.TriggerAttack);
 
         // Botón Bloqueo / Contraataque (mantenido)
-        CrearBotonTactil(rightCluster, "Btn_Block", "🛡\nESCUDO",
-            new Vector2(-212f, 76f), 88f, 14,
-            new Color(0.05f, 0.16f, 0.28f, 0.85f), new Color(0.15f, 0.90f, 1f, 0.95f),
+        CrearBotonTactil(rightCluster, "Btn_Block", "ESCUDO", TouchIcon.Shield, false,
+            new Vector2(-214f, 76f), 90f, 14,
+            new Color(0.05f, 0.16f, 0.28f, 0.88f), new Color(0.15f, 0.90f, 1f, 0.95f),
             font,
             () => { MobileInput.TriggerBlockDown(); MobileInput.SetBlockHeld(true); },
             () => MobileInput.SetBlockHeld(false));
 
         // Botón Esquive
-        CrearBotonTactil(rightCluster, "Btn_Dodge", "⚡\nESQUIVE",
-            new Vector2(-190f, 182f), 82f, 13,
-            new Color(0.06f, 0.22f, 0.18f, 0.85f), new Color(0.35f, 0.95f, 0.72f, 0.95f),
+        CrearBotonTactil(rightCluster, "Btn_Dodge", "ESQUIVE", TouchIcon.Dodge, false,
+            new Vector2(-190f, 184f), 84f, 13,
+            new Color(0.06f, 0.22f, 0.18f, 0.88f), new Color(0.35f, 0.95f, 0.72f, 0.95f),
             font, MobileInput.TriggerDodge);
 
         // Botón Modo Asalto
-        GameObject assaultGo = CrearBotonTactil(rightCluster, "Btn_Assault", "★\n0%",
-            new Vector2(-82f, 214f), 82f, 13,
-            new Color(0.16f, 0.14f, 0.05f, 0.88f), new Color(1f, 0.85f, 0.30f, 0.95f),
+        GameObject assaultGo = CrearBotonTactil(rightCluster, "Btn_Assault", "0%", TouchIcon.Assault, false,
+            new Vector2(-82f, 216f), 84f, 14,
+            new Color(0.16f, 0.14f, 0.05f, 0.90f), new Color(1f, 0.85f, 0.30f, 0.95f),
             font, MobileInput.TriggerAssault);
-        assaultButtonObj = assaultGo;
         assaultBg = assaultGo.GetComponent<Image>();
         assaultLabel = assaultGo.GetComponentInChildren<Text>();
 
         // Botón Cambiar Arma
-        CrearBotonTactil(rightCluster, "Btn_Weapon", "↻\nARMA",
-            new Vector2(-290f, 152f), 68f, 12,
-            new Color(0.14f, 0.11f, 0.08f, 0.85f), new Color(0.90f, 0.75f, 0.35f, 0.90f),
+        CrearBotonTactil(rightCluster, "Btn_Weapon", "ARMA", TouchIcon.Weapon, false,
+            new Vector2(-292f, 152f), 70f, 13,
+            new Color(0.14f, 0.11f, 0.08f, 0.88f), new Color(0.90f, 0.75f, 0.35f, 0.92f),
             font, MobileInput.TriggerNextWeapon);
 
         // Botón Contextual Interactuar
-        interactButtonObj = CrearBotonTactil(rightCluster, "Btn_Interact", "✋\nUSAR",
-            new Vector2(-188f, 290f), 92f, 13,
+        interactButtonObj = CrearBotonTactil(rightCluster, "Btn_Interact", "USAR", TouchIcon.Interact, false,
+            new Vector2(-188f, 294f), 94f, 14,
             new Color(0.10f, 0.24f, 0.32f, 0.92f), new Color(1f, 0.88f, 0.38f, 1f),
             font, MobileInput.TriggerInteract);
         interactLabel = interactButtonObj.GetComponentInChildren<Text>();
@@ -305,18 +318,18 @@ public class MobileControlsUI : MonoBehaviour
         topRightCluster.sizeDelta = new Vector2(90f, 160f);
         topRightCluster.anchoredPosition = Vector2.zero;
 
-        CrearBotonTactil(topRightCluster, "Btn_Pause", "⏸",
-            new Vector2(-38f, -38f), 54f, 20,
-            new Color(0.08f, 0.08f, 0.12f, 0.88f), new Color(0.92f, 0.76f, 0.32f, 0.95f),
+        CrearBotonTactil(topRightCluster, "Btn_Pause", "", TouchIcon.Pause, true,
+            new Vector2(-38f, -38f), 56f, 16,
+            new Color(0.08f, 0.08f, 0.14f, 0.90f), new Color(0.92f, 0.76f, 0.32f, 0.95f),
             font, () =>
             {
                 MobileInput.ResetHeldStates();
                 PauseAndVictoryUI.EnsureInstance().AlternarPausa();
             });
 
-        CrearBotonTactil(topRightCluster, "Btn_Shop", "🛒",
-            new Vector2(-38f, -104f), 54f, 20,
-            new Color(0.12f, 0.10f, 0.06f, 0.88f), new Color(0.92f, 0.76f, 0.32f, 0.95f),
+        CrearBotonTactil(topRightCluster, "Btn_Shop", "", TouchIcon.Shop, true,
+            new Vector2(-38f, -106f), 56f, 16,
+            new Color(0.14f, 0.11f, 0.06f, 0.90f), new Color(0.92f, 0.76f, 0.32f, 0.95f),
             font, () =>
             {
                 MobileInput.ResetHeldStates();
@@ -354,6 +367,8 @@ public class MobileControlsUI : MonoBehaviour
         Transform parent,
         string nombre,
         string texto,
+        TouchIcon icon,
+        bool soloIcono,
         Vector2 anchoredPos,
         float diameter,
         int fontSize,
@@ -376,30 +391,223 @@ public class MobileControlsUI : MonoBehaviour
         rt.sizeDelta = new Vector2(diameter, diameter);
         rt.anchoredPosition = anchoredPos;
 
-        GameObject txtObj = new GameObject("Label");
-        txtObj.transform.SetParent(btnObj.transform, false);
-        Text t = txtObj.AddComponent<Text>();
-        t.font = font;
-        t.text = texto;
-        t.fontSize = fontSize;
-        t.fontStyle = FontStyle.Bold;
-        t.color = Color.white;
-        t.alignment = TextAnchor.MiddleCenter;
-        t.raycastTarget = false;
-        RectTransform txtRt = txtObj.GetComponent<RectTransform>();
-        txtRt.anchorMin = Vector2.zero;
-        txtRt.anchorMax = Vector2.one;
-        txtRt.offsetMin = new Vector2(4f, 4f);
-        txtRt.offsetMax = new Vector2(-4f, -4f);
+        // Icono pixel-art procedural dentro del botón (evita glifos vacíos/cuadritos en Android)
+        GameObject iconObj = new GameObject("Icon");
+        iconObj.transform.SetParent(btnObj.transform, false);
+        Image iconImg = iconObj.AddComponent<Image>();
+        iconImg.sprite = ObtenerSpriteIconoTactil(icon);
+        iconImg.preserveAspect = true;
+        iconImg.raycastTarget = false;
+        RectTransform iconRt = iconObj.GetComponent<RectTransform>();
+        if (soloIcono)
+        {
+            float iconSize = diameter * 0.58f;
+            iconRt.sizeDelta = new Vector2(iconSize, iconSize);
+            iconRt.anchoredPosition = Vector2.zero;
+        }
+        else
+        {
+            float iconSize = diameter * 0.36f;
+            iconRt.sizeDelta = new Vector2(iconSize, iconSize);
+            iconRt.anchoredPosition = new Vector2(0f, diameter * 0.17f);
+        }
 
-        Outline ol = txtObj.AddComponent<Outline>();
-        ol.effectColor = new Color(0f, 0f, 0f, 0.9f);
-        ol.effectDistance = new Vector2(1.2f, -1.2f);
+        if (!soloIcono && !string.IsNullOrEmpty(texto))
+        {
+            GameObject txtObj = new GameObject("Label");
+            txtObj.transform.SetParent(btnObj.transform, false);
+            Text t = txtObj.AddComponent<Text>();
+            t.font = font;
+            t.text = texto;
+            t.fontSize = fontSize;
+            t.fontStyle = FontStyle.Bold;
+            t.color = Color.white;
+            t.alignment = TextAnchor.MiddleCenter;
+            t.raycastTarget = false;
+            RectTransform txtRt = txtObj.GetComponent<RectTransform>();
+            txtRt.anchorMin = new Vector2(0f, 0f);
+            txtRt.anchorMax = new Vector2(1f, 0.55f);
+            txtRt.offsetMin = new Vector2(4f, 4f);
+            txtRt.offsetMax = new Vector2(-4f, 0f);
+
+            Outline ol = txtObj.AddComponent<Outline>();
+            ol.effectColor = new Color(0f, 0f, 0f, 0.92f);
+            ol.effectDistance = new Vector2(1.2f, -1.2f);
+        }
 
         MobileTouchButton touchBtn = btnObj.AddComponent<MobileTouchButton>();
         touchBtn.Configurar(rt, onDown, onUp);
 
         return btnObj;
+    }
+
+    private static Sprite ObtenerSpriteIconoTactil(TouchIcon tipo)
+    {
+        if (iconCache.TryGetValue(tipo, out Sprite cached) && cached != null)
+            return cached;
+
+        Sprite sp = CrearSpriteIconoTactil(tipo);
+        iconCache[tipo] = sp;
+        return sp;
+    }
+
+    private static Sprite CrearSpriteIconoTactil(TouchIcon tipo)
+    {
+        const int s = 24;
+        Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+
+        for (int y = 0; y < s; y++)
+            for (int x = 0; x < s; x++)
+                tex.SetPixel(x, y, Color.clear);
+
+        Color oro = new Color(1f, 0.86f, 0.30f, 1f);
+        Color oroOscuro = new Color(0.75f, 0.52f, 0.12f, 1f);
+        Color blanco = new Color(0.96f, 0.98f, 1f, 1f);
+        Color acero = new Color(0.70f, 0.82f, 0.94f, 1f);
+        Color cyan = new Color(0.25f, 0.95f, 1f, 1f);
+        Color cyanOsc = new Color(0.08f, 0.50f, 0.72f, 1f);
+        Color verde = new Color(0.42f, 0.98f, 0.75f, 1f);
+
+        switch (tipo)
+        {
+            case TouchIcon.Pause:
+                for (int y = 4; y <= 19; y++)
+                {
+                    for (int x = 6; x <= 9; x++) tex.SetPixel(x, y, (x == 6 || y == 19) ? oro : blanco);
+                    for (int x = 14; x <= 17; x++) tex.SetPixel(x, y, (x == 14 || y == 19) ? oro : blanco);
+                }
+                break;
+
+            case TouchIcon.Shop:
+                // Bolsa de monedas / suministros colonial
+                for (int y = 3; y <= 14; y++)
+                {
+                    for (int x = 5; x <= 18; x++)
+                    {
+                        float d = Vector2.Distance(new Vector2(x, y), new Vector2(11.5f, 8.5f));
+                        if (d <= 6.2f)
+                        {
+                            bool borde = d >= 5.0f;
+                            tex.SetPixel(x, y, borde ? oroOscuro : oro);
+                        }
+                    }
+                }
+                // Cuello atado de la bolsa
+                for (int x = 8; x <= 15; x++)
+                {
+                    tex.SetPixel(x, 15, new Color(0.88f, 0.28f, 0.22f, 1f));
+                    tex.SetPixel(x, 16, oro);
+                }
+                for (int y = 17; y <= 20; y++)
+                    for (int x = 7 + (y - 17); x <= 16 - (y - 17); x++)
+                        tex.SetPixel(x, y, oro);
+                // Símbolo central brillante
+                for (int y = 6; y <= 11; y++) tex.SetPixel(11, y, blanco);
+                for (int x = 9; x <= 13; x++) tex.SetPixel(x, 9, blanco);
+                break;
+
+            case TouchIcon.Attack:
+                for (int i = 6; i <= 20; i++)
+                {
+                    tex.SetPixel(i, i, blanco);
+                    tex.SetPixel(i - 1, i, acero);
+                    tex.SetPixel(i, i - 1, acero);
+                }
+                for (int g = -3; g <= 3; g++) tex.SetPixel(7 + g, 7 - g, oro);
+                for (int h = 3; h <= 6; h++) tex.SetPixel(h, h, new Color(0.55f, 0.28f, 0.14f, 1f));
+                tex.SetPixel(2, 2, oro);
+                break;
+
+            case TouchIcon.Shield:
+                for (int y = 4; y <= 19; y++)
+                {
+                    int halfW = y >= 11 ? 6 : Mathf.RoundToInt(Mathf.Lerp(1f, 6f, (y - 4f) / 7f));
+                    for (int dx = -halfW; dx <= halfW; dx++)
+                    {
+                        int x = 12 + dx;
+                        bool borde = Mathf.Abs(dx) == halfW || y == 19 || y == 4;
+                        Color c = borde ? oro : (dx < 0 ? cyan : cyanOsc);
+                        tex.SetPixel(x, y, c);
+                    }
+                }
+                for (int y = 9; y <= 16; y++) tex.SetPixel(12, y, blanco);
+                for (int x = 9; x <= 15; x++) tex.SetPixel(x, 13, blanco);
+                break;
+
+            case TouchIcon.Dodge:
+                // Doble chevron >> de impulso
+                for (int dy = -6; dy <= 6; dy++)
+                {
+                    int tip1 = 10 - Mathf.Abs(dy);
+                    int tip2 = 17 - Mathf.Abs(dy);
+                    for (int w = 0; w < 3; w++)
+                    {
+                        if (tip1 - w >= 2) tex.SetPixel(tip1 - w, 12 + dy, w == 0 ? blanco : verde);
+                        if (tip2 - w >= 2) tex.SetPixel(tip2 - w, 12 + dy, w == 0 ? blanco : verde);
+                    }
+                }
+                break;
+
+            case TouchIcon.Assault:
+                // Estrella brillante de 8 puntas
+                for (int i = 4; i <= 19; i++)
+                {
+                    tex.SetPixel(12, i, oro);
+                    tex.SetPixel(11, i, oro);
+                    tex.SetPixel(i, 12, oro);
+                    tex.SetPixel(i, 11, oro);
+                }
+                for (int d = -5; d <= 5; d++)
+                {
+                    tex.SetPixel(12 + d, 12 + d, oro);
+                    tex.SetPixel(12 + d, 12 - d, oro);
+                }
+                for (int y = 10; y <= 13; y++)
+                    for (int x = 10; x <= 13; x++)
+                        tex.SetPixel(x, y, blanco);
+                break;
+
+            case TouchIcon.Weapon:
+                // Dos flechas opuestas de intercambio
+                for (int x = 5; x <= 18; x++)
+                {
+                    tex.SetPixel(x, 15, oro);
+                    tex.SetPixel(x, 16, oro);
+                    tex.SetPixel(x, 8, cyan);
+                    tex.SetPixel(x, 7, cyan);
+                }
+                for (int k = 1; k <= 3; k++)
+                {
+                    tex.SetPixel(18 - k, 16 + k, oro);
+                    tex.SetPixel(18 - k, 15 - k, oro);
+                    tex.SetPixel(5 + k, 8 + k, cyan);
+                    tex.SetPixel(5 + k, 7 - k, cyan);
+                }
+                break;
+
+            case TouchIcon.Interact:
+                // Rombo luminoso con signo !
+                for (int dy = -8; dy <= 8; dy++)
+                {
+                    int hw = 8 - Mathf.Abs(dy);
+                    for (int dx = -hw; dx <= hw; dx++)
+                    {
+                        bool borde = Mathf.Abs(dx) == hw;
+                        tex.SetPixel(12 + dx, 12 + dy, borde ? oro : new Color(0.08f, 0.28f, 0.42f, 1f));
+                    }
+                }
+                for (int y = 10; y <= 17; y++) { tex.SetPixel(12, y, blanco); tex.SetPixel(11, y, blanco); }
+                for (int y = 6; y <= 8; y++) { tex.SetPixel(12, y, oro); tex.SetPixel(11, y, oro); }
+                break;
+        }
+
+        tex.Apply();
+        tex.hideFlags = HideFlags.HideAndDontSave;
+        Sprite sp = Sprite.Create(tex, new Rect(0, 0, s, s), new Vector2(0.5f, 0.5f), 16f);
+        sp.hideFlags = HideFlags.HideAndDontSave;
+        return sp;
     }
 
     private static Sprite CrearSpriteCirculoBorde(Color fondo, Color borde, int size = 96)

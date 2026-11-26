@@ -204,7 +204,7 @@ public class OptionsModalUI : MonoBehaviour
 
         // Título Principal
         UITheme.EtiquetaConSombra(new Rect(px, curY, panelW, UITheme.Px(32f)),
-            "⚜ AJUSTES Y OPCIONES DE SAN FELIPE ⚜",
+            "★ AJUSTES Y OPCIONES DE SAN FELIPE ★",
             UITheme.Estilo(22, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Dorado));
         curY += UITheme.Px(38f);
 
@@ -232,7 +232,7 @@ public class OptionsModalUI : MonoBehaviour
             GUI.color = Color.white;
             UITheme.Borde(rBtn, colBorde, sel ? 2f : 1f);
 
-            string txt = sel ? $"<b><color=#FFE066>● {diffNames[i]}</color></b>" : diffNames[i];
+            string txt = sel ? $"<b><color=#FFE066>• {diffNames[i]}</color></b>" : diffNames[i];
             if (GUI.Button(rBtn, txt, UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleCenter, sel ? UITheme.Dorado : Color.white)))
             {
                 dificultadSeleccionada = i;
@@ -296,7 +296,7 @@ public class OptionsModalUI : MonoBehaviour
             Rect rScale = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(34f));
 
             int fpsActual = MobileInput.TargetFPS;
-            string fpsLabel = fpsActual >= 60 ? "⚡ Fluidez: 60 FPS" : "🔋 Ahorro: 30 FPS";
+            string fpsLabel = fpsActual >= 60 ? "★ Fluidez: 60 FPS" : "• Ahorro: 30 FPS";
             if (GUI.Button(rFps, fpsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, fpsActual >= 60 ? UITheme.Verde : UITheme.Dorado)))
             {
                 MobileInput.SetTargetFPS(fpsActual >= 60 ? 30 : 60);
@@ -317,7 +317,7 @@ public class OptionsModalUI : MonoBehaviour
             Rect rFs = new Rect(px + pad, curY, halfW, UITheme.Px(30f));
             Rect rVs = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(30f));
 
-            string fsLabel = fullscreen ? "▣ Pantalla Completa [ACTIVO]" : "⧈ Modo Ventana";
+            string fsLabel = fullscreen ? "★ Pantalla Completa [ACTIVO]" : "• Modo Ventana";
             if (GUI.Button(rFs, fsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, fullscreen ? UITheme.Verde : Color.white)))
             {
                 fullscreen = !fullscreen;
@@ -325,7 +325,7 @@ public class OptionsModalUI : MonoBehaviour
             }
             UITheme.Borde(rFs, fullscreen ? UITheme.Verde : new Color(0.4f, 0.4f, 0.5f), 1f);
 
-            string vsLabel = vsync ? "✔ Sincronización V-Sync" : "✖ V-Sync Desactivado";
+            string vsLabel = vsync ? "★ Sincronización V-Sync" : "X V-Sync Desactivado";
             if (GUI.Button(rVs, vsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, vsync ? UITheme.Turquesa : Color.white)))
             {
                 vsync = !vsync;
@@ -339,7 +339,7 @@ public class OptionsModalUI : MonoBehaviour
             Rect rScale = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(30f));
 
             bool touchActivo = MobileInput.ForceTouchControls;
-            string touchLabel = touchActivo ? "📱 Controles Táctiles [ACTIVO]" : "📱 Probar Modo Táctil";
+            string touchLabel = touchActivo ? "★ Controles Táctiles [ACTIVO]" : "• Probar Modo Táctil";
             if (GUI.Button(rTouch, touchLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, touchActivo ? UITheme.Verde : Color.white)))
             {
                 MobileInput.ForceTouchControls = !touchActivo;
@@ -470,9 +470,9 @@ public class OptionsModalUI : MonoBehaviour
     private static string ObtenerEtiquetaTamanoPad()
     {
         float s = MobileInput.ControlScale;
-        if (s < 0.92f) return "📐 Pad Táctil: Pequeño";
-        if (s > 1.10f) return "📐 Pad Táctil: Grande";
-        return "📐 Pad Táctil: Normal";
+        if (s < 0.92f) return "• Pad Táctil: Pequeño";
+        if (s > 1.10f) return "• Pad Táctil: Grande";
+        return "• Pad Táctil: Normal";
     }
 
     private static void CiclarTamanoPad()

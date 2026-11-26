@@ -312,7 +312,7 @@ public class EchoProgressionBarrier : MonoBehaviour
         float h = UITheme.Px(34f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
         UITheme.Panel(r, c, 2f);
-        string msgPortal = MobileInput.IsTouchControlsActive ? "Toca ✋ Ver" : promptLabel;
+        string msgPortal = MobileInput.IsTouchControlsActive ? "Toca botón VER" : promptLabel;
         GUI.Label(r, msgPortal, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, c));
     }
 }

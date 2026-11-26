@@ -161,7 +161,7 @@ public class InteractableSignOrNPC : MonoBehaviour
         Color colBorde = new Color(0.98f, 0.88f, 0.42f, 1f);
         Rect r = new Rect(rx, ry, w, h);
         UITheme.Panel(r, colBorde, 1.5f);
-        string msgPrompt = MobileInput.IsTouchControlsActive ? "Toca ✋ Hablar" : interactionPrompt;
+        string msgPrompt = MobileInput.IsTouchControlsActive ? "Toca botón HABLAR" : interactionPrompt;
         GUI.Label(r, msgPrompt, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }

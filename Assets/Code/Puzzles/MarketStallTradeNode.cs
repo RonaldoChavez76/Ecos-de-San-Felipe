@@ -216,7 +216,7 @@ public class MarketStallTradeNode : MonoBehaviour
 
         Rect r = new Rect(rx, ry, w, h);
         UITheme.Panel(r, colBorde, 2f);
-        string txtPrompt = MobileInput.IsTouchControlsActive ? "Toca ✋ Trueque" : labelPrompt;
+        string txtPrompt = MobileInput.IsTouchControlsActive ? "Toca botón TRUEQUE" : labelPrompt;
         GUI.Label(r, txtPrompt, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }

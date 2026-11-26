@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -196,12 +196,12 @@ public class InventoryHUD : MonoBehaviour
         float safeMarginY = Mathf.Max(UITheme.SafeTop + UITheme.Px(10f), UITheme.Px(20f));
         float pad = UITheme.Px(12f);
 
-        float width = Mathf.Clamp(UITheme.Px(305f), 270f, Screen.width * 0.30f);
+        float width = Mathf.Clamp(UITheme.Px(332f), 290f, Screen.width * 0.33f);
         float innerW = width - pad * 2f;
 
-        float row1H = UITheme.Px(18f);
-        float ecoBoxH = UITheme.Px(30f);
-        float bagTitleH = UITheme.Px(15f);
+        float row1H = UITheme.Px(20f);
+        float ecoBoxH = UITheme.Px(32f);
+        float bagTitleH = UITheme.Px(17f);
         float slotGap = UITheme.Px(7f);
         float slotSize = Mathf.Min(UITheme.Px(44f), (innerW - slotGap * 3f) / 4f);
         float gapY = UITheme.Px(5f);

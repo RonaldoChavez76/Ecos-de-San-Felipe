@@ -140,11 +140,11 @@ public class ParroquiaDoorGate : MonoBehaviour
             string motivo = enemigosActivos > 0
                 ? $"PUERTA SELLADA — Derrota a los enemigos restantes: {enemigosActivos}"
                 : "PUERTA SELLADA — Purifica el Atrio de la Parroquia";
-            UITheme.Banner(y, "🔒 " + motivo, UITheme.Alerta, 680f, 18);
+            UITheme.Banner(y, "[BLOQUEADO] " + motivo, UITheme.Alerta, 680f, 18);
         }
         else if (puertaAbierta && avisoTimer > 0f)
         {
-            UITheme.Banner(y, "✔ ¡Puerta abierta! Entra a la Parroquia", UITheme.Verde, 560f, 18);
+            UITheme.Banner(y, "★ ¡Puerta abierta! Entra a la Parroquia", UITheme.Verde, 560f, 18);
         }
     }
 }

@@ -155,7 +155,7 @@ public class ZoneWaveSpawner : MonoBehaviour
         {
             currentWaveIndex = w;
             WaveDefinition wave = waves[w];
-            MostrarBanner($"⚔ {zoneTitle.ToUpperInvariant()} — OLEADA {w + 1}/{waves.Count}: {wave.waveTitle} ⚔", 3.2f);
+            MostrarBanner($"★ {zoneTitle.ToUpperInvariant()} — OLEADA {w + 1}/{waves.Count}: {wave.waveTitle} ★", 3.2f);
 
             yield return new WaitForSeconds(0.65f);
 
@@ -204,11 +204,16 @@ public class ZoneWaveSpawner : MonoBehaviour
             rewardToEnableOnClear.SetActive(true);
         }
 
-        // Soltar botín abundante de oro, corazón sagrado y provisiones al purificar la zona
-        HeartPickup.SpawnHeart(transform.position, 35f, transform);
-        ResourcePickup.SpawnDrops(transform.position, 1.0f, 35, 60, 1.0f, 8, 1.0f, 40f, 0.5f, 30f, transform);
+        ResourcePickup.SpawnDrops(
+            transform.position,
+            0.70f, 12, 22,
+            0.45f, 5,
+            0.35f, 25f,
+            0.18f, 22f,
+            transform,
+            ajustarProbabilidadPorDificultad: true);
 
-        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (+Oro y Corazón Sagrado) ★", 4.0f);
+        MostrarBanner($"★ ¡{zoneTitle.ToUpperInvariant()} PURIFICADO! (provisiones encontradas) ★", 4.0f);
     }
 
     private void OnDisable()
@@ -321,11 +326,22 @@ public class ZoneWaveSpawner : MonoBehaviour
 
     public static Texture2D LoadSpriteTexture(string fileNameWithoutExt)
     {
+        if (string.IsNullOrEmpty(fileNameWithoutExt)) return null;
+
 #if UNITY_EDITOR
         string path = $"Assets/Sprites/{fileNameWithoutExt}.png";
         Texture2D edTex = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         if (edTex != null) return edTex;
 #endif
+        // Carga directa desde Assets/Resources/Sprites/ para compilaciones Standalone (.exe / WebGL)
+        Texture2D resTex = Resources.Load<Texture2D>($"Sprites/{fileNameWithoutExt}");
+        if (resTex == null) resTex = Resources.Load<Texture2D>(fileNameWithoutExt);
+        if (resTex != null)
+        {
+            resTex.filterMode = FilterMode.Point;
+            return resTex;
+        }
+
         // Fallback en modo ejecución si ya está cargada en memoria
         Texture2D[] loaded = Resources.FindObjectsOfTypeAll<Texture2D>();
         foreach (var t in loaded)

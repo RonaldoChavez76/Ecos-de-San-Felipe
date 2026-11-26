@@ -466,7 +466,7 @@ public class ProjectileBehaviour : MonoBehaviour
 
                 // Si es la mega esfera del jefe, multiplicamos el daño de retorno a 80 y aceleramos
                 float speedMultiplier = projectileType == ProjectileType.Boss_Mega_Orb ? 2.0f : 1.6f;
-                float dmgMultiplier = projectileType == ProjectileType.Boss_Mega_Orb ? 2.5f : 2.2f;
+                float dmgMultiplier = projectileType == ProjectileType.Boss_Mega_Orb ? 2.0f : 1.8f;
 
                 Deflect(dirRetorno, speed * speedMultiplier, dmgMultiplier, collision.gameObject);
 
@@ -474,11 +474,11 @@ public class ProjectileBehaviour : MonoBehaviour
                 {
                     if (projectileType == ProjectileType.Boss_Mega_Orb)
                     {
-                        pm.MostrarAvisoRecurso("⚡ ¡GRAN CONTRAATAQUE CÓSMICO! ¡JEFE ATURDIDO!");
+                        pm.MostrarAvisoRecurso("★ ¡GRAN CONTRAATAQUE CÓSMICO! ¡JEFE ATURDIDO!");
                     }
                     else
                     {
-                        pm.MostrarAvisoRecurso("⚡ ¡CONTRAATAQUE! Proyectil devuelto");
+                        pm.MostrarAvisoRecurso("★ ¡CONTRAATAQUE! Proyectil devuelto");
                     }
                 }
                 return;
@@ -514,7 +514,7 @@ public class ProjectileBehaviour : MonoBehaviour
 
             if (boss != null && projectileType == ProjectileType.Boss_Mega_Orb)
             {
-                boss.AturdirPorContraataqueMegaEsfera(80f);
+                boss.AturdirPorContraataqueMegaEsfera(60f);
             }
             else if (enemyAI != null)
             {

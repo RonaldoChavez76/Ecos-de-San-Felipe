@@ -41,8 +41,8 @@ public static class UITheme
     /// <summary>Factor de escala según la altura de la pantalla (720p = 1.0).</summary>
     public static float Escala => Mathf.Clamp(Screen.height / 720f, 0.78f, 2.5f);
 
-    /// <summary>Tamaño de fuente escalado (mínimo 10 px para admitir etiquetas compactas y legibles).</summary>
-    public static int Fuente(int basePx) => Mathf.Max(10, Mathf.RoundToInt(basePx * Escala));
+    /// <summary>Tamaño de fuente escalado (+13% para lectura cómoda en móvil y PC).</summary>
+    public static int Fuente(int basePx) => Mathf.Max(11, Mathf.RoundToInt(basePx * Escala * 1.13f));
 
     public static float Px(float basePx) => basePx * Escala;
 

@@ -103,7 +103,7 @@ public class DialogueManager : MonoBehaviour
         speakerNameText.text = currentSpeaker.ToUpperInvariant();
         promptText.text = autoAdvanceEnabled
             ? "Este mensaje avanzará automáticamente"
-            : (MobileInput.IsTouchControlsActive ? "Toca el cuadro para continuar ▸" : "[E] / [ESPACIO] Continuar");
+            : (MobileInput.IsTouchControlsActive ? "Toca el cuadro para continuar ▶" : "[E] / [ESPACIO] Continuar");
         ShowCurrentLine();
     }
 
@@ -220,7 +220,7 @@ public class DialogueManager : MonoBehaviour
         speakerObj.transform.SetParent(dialoguePanel.transform, false);
         speakerNameText = speakerObj.AddComponent<Text>();
         speakerNameText.font = font;
-        speakerNameText.fontSize = 26;
+        speakerNameText.fontSize = 29;
         speakerNameText.fontStyle = FontStyle.Bold;
         speakerNameText.color = new Color(0.55f, 0.97f, 1f, 1f);
         speakerNameText.alignment = TextAnchor.MiddleLeft;
@@ -233,7 +233,7 @@ public class DialogueManager : MonoBehaviour
         bodyObj.transform.SetParent(dialoguePanel.transform, false);
         bodyText = bodyObj.AddComponent<Text>();
         bodyText.font = font;
-        bodyText.fontSize = 26;
+        bodyText.fontSize = 29;
         bodyText.color = Color.white;
         bodyText.alignment = TextAnchor.UpperLeft;
         bodyText.horizontalOverflow = HorizontalWrapMode.Wrap;
@@ -246,7 +246,7 @@ public class DialogueManager : MonoBehaviour
         promptObj.transform.SetParent(dialoguePanel.transform, false);
         promptText = promptObj.AddComponent<Text>();
         promptText.font = font;
-        promptText.fontSize = 18;
+        promptText.fontSize = 21;
         promptText.color = new Color(1f, 0.90f, 0.50f, 1f);
         promptText.alignment = TextAnchor.MiddleRight;
         promptText.text = "[E] / [ESPACIO] Continuar";

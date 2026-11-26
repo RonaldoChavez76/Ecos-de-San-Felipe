@@ -1495,13 +1495,13 @@ public class PlayerMovement : MonoBehaviour
         float panelX = safeMarginX;
         float panelY = safeMarginY;
         float pad = UITheme.Px(14f);
-        float panelW = Mathf.Clamp(UITheme.Px(310f), 275f, Screen.width * 0.32f);
+        float panelW = Mathf.Clamp(UITheme.Px(332f), 290f, Screen.width * 0.34f);
         float barW = panelW - pad * 2f;
 
-        float row1H = UITheme.Px(18f);
+        float row1H = UITheme.Px(20f);
         float barH = UITheme.Px(15f);
-        float row3H = UITheme.Px(14f);
-        float row4H = UITheme.Px(18f);
+        float row3H = UITheme.Px(15f);
+        float row4H = UITheme.Px(20f);
         float gap = UITheme.Px(5f);
 
         float panelH = pad * 2f + row1H + gap + barH + gap + row3H + gap + row4H;
@@ -1598,7 +1598,7 @@ public class PlayerMovement : MonoBehaviour
         // Aviso temporal si falta maná/flechas o confirmación de contraataque (DEBAJO del menú de armas para que jamás se pisen)
         if (avisoRecursoTimer > 0f)
         {
-            float avY = menuY + UITheme.Px(66f);
+            float avY = menuY + UITheme.Px(72f);
             bool esContraataque = avisoRecurso.Contains("CONTRAATAQUE") || avisoRecurso.Contains("Oro");
             GUI.color = esContraataque ? new Color(0.04f, 0.42f, 0.56f, 0.94f) : new Color(0.85f, 0.20f, 0.20f, 0.92f);
             GUI.DrawTexture(new Rect(panelX, avY, panelW, UITheme.Px(22f)), UITheme.Blanca);
@@ -1713,7 +1713,7 @@ public class PlayerMovement : MonoBehaviour
         float gap = UITheme.Px(6f);
         int count = Mathf.Min(3, armas.Count);
         float cardW = (width - pad * 2f - gap * (count - 1)) / count;
-        float cardH = UITheme.Px(44f);
+        float cardH = UITheme.Px(48f);
         float totalH = cardH + pad * 2f;
 
         Rect rMenu = new Rect(x, y, width, totalH);

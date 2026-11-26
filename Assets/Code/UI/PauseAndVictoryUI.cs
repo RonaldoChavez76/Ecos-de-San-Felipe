@@ -314,7 +314,7 @@ public class PauseAndVictoryUI : MonoBehaviour
         y += btnH + gap;
 
         // 2. Ajustes y Opciones
-        if (GUI.Button(new Rect(bx, y, btnW, btnH), "⚙ Ajustes y Opciones", boton))
+        if (GUI.Button(new Rect(bx, y, btnW, btnH), "★ Ajustes y Opciones", boton))
         {
             OptionsModalUI.EnsureInstance().AbrirModal();
         }
@@ -324,7 +324,7 @@ public class PauseAndVictoryUI : MonoBehaviour
         SaveStateManager save = SaveStateManager.Instance;
         bool hayCheckpoint = save != null && save.HayCheckpointGuardado;
         GUI.enabled = hayCheckpoint;
-        string textoCheckpoint = hayCheckpoint ? "↺ Volver al último checkpoint" : "↺ No hay checkpoint guardado";
+        string textoCheckpoint = hayCheckpoint ? "« Volver al último checkpoint" : "« No hay checkpoint guardado";
         if (GUI.Button(new Rect(bx, y, btnW, btnH), textoCheckpoint, boton))
         {
             menuPausaAbierto = false;
@@ -334,7 +334,7 @@ public class PauseAndVictoryUI : MonoBehaviour
         y += btnH + gap;
 
         // 4. Volver al Menú Principal
-        if (GUI.Button(new Rect(bx, y, btnW, btnH), "⌂ Salir al Menú Principal", boton))
+        if (GUI.Button(new Rect(bx, y, btnW, btnH), "« Salir al Menú Principal", boton))
         {
             SaveStateManager.Instance?.GuardarProgreso();
             Time.timeScale = 1f;
@@ -422,7 +422,7 @@ public class PauseAndVictoryUI : MonoBehaviour
         float pulse = 0.85f + Mathf.Sin(Time.unscaledTime * 4f) * 0.15f;
         Color ecoCol = new Color(0.2f * pulse, 0.9f * pulse, 1.0f * pulse, 1f);
         GUI.Label(new Rect(px + pad, py + UITheme.Px(78f), innerW, UITheme.Px(26f)),
-            $"✦  {nombreEcoCompletado.ToUpper()} DESPERTADO  ({ecos}/3)  ✦",
+            $"★  {nombreEcoCompletado.ToUpper()} DESPERTADO  ({ecos}/3)  ★",
             UITheme.Estilo(18, FontStyle.Bold, TextAnchor.MiddleCenter, ecoCol));
 
         Rect rLore = new Rect(px + pad, py + UITheme.Px(108f), innerW, UITheme.Px(42f));
@@ -467,8 +467,8 @@ public class PauseAndVictoryUI : MonoBehaviour
         GUIStyle boton = UITheme.Boton(15);
 
         string txtSiguienteNivel = nivelCompletado == 1
-            ? "Avanzar al Nivel 2: El Mercado ➔"
-            : (nivelCompletado == 2 ? "Avanzar al Nivel 3: Cerro del Fraile ➔" : "Continuar Aventura");
+            ? "Avanzar al Nivel 2: El Mercado >>"
+            : (nivelCompletado == 2 ? "Avanzar al Nivel 3: Cerro del Fraile >>" : "Continuar Aventura");
 
         if (GUI.Button(new Rect(px + pad, by, btnW, btnH), txtSiguienteNivel, boton))
         {

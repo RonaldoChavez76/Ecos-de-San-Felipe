@@ -107,7 +107,27 @@ public class PantallaInicioManager : MonoBehaviour
         ActualizarDisponibilidadContinuar();
         ActualizarBotonSalirPlataforma();
         ActualizarTextoControlesSegunPlataforma();
+        LimpiarGlifosAntiguosEnCanvas();
         MostrarMenuPrincipal();
+    }
+
+    private void LimpiarGlifosAntiguosEnCanvas()
+    {
+        if (panelMenuInicio == null) return;
+        foreach (Text tx in panelMenuInicio.GetComponentsInChildren<Text>(true))
+        {
+            if (tx == null || string.IsNullOrEmpty(tx.text)) continue;
+            string s = tx.text;
+            if (s.Contains("⚔") || s.Contains("✦") || s.Contains("⚙") || s.Contains("📜") || s.Contains("✕"))
+            {
+                tx.text = s
+                    .Replace("⚔", "★")
+                    .Replace("✦", "★")
+                    .Replace("⚙", "★")
+                    .Replace("📜", "•")
+                    .Replace("✕", "X");
+            }
+        }
     }
 
     private void ActualizarBotonSalirPlataforma()
@@ -134,13 +154,13 @@ public class PantallaInicioManager : MonoBehaviour
             {
                 t.text =
                     "<b>[JOYSTICK IZQUIERDO]</b> : Mover a Ronan en 8 direcciones\n" +
-                    "<b>[⚔ ATACAR]</b> : Atacar con el arma equipada (Espada / Arco / Báculo)\n" +
-                    "<b>[🛡 ESCUDO (MANTENER)]</b> : Bloqueo y <b>Contraataque (0.26s)</b>\n" +
-                    "<b>[⚡ ESQUIVE]</b> : Rodar con invulnerabilidad temporal\n" +
-                    "<b>[★ ASALTO]</b> : Desatar <b>Modo Asalto</b> al llegar al 100%\n" +
-                    "<b>[↻ ARMA / TARJETAS]</b> : Cambiar de arma rápidamente\n" +
-                    "<b>[✋ BOTÓN CONTEXTUAL]</b> : Hablar, abrir cofres, trueque o purificar\n" +
-                    "<b>[⏸ / 🛒]</b> : Pausa, Opciones y Tienda en la esquina superior derecha";
+                    "<b>[ATACAR]</b> : Atacar con el arma equipada (Espada / Arco / Báculo)\n" +
+                    "<b>[ESCUDO (MANTENER)]</b> : Bloqueo y <b>Contraataque (0.26s)</b>\n" +
+                    "<b>[ESQUIVE]</b> : Rodar con invulnerabilidad temporal\n" +
+                    "<b>[ASALTO]</b> : Desatar <b>Modo Asalto</b> al llegar al 100%\n" +
+                    "<b>[ARMA / TARJETAS]</b> : Cambiar de arma rápidamente\n" +
+                    "<b>[BOTÓN INTERACTUAR]</b> : Hablar, abrir cofres, trueque o purificar\n" +
+                    "<b>[PAUSA / TIENDA]</b> : Opciones y Tienda en la esquina superior derecha";
                 break;
             }
         }
@@ -393,7 +413,7 @@ public class PantallaInicioManager : MonoBehaviour
         }
 
         string hexCol = ColorUtility.ToHtmlStringRGB(colDif);
-        txtPlacaDificultad.text = $"⚔  DIFICULTAD: <color=#{hexCol}><b>[ {difNombre} ]</b></color>  ⚔";
+        txtPlacaDificultad.text = $"★  DIFICULTAD: <color=#{hexCol}><b>[ {difNombre} ]</b></color>  ★";
     }
 
     private void ActualizarSlideHistoria()
@@ -772,7 +792,7 @@ public class PantallaInicioManager : MonoBehaviour
         outTitulo.effectDistance = new Vector2(2f, -2f);
 
         // SUBTÍTULO
-        Text tSub = CrearTexto(marcoCentral.transform, "Subtitulo_SanFelipe", "Torres Mochas — San Felipe, Guanajuato", 16, new Color(0.55f, 0.95f, 1f), new Vector2(0, 198), new Vector2(480, 28), fuente);
+        Text tSub = CrearTexto(marcoCentral.transform, "Subtitulo_SanFelipe", "Torres Mochas — San Felipe, Guanajuato", 18, new Color(0.55f, 0.95f, 1f), new Vector2(0, 198), new Vector2(490, 30), fuente);
         tSub.fontStyle = FontStyle.Italic;
         Outline outSub = tSub.gameObject.AddComponent<Outline>();
         outSub.effectColor = new Color(0.04f, 0.08f, 0.14f, 0.95f);
@@ -783,7 +803,7 @@ public class PantallaInicioManager : MonoBehaviour
 
         // PLACA DE DIFICULTAD INTERACTIVA
         GameObject placaDifObj = CrearBotonConSprite(marcoCentral.transform, "Placa_Dificultad", "", new Vector2(0, 142), new Vector2(390, 36), spBotonDorado, fuente, AbrirMenuOpciones);
-        txtPlacaDificultad = CrearTexto(placaDifObj.transform, "Texto_Dificultad", "⚔  DIFICULTAD: [ NORMAL ]  ⚔", 15, Color.white, Vector2.zero, new Vector2(380, 34), fuente);
+        txtPlacaDificultad = CrearTexto(placaDifObj.transform, "Texto_Dificultad", "★  DIFICULTAD: [ NORMAL ]  ★", 16, Color.white, Vector2.zero, new Vector2(380, 34), fuente);
         txtPlacaDificultad.fontStyle = FontStyle.Bold;
         Outline outDif = txtPlacaDificultad.gameObject.AddComponent<Outline>();
         outDif.effectColor = new Color(0.15f, 0.08f, 0.02f, 0.9f);
@@ -791,11 +811,11 @@ public class PantallaInicioManager : MonoBehaviour
 
         // LOS 6 BOTONES ESTILIZADOS
         CrearBotonConSprite(marcoCentral.transform, "Boton_Continuar", "▶  CONTINUAR PARTIDA", new Vector2(0, 96), new Vector2(400, 42), spBotonVerde, fuente, ContinuarPartida);
-        CrearBotonConSprite(marcoCentral.transform, "Boton_IniciarAventura", "✦  NUEVA AVENTURA (HISTORIA)", new Vector2(0, 49), new Vector2(400, 42), spBotonAzul, fuente, ComenzarHistoriaCuatroImagenes);
-        CrearBotonConSprite(marcoCentral.transform, "Boton_JugarDirecto", "⚔  NUEVA AVENTURA — NIVEL 1", new Vector2(0, 2), new Vector2(400, 42), spBotonVerde, fuente, ComenzarNuevaAventuraDirecta);
-        CrearBotonConSprite(marcoCentral.transform, "Boton_Opciones", "⚙  AJUSTES Y OPCIONES", new Vector2(0, -45), new Vector2(400, 42), spBotonDorado, fuente, AbrirMenuOpciones);
-        CrearBotonConSprite(marcoCentral.transform, "Boton_Controles", "📜  MAPA DE TECLAS Y CONTROLES", new Vector2(0, -92), new Vector2(400, 42), spBotonMarron, fuente, AlternarPanelControles);
-        CrearBotonConSprite(marcoCentral.transform, "Boton_Salir", "✕  SALIR DEL JUEGO", new Vector2(0, -139), new Vector2(400, 42), spBotonRojo, fuente, SalirDelJuego);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_IniciarAventura", "★  NUEVA AVENTURA (HISTORIA)", new Vector2(0, 49), new Vector2(400, 42), spBotonAzul, fuente, ComenzarHistoriaCuatroImagenes);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_JugarDirecto", "▶  NUEVA AVENTURA — NIVEL 1", new Vector2(0, 2), new Vector2(400, 42), spBotonVerde, fuente, ComenzarNuevaAventuraDirecta);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Opciones", "★  AJUSTES Y OPCIONES", new Vector2(0, -45), new Vector2(400, 42), spBotonDorado, fuente, AbrirMenuOpciones);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Controles", "•  MAPA DE CONTROLES", new Vector2(0, -92), new Vector2(400, 42), spBotonMarron, fuente, AlternarPanelControles);
+        CrearBotonConSprite(marcoCentral.transform, "Boton_Salir", "X  SALIR DEL JUEGO", new Vector2(0, -139), new Vector2(400, 42), spBotonRojo, fuente, SalirDelJuego);
 
         // PIE DEL MARCO (CRÉDITOS Y VERSIÓN)
         Text tCred = CrearTexto(marcoCentral.transform, "Texto_Creditos", "UTNG — Creación de Videojuegos | Santiago Ronaldo Chávez Piñón", 13, new Color(0.85f, 0.82f, 0.78f), new Vector2(0, -222), new Vector2(490, 24), fuente);
@@ -838,7 +858,7 @@ public class PantallaInicioManager : MonoBehaviour
             "<b>[E]</b> : Hablar con habitantes / Leer inscripciones sagradas\n" +
             "<b>[ESC]</b> : Pausar la partida y abrir Ajustes / Opciones";
 
-        Text tCtrlBody = CrearTexto(panelControles.transform, "Texto_Controles_Detallado", controlesDetalle, 15, new Color(0.95f, 0.93f, 0.88f), new Vector2(0, 35), new Vector2(580, 260), fuente);
+        Text tCtrlBody = CrearTexto(panelControles.transform, "Texto_Controles_Detallado", controlesDetalle, 17, new Color(0.95f, 0.93f, 0.88f), new Vector2(0, 35), new Vector2(590, 268), fuente);
         tCtrlBody.alignment = TextAnchor.MiddleLeft;
         tCtrlBody.lineSpacing = 1.25f;
         Outline outCtrlB = tCtrlBody.gameObject.AddComponent<Outline>();
@@ -891,7 +911,7 @@ public class PantallaInicioManager : MonoBehaviour
         rtCaja.sizeDelta = new Vector2(1040f, 132f);
         rtCaja.anchoredPosition = new Vector2(0f, -265f);
 
-        txtSlideDialogo = CrearTexto(cajaTextoIntro.transform, "Texto_Dialogo", "", 19, new Color(0.96f, 0.94f, 0.90f), new Vector2(0, 0), new Vector2(980, 110), fuente);
+        txtSlideDialogo = CrearTexto(cajaTextoIntro.transform, "Texto_Dialogo", "", 21, new Color(0.96f, 0.94f, 0.90f), new Vector2(0, 0), new Vector2(980, 114), fuente);
         txtSlideDialogo.alignment = TextAnchor.MiddleLeft;
 
         txtIndicadorSlide = CrearTexto(panelHistoriaCuatroImagenes.transform, "Texto_Indicador_Slide", "Crónica 1 de 4", 15, new Color(0.55f, 0.95f, 1f), new Vector2(-250, -337), new Vector2(600, 30), fuente);
@@ -1573,7 +1593,7 @@ public class PantallaInicioManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(etiqueta))
         {
-            Text txt = CrearTexto(btnObj.transform, "Texto", etiqueta, 17, Color.white, Vector2.zero, size, fuente);
+            Text txt = CrearTexto(btnObj.transform, "Texto", etiqueta, 19, Color.white, Vector2.zero, size, fuente);
             txt.fontStyle = FontStyle.Bold;
             Outline outTxt = txt.gameObject.AddComponent<Outline>();
             outTxt.effectColor = new Color(0f, 0f, 0f, 0.85f);
