@@ -47,11 +47,11 @@ public class ShopManager : MonoBehaviour
     {
         if (avisoTimer > 0f) avisoTimer -= Time.unscaledDeltaTime;
 
-        if (Input.GetKeyDown(teclaTienda))
+        if (MobileInput.GetShopDown(teclaTienda))
         {
             AlternarTienda();
         }
-        else if (tiendaAbierta && Input.GetKeyDown(KeyCode.Escape))
+        else if (tiendaAbierta && MobileInput.GetPauseDown())
         {
             CerrarTienda();
         }
@@ -221,10 +221,11 @@ public class ShopManager : MonoBehaviour
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), UITheme.Blanca);
         GUI.color = Color.white;
 
-        float panelW = Mathf.Min(UITheme.Px(720f), Screen.width - 30f);
-        float panelH = Mathf.Min(UITheme.Px(540f), Screen.height - 30f);
-        float px = (Screen.width - panelW) * 0.5f;
-        float py = (Screen.height - panelH) * 0.5f;
+        Rect sa = UITheme.SafeAreaGUI;
+        float panelW = Mathf.Min(UITheme.Px(720f), sa.width - UITheme.Px(24f));
+        float panelH = Mathf.Min(UITheme.Px(540f), sa.height - UITheme.Px(24f));
+        float px = sa.x + (sa.width - panelW) * 0.5f;
+        float py = sa.y + (sa.height - panelH) * 0.5f;
         float pad = UITheme.Px(20f);
         float innerW = panelW - pad * 2f;
 
@@ -241,8 +242,9 @@ public class ShopManager : MonoBehaviour
             UITheme.Estilo(22, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Dorado));
         y += UITheme.Px(36f);
 
+        string exitHint = MobileInput.IsTouchControlsActive ? "Toca Cerrar Tienda para volver" : "Presiona [B] o [ESC] para salir";
         GUI.Label(new Rect(px, y, panelW, UITheme.Px(24f)),
-            $"💰 TU ORO ACTUAL: <color=#FFE066><b>{oroActual} monedas</b></color>    |    Presiona [B] o [ESC] para salir",
+            $"💰 TU ORO ACTUAL: <color=#FFE066><b>{oroActual} monedas</b></color>    |    {exitHint}",
             UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white));
         y += UITheme.Px(32f);
 

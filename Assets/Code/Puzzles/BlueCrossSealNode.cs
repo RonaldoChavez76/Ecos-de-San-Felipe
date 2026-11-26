@@ -75,7 +75,8 @@ public class BlueCrossSealNode : MonoBehaviour
             // Interacción de purificación
             if (dist <= 2.2f)
             {
-                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
+                MobileInput.ReportInteractableNearby("Purificar");
+                if (MobileInput.GetInteractDown(KeyCode.E) || MobileInput.GetAttackDown(KeyCode.J))
                 {
                     Purificar();
                 }
@@ -118,6 +119,23 @@ public class BlueCrossSealNode : MonoBehaviour
         siguientePulsoTiempo = Time.time + 4f;
         siguienteOrbeTiempo = Time.time + 4f;
         puzzlePadre?.NotificarSelloCorrompido(this);
+    }
+
+    public void RestaurarEstadoCheckpoint(bool estabaPurificado)
+    {
+        purificado = estabaPurificado;
+        foreach (GameObject orb in orbesDefensivos)
+        {
+            if (orb != null) Destroy(orb);
+        }
+        orbesDefensivos.Clear();
+        nacimientoOrbes.Clear();
+        if (chispas != null)
+        {
+            if (purificado) chispas.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            else if (!chispas.isPlaying) chispas.Play();
+        }
+        ActualizarVisual(purificado);
     }
 
     private void ActualizarVisual(bool limpio)
@@ -218,6 +236,7 @@ public class BlueCrossSealNode : MonoBehaviour
         UITheme.Panel(r, bordeColor, 2f);
         GUIStyle lblStyle = UITheme.Estilo(12, FontStyle.Bold, TextAnchor.MiddleCenter, Color.white);
         lblStyle.wordWrap = false;
-        GUI.Label(r, $"[E / J] Purificar {nombreSello}", lblStyle);
+        string sealPrompt = MobileInput.IsTouchControlsActive ? $"Purificar {nombreSello}" : $"[E / J] Purificar {nombreSello}";
+        GUI.Label(r, sealPrompt, lblStyle);
     }
 }

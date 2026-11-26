@@ -33,6 +33,9 @@ public class OptionsModalUI : MonoBehaviour
     private const string PREF_BRILLO = "Graficos_Brillo";
     private const string PREF_FULLSCREEN = "Graficos_FullScreen";
     private const string PREF_VSYNC = "Graficos_VSync";
+    private static Texture2D sliderTransparentTexture;
+    private static GUIStyle sliderInvisibleStyle;
+    private static GUIStyle sliderInvisibleThumbStyle;
 
     public static OptionsModalUI EnsureInstance()
     {
@@ -64,6 +67,14 @@ public class OptionsModalUI : MonoBehaviour
     private void Start()
     {
         AplicarAjustesGraficos();
+    }
+
+    private void Update()
+    {
+        if (isOptionsOpen && MobileInput.GetPauseDown())
+        {
+            CerrarModal();
+        }
     }
 
     public void CargarPreferencias()
@@ -132,6 +143,9 @@ public class OptionsModalUI : MonoBehaviour
         fullscreen = true;
         vsync = true;
         dificultadSeleccionada = 1;
+        MobileInput.ControlScale = 1.0f;
+        MobileInput.ControlOpacity = 0.78f;
+        MobileInput.SetTargetFPS(60);
 
         GuardarPreferencias();
     }
@@ -173,11 +187,12 @@ public class OptionsModalUI : MonoBehaviour
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), UITheme.Blanca);
         GUI.color = Color.white;
 
-        float panelW = Mathf.Min(UITheme.Px(720f), Screen.width - UITheme.Px(28f));
-        float panelH = Mathf.Min(UITheme.Px(600f), Screen.height - UITheme.Px(24f));
-        float px = (Screen.width - panelW) * 0.5f;
-        float py = (Screen.height - panelH) * 0.5f;
-        float pad = UITheme.Px(24f);
+        Rect sa = UITheme.SafeAreaGUI;
+        float panelW = Mathf.Min(UITheme.Px(740f), sa.width - UITheme.Px(24f));
+        float panelH = Mathf.Min(UITheme.Px(655f), sa.height - UITheme.Px(18f));
+        float px = sa.x + (sa.width - panelW) * 0.5f;
+        float py = sa.y + (sa.height - panelH) * 0.5f;
+        float pad = UITheme.Px(22f);
         float innerW = panelW - pad * 2f;
 
         Rect rPanel = new Rect(px, py, panelW, panelH);
@@ -265,33 +280,82 @@ public class OptionsModalUI : MonoBehaviour
         float valueW = innerW * 0.18f;
 
         GUI.Label(new Rect(px + pad, curY, labelW, UITheme.Px(20f)), "Brillo / Exposición", UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-        brillo = GUI.HorizontalSlider(new Rect(px + pad + labelW, curY + UITheme.Px(4f), sliderW, UITheme.Px(16f)), brillo, -0.4f, 0.4f);
+        Rect brightnessSliderRect = new Rect(px + pad + labelW, curY + UITheme.Px(4f), sliderW, UITheme.Px(16f));
+        float normalizedBrightness = Mathf.InverseLerp(-0.4f, 0.4f, brillo);
+        normalizedBrightness = DibujarSliderPersonalizado(brightnessSliderRect, normalizedBrightness);
+        brillo = Mathf.Lerp(-0.4f, 0.4f, normalizedBrightness);
         string brilloTxt = brillo >= 0f ? $"+{Mathf.RoundToInt(brillo * 100f)}%" : $"{Mathf.RoundToInt(brillo * 100f)}%";
         GUI.Label(new Rect(px + pad + labelW + sliderW + UITheme.Px(6f), curY, valueW, UITheme.Px(20f)), brilloTxt, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, UITheme.Dorado));
         curY += UITheme.Px(28f);
 
-        // Toggles Pantalla Completa y V-Sync
+        // Toggles visuales y controles táctiles según plataforma
         float halfW = (innerW - UITheme.Px(12f)) * 0.5f;
-        Rect rFs = new Rect(px + pad, curY, halfW, UITheme.Px(30f));
-        Rect rVs = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(30f));
-
-        string fsLabel = fullscreen ? "▣ Pantalla Completa [ACTIVO]" : "⧈ Modo Ventana";
-        if (GUI.Button(rFs, fsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, fullscreen ? UITheme.Verde : Color.white)))
+        if (Application.isMobilePlatform)
         {
-            fullscreen = !fullscreen;
-            Screen.fullScreenMode = fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-        }
-        UITheme.Borde(rFs, fullscreen ? UITheme.Verde : new Color(0.4f, 0.4f, 0.5f), 1f);
+            Rect rFps = new Rect(px + pad, curY, halfW, UITheme.Px(34f));
+            Rect rScale = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(34f));
 
-        string vsLabel = vsync ? "✔ Sincronización V-Sync" : "✖ V-Sync Desactivado";
-        if (GUI.Button(rVs, vsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, vsync ? UITheme.Turquesa : Color.white)))
+            int fpsActual = MobileInput.TargetFPS;
+            string fpsLabel = fpsActual >= 60 ? "⚡ Fluidez: 60 FPS" : "🔋 Ahorro: 30 FPS";
+            if (GUI.Button(rFps, fpsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, fpsActual >= 60 ? UITheme.Verde : UITheme.Dorado)))
+            {
+                MobileInput.SetTargetFPS(fpsActual >= 60 ? 30 : 60);
+            }
+            UITheme.Borde(rFps, fpsActual >= 60 ? UITheme.Verde : UITheme.Dorado, 1f);
+
+            string scaleLabel = ObtenerEtiquetaTamanoPad();
+            if (GUI.Button(rScale, scaleLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Turquesa)))
+            {
+                CiclarTamanoPad();
+            }
+            UITheme.Borde(rScale, UITheme.Turquesa, 1f);
+
+            curY += UITheme.Px(42f);
+        }
+        else
         {
-            vsync = !vsync;
-            QualitySettings.vSyncCount = vsync ? 1 : 0;
-        }
-        UITheme.Borde(rVs, vsync ? UITheme.Turquesa : new Color(0.4f, 0.4f, 0.5f), 1f);
+            Rect rFs = new Rect(px + pad, curY, halfW, UITheme.Px(30f));
+            Rect rVs = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(30f));
 
-        curY += UITheme.Px(44f);
+            string fsLabel = fullscreen ? "▣ Pantalla Completa [ACTIVO]" : "⧈ Modo Ventana";
+            if (GUI.Button(rFs, fsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, fullscreen ? UITheme.Verde : Color.white)))
+            {
+                fullscreen = !fullscreen;
+                Screen.fullScreenMode = fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            }
+            UITheme.Borde(rFs, fullscreen ? UITheme.Verde : new Color(0.4f, 0.4f, 0.5f), 1f);
+
+            string vsLabel = vsync ? "✔ Sincronización V-Sync" : "✖ V-Sync Desactivado";
+            if (GUI.Button(rVs, vsLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, vsync ? UITheme.Turquesa : Color.white)))
+            {
+                vsync = !vsync;
+                QualitySettings.vSyncCount = vsync ? 1 : 0;
+            }
+            UITheme.Borde(rVs, vsync ? UITheme.Turquesa : new Color(0.4f, 0.4f, 0.5f), 1f);
+
+            curY += UITheme.Px(36f);
+
+            Rect rTouch = new Rect(px + pad, curY, halfW, UITheme.Px(30f));
+            Rect rScale = new Rect(px + pad + halfW + UITheme.Px(12f), curY, halfW, UITheme.Px(30f));
+
+            bool touchActivo = MobileInput.ForceTouchControls;
+            string touchLabel = touchActivo ? "📱 Controles Táctiles [ACTIVO]" : "📱 Probar Modo Táctil";
+            if (GUI.Button(rTouch, touchLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, touchActivo ? UITheme.Verde : Color.white)))
+            {
+                MobileInput.ForceTouchControls = !touchActivo;
+                MobileControlsUI.EnsureInstance();
+            }
+            UITheme.Borde(rTouch, touchActivo ? UITheme.Verde : new Color(0.4f, 0.4f, 0.5f), 1f);
+
+            string scaleLabel = ObtenerEtiquetaTamanoPad();
+            if (GUI.Button(rScale, scaleLabel, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleCenter, UITheme.Turquesa)))
+            {
+                CiclarTamanoPad();
+            }
+            UITheme.Borde(rScale, UITheme.Turquesa, 1f);
+
+            curY += UITheme.Px(38f);
+        }
 
         // BOTONES INFERIORES: RESTABLECER / GUARDAR Y VOLVER
         float btnH = UITheme.Px(42f);
@@ -321,11 +385,101 @@ public class OptionsModalUI : MonoBehaviour
         float valueW = totalW * 0.18f;
 
         GUI.Label(new Rect(x, y, labelW, UITheme.Px(20f)), label, UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
-        float newVal = GUI.HorizontalSlider(new Rect(x + labelW, y + UITheme.Px(4f), sliderW, UITheme.Px(16f)), value, 0f, 1f);
+        float sliderH = Application.isMobilePlatform ? UITheme.Px(24f) : UITheme.Px(16f);
+        Rect sliderRect = new Rect(x + labelW, y + UITheme.Px(2f), sliderW, sliderH);
+        float newVal = DibujarSliderPersonalizado(sliderRect, value);
+
         int pct = Mathf.RoundToInt(newVal * 100f);
         GUI.Label(new Rect(x + labelW + sliderW + UITheme.Px(6f), y, valueW, UITheme.Px(20f)), $"{pct}%", UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleRight, UITheme.Dorado));
 
         return newVal;
     }
-}
 
+    private static float DibujarSliderPersonalizado(Rect sliderRect, float value)
+    {
+        float trackHeight = UITheme.Px(6f);
+        Rect trackRect = new Rect(sliderRect.x, sliderRect.y + (sliderRect.height - trackHeight) * 0.5f, sliderRect.width, trackHeight);
+
+        DibujarRellenoSlider(trackRect, new Color(0.06f, 0.10f, 0.16f, 1f));
+        UITheme.Borde(trackRect, new Color(0.58f, 0.72f, 0.82f, 0.70f), 1f);
+
+        AsegurarEstilosSlider();
+        float newVal = GUI.HorizontalSlider(sliderRect, value, 0f, 1f, sliderInvisibleStyle, sliderInvisibleThumbStyle);
+
+        Rect rellenoRect = new Rect(trackRect.x, trackRect.y, trackRect.width * newVal, trackRect.height);
+        DibujarRellenoSlider(rellenoRect, new Color(0.12f, 0.80f, 0.90f, 1f));
+        if (rellenoRect.width > 0f) UITheme.Borde(rellenoRect, new Color(0.62f, 0.97f, 1f, 0.9f), 1f);
+
+        float knobSize = UITheme.Px(14f);
+        Rect knobRect = new Rect(
+            Mathf.Clamp(trackRect.x + trackRect.width * newVal - knobSize * 0.5f, trackRect.x - knobSize * 0.5f, trackRect.xMax - knobSize * 0.5f),
+            trackRect.center.y - knobSize * 0.5f,
+            knobSize,
+            knobSize);
+        DibujarRellenoSlider(knobRect, new Color(1f, 0.84f, 0.36f, 1f));
+        UITheme.Borde(knobRect, new Color(1f, 0.98f, 0.78f, 1f), 1f);
+
+        return newVal;
+    }
+
+    private static void AsegurarEstilosSlider()
+    {
+        if (sliderInvisibleStyle != null) return;
+
+        if (sliderTransparentTexture == null)
+        {
+            sliderTransparentTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false)
+            {
+                name = "Slider_Transparente",
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            sliderTransparentTexture.SetPixel(0, 0, Color.clear);
+            sliderTransparentTexture.Apply();
+        }
+
+        sliderInvisibleStyle = new GUIStyle(GUI.skin.horizontalSlider)
+        {
+            fixedHeight = 0f,
+            stretchHeight = true
+        };
+        sliderInvisibleStyle.normal.background = sliderTransparentTexture;
+        sliderInvisibleStyle.hover.background = sliderTransparentTexture;
+        sliderInvisibleStyle.active.background = sliderTransparentTexture;
+        sliderInvisibleStyle.focused.background = sliderTransparentTexture;
+
+        sliderInvisibleThumbStyle = new GUIStyle(GUI.skin.horizontalSliderThumb)
+        {
+            fixedWidth = UITheme.Px(14f),
+            fixedHeight = UITheme.Px(16f)
+        };
+        sliderInvisibleThumbStyle.normal.background = sliderTransparentTexture;
+        sliderInvisibleThumbStyle.hover.background = sliderTransparentTexture;
+        sliderInvisibleThumbStyle.active.background = sliderTransparentTexture;
+        sliderInvisibleThumbStyle.focused.background = sliderTransparentTexture;
+    }
+
+    private static void DibujarRellenoSlider(Rect rect, Color color)
+    {
+        if (rect.width <= 0f || rect.height <= 0f) return;
+        Color previous = GUI.color;
+        GUI.color = color;
+        GUI.DrawTexture(rect, UITheme.Blanca);
+        GUI.color = previous;
+    }
+
+    private static string ObtenerEtiquetaTamanoPad()
+    {
+        float s = MobileInput.ControlScale;
+        if (s < 0.92f) return "📐 Pad Táctil: Pequeño";
+        if (s > 1.10f) return "📐 Pad Táctil: Grande";
+        return "📐 Pad Táctil: Normal";
+    }
+
+    private static void CiclarTamanoPad()
+    {
+        float s = MobileInput.ControlScale;
+        if (s < 0.92f) MobileInput.ControlScale = 1.0f;
+        else if (s > 1.10f) MobileInput.ControlScale = 0.85f;
+        else MobileInput.ControlScale = 1.20f;
+    }
+}

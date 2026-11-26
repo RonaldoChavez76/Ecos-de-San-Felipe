@@ -59,6 +59,11 @@ public class InteractableSignOrNPC : MonoBehaviour
         bool inRange = dist <= interactRadius;
         bool dialogueBusy = DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive;
 
+        if (inRange && !dialogueBusy)
+        {
+            MobileInput.ReportInteractableNearby("Hablar");
+        }
+
         if (promptBadge != null)
         {
             promptBadge.SetActive(inRange && !dialogueBusy);
@@ -68,7 +73,7 @@ public class InteractableSignOrNPC : MonoBehaviour
             }
         }
 
-        if (inRange && !dialogueBusy && Time.time >= nextInteractAllowedTime && Input.GetKeyDown(interactKey))
+        if (inRange && !dialogueBusy && Time.time >= nextInteractAllowedTime && MobileInput.GetInteractDown(interactKey))
         {
             nextInteractAllowedTime = Time.time + 0.35f;
             TriggerInteraction();
@@ -156,6 +161,7 @@ public class InteractableSignOrNPC : MonoBehaviour
         Color colBorde = new Color(0.98f, 0.88f, 0.42f, 1f);
         Rect r = new Rect(rx, ry, w, h);
         UITheme.Panel(r, colBorde, 1.5f);
-        GUI.Label(r, interactionPrompt, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
+        string msgPrompt = MobileInput.IsTouchControlsActive ? "Toca ✋ Hablar" : interactionPrompt;
+        GUI.Label(r, msgPrompt, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }

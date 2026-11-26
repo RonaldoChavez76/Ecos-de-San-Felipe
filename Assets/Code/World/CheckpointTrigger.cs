@@ -60,7 +60,9 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (EsJugador(other) && Input.GetKeyDown(KeyCode.E))
+        if (!EsJugador(other)) return;
+        MobileInput.ReportInteractableNearby("Guardar");
+        if (MobileInput.GetInteractDown(KeyCode.E))
         {
             Guardar();
         }

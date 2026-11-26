@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+        if (PauseAndVictoryUI.Instance == null && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)))
         {
             if (currentState == GameState.Exploring || currentState == GameState.Combat)
             {
@@ -109,13 +109,19 @@ public class GameManager : MonoBehaviour
 
     public void ContinuarPartida()
     {
+        if (SaveStateManager.EnsureInstance().RegresarAlUltimoCheckpoint())
+        {
+            SetState(GameState.Exploring);
+            return;
+        }
+
+        Debug.LogWarning("[GameManager] No hay un checkpoint válido para continuar la partida.");
         Time.timeScale = 1f;
-        SceneManager.LoadScene(gameplaySceneName);
-        SetState(GameState.Exploring);
     }
 
     public void IrAlMenuPrincipal()
     {
+        SaveStateManager.Instance?.GuardarProgreso();
         Time.timeScale = 1f;
         SetState(GameState.Menu);
         SceneManager.LoadScene(menuSceneName);

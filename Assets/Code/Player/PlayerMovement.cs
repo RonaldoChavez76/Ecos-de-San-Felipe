@@ -15,7 +15,8 @@ public class PlayerMovement : MonoBehaviour
         Block = 2,
         Counter = 3,
         Dodge = 4,
-        Victory = 7
+        Victory = 7,
+        ItemGet = 8
     }
 
     [Header("Estado Actual")]
@@ -97,11 +98,32 @@ public class PlayerMovement : MonoBehaviour
     // Efectos visuales de brazal / escudo
     private GameObject visualEffectObj;
     private SpriteRenderer effectSr;
+    private GameObject pickupAuraObj;
+    private SpriteRenderer pickupAuraSr;
+    private Coroutine pickupAnimationRoutine;
+    private bool pendingPickupAnimation;
+    private static Sprite pickupAuraSprite;
+
+    private static Sprite swordSlashSprite;
+    private static Sprite swordSparkSprite;
+    private GameObject swordSlashObj;
+    private SpriteRenderer swordSlashSr;
+    private readonly SpriteRenderer[] swordSparkRenderers = new SpriteRenderer[6];
+    private Coroutine swordVfxRoutine;
+    private static Sprite counterRingSprite;
+    private static Sprite counterSparkSprite;
+    private GameObject counterVfxRoot;
+    private readonly SpriteRenderer[] counterRingRenderers = new SpriteRenderer[2];
+    private readonly SpriteRenderer[] counterSparkRenderers = new SpriteRenderer[8];
+    private Coroutine counterVfxRoutine;
 
     // Efectos visuales de Victoria con Eco en Manos
     private GameObject ecoEnManosObj;
     private SpriteRenderer ecoEnManosSr;
     private SpriteRenderer ecoHaloSr;
+    private readonly GameObject[] ecosOrbitando = new GameObject[3];
+    private readonly SpriteRenderer[] ecosOrbitandoRenderers = new SpriteRenderer[3];
+    private SpriteRenderer auraVictoriaSr;
 
     private void Awake()
     {
@@ -201,6 +223,12 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        if (pendingPickupAnimation && Time.timeScale > 0f && currentState == CombatState.Idle)
+        {
+            pendingPickupAnimation = false;
+            pickupAnimationRoutine = StartCoroutine(RutinaAnimacionObtencionObjeto());
+        }
+
         // Durante la animación de victoria con el Eco, Ronan mantiene la pose triunfal con pulso luminoso
         if (currentState == CombatState.Victory)
         {
@@ -218,7 +246,33 @@ public class PlayerMovement : MonoBehaviour
                     float t = (Mathf.Sin(Time.unscaledTime * 3.5f) + 1f) * 0.5f;
                     ecoEnManosSr.color = Color.Lerp(new Color(0.2f, 0.95f, 1f, 1f), new Color(1f, 0.95f, 0.45f, 1f), t);
                 }
+                for (int i = 0; i < ecosOrbitandoRenderers.Length; i++)
+                {
+                    if (ecosOrbitando[i] == null) continue;
+                    float angulo = Time.unscaledTime * 1.8f + i * Mathf.PI * 2f / ecosOrbitando.Length;
+                    ecosOrbitando[i].transform.localPosition = new Vector3(
+                        Mathf.Cos(angulo) * 0.58f,
+                        0.72f + Mathf.Sin(angulo) * 0.26f,
+                        0f);
+                    float pulso = 0.88f + Mathf.Sin(Time.unscaledTime * 4f + i * 1.7f) * 0.12f;
+                    ecosOrbitando[i].transform.localScale = Vector3.one * (0.32f * pulso);
+                }
+                if (auraVictoriaSr != null)
+                {
+                    float pulso = 1f + Mathf.Sin(Time.unscaledTime * 3f) * 0.08f;
+                    auraVictoriaSr.transform.localScale = Vector3.one * pulso;
+                    Color auraColor = auraVictoriaSr.color;
+                    auraColor.a = 0.34f + Mathf.Sin(Time.unscaledTime * 3f) * 0.1f;
+                    auraVictoriaSr.color = auraColor;
+                }
             }
+            return;
+        }
+
+        if (currentState == CombatState.ItemGet)
+        {
+            movement = Vector2.zero;
+            ActualizarAuraObtencionObjeto();
             return;
         }
 
@@ -229,7 +283,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (currentState == CombatState.Block)
         {
-            if (!Input.GetKey(blockKey) && !Input.GetMouseButton(1))
+            if (!MobileInput.GetBlockHeld(blockKey))
             {
                 SalirDeBloqueo();
             }
@@ -302,13 +356,17 @@ public class PlayerMovement : MonoBehaviour
                 ecoHaloSr.sortingLayerName = "Default";
                 ecoHaloSr.sortingOrder = sr.sortingOrder + 11;
             }
+            if (pickupAuraSr != null)
+            {
+                pickupAuraSr.sortingLayerName = "Default";
+                pickupAuraSr.sortingOrder = sr.sortingOrder + 10;
+            }
         }
     }
 
     private void LeerMovimientoOchoDirecciones()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        movement = MobileInput.GetMovementAxis();
 
         if (movement != Vector2.zero)
         {
@@ -328,32 +386,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void LeerEntradasDeCombate()
     {
-        // 0. Cambio de arma (Q = siguiente, 1/2/3 = directa, rueda del ratón)
+        // 0. Cambio de arma (Q = siguiente, 1/2/3 = directa, rueda del ratón, o botón móvil)
         LeerCambioDeArma();
 
         // 1. Ataque con el arma equipada (espada, arco, báculo...)
-        if ((Input.GetKeyDown(attackKey) || Input.GetMouseButtonDown(0)) && Time.time >= lastAttackTime + ArmaActual.enfriamiento)
+        if (MobileInput.GetAttackDown(attackKey) && Time.time >= lastAttackTime + ArmaActual.enfriamiento)
         {
             StartCoroutine(RutinaAtaque());
             return;
         }
 
         // 2. Bloqueo / Contraataque
-        if (Input.GetKeyDown(blockKey) || Input.GetMouseButtonDown(1))
+        if (MobileInput.GetBlockDown(blockKey))
         {
             EntrarEnBloqueo();
             return;
         }
 
         // 3. Esquive
-        if (Input.GetKeyDown(dodgeKey) && Time.time >= lastDodgeTime + dodgeCooldown)
+        if (MobileInput.GetDodgeDown(dodgeKey) && Time.time >= lastDodgeTime + dodgeCooldown)
         {
             StartCoroutine(RutinaEsquive());
             return;
         }
 
         // 4. Modo Asalto
-        if (Input.GetKeyDown(assaultKey) && assaultCharge >= maxAssaultCharge && !isAssaultActive)
+        if (MobileInput.GetAssaultDown(assaultKey) && assaultCharge >= maxAssaultCharge && !isAssaultActive)
         {
             StartCoroutine(RutinaModoAsalto());
         }
@@ -363,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (armas == null || armas.Count < 2) return;
 
-        if (Input.GetKeyDown(nextWeaponKey)) SiguienteArma();
+        if (MobileInput.GetNextWeaponDown(nextWeaponKey)) SiguienteArma();
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) CambiarArma(0);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) CambiarArma(1);
@@ -406,6 +464,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!gameObject.activeSelf) gameObject.SetActive(true);
         StopAllCoroutines();
+        pendingPickupAnimation = false;
+        pickupAnimationRoutine = null;
+        if (pickupAuraObj != null) Destroy(pickupAuraObj);
+        pickupAuraObj = null;
+        pickupAuraSr = null;
 
         transform.position = posicion;
         if (rb != null)
@@ -467,14 +530,93 @@ public class PlayerMovement : MonoBehaviour
     {
         if (armas == null) return;
         WeaponDefinition w = armas.Find(x => x.tipo == tipo);
-        if (w != null)
+        if (w != null && !w.desbloqueada)
         {
             w.desbloqueada = true;
             if (tipo == WeaponType.Bow && SaveStateManager.Instance != null) SaveStateManager.Instance.arcoComprado = true;
             if (tipo == WeaponType.Staff && SaveStateManager.Instance != null) SaveStateManager.Instance.baculoComprado = true;
             int idx = armas.IndexOf(w);
             if (idx >= 0) CambiarArma(idx);
+            CelebrarObtencionObjeto();
         }
+    }
+
+    public void CelebrarObtencionObjeto()
+    {
+        if (currentHealth <= 0f || currentState == CombatState.Victory) return;
+        if (Time.timeScale <= 0f || currentState != CombatState.Idle)
+        {
+            pendingPickupAnimation = true;
+            return;
+        }
+
+        pendingPickupAnimation = false;
+        if (pickupAnimationRoutine != null) StopCoroutine(pickupAnimationRoutine);
+        pickupAnimationRoutine = StartCoroutine(RutinaAnimacionObtencionObjeto());
+    }
+
+    private IEnumerator RutinaAnimacionObtencionObjeto()
+    {
+        SetState(CombatState.ItemGet);
+        movement = Vector2.zero;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        MostrarAuraObtencionObjeto();
+        yield return new WaitForSeconds(0.9f);
+
+        if (pickupAuraObj != null) Destroy(pickupAuraObj);
+        pickupAuraObj = null;
+        pickupAuraSr = null;
+        if (currentState == CombatState.ItemGet) SetState(CombatState.Idle);
+        pickupAnimationRoutine = null;
+    }
+
+    private void MostrarAuraObtencionObjeto()
+    {
+        if (pickupAuraObj != null) Destroy(pickupAuraObj);
+
+        pickupAuraObj = new GameObject("ObjetoObtenido_VFX");
+        pickupAuraObj.transform.SetParent(transform, false);
+        pickupAuraObj.transform.localPosition = new Vector3(0f, 0.72f, 0f);
+        pickupAuraSr = pickupAuraObj.AddComponent<SpriteRenderer>();
+        if (pickupAuraSprite == null) pickupAuraSprite = CrearSpriteAuraObtencion();
+        pickupAuraSr.sprite = pickupAuraSprite;
+        pickupAuraSr.color = new Color(1f, 0.78f, 0.2f, 0.5f);
+        pickupAuraSr.sortingLayerName = "Default";
+        pickupAuraSr.sortingOrder = (sr != null ? sr.sortingOrder : 0) + 10;
+    }
+
+    private void ActualizarAuraObtencionObjeto()
+    {
+        if (pickupAuraSr == null) return;
+
+        float pulso = 0.85f + Mathf.Sin(Time.time * 12f) * 0.12f;
+        pickupAuraObj.transform.localScale = Vector3.one * pulso;
+        Color color = pickupAuraSr.color;
+        color.a = 0.35f + Mathf.Sin(Time.time * 10f) * 0.12f;
+        pickupAuraSr.color = color;
+    }
+
+    private static Sprite CrearSpriteAuraObtencion()
+    {
+        const int size = 32;
+        Texture2D texture = new Texture2D(size, size);
+        texture.filterMode = FilterMode.Bilinear;
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f)) / (size * 0.5f);
+                float alpha = Mathf.Pow(Mathf.Clamp01(1f - distance), 2f);
+                texture.SetPixel(x, y, new Color(1f, 0.8f, 0.25f, alpha));
+            }
+        }
+        texture.Apply();
+        return Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 16f);
     }
 
     public void AgregarFlechas(int cant)
@@ -495,7 +637,7 @@ public class PlayerMovement : MonoBehaviour
             SaveStateManager.Instance.oro = oro;
             SaveStateManager.Instance.GuardarProgreso();
         }
-        MostrarAvisoRecurso($"💰 +{cant} Oro");
+        MostrarAvisoRecurso($"+{cant} Oro");
         Debug.Log($"<color=#FFD700>[PlayerMovement] +{cant} Oro recogido! Total: {oro}</color>");
     }
 
@@ -570,6 +712,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (!arma.esADistancia)
         {
+            if (arma.tipo == WeaponType.Sword)
+            {
+                MostrarEfectoTajoEspada(arma.duracionAtaque);
+            }
+
             // Arma cuerpo a cuerpo: golpe inmediato en arco frente a Ronan
             Vector2 puntoAtaque = (Vector2)transform.position + lookDirection * (arma.alcance * 0.65f);
             Collider2D[] impactados = Physics2D.OverlapCircleAll(puntoAtaque, arma.alcance * 0.60f);
@@ -606,6 +753,148 @@ public class PlayerMovement : MonoBehaviour
         }
         if (rb != null) rb.linearVelocity = Vector2.zero;
         SetState(CombatState.Idle);
+    }
+
+    private void MostrarEfectoTajoEspada(float duracionAtaque)
+    {
+        if (swordSlashSprite == null) CrearSpritesTajoEspada();
+        if (swordSlashObj == null) CrearObjetosTajoEspada();
+        if (swordVfxRoutine != null) StopCoroutine(swordVfxRoutine);
+        swordVfxRoutine = StartCoroutine(AnimarTajoEspada(Mathf.Max(0.16f, duracionAtaque * 0.82f)));
+    }
+
+    private void CrearSpritesTajoEspada()
+    {
+        const int size = 64;
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            name = "TajoEspada_Ronan_PixelArt",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+
+        Vector2 centro = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                Vector2 delta = new Vector2(x, y) - centro;
+                float angulo = Mathf.Abs(Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg);
+                float distancia = delta.magnitude;
+                float apertura = Mathf.Clamp01(1f - angulo / 76f);
+                float radio = 22f + Mathf.Sin(angulo * Mathf.Deg2Rad * 1.5f) * 2f;
+                float grosor = Mathf.Lerp(2f, 5f, apertura);
+                Color pixel = Color.clear;
+
+                if (angulo <= 76f && distancia >= radio - grosor && distancia <= radio + grosor)
+                {
+                    float borde = Mathf.Abs(distancia - radio) / grosor;
+                    if (borde < 0.32f) pixel = new Color(1f, 1f, 0.88f, 1f);
+                    else if (borde < 0.72f) pixel = new Color(0.48f, 0.91f, 1f, 0.96f);
+                    else pixel = new Color(1f, 0.63f, 0.20f, 0.82f);
+
+                    pixel.a *= apertura;
+                }
+
+                texture.SetPixel(x, y, pixel);
+            }
+        }
+
+        texture.Apply();
+        swordSlashSprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 48f);
+
+        Texture2D sparkTexture = new Texture2D(9, 9, TextureFormat.RGBA32, false)
+        {
+            name = "DestelloEspada_Ronan_PixelArt",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        for (int y = 0; y < 9; y++)
+        {
+            for (int x = 0; x < 9; x++)
+            {
+                int dx = Mathf.Abs(x - 4);
+                int dy = Mathf.Abs(y - 4);
+                bool destello = (dx == 0 && dy <= 4) || (dy == 0 && dx <= 4) || (dx <= 1 && dy <= 1);
+                sparkTexture.SetPixel(x, y, destello ? Color.white : Color.clear);
+            }
+        }
+        sparkTexture.Apply();
+        swordSparkSprite = Sprite.Create(sparkTexture, new Rect(0, 0, 9, 9), new Vector2(0.5f, 0.5f), 48f);
+    }
+
+    private void CrearObjetosTajoEspada()
+    {
+        swordSlashObj = new GameObject("Ronan_Tajo_Espada_VFX");
+        swordSlashObj.transform.SetParent(transform, false);
+        swordSlashSr = swordSlashObj.AddComponent<SpriteRenderer>();
+        swordSlashSr.sprite = swordSlashSprite;
+        swordSlashSr.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+        swordSlashSr.enabled = false;
+
+        for (int i = 0; i < swordSparkRenderers.Length; i++)
+        {
+            GameObject spark = new GameObject($"Ronan_Tajo_Chispa_{i + 1}");
+            spark.transform.SetParent(transform, false);
+            SpriteRenderer sparkRenderer = spark.AddComponent<SpriteRenderer>();
+            sparkRenderer.sprite = swordSparkSprite;
+            sparkRenderer.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+            sparkRenderer.enabled = false;
+            swordSparkRenderers[i] = sparkRenderer;
+        }
+    }
+
+    private IEnumerator AnimarTajoEspada(float duracion)
+    {
+        Vector2 direccion = lookDirection.sqrMagnitude > 0.01f ? lookDirection.normalized : Vector2.down;
+        float angulo = Mathf.Atan2(direccion.y, direccion.x) * Mathf.Rad2Deg;
+        Quaternion rotacion = Quaternion.Euler(0f, 0f, angulo);
+        swordSlashObj.transform.localPosition = direccion * 0.62f;
+        swordSlashSr.sortingOrder = sr != null ? sr.sortingOrder + 2 : 2;
+        swordSlashSr.enabled = true;
+
+        Vector3[] inicios = new Vector3[swordSparkRenderers.Length];
+        Vector3[] finales = new Vector3[swordSparkRenderers.Length];
+        for (int i = 0; i < swordSparkRenderers.Length; i++)
+        {
+            float lateral = Mathf.Lerp(-0.43f, 0.43f, i / (float)(swordSparkRenderers.Length - 1));
+            inicios[i] = (Vector3)(direccion * 0.68f + (Vector2)(rotacion * new Vector2(0.05f, lateral)));
+            finales[i] = inicios[i] + (Vector3)(rotacion * new Vector2(Random.Range(0.20f, 0.48f), Random.Range(-0.18f, 0.18f)));
+            swordSparkRenderers[i].transform.localPosition = inicios[i];
+            swordSparkRenderers[i].transform.localScale = Vector3.one * Random.Range(0.75f, 1.3f);
+            swordSparkRenderers[i].color = i % 2 == 0
+                ? new Color(1f, 0.86f, 0.38f, 1f)
+                : new Color(0.52f, 0.91f, 1f, 1f);
+            swordSparkRenderers[i].sortingOrder = swordSlashSr.sortingOrder + 1;
+            swordSparkRenderers[i].enabled = true;
+        }
+
+        float tiempo = 0f;
+        while (tiempo < duracion)
+        {
+            tiempo += Time.deltaTime;
+            float progreso = Mathf.Clamp01(tiempo / duracion);
+            float golpe = Mathf.SmoothStep(0f, 1f, progreso);
+
+            swordSlashObj.transform.localRotation = Quaternion.Euler(0f, 0f, angulo + Mathf.Lerp(-20f, 18f, golpe));
+            swordSlashObj.transform.localScale = Vector3.one * Mathf.Lerp(0.62f, 1.18f, golpe);
+            swordSlashSr.color = new Color(1f, 1f, 1f, 1f - progreso);
+
+            for (int i = 0; i < swordSparkRenderers.Length; i++)
+            {
+                swordSparkRenderers[i].transform.localPosition = Vector3.Lerp(inicios[i], finales[i], golpe);
+                Color color = swordSparkRenderers[i].color;
+                color.a = 1f - progreso;
+                swordSparkRenderers[i].color = color;
+            }
+
+            yield return null;
+        }
+
+        swordSlashSr.enabled = false;
+        for (int i = 0; i < swordSparkRenderers.Length; i++)
+            swordSparkRenderers[i].enabled = false;
+        swordVfxRoutine = null;
     }
 
     private void EntrarEnBloqueo()
@@ -680,7 +969,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Desata un tajo/onda de contraataque celeste que inflige daño real al atacante y a los enemigos cercanos.
     /// </summary>
-    public void EjecutarContraataque(GameObject atacanteEspecifico = null, float multiplicador = 2.0f)
+    public void EjecutarContraataque(GameObject atacanteEspecifico = null, float multiplicador = 1.5f)
     {
         StartCoroutine(EfectoContraataqueExitoso());
         AñadirCargaAsalto(35f);
@@ -722,17 +1011,168 @@ public class PlayerMovement : MonoBehaviour
 
         if (enemigosGolpeados > 0)
         {
-            MostrarAvisoRecurso($"⚡ ¡CONTRAATAQUE! -{danioContraataque:0} HP al enemigo");
+            MostrarAvisoRecurso($"¡CONTRAATAQUE! -{danioContraataque:0} HP al enemigo");
         }
     }
 
     private IEnumerator EfectoContraataqueExitoso()
     {
         SetState(CombatState.Counter);
-        MostrarEfectoFrenteAlJugador(new Color(0f, 1f, 1f, 1f), new Vector3(1.35f, 1.35f, 1f));
+        MostrarEfectoFrenteAlJugador(new Color(0.45f, 0.95f, 1f, 0.85f), new Vector3(0.8f, 0.8f, 1f));
+        if (counterVfxRoutine != null) StopCoroutine(counterVfxRoutine);
+        counterVfxRoutine = StartCoroutine(AnimarEfectoContraataque());
         yield return new WaitForSeconds(0.20f);
         if (visualEffectObj != null) visualEffectObj.SetActive(false);
         SetState(CombatState.Idle);
+    }
+
+    private IEnumerator AnimarEfectoContraataque()
+    {
+        CrearObjetosContraataque();
+        counterVfxRoot.transform.localPosition = Vector3.zero;
+        int sortingOrder = sr != null ? sr.sortingOrder + 8 : 8;
+        float duracion = 0.34f;
+        Vector3[] origenes = new Vector3[counterSparkRenderers.Length];
+        Vector3[] destinos = new Vector3[counterSparkRenderers.Length];
+
+        for (int i = 0; i < counterRingRenderers.Length; i++)
+        {
+            counterRingRenderers[i].enabled = true;
+            counterRingRenderers[i].sortingOrder = sortingOrder + i;
+            counterRingRenderers[i].color = i == 0
+                ? new Color(0.3f, 0.96f, 1f, 1f)
+                : new Color(0.68f, 0.82f, 1f, 0.95f);
+        }
+
+        for (int i = 0; i < counterSparkRenderers.Length; i++)
+        {
+            float angulo = i * Mathf.PI * 2f / counterSparkRenderers.Length;
+            Vector2 direccion = new Vector2(Mathf.Cos(angulo), Mathf.Sin(angulo));
+            origenes[i] = direccion * 0.28f;
+            destinos[i] = direccion * Random.Range(0.85f, 1.25f);
+            counterSparkRenderers[i].transform.localPosition = origenes[i];
+            counterSparkRenderers[i].transform.localScale = Vector3.one * Random.Range(0.65f, 1.05f);
+            counterSparkRenderers[i].color = i % 2 == 0
+                ? new Color(0.2f, 1f, 1f, 1f)
+                : new Color(1f, 0.9f, 0.52f, 1f);
+            counterSparkRenderers[i].sortingOrder = sortingOrder + 2;
+            counterSparkRenderers[i].enabled = true;
+        }
+
+        float transcurrido = 0f;
+        while (transcurrido < duracion)
+        {
+            transcurrido += Time.deltaTime;
+            float progreso = Mathf.Clamp01(transcurrido / duracion);
+            float pulso = Mathf.SmoothStep(0f, 1f, progreso);
+
+            for (int i = 0; i < counterRingRenderers.Length; i++)
+            {
+                Transform ring = counterRingRenderers[i].transform;
+                float escala = Mathf.Lerp(i == 0 ? 0.45f : 0.25f, i == 0 ? 2f : 1.55f, pulso);
+                ring.localScale = Vector3.one * escala;
+                float giro = i == 0 ? 150f : -210f;
+                ring.localRotation = Quaternion.Euler(0f, 0f, giro * pulso);
+                Color color = counterRingRenderers[i].color;
+                color.a = 1f - progreso;
+                counterRingRenderers[i].color = color;
+            }
+
+            for (int i = 0; i < counterSparkRenderers.Length; i++)
+            {
+                counterSparkRenderers[i].transform.localPosition = Vector3.Lerp(origenes[i], destinos[i], pulso);
+                Color color = counterSparkRenderers[i].color;
+                color.a = 1f - progreso;
+                counterSparkRenderers[i].color = color;
+            }
+
+            yield return null;
+        }
+
+        for (int i = 0; i < counterRingRenderers.Length; i++)
+            counterRingRenderers[i].enabled = false;
+        for (int i = 0; i < counterSparkRenderers.Length; i++)
+            counterSparkRenderers[i].enabled = false;
+        counterVfxRoutine = null;
+    }
+
+    private void CrearObjetosContraataque()
+    {
+        if (counterVfxRoot != null) return;
+        CrearSpritesContraataque();
+
+        counterVfxRoot = new GameObject("Ronan_Contraataque_VFX");
+        counterVfxRoot.transform.SetParent(transform, false);
+
+        for (int i = 0; i < counterRingRenderers.Length; i++)
+        {
+            GameObject ring = new GameObject($"Anillo_Contraataque_{i + 1}");
+            ring.transform.SetParent(counterVfxRoot.transform, false);
+            SpriteRenderer ringRenderer = ring.AddComponent<SpriteRenderer>();
+            ringRenderer.sprite = counterRingSprite;
+            ringRenderer.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+            ringRenderer.enabled = false;
+            counterRingRenderers[i] = ringRenderer;
+        }
+
+        for (int i = 0; i < counterSparkRenderers.Length; i++)
+        {
+            GameObject spark = new GameObject($"Chispa_Contraataque_{i + 1}");
+            spark.transform.SetParent(counterVfxRoot.transform, false);
+            SpriteRenderer sparkRenderer = spark.AddComponent<SpriteRenderer>();
+            sparkRenderer.sprite = counterSparkSprite;
+            sparkRenderer.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+            sparkRenderer.enabled = false;
+            counterSparkRenderers[i] = sparkRenderer;
+        }
+    }
+
+    private static void CrearSpritesContraataque()
+    {
+        if (counterRingSprite != null && counterSparkSprite != null) return;
+
+        const int size = 48;
+        Texture2D ringTexture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            name = "Anillo_Contraataque_Celestial",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        Vector2 centro = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float distancia = Vector2.Distance(new Vector2(x, y), centro);
+                Color color = distancia >= 16f && distancia <= 19f
+                    ? Color.white
+                    : (distancia >= 12f && distancia <= 13f
+                        ? new Color(0.65f, 0.9f, 1f, 0.72f)
+                        : Color.clear);
+                ringTexture.SetPixel(x, y, color);
+            }
+        }
+        ringTexture.Apply();
+        counterRingSprite = Sprite.Create(ringTexture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 48f);
+
+        Texture2D sparkTexture = new Texture2D(9, 9, TextureFormat.RGBA32, false)
+        {
+            name = "Destello_Contraataque_Celestial",
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        for (int y = 0; y < 9; y++)
+        {
+            for (int x = 0; x < 9; x++)
+            {
+                int dx = Mathf.Abs(x - 4);
+                int dy = Mathf.Abs(y - 4);
+                bool visible = (dx == 0 && dy <= 4) || (dy == 0 && dx <= 4) || (dx <= 1 && dy <= 1);
+                sparkTexture.SetPixel(x, y, visible ? Color.white : Color.clear);
+            }
+        }
+        sparkTexture.Apply();
+        counterSparkSprite = Sprite.Create(sparkTexture, new Rect(0, 0, 9, 9), new Vector2(0.5f, 0.5f), 48f);
     }
 
     public void RecibirDanio(float cantidad)
@@ -746,13 +1186,13 @@ public class PlayerMovement : MonoBehaviour
             float tiempoDesdeBloqueo = Time.time - blockStartTime;
             if (tiempoDesdeBloqueo <= ventana)
             {
-                // Contraataque perfecto: 0 daño recibido y 200% de daño devuelto al enemigo
-                EjecutarContraataque(null, 2.0f);
+                // Contraataque perfecto: anula el daño y devuelve un golpe reforzado al enemigo
+                EjecutarContraataque(null, 1.5f);
                 return;
             }
             // Contraataque en guardia mantenida: mitiga 75% del daño y devuelve 125% de daño al enemigo
             cantidad *= 0.25f;
-            EjecutarContraataque(null, 1.25f);
+            EjecutarContraataque(null, 1.0f);
         }
 
         // Aplicar multiplicador de dificultad al daño recibido por Ronan
@@ -845,6 +1285,17 @@ public class PlayerMovement : MonoBehaviour
             ecoEnManosSr = null;
             ecoHaloSr = null;
         }
+        for (int i = 0; i < ecosOrbitando.Length; i++)
+        {
+            if (ecosOrbitando[i] != null) Destroy(ecosOrbitando[i]);
+            ecosOrbitando[i] = null;
+            ecosOrbitandoRenderers[i] = null;
+        }
+        if (auraVictoriaSr != null)
+        {
+            Destroy(auraVictoriaSr.gameObject);
+            auraVictoriaSr = null;
+        }
         isInvulnerable = false;
         SetState(CombatState.Idle);
     }
@@ -861,6 +1312,12 @@ public class PlayerMovement : MonoBehaviour
     private void CrearOMostrarEcoEnManos(int indiceEco)
     {
         if (ecoEnManosObj != null) Destroy(ecoEnManosObj);
+        for (int i = 0; i < ecosOrbitando.Length; i++)
+        {
+            if (ecosOrbitando[i] != null) Destroy(ecosOrbitando[i]);
+            ecosOrbitando[i] = null;
+            ecosOrbitandoRenderers[i] = null;
+        }
 
         ecoEnManosObj = new GameObject("EcoEnManos_VFX");
         ecoEnManosObj.transform.SetParent(transform);
@@ -907,6 +1364,70 @@ public class PlayerMovement : MonoBehaviour
         ecoHaloSr.sprite = Sprite.Create(haloTex, new Rect(0, 0, 36, 36), new Vector2(0.5f, 0.5f), 16f);
         ecoHaloSr.sortingOrder = ecoEnManosSr.sortingOrder - 1;
         ecoHaloSr.color = new Color(1f, 0.95f, 0.6f, 0.85f);
+
+        CrearEcosOrbitando(ecoEnManosSr.sprite, indiceEco);
+        CrearAuraVictoria();
+    }
+
+    private void CrearEcosOrbitando(Sprite spriteEco, int indiceEco)
+    {
+        SaveStateManager save = SaveStateManager.Instance;
+        bool[] obtenidos =
+        {
+            save != null ? save.ecoFeRecuperado : indiceEco == 1,
+            save != null ? save.ecoTradicionRecuperado : indiceEco == 2,
+            save != null ? save.ecoMemoriaRecuperado : indiceEco == 3
+        };
+        Color[] colores =
+        {
+            new Color(1f, 0.78f, 0.28f, 1f),
+            new Color(0.45f, 1f, 0.62f, 1f),
+            new Color(0.22f, 0.88f, 1f, 1f)
+        };
+
+        for (int i = 0; i < obtenidos.Length; i++)
+        {
+            if (!obtenidos[i]) continue;
+
+            GameObject eco = new GameObject($"EcoSagrado_Orbitando_{i + 1}");
+            eco.transform.SetParent(transform, false);
+            SpriteRenderer rendererEco = eco.AddComponent<SpriteRenderer>();
+            rendererEco.sprite = spriteEco;
+            rendererEco.color = colores[i];
+            rendererEco.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+            rendererEco.sortingOrder = (sr != null ? sr.sortingOrder : 10) + 14;
+            ecosOrbitando[i] = eco;
+            ecosOrbitandoRenderers[i] = rendererEco;
+        }
+    }
+
+    private void CrearAuraVictoria()
+    {
+        GameObject aura = new GameObject("Aura_Celebracion_Ronan");
+        aura.transform.SetParent(transform, false);
+        aura.transform.localPosition = new Vector3(0f, 0.12f, 0f);
+
+        Texture2D texture = new Texture2D(32, 32, TextureFormat.RGBA32, false)
+        {
+            name = "Aura_Celestial_Ronan",
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        for (int y = 0; y < 32; y++)
+        {
+            for (int x = 0; x < 32; x++)
+            {
+                float distancia = Vector2.Distance(new Vector2(x, y), new Vector2(15.5f, 15.5f)) / 15.5f;
+                float alpha = Mathf.Pow(Mathf.Clamp01(1f - distancia), 2f) * 0.38f;
+                texture.SetPixel(x, y, new Color(0.12f, 0.78f, 1f, alpha));
+            }
+        }
+        texture.Apply();
+
+        auraVictoriaSr = aura.AddComponent<SpriteRenderer>();
+        auraVictoriaSr.sprite = Sprite.Create(texture, new Rect(0, 0, 32, 32), new Vector2(0.5f, 0.5f), 16f);
+        auraVictoriaSr.sortingLayerID = sr != null ? sr.sortingLayerID : 0;
+        auraVictoriaSr.sortingOrder = (sr != null ? sr.sortingOrder : 10) - 1;
     }
 
     private void SetState(CombatState nuevoEstado)
@@ -966,9 +1487,10 @@ public class PlayerMovement : MonoBehaviour
 
         WeaponDefinition arma = ArmaActual;
 
-        // 1. Margen seguro (Safe Area) contra bordes cortados
-        float safeMarginX = Mathf.Max(UITheme.Px(46f), Screen.width * 0.048f);
-        float safeMarginY = Mathf.Max(UITheme.Px(28f), Screen.height * 0.04f);
+        // 1. Margen seguro (Safe Area) contra bordes cortados y notch móvil
+        float safeMarginX = Mathf.Max(UITheme.SafeLeft + UITheme.Px(14f), UITheme.Px(26f));
+        float safeMarginY = Mathf.Max(UITheme.SafeTop + UITheme.Px(10f), UITheme.Px(20f));
+        bool esTactil = MobileInput.IsTouchControlsActive;
 
         float panelX = safeMarginX;
         float panelY = safeMarginY;
@@ -1027,7 +1549,7 @@ public class PlayerMovement : MonoBehaviour
             GUI.color = Color.white;
             UITheme.Borde(rRes, new Color(0.45f, 0.88f, 1f, 0.35f), 1f);
             UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
-                $"♦ Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
+                $"Maná: {Mathf.CeilToInt(manaActual)}/{Mathf.CeilToInt(manaMaximo)} (-{arma.costoMana:0})",
                 UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
         else if (arma.tipo == WeaponType.Bow)
@@ -1039,7 +1561,7 @@ public class PlayerMovement : MonoBehaviour
             GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * flechasPct, rRes.height - 3f), UITheme.Blanca);
             GUI.color = Color.white;
             UITheme.Borde(rRes, new Color(1f, 0.85f, 0.35f, 0.35f), 1f);
-            string txtF = flechas > 0 ? $"» Flechas: {flechas}/{maxFlechas} (-1)" : "» ¡Sin Flechas!";
+            string txtF = flechas > 0 ? $"Flechas: {flechas}/{maxFlechas} (-1)" : "¡Sin Flechas!";
             UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
                 txtF, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
@@ -1054,17 +1576,19 @@ public class PlayerMovement : MonoBehaviour
             GUI.DrawTexture(new Rect(rRes.x + 1.5f, rRes.y + 1.5f, (rRes.width - 3f) * asaltoPct, rRes.height - 3f), UITheme.Blanca);
             GUI.color = Color.white;
             UITheme.Borde(rRes, new Color(0.45f, 0.85f, 1f, 0.35f), 1f);
-            string txtAsalto = isAssaultActive ? "⚡ Modo Asalto Activo [L]" : (asaltoPct >= 1f ? "⚡ Modo Asalto Listo [L]" : $"⚡ Carga de Asalto [L]: {Mathf.RoundToInt(asaltoPct * 100f)}%");
+            string txtAsalto = esTactil
+                ? (isAssaultActive ? "Modo Asalto Activo" : (asaltoPct >= 1f ? "Modo Asalto Listo ★" : $"Carga de Asalto: {Mathf.RoundToInt(asaltoPct * 100f)}%"))
+                : (isAssaultActive ? "Modo Asalto Activo [L]" : (asaltoPct >= 1f ? "Modo Asalto Listo [L]" : $"Carga de Asalto [L]: {Mathf.RoundToInt(asaltoPct * 100f)}%"));
             UITheme.EtiquetaConSombra(new Rect(rRes.x + UITheme.Px(6f), rRes.y, rRes.width - UITheme.Px(12f), rRes.height),
                 txtAsalto, UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
         }
 
-        // Fila 4: Arma activa en una sola línea limpia: ⚔ Espada de San Felipe | ATQ 12 | Cambiar: [Q]
+        // Fila 4: Arma activa en una sola línea limpia
         float row4Y = row3Y + row3H + gap;
         float atkActual = (isAssaultActive ? baseAttack * 1.60f : baseAttack) * arma.multiplicadorDanio;
-        string iconoArma = arma.tipo == WeaponType.Bow ? "»" : (arma.tipo == WeaponType.Staff ? "✦" : "⚔");
+        string cambiarHint = esTactil ? "Toca arma" : "<color=#00E5FF>[Q]</color>";
         GUI.Label(new Rect(panelX + pad, row4Y, barW, row4H),
-            $"{iconoArma} <color=#FFE066>{arma.nombre}</color> | ATQ <b>{atkActual:0.#}</b> | Cambiar: <color=#00E5FF>[Q]</color>",
+            $"<color=#FFE066>{arma.nombre}</color> | ATQ <b>{atkActual:0.#}</b> | {cambiarHint}",
             UITheme.Estilo(11, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.TextoSecundario));
 
         // Pequeño Menú Gráfico de Armas (debajo del panel de Ronan, dentro del área segura izquierda)
@@ -1231,17 +1755,19 @@ public class PlayerMovement : MonoBehaviour
 
             string nombreCorto = w.tipo == WeaponType.Sword ? "Espada" : (w.tipo == WeaponType.Bow ? "Arco" : "Báculo");
             Color colTitulo = activa ? UITheme.Dorado : (desbloqueada ? Color.white : new Color(0.55f, 0.60f, 0.68f));
+            bool esTactilCard = MobileInput.IsTouchControlsActive;
+            string tituloArma = esTactilCard ? $"<b>{nombreCorto}</b>" : $"<b>[{i + 1}] {nombreCorto}</b>";
 
             GUI.color = Color.white;
             GUI.Label(new Rect(txtX, rCard.y + UITheme.Px(4f), txtW, UITheme.Px(17f)),
-                $"<b>[{i + 1}] {nombreCorto}</b>",
+                tituloArma,
                 UITheme.Estilo(9, FontStyle.Bold, TextAnchor.MiddleLeft, colTitulo));
 
             string subInfo;
             Color colSub;
             if (!desbloqueada)
             {
-                subInfo = "Tienda [B]";
+                subInfo = esTactilCard ? "En Tienda" : "Tienda [B]";
                 colSub = new Color(0.68f, 0.62f, 0.52f, 0.90f);
             }
             else if (w.tipo == WeaponType.Bow)
@@ -1265,10 +1791,18 @@ public class PlayerMovement : MonoBehaviour
                 subInfo,
                 UITheme.Estilo(8, FontStyle.Bold, TextAnchor.MiddleLeft, colSub));
 
-            // Permitir clic directo sobre la tarjeta para equipar el arma si está desbloqueada
-            if (desbloqueada && Event.current.type == EventType.MouseDown && rCard.Contains(Event.current.mousePosition))
+            // Permitir clic/toque directo sobre la tarjeta para equipar el arma o abrir tienda si está bloqueada
+            if (Event.current.type == EventType.MouseDown && rCard.Contains(Event.current.mousePosition))
             {
-                CambiarArma(i);
+                if (desbloqueada)
+                {
+                    CambiarArma(i);
+                }
+                else if (esTactilCard)
+                {
+                    MobileInput.ResetHeldStates();
+                    ShopManager.EnsureInstance().AbrirTienda();
+                }
                 Event.current.Use();
             }
         }

@@ -36,9 +36,10 @@ public class BellPedestalNode : MonoBehaviour
         if (encendido || (puzzlePadre != null && puzzlePadre.acertijoResuelto)) return;
 
         float dist = Vector2.Distance(transform.position, playerTransform.position);
-        if (dist <= 1.75f && cooldownInteraccion <= 0f)
+        if (dist <= 1.75f)
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
+            MobileInput.ReportInteractableNearby("Tocar");
+            if (cooldownInteraccion <= 0f && (MobileInput.GetInteractDown(KeyCode.E) || MobileInput.GetAttackDown(KeyCode.J)))
             {
                 cooldownInteraccion = 0.45f;
                 puzzlePadre?.RegistrarActivacionPedestal(this);
@@ -100,7 +101,8 @@ public class BellPedestalNode : MonoBehaviour
         float h = UITheme.Px(36f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
         UITheme.Panel(r, style.normal.textColor, 2f);
-        GUI.Label(r, $"[E / J] Tocar {nombreCampana}", UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
+        string msgBell = MobileInput.IsTouchControlsActive ? $"Tocar {nombreCampana}" : $"[E / J] Tocar {nombreCampana}";
+        GUI.Label(r, msgBell, UITheme.Estilo(15, FontStyle.Bold, TextAnchor.MiddleCenter, style.normal.textColor));
     }
 }
 

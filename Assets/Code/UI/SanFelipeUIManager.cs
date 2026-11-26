@@ -134,7 +134,9 @@ public class SanFelipeUIManager : MonoBehaviour
                 avisoInteractuarUI.SetActive(cercaDeNPC && !dialogoInGameActivo);
             }
 
-            if (cercaDeNPC && Input.GetKeyDown(KeyCode.E))
+            if (cercaDeNPC) MobileInput.ReportInteractableNearby("Hablar");
+
+            if (cercaDeNPC && MobileInput.GetInteractDown(KeyCode.E))
             {
                 AvanzarDialogoDelPueblo();
             }

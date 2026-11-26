@@ -39,10 +39,14 @@ public class MarketStallTradeNode : MonoBehaviour
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive) return;
 
         float dist = Vector2.Distance(transform.position, playerTransform.position);
-        if (dist <= 1.95f && cooldown <= 0f && Input.GetKeyDown(KeyCode.E))
+        if (dist <= 1.95f)
         {
-            cooldown = 0.4f;
-            EjecutarInteraccion();
+            MobileInput.ReportInteractableNearby("Trueque");
+            if (cooldown <= 0f && MobileInput.GetInteractDown(KeyCode.E))
+            {
+                cooldown = 0.4f;
+                EjecutarInteraccion();
+            }
         }
     }
 
@@ -212,7 +216,8 @@ public class MarketStallTradeNode : MonoBehaviour
 
         Rect r = new Rect(rx, ry, w, h);
         UITheme.Panel(r, colBorde, 2f);
-        GUI.Label(r, labelPrompt, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
+        string txtPrompt = MobileInput.IsTouchControlsActive ? "Toca ✋ Trueque" : labelPrompt;
+        GUI.Label(r, txtPrompt, UITheme.Estilo(14, FontStyle.Bold, TextAnchor.MiddleCenter, colBorde));
     }
 }
 

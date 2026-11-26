@@ -247,9 +247,13 @@ public class EchoProgressionBarrier : MonoBehaviour
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive) return;
 
         float dist = Vector2.Distance(transform.position, playerTransform.position);
-        if (dist <= 2.4f && cooldown <= 0f && Input.GetKeyDown(KeyCode.E))
+        if (dist <= 2.4f)
         {
-            MostrarMensajeBloqueo();
+            MobileInput.ReportInteractableNearby("Ver");
+            if (cooldown <= 0f && MobileInput.GetInteractDown(KeyCode.E))
+            {
+                MostrarMensajeBloqueo();
+            }
         }
     }
 
@@ -308,6 +312,7 @@ public class EchoProgressionBarrier : MonoBehaviour
         float h = UITheme.Px(34f);
         Rect r = new Rect(screenPos.x - w * 0.5f, Screen.height - screenPos.y - h * 0.5f, w, h);
         UITheme.Panel(r, c, 2f);
-        GUI.Label(r, promptLabel, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, c));
+        string msgPortal = MobileInput.IsTouchControlsActive ? "Toca ✋ Ver" : promptLabel;
+        GUI.Label(r, msgPortal, UITheme.Estilo(13, FontStyle.Bold, TextAnchor.MiddleCenter, c));
     }
 }

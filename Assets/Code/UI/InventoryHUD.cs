@@ -190,9 +190,10 @@ public class InventoryHUD : MonoBehaviour
             oro = SaveStateManager.Instance.oro;
         }
 
-        // 1. Margen Seguro (Safe Area) amplio contra bordes cortados y zoom de cámara/GameView
-        float safeMarginRight = Mathf.Max(UITheme.Px(96f), Screen.width * 0.095f);
-        float safeMarginY = Mathf.Max(UITheme.Px(28f), Screen.height * 0.04f);
+        // 1. Margen Seguro (Safe Area) adaptado a notch móvil y botones superiores derechos táctiles
+        float extraMobileRight = MobileInput.IsTouchControlsActive ? UITheme.Px(82f) : UITheme.Px(18f);
+        float safeMarginRight = Mathf.Max(UITheme.SafeRight + extraMobileRight, UITheme.Px(26f));
+        float safeMarginY = Mathf.Max(UITheme.SafeTop + UITheme.Px(10f), UITheme.Px(20f));
         float pad = UITheme.Px(12f);
 
         float width = Mathf.Clamp(UITheme.Px(305f), 270f, Screen.width * 0.30f);
@@ -214,14 +215,14 @@ public class InventoryHUD : MonoBehaviour
         Rect rect = new Rect(Screen.width - width - safeMarginRight, safeMarginY, width, height);
         UITheme.Panel(rect, UITheme.BordeDorado, 1.5f);
 
-        // Fila 1: Zona Activa y Recursos Rápidos (Oro y Flechas) dentro de innerW
+        // Fila 1: Zona Activa y Recursos Rápidos (Oro y Flechas con iconos reales) dentro de innerW
         float row1Y = rect.y + pad;
-        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.62f, row1H),
-            $"📍 <b><color=#FFE066>{zonaNombre}</color></b>",
+        GUI.Label(new Rect(rect.x + pad, row1Y, innerW * 0.58f, row1H),
+            $"<b><color=#FFE066>{zonaNombre}</color></b>",
             UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, Color.white));
 
-        GUI.Label(new Rect(rect.x + pad + innerW * 0.58f, row1Y, innerW * 0.42f, row1H),
-            $"🏹 <b>{flechas}</b>  💰 <b>{oro}</b>",
+        GUI.Label(new Rect(rect.x + pad + innerW * 0.54f, row1Y, innerW * 0.46f, row1H),
+            $"Flechas: <b>{flechas}</b>   Oro: <b>{oro}</b>",
             UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleRight, new Color(1f, 0.92f, 0.55f)));
 
         // Fila 2: Exhibidor Visual de los 3 ECOS SAGRADOS ([1. Fe] | [2. Tradición] | [3. Memoria])
@@ -238,7 +239,7 @@ public class InventoryHUD : MonoBehaviour
             // Fila 3: Encabezado de Mochila Gráfica
             float bagTitleY = ecosY + ecoBoxH + gapY;
             GUI.Label(new Rect(rect.x + pad, bagTitleY, innerW, bagTitleH),
-                "🎒 <b>MOCHILA DE OBJETOS CLAVE:</b>",
+                "<b>MOCHILA DE OBJETOS CLAVE:</b>",
                 UITheme.Estilo(10, FontStyle.Bold, TextAnchor.MiddleLeft, UITheme.Dorado));
 
             // Fila 4: 4 Ranuras cuadradas tipo Zelda distribuidas equitativamente dentro de innerW

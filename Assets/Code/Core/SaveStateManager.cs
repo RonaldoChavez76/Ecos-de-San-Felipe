@@ -5,8 +5,47 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [Serializable]
+public class SealCheckpointState
+{
+    public string id;
+    public bool purificado;
+}
+
+[Serializable]
+public class BossCheckpointState
+{
+    public bool presente;
+    public bool derrotado;
+    public float vidaActual;
+    public float vidaMaxima;
+    public int fase;
+    public bool escudoActivo;
+    public bool ultimoAliento;
+    public Vector2 posicion;
+}
+
+[Serializable]
+public class ChestCheckpointState
+{
+    public string id;
+    public bool abierto;
+}
+
+[Serializable]
+public class WorldCheckpointState
+{
+    public string zonaId;
+    public bool santuarioPresente;
+    public bool santuarioResuelto;
+    public List<SealCheckpointState> sellos = new List<SealCheckpointState>();
+    public List<ChestCheckpointState> cofres = new List<ChestCheckpointState>();
+    public BossCheckpointState jefe;
+}
+
+[Serializable]
 public class CheckpointSnapshot
 {
+    public int schemaVersion;
     public string zonaId;
     public Vector2 posicion;
     public float vidaActual;
@@ -29,7 +68,10 @@ public class CheckpointSnapshot
     public bool ecoFe;
     public bool ecoTradicion;
     public bool ecoMemoria;
+    public bool cruzAzulConsagrada;
     public List<string> itemsInventario = new List<string>();
+    public WorldCheckpointState estadoMundo;
+    public List<WorldCheckpointState> estadosMundo = new List<WorldCheckpointState>();
 }
 
 /// <summary>
@@ -41,14 +83,26 @@ public class SaveStateManager : MonoBehaviour
 {
     private const string CheckpointPreferenceKey = "UltimoCheckpointJSON";
     private const string ProgressPreferenceKey = "ProgresoGlobalJSON";
+    private const string BlueCrossRitualPreferenceKey = "CruzAzulConsagrada";
+    private const int CurrentSaveSchemaVersion = 2;
     private static SaveStateManager _instance;
     private CheckpointSnapshot snapshotActivo;
+    private WorldCheckpointState estadoMundoProgreso;
+    private readonly List<WorldCheckpointState> estadosMundoProgreso = new List<WorldCheckpointState>();
     private readonly List<string> itemsInventarioGuardados = new List<string>();
     private int llavesInventarioGuardadas;
     private bool respawnPendiente;
     private bool restaurarCheckpointPendiente;
 
     public CheckpointSnapshot SnapshotActivo => snapshotActivo;
+    public bool HayCheckpointGuardado
+    {
+        get
+        {
+            CheckpointSnapshot checkpoint = LeerSnapshot(CheckpointPreferenceKey);
+            return checkpoint != null && !string.IsNullOrEmpty(ObtenerEscenaDeZona(checkpoint.zonaId));
+        }
+    }
 
     public static SaveStateManager Instance
     {
@@ -67,6 +121,7 @@ public class SaveStateManager : MonoBehaviour
     public bool ecoFeRecuperado = false;         // Nivel 1: Parroquia
     public bool ecoTradicionRecuperado = false;  // Nivel 2: Mercado
     public bool ecoMemoriaRecuperado = false;    // Nivel 3: Cerro del Fraile (Cruz Azul)
+    public bool cruzAzulConsagrada;
 
     public enum GameDifficulty
     {
@@ -134,6 +189,12 @@ public class SaveStateManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += AlCargarEscena;
         CargarProgreso();
+    }
+
+    private void Start()
+    {
+        if (ObtenerEstadoMundo(LevelManager.ObtenerZonaDeEscena(SceneManager.GetActiveScene().name).ToString()) != null)
+            StartCoroutine(RutinaRestaurarMundoAlCargar(SceneManager.GetActiveScene().name));
     }
 
     private void OnDestroy()
@@ -228,9 +289,9 @@ public class SaveStateManager : MonoBehaviour
     {
         if (oro < cantidad) return false;
         oro -= cantidad;
-        GuardarProgreso();
         PlayerMovement pm = FindAnyObjectByType<PlayerMovement>();
         if (pm != null) pm.oro = oro;
+        GuardarProgreso();
         OnOroCambiado?.Invoke(oro);
         return true;
     }
@@ -249,6 +310,15 @@ public class SaveStateManager : MonoBehaviour
     {
         ultimaZonaId = zonaId;
         ultimoCheckpoint = posicion;
+        GuardarProgreso();
+    }
+
+    public void ConsagrarCruzAzul()
+    {
+        if (cruzAzulConsagrada || !ecoFeRecuperado || !ecoTradicionRecuperado || !ecoMemoriaRecuperado) return;
+        cruzAzulConsagrada = true;
+        PlayerPrefs.SetInt(BlueCrossRitualPreferenceKey, 1);
+        PlayerPrefs.Save();
         GuardarProgreso();
     }
 
@@ -310,9 +380,15 @@ public class SaveStateManager : MonoBehaviour
             return false;
         }
 
+        if (snapshotActivo.estadoMundo == null)
+            snapshotActivo.estadoMundo = CapturarEstadoMundoActual();
+        IntegrarProgresoPermanenteEnCheckpoint();
         AplicarSnapshotGlobal(snapshotActivo);
         RestaurarEstadoDelJugador(player, snapshotActivo);
         TeletransportarJugador(player, snapshotActivo.posicion);
+        RestaurarEstadoMundo(snapshotActivo.estadoMundo);
+        PlayerPrefs.SetString(CheckpointPreferenceKey, JsonUtility.ToJson(snapshotActivo));
+        GuardarProgreso();
 
         return true;
     }
@@ -333,12 +409,96 @@ public class SaveStateManager : MonoBehaviour
         SceneManager.LoadScene(escenaActual.name);
     }
 
+    public bool RegresarAlUltimoCheckpoint()
+    {
+        CheckpointSnapshot checkpoint = LeerSnapshot(CheckpointPreferenceKey);
+        if (checkpoint == null)
+        {
+            Debug.LogWarning("[SaveStateManager] No hay un checkpoint válido al que regresar.");
+            return false;
+        }
+
+        string escenaDestino = ObtenerEscenaDeZona(checkpoint.zonaId);
+        if (string.IsNullOrEmpty(escenaDestino))
+        {
+            Debug.LogError($"[SaveStateManager] No se reconoce la zona del checkpoint: {checkpoint.zonaId}.");
+            return false;
+        }
+
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        string escenaActual = SceneManager.GetActiveScene().name;
+        if (player != null && escenaActual != "PantallaInicio")
+        {
+            GuardarProgreso();
+        }
+
+        CheckpointSnapshot progreso = LeerSnapshot(ProgressPreferenceKey);
+        CheckpointSnapshot continuacion = progreso != null
+            ? JsonUtility.FromJson<CheckpointSnapshot>(JsonUtility.ToJson(progreso))
+            : JsonUtility.FromJson<CheckpointSnapshot>(JsonUtility.ToJson(checkpoint));
+        continuacion.zonaId = checkpoint.zonaId;
+        continuacion.posicion = checkpoint.posicion;
+
+        if (continuacion.estadosMundo == null)
+            continuacion.estadosMundo = new List<WorldCheckpointState>();
+        if (checkpoint.estadoMundo != null &&
+            !continuacion.estadosMundo.Exists(estado => estado != null && estado.zonaId == checkpoint.estadoMundo.zonaId))
+        {
+            continuacion.estadosMundo.Add(ClonarEstadoMundo(checkpoint.estadoMundo));
+        }
+        WorldCheckpointState estadoDestino = continuacion.estadosMundo.Find(
+            estado => estado != null && estado.zonaId == checkpoint.zonaId);
+        continuacion.estadoMundo = estadoDestino != null
+            ? ClonarEstadoMundo(estadoDestino)
+            : ClonarEstadoMundo(checkpoint.estadoMundo);
+
+        snapshotActivo = continuacion;
+        AplicarSnapshotGlobal(continuacion);
+        ultimaZonaId = continuacion.zonaId;
+        ultimoCheckpoint = continuacion.posicion;
+        PlayerPrefs.SetString(CheckpointPreferenceKey, JsonUtility.ToJson(continuacion));
+        PlayerPrefs.SetString(ProgressPreferenceKey, JsonUtility.ToJson(continuacion));
+        PlayerPrefs.Save();
+
+        restaurarCheckpointPendiente = true;
+        respawnPendiente = true;
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        SceneManager.LoadScene(escenaDestino);
+        return true;
+    }
+
+    private static string ObtenerEscenaDeZona(string zonaId)
+    {
+        switch (zonaId)
+        {
+            case "ParroquiaExterior": return "SampleScene";
+            case "ParroquiaInterior": return "ParroquiaInterior";
+            case "Mercado": return "Nivel2_Mercado";
+            case "CerroDelFraile": return "Nivel3_CerroDelFraile";
+            default: return null;
+        }
+    }
+
     private void AlCargarEscena(Scene escena, LoadSceneMode modo)
     {
         if (respawnPendiente)
         {
             StartCoroutine(RutinaRestaurarRespawn(escena.name));
         }
+        else if (ObtenerEstadoMundo(LevelManager.ObtenerZonaDeEscena(escena.name).ToString()) != null)
+        {
+            StartCoroutine(RutinaRestaurarMundoAlCargar(escena.name));
+        }
+    }
+
+    private IEnumerator RutinaRestaurarMundoAlCargar(string nombreEscena)
+    {
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        WorldCheckpointState estado = ObtenerEstadoMundo(LevelManager.ObtenerZonaDeEscena(nombreEscena).ToString());
+        if (estado != null) RestaurarEstadoMundo(estado);
     }
 
     private IEnumerator RutinaRestaurarRespawn(string nombreEscena)
@@ -369,6 +529,7 @@ public class SaveStateManager : MonoBehaviour
         {
             RestaurarJugadorInicioNivel(player, levelManager.currentZone);
         }
+        restaurarCheckpointPendiente = false;
 
         player.gameObject.SetActive(true);
         player.enabled = true;
@@ -448,6 +609,8 @@ public class SaveStateManager : MonoBehaviour
         Vector2 posicion = player != null ? (Vector2)player.transform.position : ultimoCheckpoint;
 
         CheckpointSnapshot progreso = CrearSnapshot(zonaId, posicion, player);
+        if (progreso.estadoMundo != null)
+            estadoMundoProgreso = ClonarEstadoMundo(progreso.estadoMundo);
         PlayerPrefs.SetString(ProgressPreferenceKey, JsonUtility.ToJson(progreso));
         PlayerPrefs.Save();
     }
@@ -456,6 +619,7 @@ public class SaveStateManager : MonoBehaviour
     {
         RestablecerValoresIniciales();
         dificultadActual = (GameDifficulty)PlayerPrefs.GetInt("GameDifficulty", 1);
+        cruzAzulConsagrada = PlayerPrefs.GetInt(BlueCrossRitualPreferenceKey, 0) == 1;
 
         CheckpointSnapshot progreso = LeerSnapshot(ProgressPreferenceKey);
         if (progreso != null)
@@ -472,6 +636,10 @@ public class SaveStateManager : MonoBehaviour
             ultimaZonaId = snapshotActivo.zonaId;
             ultimoCheckpoint = snapshotActivo.posicion;
         }
+        else if (estadoMundoProgreso == null && snapshotActivo != null)
+        {
+            estadoMundoProgreso = ClonarEstadoMundo(snapshotActivo.estadoMundo);
+        }
     }
 
     private CheckpointSnapshot CrearSnapshot(string zonaId, Vector2 posicion, PlayerMovement player)
@@ -480,13 +648,17 @@ public class SaveStateManager : MonoBehaviour
         List<string> items = inventory != null
             ? new List<string>(inventory.GetItems())
             : new List<string>();
+        WorldCheckpointState estadoMundo = CapturarEstadoMundoActual();
+        if (estadoMundo != null)
+            GuardarEstadoMundoEnProgreso(estadoMundo);
 
         return new CheckpointSnapshot
         {
+            schemaVersion = CurrentSaveSchemaVersion,
             zonaId = zonaId,
             posicion = posicion,
             vidaActual = player != null ? player.currentHealth : currentHealth,
-            vidaMaxima = player != null ? player.maxHealth : ObtenerVidaMaximaTotal(),
+            vidaMaxima = player != null ? Mathf.Max(player.maxHealth, ObtenerVidaMaximaTotal()) : ObtenerVidaMaximaTotal(),
             manaActual = player != null ? player.manaActual : 60f,
             flechasActuales = player != null ? player.flechas : 12,
             oro = player != null ? player.oro : oro,
@@ -505,7 +677,10 @@ public class SaveStateManager : MonoBehaviour
             ecoFe = ecoFeRecuperado,
             ecoTradicion = ecoTradicionRecuperado,
             ecoMemoria = ecoMemoriaRecuperado,
-            itemsInventario = items
+            cruzAzulConsagrada = cruzAzulConsagrada,
+            itemsInventario = items,
+            estadoMundo = ClonarEstadoMundo(estadoMundo),
+            estadosMundo = ClonarEstadosMundo(estadosMundoProgreso)
         };
     }
 
@@ -514,6 +689,7 @@ public class SaveStateManager : MonoBehaviour
         ecoFeRecuperado = snapshot.ecoFe;
         ecoTradicionRecuperado = snapshot.ecoTradicion;
         ecoMemoriaRecuperado = snapshot.ecoMemoria;
+        cruzAzulConsagrada = snapshot.cruzAzulConsagrada || PlayerPrefs.GetInt(BlueCrossRitualPreferenceKey, 0) == 1;
         baseMaxHealth = Mathf.Max(1f, snapshot.vidaMaxima - TotalEcosEnSnapshot(snapshot) * 25f);
         currentHealth = snapshot.vidaActual;
         oro = snapshot.oro;
@@ -534,6 +710,17 @@ public class SaveStateManager : MonoBehaviour
             itemsInventarioGuardados.AddRange(snapshot.itemsInventario);
         }
         llavesInventarioGuardadas = snapshot.llavesOro;
+        estadosMundoProgreso.Clear();
+        if (snapshot.estadosMundo != null)
+        {
+            foreach (WorldCheckpointState estado in snapshot.estadosMundo)
+                GuardarEstadoMundoEnProgreso(estado);
+        }
+        if (snapshot.estadoMundo != null)
+            GuardarEstadoMundoEnProgreso(snapshot.estadoMundo);
+        estadoMundoProgreso = ObtenerEstadoMundo(snapshot.zonaId);
+        if (estadoMundoProgreso == null && snapshot.estadoMundo != null)
+            estadoMundoProgreso = ClonarEstadoMundo(snapshot.estadoMundo);
         ultimaZonaId = snapshot.zonaId;
         ultimoCheckpoint = snapshot.posicion;
 
@@ -608,6 +795,12 @@ public class SaveStateManager : MonoBehaviour
                 Debug.LogError($"[SaveStateManager] El archivo de guardado '{key}' no contiene un checkpoint válido.");
                 return null;
             }
+            if (snapshot.schemaVersion < CurrentSaveSchemaVersion)
+            {
+                snapshot.schemaVersion = CurrentSaveSchemaVersion;
+                if (snapshot.itemsInventario == null) snapshot.itemsInventario = new List<string>();
+                if (snapshot.estadosMundo == null) snapshot.estadosMundo = new List<WorldCheckpointState>();
+            }
             return snapshot;
         }
         catch (ArgumentException exception)
@@ -619,7 +812,9 @@ public class SaveStateManager : MonoBehaviour
 
     private static bool EsSnapshotValido(CheckpointSnapshot snapshot)
     {
-        return Enum.TryParse(snapshot.zonaId, false, out LevelManager.ZoneId zona) &&
+        return snapshot.schemaVersion >= 0 &&
+               snapshot.schemaVersion <= CurrentSaveSchemaVersion &&
+               Enum.TryParse(snapshot.zonaId, false, out LevelManager.ZoneId zona) &&
                Enum.IsDefined(typeof(LevelManager.ZoneId), zona) &&
                !float.IsNaN(snapshot.posicion.x) &&
                !float.IsInfinity(snapshot.posicion.x) &&
@@ -646,6 +841,7 @@ public class SaveStateManager : MonoBehaviour
         ecoFeRecuperado = false;
         ecoTradicionRecuperado = false;
         ecoMemoriaRecuperado = false;
+        cruzAzulConsagrada = false;
         currentHealth = baseMaxHealth;
         goldKeys = 0;
         oro = 50;
@@ -665,6 +861,8 @@ public class SaveStateManager : MonoBehaviour
         ultimaZonaId = "ParroquiaExterior";
         ultimoCheckpoint = Vector2.zero;
         snapshotActivo = null;
+        estadoMundoProgreso = null;
+        estadosMundoProgreso.Clear();
         itemsInventarioGuardados.Clear();
         llavesInventarioGuardadas = 0;
     }
@@ -699,32 +897,44 @@ public class SaveStateManager : MonoBehaviour
         _ => 1.0f
     };
 
-    public float VentanaContraataqueSegundos => dificultadActual switch
+    public float VentanaContraataqueSegundos => (dificultadActual switch
     {
         GameDifficulty.Facil => 0.28f,
         GameDifficulty.Dificil => 0.16f,
         _ => 0.20f
-    };
+    }) + (MobileInput.IsTouchControlsActive ? 0.06f : 0f);
 
     public float MultiplicadorDropCorazones => dificultadActual switch
     {
-        GameDifficulty.Facil => 1.50f,
-        GameDifficulty.Dificil => 0.60f,
-        _ => 1.0f
+        GameDifficulty.Facil => 0.9f,
+        GameDifficulty.Dificil => 0.65f,
+        _ => 0.78f
+    };
+
+    public float MultiplicadorProbabilidadDrops => dificultadActual switch
+    {
+        GameDifficulty.Facil => 0.72f,
+        GameDifficulty.Dificil => 0.36f,
+        _ => 0.54f
     };
 
     public float MultiplicadorDropOro => dificultadActual switch
     {
-        GameDifficulty.Dificil => 1.50f,
-        _ => 1.0f
+        GameDifficulty.Facil => 1.0f,
+        GameDifficulty.Dificil => 0.65f,
+        _ => 0.82f
     };
 
     public void ReiniciarProgreso()
     {
         RestablecerValoresIniciales();
+        respawnPendiente = false;
+        restaurarCheckpointPendiente = false;
+        LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.ParroquiaExterior;
         dificultadActual = (GameDifficulty)PlayerPrefs.GetInt("GameDifficulty", 1);
         PlayerPrefs.DeleteKey(CheckpointPreferenceKey);
         PlayerPrefs.DeleteKey(ProgressPreferenceKey);
+        PlayerPrefs.DeleteKey(BlueCrossRitualPreferenceKey);
         PlayerPrefs.Save();
 
         InventoryManager inventory = InventoryManager.Instance;
@@ -732,5 +942,230 @@ public class SaveStateManager : MonoBehaviour
         {
             inventory.RestaurarInventario(new List<string>(), 0);
         }
+    }
+
+    public void RegistrarEstadoMundoActual()
+    {
+        WorldCheckpointState estado = CapturarEstadoMundoActual();
+        if (estado == null) return;
+        GuardarEstadoMundoEnProgreso(estado);
+        GuardarProgreso();
+    }
+
+    public void RegistrarDerrotaJefeFinal()
+    {
+        WorldCheckpointState estado = CapturarEstadoMundoActual();
+        if (estado == null) return;
+        if (estado.jefe == null)
+            estado.jefe = new BossCheckpointState();
+        estado.jefe.presente = true;
+        estado.jefe.derrotado = true;
+        GuardarEstadoMundoEnProgreso(estado);
+        GuardarProgreso();
+    }
+
+    private WorldCheckpointState CapturarEstadoMundoActual()
+    {
+        LevelManager levelManager = LevelManager.EnsureInstance();
+        string zonaId = levelManager.currentZone.ToString();
+        WorldCheckpointState previo = ObtenerEstadoMundo(zonaId);
+        WorldCheckpointState estado = previo != null
+            ? ClonarEstadoMundo(previo)
+            : new WorldCheckpointState { zonaId = zonaId };
+        estado.zonaId = zonaId;
+
+        TreasureChestNode[] cofresEnEscena = FindObjectsByType<TreasureChestNode>(FindObjectsInactive.Include);
+        if (cofresEnEscena.Length > 0)
+        {
+            estado.cofres = new List<ChestCheckpointState>(cofresEnEscena.Length);
+            foreach (TreasureChestNode cofre in cofresEnEscena)
+            {
+                if (cofre == null || string.IsNullOrWhiteSpace(cofre.chestId)) continue;
+                estado.cofres.Add(new ChestCheckpointState
+                {
+                    id = cofre.chestId,
+                    abierto = cofre.Opened
+                });
+            }
+        }
+
+        if (levelManager.currentZone == LevelManager.ZoneId.CerroDelFraile)
+        {
+            BlueCrossShrinePuzzle puzzle = FindAnyObjectByType<BlueCrossShrinePuzzle>(FindObjectsInactive.Include);
+            if (puzzle != null)
+            {
+                estado.santuarioPresente = true;
+                puzzle.CapturarEstadoCheckpoint(estado);
+
+                SombraGuardianaBossAI jefe = FindAnyObjectByType<SombraGuardianaBossAI>(FindObjectsInactive.Include);
+                if (jefe != null)
+                {
+                    jefe.CapturarEstadoCheckpoint(estado);
+                }
+            }
+        }
+
+        return estado;
+    }
+
+    private void RestaurarEstadoMundo(WorldCheckpointState estado)
+    {
+        if (estado == null) return;
+
+        TreasureChestNode[] cofresEnEscena = FindObjectsByType<TreasureChestNode>(FindObjectsInactive.Include);
+        if (estado.cofres != null)
+        {
+            foreach (TreasureChestNode cofre in cofresEnEscena)
+            {
+                if (cofre == null) continue;
+                ChestCheckpointState guardado = estado.cofres.Find(c => c != null && c.id == cofre.chestId);
+                if (guardado != null) cofre.RestaurarEstadoCheckpoint(guardado.abierto);
+            }
+        }
+
+        if (estado.santuarioPresente)
+        {
+            BlueCrossShrinePuzzle puzzle = FindAnyObjectByType<BlueCrossShrinePuzzle>(FindObjectsInactive.Include);
+            SombraGuardianaBossAI jefe = FindAnyObjectByType<SombraGuardianaBossAI>(FindObjectsInactive.Include);
+            if (puzzle == null)
+            {
+                Debug.LogError("[SaveStateManager] No se encontró el santuario para restaurar el estado del checkpoint.");
+                return;
+            }
+
+            puzzle.RestaurarEstadoCheckpoint(estado);
+            if (jefe != null && estado.jefe != null)
+            {
+                jefe.RestaurarEstadoCheckpoint(estado.jefe);
+            }
+            else if (estado.jefe != null && !estado.jefe.derrotado)
+            {
+                Debug.LogError("[SaveStateManager] No se encontró a La Sombra Guardiana para restaurar el estado del checkpoint.");
+                return;
+            }
+            else if (estado.jefe != null && estado.jefe.derrotado && !ecoMemoriaRecuperado)
+            {
+                SombraGuardianaBossAI.CrearEcoDeCheckpoint(estado.jefe.posicion, 3);
+            }
+        }
+
+        GuardarEstadoMundoEnProgreso(estado);
+    }
+
+    public bool EstaCofreAbierto(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id)) return false;
+        foreach (WorldCheckpointState estado in estadosMundoProgreso)
+        {
+            if (estado == null || estado.cofres == null) continue;
+            ChestCheckpointState cofre = estado.cofres.Find(c => c != null && c.id == id);
+            if (cofre != null) return cofre.abierto;
+        }
+        return false;
+    }
+
+    private WorldCheckpointState ObtenerEstadoMundo(string zonaId)
+    {
+        if (string.IsNullOrWhiteSpace(zonaId)) return null;
+        return estadosMundoProgreso.Find(estado => estado != null && estado.zonaId == zonaId);
+    }
+
+    private void GuardarEstadoMundoEnProgreso(WorldCheckpointState estado)
+    {
+        if (estado == null || string.IsNullOrWhiteSpace(estado.zonaId)) return;
+        WorldCheckpointState clon = ClonarEstadoMundo(estado);
+        int indice = estadosMundoProgreso.FindIndex(actual => actual != null && actual.zonaId == clon.zonaId);
+        if (indice >= 0)
+            estadosMundoProgreso[indice] = clon;
+        else
+            estadosMundoProgreso.Add(clon);
+        estadoMundoProgreso = ClonarEstadoMundo(clon);
+    }
+
+    private static List<WorldCheckpointState> ClonarEstadosMundo(List<WorldCheckpointState> estados)
+    {
+        List<WorldCheckpointState> clones = new List<WorldCheckpointState>();
+        if (estados == null) return clones;
+        foreach (WorldCheckpointState estado in estados)
+        {
+            WorldCheckpointState clon = ClonarEstadoMundo(estado);
+            if (clon != null) clones.Add(clon);
+        }
+        return clones;
+    }
+
+    private void IntegrarProgresoPermanenteEnCheckpoint()
+    {
+        CheckpointSnapshot progreso = LeerSnapshot(ProgressPreferenceKey);
+        snapshotActivo.estadosMundo = ClonarEstadosMundo(snapshotActivo.estadosMundo);
+        if (snapshotActivo.estadoMundo != null)
+        {
+            int indiceEstadoCheckpoint = snapshotActivo.estadosMundo.FindIndex(
+                estado => estado != null && estado.zonaId == snapshotActivo.estadoMundo.zonaId);
+            if (indiceEstadoCheckpoint >= 0)
+                snapshotActivo.estadosMundo[indiceEstadoCheckpoint] = ClonarEstadoMundo(snapshotActivo.estadoMundo);
+            else
+                snapshotActivo.estadosMundo.Add(ClonarEstadoMundo(snapshotActivo.estadoMundo));
+        }
+        if (progreso != null)
+        {
+            if (progreso.estadosMundo != null)
+            {
+                foreach (WorldCheckpointState estado in progreso.estadosMundo)
+                    IntegrarCofresAbiertosEnSnapshot(estado);
+            }
+            IntegrarCofresAbiertosEnSnapshot(progreso.estadoMundo);
+        }
+
+        WorldCheckpointState estadoZona = snapshotActivo.estadosMundo.Find(
+            estado => estado != null && estado.zonaId == snapshotActivo.zonaId);
+        if (estadoZona != null)
+        {
+            snapshotActivo.estadoMundo = ClonarEstadoMundo(estadoZona);
+        }
+
+        int totalEcosCheckpoint = TotalEcosEnSnapshot(snapshotActivo);
+        float vidaBase = Mathf.Max(1f, snapshotActivo.vidaMaxima - totalEcosCheckpoint * 25f);
+        snapshotActivo.ecoFe |= ecoFeRecuperado || (progreso != null && progreso.ecoFe);
+        snapshotActivo.ecoTradicion |= ecoTradicionRecuperado || (progreso != null && progreso.ecoTradicion);
+        snapshotActivo.ecoMemoria |= ecoMemoriaRecuperado || (progreso != null && progreso.ecoMemoria);
+        snapshotActivo.cruzAzulConsagrada |= cruzAzulConsagrada ||
+            (progreso != null && progreso.cruzAzulConsagrada) ||
+            PlayerPrefs.GetInt(BlueCrossRitualPreferenceKey, 0) == 1;
+        snapshotActivo.vidaMaxima = vidaBase + TotalEcosEnSnapshot(snapshotActivo) * 25f;
+        snapshotActivo.vidaActual = Mathf.Clamp(snapshotActivo.vidaActual, 0f, snapshotActivo.vidaMaxima);
+    }
+
+    private void IntegrarCofresAbiertosEnSnapshot(WorldCheckpointState estadoProgreso)
+    {
+        if (estadoProgreso == null || string.IsNullOrWhiteSpace(estadoProgreso.zonaId)) return;
+        int indice = snapshotActivo.estadosMundo.FindIndex(
+            estado => estado != null && estado.zonaId == estadoProgreso.zonaId);
+        if (indice < 0)
+        {
+            snapshotActivo.estadosMundo.Add(ClonarEstadoMundo(estadoProgreso));
+            return;
+        }
+
+        WorldCheckpointState estadoCheckpoint = snapshotActivo.estadosMundo[indice];
+        if (estadoProgreso.cofres == null) return;
+        if (estadoCheckpoint.cofres == null)
+            estadoCheckpoint.cofres = new List<ChestCheckpointState>();
+
+        foreach (ChestCheckpointState cofreProgreso in estadoProgreso.cofres)
+        {
+            if (cofreProgreso == null || !cofreProgreso.abierto) continue;
+            ChestCheckpointState cofreCheckpoint = estadoCheckpoint.cofres.Find(
+                cofre => cofre != null && cofre.id == cofreProgreso.id);
+            if (cofreCheckpoint != null)
+                cofreCheckpoint.abierto = true;
+            else
+                estadoCheckpoint.cofres.Add(new ChestCheckpointState { id = cofreProgreso.id, abierto = true });
+        }
+    }
+
+    private static WorldCheckpointState ClonarEstadoMundo(WorldCheckpointState estado)
+    {
+        return estado == null ? null : JsonUtility.FromJson<WorldCheckpointState>(JsonUtility.ToJson(estado));
     }
 }

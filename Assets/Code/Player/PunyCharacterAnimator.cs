@@ -81,10 +81,8 @@ public class PunyCharacterAnimator : MonoBehaviour
             estadoAnterior = player.currentState;
         }
 
-        // 1. Leer hacia dónde se está moviendo o mirando el jugador
-        float hx = Input.GetAxisRaw("Horizontal");
-        float vy = Input.GetAxisRaw("Vertical");
-        Vector2 inputDir = new Vector2(hx, vy);
+        // 1. Leer hacia dónde se está moviendo o mirando el jugador (PC + Joystick móvil)
+        Vector2 inputDir = MobileInput.GetMovementAxis();
 
         // Si está en estado de Victoria, siempre mira hacia el frente/cámara (Fila 0 = Sur)
         if (player.currentState == PlayerMovement.CombatState.Victory)
@@ -114,6 +112,11 @@ public class PunyCharacterAnimator : MonoBehaviour
         else if (player.currentState == PlayerMovement.CombatState.Victory)
         {
             // Pose heroica de triunfo con el Eco en alto mirando a la cámara (Columna 4 = Brazos alzados)
+            currentDirectionRow = 0;
+            columnaElegida = 4;
+        }
+        else if (player.currentState == PlayerMovement.CombatState.ItemGet)
+        {
             currentDirectionRow = 0;
             columnaElegida = 4;
         }

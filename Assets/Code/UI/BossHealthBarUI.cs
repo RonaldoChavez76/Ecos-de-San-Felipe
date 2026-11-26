@@ -90,7 +90,7 @@ public class BossHealthBarUI : MonoBehaviour
         float padY      = UITheme.Px(10f);
         float totalH    = padY + titleH + UITheme.Px(4f) + barHeight + UITheme.Px(6f) + subH + padY;
         float x         = (Screen.width - barWidth) * 0.5f;
-        float y         = Mathf.Max(UITheme.Px(16f), Screen.height * 0.02f);
+        float y         = Mathf.Max(UITheme.SafeTop + UITheme.Px(10f), UITheme.Px(16f), Screen.height * 0.02f);
 
         string faseTexto = "FASE I: DESPERTAR DEL OLVIDO";
         Color fillColor = new Color(0.68f, 0.18f, 0.92f, 0.95f);
@@ -165,13 +165,20 @@ public class BossHealthBarUI : MonoBehaviour
         float subY = barY + barHeight + UITheme.Px(6f);
 
         // Texto de estado de sellos dinamico segun fase y escudo
+        bool esTactil = MobileInput.IsTouchControlsActive;
         string estadoSellos;
         if (bossAI.isShieldedBySeals)
-            estadoSellos = "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]";
+            estadoSellos = esTactil
+                ? "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul"
+                : "ESCUDO ACTIVO: Purifica los 3 Sellos de la Cruz Azul [E / J]";
         else if (bossAI.currentPhase == SombraGuardianaBossAI.BossPhase.Phase3_AbyssalFury)
-            estadoSellos = "SOBRECARGA! Contraataca la Gran Esfera con [K] | Modo Asalto [L]";
+            estadoSellos = esTactil
+                ? "SOBRECARGA! Contraataca la Gran Esfera con Escudo | Usa Asalto"
+                : "SOBRECARGA! Contraataca la Gran Esfera con [K] | Modo Asalto [L]";
         else
-            estadoSellos = "ESCUDO ROTO! Ataca con Modo Asalto [L]";
+            estadoSellos = esTactil
+                ? "ESCUDO ROTO! Ataca con Modo Asalto"
+                : "ESCUDO ROTO! Ataca con Modo Asalto [L]";
 
         GUI.Label(
             new Rect(x - padX + 6f, subY, barWidth + (padX - 6f) * 2f, subH),

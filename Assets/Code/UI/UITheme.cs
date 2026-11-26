@@ -46,6 +46,23 @@ public static class UITheme
 
     public static float Px(float basePx) => basePx * Escala;
 
+    /// <summary>SafeArea convertida al sistema de coordenadas de IMGUI (origen arriba-izquierda).</summary>
+    public static Rect SafeAreaGUI
+    {
+        get
+        {
+            Rect sa = Screen.safeArea;
+            if (sa.width <= 0f || sa.height <= 0f)
+                return new Rect(0f, 0f, Screen.width, Screen.height);
+            return new Rect(sa.x, Screen.height - sa.yMax, sa.width, sa.height);
+        }
+    }
+
+    public static float SafeLeft => SafeAreaGUI.x;
+    public static float SafeTop => SafeAreaGUI.y;
+    public static float SafeRight => Mathf.Max(0f, Screen.width - SafeAreaGUI.xMax);
+    public static float SafeBottom => Mathf.Max(0f, Screen.height - SafeAreaGUI.yMax);
+
     public static GUIStyle Estilo(int basePx, FontStyle fontStyle = FontStyle.Bold, TextAnchor anchor = TextAnchor.MiddleLeft,
                                   Color? color = null, bool wordWrap = false)
     {
@@ -117,10 +134,10 @@ public static class UITheme
     /// <summary>Banner de una línea centrado horizontalmente (avisos de zona, puertas, hordas).</summary>
     public static void Banner(float y, string texto, Color colorTexto, float anchoBase = 620f, int fuenteBase = 16)
     {
-        float safeMarginX = Mathf.Max(Px(26f), Screen.width * 0.03f);
+        float safeMarginX = Mathf.Max(SafeLeft, SafeRight) + Mathf.Max(Px(26f), Screen.width * 0.03f);
         float w = Mathf.Min(Px(anchoBase), Screen.width - safeMarginX * 2f);
         float h = Px(fuenteBase + 16f);
-        Rect r = new Rect((Screen.width - w) * 0.5f, y, w, h);
+        Rect r = new Rect((Screen.width - w) * 0.5f, Mathf.Max(y, SafeTop + Px(8f)), w, h);
         Panel(r, colorTexto, 1.5f);
         GUI.Label(r, texto, Estilo(fuenteBase, FontStyle.Bold, TextAnchor.MiddleCenter, colorTexto));
     }

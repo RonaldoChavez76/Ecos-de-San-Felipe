@@ -9,9 +9,11 @@ using UnityEngine;
 public class ParroquiaExteriorBuilder : MonoBehaviour
 {
     private static readonly Dictionary<string, Sprite> spriteCache = new Dictionary<string, Sprite>();
+    private static readonly Dictionary<string, Texture2D> readableSheetCache = new Dictionary<string, Texture2D>();
 
     public static GameObject ConstruirElementosExteriorParroquia(Transform parentRoot = null)
     {
+        AudioManager.EnsureInstance();
         LevelManager.EnsureInstance().currentZone = LevelManager.ZoneId.ParroquiaExterior;
 
         string[] nombresPrevios = { "Zona_Parroquia_Exterior_Interactivos", "Parroquia_Exterior_Elementos" };
@@ -119,7 +121,7 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         signMercado.dialoguePages = new string[]
         {
             "«Hacia el Poniente (Oeste) se extiende el Gran Mercado Municipal de Artesanos y Alfareros.»",
-            "«Avanza hacia el portal luminoso al Oeste (-15, 0) para adentrarte en el Nivel 2: El Mercado Municipal y recuperar el Eco de la Tradición.»"
+            "«Sigue hacia el portal luminoso del Oeste para adentrarte en el Nivel 2: El Mercado Municipal y recuperar el Eco de la Tradición.»"
         };
 
         // 2. NPCS Y LETREROS CON RECORTE EXACTO DE CELDA (SIN CORTES ERRÓNEOS)
@@ -295,6 +297,13 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         HeartPickup.SpawnHeart(new Vector3(-2.5f, 18.2f, 0f), 25f, root.transform);   // Antes de subir al Atrio de la Parroquia
         HeartPickup.SpawnHeart(new Vector3(2.5f, 18.2f, 0f), 25f, root.transform);    // Antes de subir al Atrio de la Parroquia
 
+        TreasureChestNode.Crear(
+            "ParroquiaExterior.ProvisionesDelAtrio",
+            new Vector2(-6f, -20f),
+            root.transform,
+            TreasureChestNode.RewardType.Gold,
+            12);
+
         return root;
     }
 
@@ -433,20 +442,24 @@ public class ParroquiaExteriorBuilder : MonoBehaviour
         }
         else
         {
-            RenderTexture rt = RenderTexture.GetTemporary(sheet.width, sheet.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
-            Graphics.Blit(sheet, rt);
-            RenderTexture prev = RenderTexture.active;
-            RenderTexture.active = rt;
+            if (!readableSheetCache.TryGetValue(sheetNameWithoutExt, out Texture2D fullCopy) || fullCopy == null)
+            {
+                RenderTexture rt = RenderTexture.GetTemporary(sheet.width, sheet.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+                Graphics.Blit(sheet, rt);
+                RenderTexture prev = RenderTexture.active;
+                RenderTexture.active = rt;
 
-            Texture2D fullCopy = new Texture2D(sheet.width, sheet.height, TextureFormat.RGBA32, false);
-            fullCopy.ReadPixels(new Rect(0, 0, sheet.width, sheet.height), 0, 0);
-            fullCopy.Apply();
+                fullCopy = new Texture2D(sheet.width, sheet.height, TextureFormat.RGBA32, false);
+                fullCopy.ReadPixels(new Rect(0, 0, sheet.width, sheet.height), 0, 0);
+                fullCopy.Apply();
+                fullCopy.hideFlags = HideFlags.HideAndDontSave;
 
-            RenderTexture.active = prev;
-            RenderTexture.ReleaseTemporary(rt);
+                RenderTexture.active = prev;
+                RenderTexture.ReleaseTemporary(rt);
+                readableSheetCache[sheetNameWithoutExt] = fullCopy;
+            }
 
             pixels = fullCopy.GetPixels(px, pyUnity, pixelW, pixelH);
-            DestroyImmediateIfEditor(fullCopy);
         }
 
         Texture2D subTex = new Texture2D(pixelW, pixelH, TextureFormat.RGBA32, false);
